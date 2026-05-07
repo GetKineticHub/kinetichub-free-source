@@ -1,0 +1,49 @@
+Block Name: Kinetic Box
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Box container block.
+- Added a flexible container block for grouping nested WordPress blocks.
+- Added quick preset styles including Soft Elevate and Minimal Scale.
+- Added hover animation options including none, lift, scale, and CSS tilt.
+- Added CSS hover state controls for background, border, and text color.
+- Added box glow effect.
+- Added grayscale filter toggle.
+- Added image zoom on hover.
+- Added bring-to-front behavior for elevated hover layering.
+- Added flexible width control.
+- Added box alignment controls for left, center, and right positioning.
+- Added horizontal and vertical content alignment controls.
+- Added minimum height control.
+- Added transition speed control.
+- Added easing options including Smooth, Bouncy, and Snappy.
+- Added rotation angle control for CSS tilt behavior.
+- Added shadow customization controls for softness, opacity, and color.
+- Added mobile-specific shadow settings.
+- Added responsive visibility controls for mobile and desktop layouts.
+- Added box URL support for clickable card layouts.
+- Added stretched link support.
+- Added open in new tab option.
+- Added rel attribute control.
+- Added custom link label support.
+- Added accessibility support with dynamic roles and ARIA labeling.
+
+### Improved
+- Improved layout stability between editor and frontend rendering.
+- Improved frontend alignment behavior for flexible box widths.
+- Improved stretched link behavior inside the block editor so nested content remains editable.
+- Improved clickable card accessibility by switching the wrapper role based on link behavior.
+- Improved external link handling with safer rel attribute defaults.
+- Improved rel attribute parsing for space-separated and comma-separated values.
+- Improved shadow rendering by connecting shadow opacity controls to the frontend CSS output.
+- Improved editor feedback when a URL is set but the full-box clickable option is not enabled.
+- Improved frontend output escaping and attribute handling.
+
+### Fixed
+- Fixed missing saved value support for the custom link label setting.
+- Fixed CSS tilt availability in the block animation controls.
+- Fixed shadow opacity controls not affecting the rendered box shadow.
+- Fixed stretched link editability conflicts in the block editor.
+- Fixed role mismatch for clickable and non-clickable box layouts.
+- Fixed rel attribute parsing edge cases.
+- Fixed editor guidance for incomplete clickable box setup.

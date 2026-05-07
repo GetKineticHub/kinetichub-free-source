@@ -1,0 +1,18 @@
+=== Kinetic Typography ===
+
+= 1.0.0 =
+* Initial release of the Kinetic Typography block.
+* Added animated text rendering using server-side text splitting.
+* Added Reveal, Blur In, and Pop In animation styles.
+* Added support for character and word-based animation splitting.
+* Added scroll-based animation triggering using Intersection Observer.
+* Added movement direction controls.
+* Added duration, stagger, viewport threshold, and easing controls.
+* Added semantic tag selection for headings, paragraphs, div, and span output.
+* Added optional reverse animation order.
+* Added outline text styling.
+* Added responsive typography controls for desktop and mobile font size.
+* Added responsive typography controls for desktop and mobile line height.
+* Added accessibility support with a screen-reader friendly text fallback.
+* Added reduced motion handling for visitors who prefer less animation.
+* Added performance optimizations for long text and dynamic content updates.

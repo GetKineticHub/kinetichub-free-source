@@ -1,0 +1,52 @@
+Block Name: Kinetic Marquee
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Marquee.
+- Added an infinite-scrolling image and logo gallery block.
+- Added support for up to 7 marquee items.
+- Added gallery image selection through the WordPress media workflow.
+- Added optional destination links for marquee items.
+- Added image reordering and item removal controls.
+- Added base speed control.
+- Added reverse direction control.
+- Added pause on hover behavior.
+- Added slow down on hover behavior.
+- Added edge fade effect.
+- Added hover lift effect.
+- Added sibling focus blur effect.
+- Added progress rail display.
+- Added progress rail position options for right side or bottom placement.
+- Added interaction indicator for running, paused, and slowed states.
+- Added active center highlight behavior.
+- Added card frame option with background color and corner radius controls.
+- Added desktop item height control.
+- Added open in new tab option for item links.
+- Added accessibility-friendly duplicate track handling.
+- Added reduced motion handling for visitors who prefer less animation.
+
+### Improved
+- Improved scrolling smoothness with transform-based animation.
+- Improved hover interaction behavior for pause and slow-down modes.
+- Improved animation performance when the marquee leaves the viewport.
+- Improved cleanup for event listeners and observers when marquee instances are removed.
+- Improved gallery cloning behavior for wide screens and larger image sets.
+- Improved linked item focus behavior.
+- Improved frame shadow styling consistency.
+- Improved speed control consistency between editor settings and frontend rendering.
+- Improved alignment handling for wide and full layouts.
+- Improved hover shadow rendering.
+- Improved frontend output escaping and attribute handling.
+
+### Fixed
+- Fixed missing glow shadow styling for container shadows.
+- Fixed missing floating shadow styling for framed marquee items.
+- Fixed speed range mismatch between editor controls and frontend validation.
+- Fixed alignment value consistency.
+- Fixed observer cleanup when no marquee instances remain active.
+- Fixed conflicting pause and slow-down states by prioritizing pause behavior.
+- Fixed hover shadow color output.
+- Fixed default link behavior so links do not open in a new tab unless selected.
+- Fixed unnecessary cloning for galleries that already contain many items.
+- Fixed accessibility role usage for marquee containers.
+- Fixed duplicated animation tracks so decorative duplicates are hidden from assistive technologies.

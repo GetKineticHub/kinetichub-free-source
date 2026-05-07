@@ -1,0 +1,200 @@
+Block Name: Kinetic Marquee
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Marquee is a Gutenberg block for creating smooth infinite-scrolling image and logo galleries in WordPress.
+
+It is designed for sponsor strips, partner logos, client logos, product highlights, press mentions, brand rows, image bands, and visual sections that need continuous horizontal movement.
+
+---
+
+## 2. Features
+
+### Gallery Items
+- Up to 7 marquee items
+- Image selection from the WordPress Media Library
+- Optional link URL per item
+- Item reordering
+- Item removal
+- Open in new tab option for links
+
+### Movement Controls
+- Speed control
+- Reverse direction control
+- Pause on hover
+- Slow down on hover
+- Focus-aware pause behavior for linked items
+
+### Visual Effects
+- Edge fade effect
+- Hover lift effect
+- Sibling focus blur effect
+- Active center highlight
+- Progress rail
+- Interaction indicator
+
+### Progress Rail
+- Right side position
+- Bottom position
+
+### Frame Styling
+- Card frame toggle
+- Frame background color
+- Frame corner radius
+- Desktop item height control
+
+### Accessibility
+- Semantic group structure
+- Decorative duplicate tracks hidden from assistive technologies
+- Focus-aware pause behavior
+- Reduced motion support based on the visitor's system settings
+
+### Performance
+- Transform-based animation
+- Viewport-aware pause behavior
+- Dynamic cleanup when marquee instances are removed from the page
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Marquee".
+4. Insert the block into the page.
+5. Add images from the Media Library.
+6. Reorder items as needed.
+7. Add optional links for each item.
+8. Adjust speed, direction, hover behavior, frame styling, and visual addons from the block sidebar.
+
+---
+
+## 4. Adding Images
+
+Use the gallery controls to select images from the WordPress Media Library or upload new images.
+
+Each item can include:
+
+- Image
+- Optional destination URL
+
+For best results, use images with consistent proportions. Logo strips look cleaner when uploaded logos have similar padding and transparent backgrounds.
+
+---
+
+## 5. Movement Settings
+
+The block includes controls for marquee motion.
+
+Available movement settings include:
+
+- Speed: controls how quickly the track scrolls.
+- Reverse direction: changes the scroll direction.
+- Pause on hover: stops the marquee while the visitor hovers over it.
+- Slow down on hover: reduces marquee speed instead of stopping it completely.
+
+Pause on hover is useful when marquee items include links because it gives visitors more time to focus and click.
+
+---
+
+## 6. Smart Visual Addons
+
+Kinetic Marquee includes several visual options for stronger presentation.
+
+### Edge Fade
+
+Adds a soft fade at the left and right edges of the marquee area.
+
+### Hover Lift
+
+Raises the hovered item slightly to make it feel interactive.
+
+### Sibling Focus Blur
+
+Softens non-hovered items while one item is active, helping the selected item stand out.
+
+### Active Center Highlight
+
+Emphasizes the item closest to the center of the marquee.
+
+### Progress Rail
+
+Displays a segmented visual indicator for marquee movement. It can appear on the right side or at the bottom.
+
+### Interaction Indicator
+
+Displays the current marquee state, such as running, paused, or slowed.
+
+---
+
+## 7. Frame Styling
+
+The card frame option places each image inside a styled frame.
+
+Frame settings include:
+
+- Frame background color
+- Frame corner radius
+- Desktop item height
+
+This is useful for logo galleries where source images have different dimensions or background treatments.
+
+---
+
+## 8. Links
+
+Each marquee item can include an optional link.
+
+Use links for:
+
+- Partner websites
+- Client case studies
+- Product pages
+- Sponsor pages
+- Press mentions
+- Portfolio entries
+
+The open in new tab option applies to item links when enabled.
+
+---
+
+## 9. Accessibility Notes
+
+Kinetic Marquee is built with accessibility in mind.
+
+The block uses a semantic group structure and hides decorative duplicate tracks from assistive technologies so screen readers do not announce repeated content unnecessarily.
+
+When linked items receive keyboard focus, the marquee can pause to help keyboard users interact with the content.
+
+When a visitor has reduced motion enabled in their operating system, motion-heavy behavior is reduced for a more comfortable browsing experience.
+
+---
+
+## 10. Performance Notes
+
+The marquee uses transform-based animation for smooth scrolling.
+
+Animation work is paused when the marquee leaves the viewport, helping reduce unnecessary rendering work. Event listeners and observers are cleaned up when marquee instances are removed from the page dynamically.
+
+For best results, optimize images before uploading them. Use lightweight image formats and avoid very large source files for logo strips.
+
+---
+
+## 11. Recommended Usage
+
+Use Kinetic Marquee for:
+
+- Client logo strips
+- Sponsor sections
+- Partner galleries
+- Brand showcases
+- Press mention rows
+- Product image bands
+- Portfolio logo rows
+- Event sponsor displays
+- Technology stack showcases
+
+For clean visual rhythm, keep images consistent in size, contrast, and padding.

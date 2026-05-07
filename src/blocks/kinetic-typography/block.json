@@ -1,0 +1,117 @@
+{
+  "apiVersion": 3,
+  "name": "kinetichub/typography",
+  "version": "1.0.0",
+  "title": "Kinetic Typography",
+  "category": "kinetic-suite",
+  "description": "Animated typography block with text splitting, reveal effects, and responsive type controls.",
+  "keywords": [
+    "animated text",
+    "headline",
+    "typography",
+    "text animation",
+    "title"
+  ],
+  "attributes": {
+    "content": {
+      "type": "string",
+      "default": ""
+    },
+    "tagName": {
+      "type": "string",
+      "default": "h2"
+    },
+    "animationType": {
+      "type": "string",
+      "default": "reveal"
+    },
+    "speed": {
+      "type": "number",
+      "default": 0.6
+    },
+    "stagger": {
+      "type": "number",
+      "default": 0.05
+    },
+    "splitType": {
+      "type": "string",
+      "default": "chars"
+    },
+    "threshold": {
+      "type": "number",
+      "default": 0.2
+    },
+    "trigger": {
+      "type": "string",
+      "default": "scroll"
+    },
+    "direction": {
+      "type": "string",
+      "default": "up"
+    },
+    "easing": {
+      "type": "string",
+      "default": "smooth"
+    },
+    "reverseOrder": {
+      "type": "boolean",
+      "default": false
+    },
+    "useOutline": {
+      "type": "boolean",
+      "default": false
+    },
+    "outlineWidth": {
+      "type": "number",
+      "default": 1
+    },
+    "customFontSize": {
+      "type": "number"
+    },
+    "customFontSizeMobile": {
+      "type": "number"
+    },
+    "customLineHeight": {
+      "type": "number"
+    },
+    "customLineHeightMobile": {
+      "type": "number"
+    }
+  },
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "textAlign": true,
+      "__experimentalFontFamily": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalLetterSpacing": true,
+      "__experimentalTextTransform": true
+    },
+    "color": {
+      "text": true,
+      "background": true,
+      "link": true,
+      "gradients": true
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "width": true,
+      "style": true
+    },
+    "html": false,
+    "align": true
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

@@ -1,0 +1,318 @@
+// style.scss
+/**
+ * Kinetic Typography - Styling Engine
+ * Version: 1.0.0
+ */
+
+.kh-ty-master-typography {
+    display: block;
+    position: relative;
+    overflow: visible;
+    padding: 15px 0;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 1em;
+    contain: layout;
+
+    
+
+    &.kh-ty-has-custom-typo {
+        font-size: var(--kh-ty-fs-desk);
+        line-height: var(--kh-ty-lh-desk);
+
+        .kh-ty-text-content {
+            font-size: var(--kh-ty-fs-desk) !important;
+            line-height: var(--kh-ty-lh-desk) !important;
+        }
+    }
+
+    &.kh-ty-has-native-typo .kh-ty-text-content {
+        font-size: inherit !important;
+        line-height: inherit !important;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 2px dashed var(--kh-accent, #10b981);
+        outline-offset: 4px;
+        border-radius: 4px;
+    }
+
+    
+
+    .kh-ty-text-wrapper {
+        position: relative;
+        display: inline-block;
+        max-width: 100%;
+        text-align: inherit;
+        z-index: 1;
+    }
+
+    .kh-ty-text-content {
+        margin: 0;
+        display: inline-block;
+        max-width: 100%;
+        width: auto;
+        font-family: inherit;
+        font-weight: inherit;
+        font-style: inherit;
+        text-transform: inherit;
+        letter-spacing: inherit;
+        color: inherit;
+        position: relative;
+        z-index: 2;
+        text-align: inherit;
+    }
+
+    .screen-reader-text {
+        border: 0;
+        clip: rect(1px, 1px, 1px, 1px);
+        clip-path: inset(50%);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+        word-wrap: normal !important;
+    }
+
+    .kh-ty-word {
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    span[aria-hidden="true"] {
+        display: inline-block;
+        white-space: pre;
+        backface-visibility: hidden;
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: inherit;
+        font-style: inherit;
+        line-height: inherit;
+        vertical-align: bottom;
+        animation-duration: var(--kh-ty-speed, 0.6s);
+        animation-timing-function: var(--kh-ty-easing, cubic-bezier(0.23, 1, 0.32, 1));
+        animation-fill-mode: both;
+        animation-iteration-count: 1;
+        will-change: transform, opacity, filter;
+    }
+
+    &.kh-ty-has-outline span[aria-hidden="true"],
+    &.kh-ty-editor-preview.kh-ty-has-outline .kh-ty-text-content {
+        -webkit-text-stroke: var(--kh-ty-outline-w, 1px) currentColor;
+        -webkit-text-fill-color: transparent;
+    }
+
+    
+
+.kh-ty-empty-placeholder {
+    background: #f5f5f5;
+    border: 2px dashed #ddd;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+}
+
+.kh-ty-editor-notice-wrap {
+    position: relative;
+    width: 100%;
+    z-index: 99;
+    margin-top: 15px;
+}
+
+.kh-ty-control-box {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 15px;
+
+    p {
+        margin-top: 0;
+        font-weight: 600;
+        font-size: 12px;
+    }
+}
+
+.kh-ty-static-note {
+    margin: 0;
+    color: #555;
+}
+
+.kh-ty-custom-font-control {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.kh-ty-anim-reveal .kh-ty-word {
+    overflow: hidden;
+    vertical-align: bottom;
+    line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+    .kh-ty-master-typography.kh-ty-has-custom-typo {
+        font-size: var(--kh-ty-fs-mob, var(--kh-ty-fs-desk));
+        line-height: var(--kh-ty-lh-mob, var(--kh-ty-lh-desk));
+
+        .kh-ty-text-content {
+            font-size: var(--kh-ty-fs-mob, var(--kh-ty-fs-desk)) !important;
+            line-height: var(--kh-ty-lh-mob, var(--kh-ty-lh-desk)) !important;
+        }
+    }
+
+    
+
+body:not(.block-editor-page) .kh-ty-master-typography.alignfull {
+    width: 100vw !important;
+    max-width: 100% !important;
+    position: relative !important;
+    left: auto !important;
+    transform: none !important;
+    margin-left: calc(50% - 50vw) !important;
+    box-sizing: border-box !important;
+}
+
+.block-editor-page .kh-ty-master-typography.alignfull {
+    width: 100%;
+    max-width: 100%;
+}
+
+.kh-ty-master-typography.kh-ty-trig-scroll.kh-ty-ready:not(.kh-ty-active) {
+    &.kh-ty-anim-reveal.kh-ty-dir-up span[aria-hidden="true"] {
+        transform: translateY(115%);
+    }
+
+    &.kh-ty-anim-reveal.kh-ty-dir-down span[aria-hidden="true"] {
+        transform: translateY(-115%);
+    }
+
+    &.kh-ty-anim-reveal.kh-ty-dir-left span[aria-hidden="true"] {
+        transform: translateX(115%);
+    }
+
+    &.kh-ty-anim-reveal.kh-ty-dir-right span[aria-hidden="true"] {
+        transform: translateX(-115%);
+    }
+
+    &.kh-ty-anim-blur span[aria-hidden="true"] {
+        opacity: 0;
+        filter: blur(15px);
+    }
+
+    &.kh-ty-anim-pop span[aria-hidden="true"] {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    
+
+.kh-ty-master-typography.kh-ty-trig-scroll.kh-ty-ready:not(.kh-ty-active) span[aria-hidden="true"] {
+    animation: khtyEmergencyShow 0.1s 3s forwards !important;
+}
+
+.kh-ty-master-typography.kh-ty-active {
+    &.kh-ty-anim-reveal.kh-ty-dir-up span[aria-hidden="true"] {
+        animation-name: khtyRevealUp;
+    }
+
+    &.kh-ty-anim-reveal.kh-ty-dir-down span[aria-hidden="true"] {
+        animation-name: khtyRevealDown;
+    }
+
+    &.kh-ty-anim-reveal.kh-ty-dir-left span[aria-hidden="true"] {
+        animation-name: khtyRevealLeft;
+    }
+
+    &.kh-ty-anim-reveal.kh-ty-dir-right span[aria-hidden="true"] {
+        animation-name: khtyRevealRight;
+    }
+
+    &.kh-ty-anim-blur span[aria-hidden="true"] {
+        animation-name: khtyBlur;
+    }
+
+    &.kh-ty-anim-pop span[aria-hidden="true"] {
+        animation-name: khtyPop;
+    }
+
+    
+
+.kh-ty-editor-preview {
+    overflow: visible;
+}
+
+.kh-ty-editor-preview .kh-ty-text-content,
+.kh-ty-editor-preview span[aria-hidden="true"] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+}
+
+@keyframes khtyEmergencyShow {
+    to {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
+}
+
+@keyframes khtyRevealUp {
+    0% { transform: translateY(115%); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes khtyRevealDown {
+    0% { transform: translateY(-115%); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes khtyRevealLeft {
+    0% { transform: translateX(115%); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes khtyRevealRight {
+    0% { transform: translateX(-115%); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes khtyBlur {
+    0% { opacity: 0; filter: blur(15px); }
+    100% { opacity: 1; filter: blur(0); }
+}
+
+@keyframes khtyFade {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes khtyFadeScale {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes khtyPop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+    .kh-ty-master-typography span[aria-hidden="true"],
+    .kh-ty-master-typography[class*="anim-"],
+    .kh-ty-master-typography .kh-ty-text-wrapper {
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        transition: none !important;
+    }
+}

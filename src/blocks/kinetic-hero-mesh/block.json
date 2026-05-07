@@ -1,0 +1,124 @@
+{
+  "apiVersion": 3,
+  "name": "kinetichub/hero-mesh",
+  "version": "1.0.0",
+  "title": "Kinetic Hero Mesh",
+  "category": "kinetic-suite",
+  "icon": "cover-image",
+  "description": "Generative hero container with Plexus and Classic visual modes.",
+  "keywords": [
+    "hero section",
+    "mesh",
+    "background",
+    "plexus",
+    "liquid",
+    "gradient",
+    "webgl",
+    "aurora"
+  ],
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    },
+    "bgMode": {
+      "type": "string",
+      "default": "plexus"
+    },
+    "heroHeightDesktop": {
+      "type": "number",
+      "default": 100
+    },
+    "heroHeightMobile": {
+      "type": "number",
+      "default": 100
+    },
+    "contentAlign": {
+      "type": "string",
+      "default": "center"
+    },
+    "mediaId": {
+      "type": "number"
+    },
+    "mediaUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "objectFit": {
+      "type": "string",
+      "default": "cover"
+    },
+    "objectPosition": {
+      "type": "string",
+      "default": "center"
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 0.3
+    },
+    "overlayColor": {
+      "type": "string",
+      "default": "#000000"
+    },
+    "blendMode": {
+      "type": "string",
+      "default": "normal"
+    },
+    "plexusColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "plexusDensity": {
+      "type": "number",
+      "default": 80
+    },
+    "plexusDistance": {
+      "type": "number",
+      "default": 150
+    },
+    "plexusSpeed": {
+      "type": "number",
+      "default": 1
+    },
+    "plexusInteraction": {
+      "type": "string",
+      "default": "repel"
+    },
+    "plexusLineWidth": {
+      "type": "number",
+      "default": 1
+    },
+    "parallaxEffect": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableGrain": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "text": true,
+      "background": true
+    }
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "style": "file:./style.scss",
+  "editorStyle": "file:./style.scss",
+  "render": "file:./render.php"
+}

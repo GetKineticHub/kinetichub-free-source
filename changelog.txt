@@ -1,0 +1,54 @@
+=== kinetichub ===
+
+== 1.0.0 ==
+
+Initial stable release.
+
+= Added =
+
+* Added Kinetic Ambient Aura block.
+* Added Kinetic Audio Player block.
+* Added Kinetic Before/After block.
+* Added Kinetic Box block.
+* Added Kinetic Cursor Reveal block.
+* Added Kinetic Hero Mesh block.
+* Added Kinetic Magnetic Button block.
+* Added Kinetic Marquee block.
+* Added Kinetic Scroll Divider block.
+* Added Kinetic Split Scroll block.
+* Added Kinetic Typography block.
+* Added Kinetic Video Modal block.
+* Added kinetichub dashboard for included block management.
+* Added global settings for motion profile, global interpolation, mobile motion, glass intensity, asset loading, and accent color.
+* Added support for reduced-motion preferences.
+* Added lazy video initialization for supported video modal embeds.
+* Added accessible ARIA label controls for video modal interactions.
+* Added server-rendered text splitting for animated typography.
+* Added screen-reader friendly fallback text for animated typography.
+
+= Security =
+
+* Added strict server-side attribute normalization for dynamic blocks.
+* Added escaped output for server-rendered block markup.
+* Added URL sanitization for media and video URLs.
+* Added provider validation before frontend video embed creation.
+* Added REST nonce and capability checks for dashboard settings.
+
+= Performance =
+
+* Added contextual block asset loading through WordPress block registration.
+* Added lightweight shared frontend runtime registration.
+* Added global motion settings for performance tuning.
+* Added lazy iframe creation for video embeds.
+* Added media loading optimizations where supported.
+* Added viewport-aware behavior for motion-heavy block interactions.
+
+= Accessibility =
+
+* Added reduced-motion fallback behavior.
+* Added modal focus management for video playback.
+* Added keyboard dismissal for modal playback.
+* Added focus restoration after modal close.
+* Added accessible labels for video modal controls.
+* Added semantic fallback text for animated typography.
+* Added keyboard-friendly behavior across supported interactive blocks.

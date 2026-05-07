@@ -1,0 +1,81 @@
+{
+  "apiVersion": 3,
+  "name": "kinetichub/scroll-divider",
+  "version": "1.0.0",
+  "title": "Kinetic Scroll Divider",
+  "category": "kinetic-suite",
+  "description": "Animated scroll divider block with line, glow, and viewport reveal controls.",
+  "keywords": [
+    "divider",
+    "separator",
+    "line",
+    "hr",
+    "kinetic"
+  ],
+  "attributes": {
+    "lineColor": {
+      "type": "string",
+      "default": "#10b981"
+    },
+    "lineOpacity": {
+      "type": "number",
+      "default": 1
+    },
+    "thickness": {
+      "type": "number",
+      "default": 2
+    },
+    "widthPercent": {
+      "type": "number",
+      "default": 100
+    },
+    "alignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "animStyle": {
+      "type": "string",
+      "default": "draw-center"
+    },
+    "duration": {
+      "type": "number",
+      "default": 1.2
+    },
+    "glowEffect": {
+      "type": "boolean",
+      "default": true
+    },
+    "glowIntensity": {
+      "type": "string",
+      "default": "medium"
+    },
+    "spacingPreset": {
+      "type": "string",
+      "default": "normal"
+    },
+    "visibility": {
+      "type": "string",
+      "default": "all"
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

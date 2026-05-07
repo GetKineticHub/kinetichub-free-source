@@ -1,0 +1,113 @@
+{
+  "apiVersion": 3,
+  "name": "kinetichub/split-scroll",
+  "version": "1.0.0",
+  "title": "Kinetic Split Scroll",
+  "category": "kinetic-suite",
+  "description": "Split scrolling media and content block with responsive layout controls.",
+  "keywords": [
+    "split scroll",
+    "sticky scroll",
+    "synchronized text"
+  ],
+  "attributes": {
+    "pinnedSide": {
+      "type": "string",
+      "default": "left"
+    },
+    "columnRatio": {
+      "type": "string",
+      "default": "50/50"
+    },
+    "stickyOffset": {
+      "type": "number",
+      "default": 0
+    },
+    "stackOnMobile": {
+      "type": "string",
+      "default": "media-first"
+    },
+    "enableStickyMobile": {
+      "type": "boolean",
+      "default": false
+    },
+    "mediaItems": {
+      "type": "array",
+      "default": []
+    },
+    "enableSmartSwap": {
+      "type": "boolean",
+      "default": true
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "large"
+    },
+    "objectFit": {
+      "type": "string",
+      "default": "cover"
+    },
+    "objectPosition": {
+      "type": "string",
+      "default": "center"
+    },
+    "indicatorType": {
+      "type": "string",
+      "default": "line"
+    },
+    "accentColor": {
+      "type": "string"
+    },
+    "overlayTint": {
+      "type": "string",
+      "default": "#000000"
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 0
+    },
+    "pinnedBgColor": {
+      "type": "string",
+      "default": "transparent"
+    },
+    "textEffect": {
+      "type": "string",
+      "default": "none"
+    },
+    "enableSnap": {
+      "type": "boolean",
+      "default": false
+    },
+    "align": {
+      "type": "string"
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true
+    },
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

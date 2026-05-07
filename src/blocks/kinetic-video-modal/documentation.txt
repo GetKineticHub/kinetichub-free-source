@@ -1,0 +1,280 @@
+Block Name: Kinetic Video Modal
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Video Modal is a Gutenberg block for displaying videos through a styled preview area, modal playback, or inline playback.
+
+It supports YouTube, YouTube privacy-enhanced embeds, Vimeo, and self-hosted video files. Use it for product videos, portfolio reels, tutorials, testimonials, hero videos, course previews, landing page demos, and featured media sections.
+
+---
+
+## 2. Features
+
+### Video Sources
+- YouTube video URLs
+- YouTube privacy-enhanced embed support
+- Vimeo video URLs
+- Self-hosted video file URLs
+
+### Playback Modes
+- Modal playback
+- Inline playback
+
+### Preview Display
+- Custom cover image
+- Automatic YouTube thumbnail detection
+- Thumbnail fallback handling
+- Image overlay opacity control
+
+### Aspect Ratios
+- 16:9
+- 4:3
+- 21:9
+- 1:1
+
+### Play Button Styling
+- Solid button style
+- Glass button style
+- Outline button style
+- Button color control
+- Play icon color control
+- Button size control
+
+### Modal Behavior
+- Backdrop style options
+- Close on backdrop click setting
+- Optional outside close button positioning
+- Escape key close handling
+- Focus restoration after close
+
+### Local Video Options
+- Local video preload setting
+- Viewport-aware preload behavior for self-hosted videos
+
+### Accessibility
+- Play button ARIA label control
+- Dialog ARIA label control
+- Close button ARIA label control
+- Modal dialog semantics
+- Focus trap inside the modal
+- Screen-reader announcements for modal open and close actions
+
+### Developer Hooks
+- Render hook before block output
+- Render hook after block output
+- Thumbnail URL filter hook
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Video Modal".
+4. Insert the block into the page.
+5. Add a supported video URL.
+6. Choose modal or inline playback.
+7. Configure the cover image, aspect ratio, button style, overlay, and accessibility labels from the block sidebar.
+
+---
+
+## 4. Video URL Setup
+
+The block supports common video sources:
+
+- YouTube
+- YouTube privacy-enhanced embeds
+- Vimeo
+- Direct self-hosted video files
+
+Unsupported or malformed URLs fail safely instead of creating an invalid player.
+
+For self-hosted video, use browser-supported file formats and optimized video files for faster loading.
+
+---
+
+## 5. Modal Playback
+
+Modal playback opens the video in an overlay after the visitor activates the play button.
+
+Modal playback includes:
+
+- Dialog semantics
+- Focus trap
+- Escape key close support
+- Focus restoration after close
+- Optional close on backdrop click
+- Optional outside close button positioning
+
+Use modal playback when the video should feel like a focused viewing experience without moving visitors away from the page.
+
+---
+
+## 6. Inline Playback
+
+Inline playback replaces the preview container with the active video.
+
+Use inline playback when the video should remain part of the page flow, such as inside a product section, tutorial layout, or media card.
+
+---
+
+## 7. Cover Images and Thumbnails
+
+You can upload a custom cover image for the preview area.
+
+For YouTube videos, the block can detect the video thumbnail automatically and use fallback thumbnail handling when the highest-resolution thumbnail is unavailable.
+
+A custom cover image is recommended when you want full control over branding, cropping, or visual consistency.
+
+---
+
+## 8. Aspect Ratio
+
+The block includes four aspect ratio options:
+
+- 16:9 for standard widescreen video
+- 4:3 for classic video layouts
+- 21:9 for cinematic wide layouts
+- 1:1 for square layouts
+
+Choose the aspect ratio that best matches your video source and surrounding layout.
+
+---
+
+## 9. Button Styling
+
+The play button can be styled using:
+
+- Solid style
+- Glass style
+- Outline style
+- Button color
+- Icon color
+- Button size
+
+Use a button style that has enough contrast against the cover image so visitors can easily identify the play action.
+
+---
+
+## 10. Local Video Preload
+
+For self-hosted videos, preload behavior controls how the browser prepares the video file before playback.
+
+Use lighter preload settings when page speed is more important. Use stronger preload behavior only when the video is central to the page experience.
+
+---
+
+## 11. Accessibility Notes
+
+Kinetic Video Modal is built with accessibility in mind.
+
+The block includes configurable ARIA labels for the play button, modal dialog, and close button. Modal playback traps focus while open, supports Escape key closing, restores focus after closing, and announces modal state changes to screen readers.
+
+Use clear labels that describe the video action, such as "Play product demo video" or "Close video dialog".
+
+---
+
+## 12. Performance Notes
+
+The block avoids loading third-party video iframes during the initial page render. Video embeds are created after visitor interaction.
+
+Self-hosted videos use the configured preload behavior, and local video preload handling can improve readiness when the video preview approaches the viewport.
+
+For best results, use optimized cover images and compressed local video files.
+
+---
+
+## 13. Developer Hooks
+
+The block provides server-side extension points for developers.
+
+### kinetichub_before_video_modal_render
+
+Fires before the block HTML is rendered.
+
+Parameters:
+
+- $attributes: block attributes
+- $block: block instance
+
+### kinetichub_after_video_modal_render
+
+Fires after the block HTML is rendered.
+
+Parameters:
+
+- $attributes: block attributes
+- $block: block instance
+
+### kinetichub_video_modal_thumbnail_url
+
+Filters the generated thumbnail URL.
+
+Parameters:
+
+- $kh_vm_cover_url: thumbnail URL
+- $kh_vm_video_url: video URL
+- $attributes: block attributes
+
+---
+
+## 14. CSS Custom Properties
+
+The block uses the following custom properties for frontend styling:
+
+- --kh-vm-btn-c: play button background color
+- --kh-vm-icon-c: play icon color
+- --kh-vm-btn-s: play button size
+- --kh-vm-overlay: image overlay opacity
+
+Core classes include:
+
+- .ratio-16x9
+- .ratio-4x3
+- .ratio-21x9
+- .ratio-1x1
+- .btn-style-solid
+- .btn-style-outline
+- .btn-style-glass
+- .zoom-none
+
+---
+
+## 15. Troubleshooting
+
+### Video does not open
+
+Check that the video URL uses a supported provider or a direct self-hosted video file URL.
+
+### YouTube thumbnail looks low resolution
+
+Some YouTube videos do not provide every thumbnail size. The block includes fallback handling for this case.
+
+### Modal is blocked by site security headers
+
+Review your site security headers and make sure video frames and thumbnail images are allowed from the video providers you use.
+
+### Local video does not autoplay
+
+Modern browsers may restrict autoplay depending on mute state, user interaction, and browser settings. The block initializes playback after explicit visitor interaction.
+
+---
+
+## 16. Recommended Usage
+
+Use Kinetic Video Modal for:
+
+- Product demos
+- Portfolio reels
+- Course previews
+- Landing page hero videos
+- Customer testimonials
+- Tutorial videos
+- Service explanations
+- Event recaps
+- Feature walkthroughs
+
+For best results, use a clear cover image, a high-contrast play button, and concise surrounding copy that tells visitors what the video contains.

@@ -1,0 +1,228 @@
+/**
+ * Kinetic Box - Stylesheet
+ * Version: 1.0.0
+ */
+
+.kh-box-ease-smooth { --kh-box-bezier: cubic-bezier(0.25, 0.8, 0.25, 1); }
+.kh-box-ease-bouncy { --kh-box-bezier: cubic-bezier(0.68, -0.6, 0.32, 1.6); }
+.kh-box-ease-snappy { --kh-box-bezier: cubic-bezier(0.25, 1, 0.5, 1); }
+
+/* ==========================================================================
+   THE SILVER BULLET: Isolated Width & Alignment
+   This ONLY applies when the user moves the Box Width slider > 0.
+   "body" prefix strictly enforces maximum CSS specificity over WP FSE defaults.
+   ========================================================================== */
+body .kh-box-wrapper.kh-box-has-custom-width,
+body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
+    width: var(--kh-box-w) !important;
+    max-width: var(--kh-box-w) !important;
+    margin-left: var(--kh-box-ml) !important;
+    margin-right: var(--kh-box-mr) !important;
+    align-self: var(--kh-box-align-self) !important; 
+}
+
+.kh-box-wrapper, .wp-block-kinetichub-kinetic-box {
+    position: relative;
+    display: flex; 
+    flex-direction: column;
+    box-sizing: border-box; 
+    border: 1px solid transparent; 
+    min-height: var(--kh-box-min-h, auto);
+    width: 100%;
+
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    
+    transition: 
+        transform var(--kh-box-speed, 0.4s) var(--kh-box-bezier),
+        box-shadow var(--kh-box-speed, 0.4s) var(--kh-box-bezier),
+        background-color var(--kh-box-speed, 0.4s) ease,
+        border-color var(--kh-box-speed, 0.4s) ease,
+        color var(--kh-box-speed, 0.4s) ease,
+        filter 0.3s ease,
+        opacity 0.5s ease;
+    
+    box-shadow: 0 10px var(--kh-box-shadow-blur) rgb(from var(--kh-box-base-shadow) r g b / var(--kh-box-shadow-o, 0.1));
+
+    &:focus { outline: none; }
+    &:focus-visible {
+        outline: 2px dashed var(--kh-accent, #10b981);
+        outline-offset: 4px;
+        z-index: 20;
+    }
+
+    &:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.is-physics-active {
+        box-shadow: 0 25px var(--kh-box-shadow-blur) rgb(from var(--kh-box-hover-shadow) r g b / var(--kh-box-hover-o, 0.2)) !important;
+        z-index: 10;
+    }
+
+    &.kh-box-change-bg:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-change-bg.is-physics-active { 
+        background-color: var(--kh-box-hover-bg) !important; 
+    }
+
+    &.kh-box-change-border:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-change-border.is-physics-active { 
+        border-color: var(--kh-box-hover-border, transparent) !important; 
+    }
+
+    &.kh-box-change-text:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-change-text.is-physics-active {
+        color: var(--kh-box-hover-text) !important;
+        
+        h1:not([class*="kh-"]):not(.has-text-color), 
+        h2:not([class*="kh-"]):not(.has-text-color), 
+        h3:not([class*="kh-"]):not(.has-text-color), 
+        h4:not([class*="kh-"]):not(.has-text-color), 
+        h5:not([class*="kh-"]):not(.has-text-color), 
+        h6:not([class*="kh-"]):not(.has-text-color), 
+        p:not([class*="kh-"]):not(.has-text-color), 
+        a:not([class*="kh-"]):not(.has-text-color), 
+        li:not([class*="kh-"]):not(.has-text-color), 
+        blockquote:not([class*="kh-"]):not(.has-text-color) {
+            color: var(--kh-box-hover-text);
+            transition: color var(--kh-box-speed, 0.4s) ease;
+        }
+    }
+
+    &.kh-box-glow:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-glow.is-physics-active { 
+        box-shadow: 0 0 40px 10px var(--kh-box-hover-shadow) !important; 
+    }
+    
+    
+
+    .kh-box-inner-content {
+        position: relative;
+        z-index: 20; 
+        pointer-events: auto;
+        width: 100%;
+        height: 100%;
+        flex-grow: 1; 
+        display: flex;
+        flex-direction: column;
+        justify-content: var(--kh-box-v-align, flex-start);
+        text-align: var(--kh-box-text-align, left);
+        
+        gap: inherit;
+        
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        > * { width: 100%; }
+    }
+
+    .kh-box-inner-content a, 
+    .kh-box-inner-content button, 
+    .kh-box-inner-content .wp-block-button__link,
+    .kh-box-inner-content iframe,
+    .kh-box-inner-content canvas,
+    .kh-box-inner-content .kh-ap-wrapper {
+        position: relative;
+        z-index: 30 !important;
+    }
+
+    .kh-box-stretched-link { 
+        position: static;
+        &::after {
+            content: '';
+            position: absolute; inset: 0; z-index: 5; pointer-events: auto;
+        }
+    }
+
+    
+
+    /* CSS Animations - FREE: lift, scale, tilt */
+    &.anim-lift:not([data-tilt="true"]):not([data-magnetic="true"]):hover { transform: translateY(calc(var(--kh-box-intensity) * -1px)) rotate(var(--kh-box-rot)); }
+    &.anim-scale:not([data-tilt="true"]):not([data-magnetic="true"]):hover { transform: scale(calc(1 + (var(--kh-box-intensity) / 500))) rotate(var(--kh-box-rot)); }
+    &.anim-tilt:not([data-tilt="true"]):not([data-magnetic="true"]):hover { transform: perspective(1000px) rotateX(calc(var(--kh-box-intensity) * 0.1deg)) rotateY(calc(var(--kh-box-intensity) * 0.1deg)); }
+    
+    
+    
+    &.kh-box-grayscale { filter: grayscale(100%); transition: filter 0.4s ease; }
+    &.kh-box-grayscale:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-grayscale.is-physics-active { filter: grayscale(0%); }
+    
+    &.kh-box-zoom-img .kh-box-inner-content > * { transition: transform var(--kh-box-speed, 0.4s) ease; }
+    &.kh-box-zoom-img:not([data-tilt="true"]):not([data-magnetic="true"]):hover .kh-box-inner-content > img, 
+    &.kh-box-zoom-img:not([data-tilt="true"]):not([data-magnetic="true"]):hover .kh-box-inner-content > .wp-block-image,
+    &.kh-box-zoom-img.is-physics-active .kh-box-inner-content > img, 
+    &.kh-box-zoom-img.is-physics-active .kh-box-inner-content > .wp-block-image { 
+        transform: scale(var(--kh-box-zoom-int, 1.08)); 
+    }
+    
+    &.kh-box-z-top:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-z-top.is-physics-active { z-index: 999 !important; }
+
+    
+
+    
+
+
+
+.wp-block-post-content.has-global-padding > .kh-box-wrapper.alignfull {
+    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px));
+    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px));
+    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px));
+    max-width: none; position: relative; left: auto; right: auto; transform: none; box-sizing: border-box;
+}
+
+.block-editor-page .kh-box-wrapper.alignfull {
+    margin-left: 0 !important; margin-right: 0 !important; width: 100% !important;
+}
+
+/* --- EDITOR SAFEGUARDS --- */
+.is-editor-canvas {
+    opacity: 1 !important; visibility: visible !important;
+    &.anim-trace::before { display: none !important; }
+
+    /* Neutralize Stretched Link in Editor so text is selectable */
+    .kh-box-stretched-link { display: none !important; pointer-events: none !important; }
+
+    
+
+    transform-style: flat !important; perspective: none !important; transform: none !important;
+    .kh-box-inner-content { transform-style: flat !important; transform: none !important; }
+    &:hover, .kh-box-inner-content:hover { transform: none !important; }
+
+    /* UX FIX: Prevent Empty Container Collapse (Dropzone effect) */
+    &:not(:has(.wp-block)) {
+        min-height: 80px !important;
+        border: 2px dashed rgba(148, 163, 184, 0.6) !important;
+        border-radius: 8px;
+        background-color: rgba(248, 250, 252, 0.4);
+    }
+}
+
+/* Flex Alignment Sync Editor Fix */
+.kh-box-inner-content > .block-editor-inner-blocks,
+.kh-box-inner-content > .block-editor-inner-blocks > .block-editor-block-list__layout {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    min-height: inherit;
+    justify-content: var(--kh-box-v-align);
+    /* Notice: align-items has been removed so inner blocks stretch fully and accept text-align natively! */
+    width: 100%;
+    min-width: 0;
+}
+.kh-box-inner-content > .block-editor-inner-blocks > .block-editor-block-list__layout > * {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    body .wp-block-kinetichub-kinetic-box, body .kh-box-wrapper { 
+        --kh-box-intensity: var(--kh-box-m-intensity); 
+        --kh-box-shadow-blur: var(--kh-box-m-blur); 
+    }
+    .kh-box-hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) { .kh-box-hide-desktop { display: none !important; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .kh-box-wrapper, .kh-box-wrapper[data-entrance] {
+        transform: none !important; translate: none !important; transition: opacity 0.4s ease, background-color 0.4s ease !important; animation: none !important;
+        &.kh-box-zoom-img:hover .kh-box-inner-content > img, &.kh-box-zoom-img:hover .kh-box-inner-content > .wp-block-image,
+        &.is-physics-active .kh-box-inner-content > *, &.has-parallax .kh-box-inner-content > * { transform: none !important; }
+    }
+}

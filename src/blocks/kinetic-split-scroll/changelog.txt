@@ -1,0 +1,51 @@
+Block Name: Kinetic Split Scroll
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Split Scroll.
+- Added a split-screen scroll layout with a pinned media column and scrolling content column.
+- Added support for up to 3 media items.
+- Added image media support.
+- Added video media support.
+- Added smart media swap behavior with fade transition.
+- Added vertical line progress indicator.
+- Added pinned side control.
+- Added column ratio control.
+- Added mobile stacking controls.
+- Added sticky offset control.
+- Added image fit and image position controls.
+- Added overlay tint color and opacity controls.
+- Added pinned area background color control.
+- Added soft shadow container styling.
+- Added mobile sticky toggle.
+- Added fade-up text entrance effect.
+- Added magnetic snap behavior for scroll content.
+- Added HSL and HSLA color format support across color controls.
+- Added reduced motion handling for visitors who prefer less animation.
+- Added support for modern mobile viewport sizing.
+
+### Improved
+- Improved scroll tracking for pinned media layouts.
+- Improved media swap timing during scroll interactions.
+- Improved layout stability on mobile browsers.
+- Improved dynamic layout recalculation when media loads asynchronously.
+- Improved frontend performance by reducing unnecessary animation updates.
+- Improved error handling for layout measurements.
+- Improved video rendering through native HTML video output.
+- Improved editor duplication stability by removing unnecessary persistent instance identifiers.
+- Improved color validation for common CSS color formats.
+- Improved frontend output escaping and attribute handling.
+
+### Fixed
+- Fixed calculation edge cases that could produce invalid scroll values.
+- Fixed mobile viewport overflow behavior on modern mobile browsers.
+- Fixed unnecessary keyboard focus on structural wrapper elements.
+- Fixed undefined alignment handling in server rendering.
+- Fixed interactive dot markup consistency in editor previews.
+- Fixed pinned column overflow when media transforms are active.
+- Fixed text effect defaults for a cleaner initial editing experience.
+- Fixed progress indicator visibility logic.
+- Fixed range consistency for sticky offset controls.
+- Fixed reduced motion behavior for animated visual effects.
+- Fixed dynamic cleanup and resize handling for scroll-based layouts.
+- Fixed direct render structure for cleaner WordPress dynamic block rendering.

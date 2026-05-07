@@ -1,0 +1,204 @@
+Block Name: Kinetic Before After
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Before After is a Gutenberg block for creating interactive image comparison sections in WordPress.
+
+It is useful for visual comparisons such as design revisions, photo editing results, renovations, product improvements, case studies, restoration work, and any layout where visitors need to compare two images in the same frame.
+
+The block uses native browser rendering techniques for the comparison effect and does not require a third-party slider library.
+
+---
+
+## 2. Features
+
+### Image Comparison
+- Before image selection
+- After image selection
+- Horizontal comparison slider
+- Classic slide reveal effect
+- Draggable slider handle
+- Click-to-move support
+
+### Slider Handle
+- Circular handle style
+- Handle color control
+- Handle icon color control
+- Keyboard navigation support
+- Dynamic slider value updates for accessibility
+
+### Labels
+- Optional before label
+- Optional after label
+- Custom before label text
+- Custom after label text
+- Option to hide labels while the slider is moving
+
+### Divider Styles
+- Solid divider
+- Neon divider
+- Gradient divider
+
+### Image Effects
+- Fixed grayscale styling support for the before image
+- After image filter options:
+  - None
+  - Grayscale
+  - Sepia
+  - Blur
+  - Invert
+  - Contrast
+  - Color overlay
+
+### Layout and Visual Styling
+- Auto aspect ratio
+- Fixed 16:9 aspect ratio
+- Fixed 1:1 aspect ratio
+- Fixed 4:3 aspect ratio
+- Fixed 3:4 aspect ratio
+- Container shadow styles
+- Container border radius control
+- Hover zoom support
+
+### Motion Options
+- Slide intro animation
+- Reduced motion handling for visitors who prefer less animation
+
+### Responsive Options
+- Hide on mobile
+- Hide on desktop
+
+### Accessibility
+- Semantic slider behavior
+- Keyboard-friendly interaction
+- ARIA value updates
+- Screen-reader friendly control labeling
+- Reduced motion support based on the visitor's system settings
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Before After".
+4. Insert the block into the page.
+5. Select the before image.
+6. Select the after image.
+7. Adjust the slider, labels, divider, filters, aspect ratio, and visual settings from the block sidebar.
+
+---
+
+## 4. Image Setup
+
+The block requires two images:
+
+- Before image: the base comparison image.
+- After image: the image revealed by the slider.
+
+For the cleanest result, use two images with the same dimensions or the same crop ratio.
+
+When the two images have different dimensions, using a fixed aspect ratio can help keep the layout stable and visually consistent.
+
+---
+
+## 5. Aspect Ratio Options
+
+The block includes several aspect ratio modes:
+
+- Auto: Uses the natural image dimensions.
+- 16:9: Useful for wide banners and hero sections.
+- 1:1: Useful for square previews and portfolio grids.
+- 4:3: Useful for standard photography and content layouts.
+- 3:4: Useful for portrait-oriented comparisons.
+
+Fixed aspect ratios help prevent layout shifts and keep both images aligned inside the same comparison frame.
+
+---
+
+## 6. Interaction
+
+Visitors can interact with the comparison slider by dragging the handle or clicking within the comparison area.
+
+Keyboard users can control the slider handle with supported keyboard navigation. The slider value is updated dynamically for assistive technologies.
+
+---
+
+## 7. Labels
+
+The block can display labels for the before and after images.
+
+You can customize the label text from the block settings. Labels can also be hidden while the slider is moving to keep the comparison area visually clean during interaction.
+
+---
+
+## 8. Image Filters
+
+The block includes visual filter options for the after image.
+
+Available after image filters include:
+
+- None
+- Grayscale
+- Sepia
+- Blur
+- Invert
+- Contrast
+- Color overlay
+
+The before image includes fixed grayscale styling support for a simple visual contrast between the two layers.
+
+---
+
+## 9. Styling
+
+The block includes controls for:
+
+- Divider style
+- Handle color
+- Handle icon color
+- Container shadow
+- Container border radius
+- Hover zoom
+- Aspect ratio
+
+Use these options to match the comparison slider to the visual style of the surrounding page.
+
+---
+
+## 10. Accessibility Notes
+
+Kinetic Before After is built with accessibility in mind.
+
+The slider handle is exposed as an interactive control with semantic slider behavior. Keyboard navigation and dynamic value updates help make the comparison usable beyond pointer-based interaction.
+
+When a visitor has reduced motion enabled in their operating system, motion-heavy behavior is reduced for a more comfortable browsing experience.
+
+---
+
+## 11. Performance Notes
+
+The block uses CSS grid stacking so both images occupy the same visual area without relying on fragile absolute positioning.
+
+Frontend interactions are cleaned up when the block is removed from the page dynamically, such as during AJAX navigation, editor updates, or layout refreshes.
+
+Rendering work is requested only during active interaction states where possible.
+
+---
+
+## 12. Recommended Usage
+
+Use Kinetic Before After for:
+
+- Photo editing comparisons
+- Design before and after previews
+- Website redesign case studies
+- Renovation projects
+- Product improvement showcases
+- Beauty, fitness, or treatment result layouts
+- Restoration and repair examples
+
+For best results, optimize images before uploading them and use matching dimensions when possible.

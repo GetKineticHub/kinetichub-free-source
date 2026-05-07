@@ -1,0 +1,41 @@
+Block Name: Kinetic Scroll Divider
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Scroll Divider.
+- Added a server-rendered animated divider block for WordPress.
+- Added viewport-triggered divider reveal behavior.
+- Added draw animation styles including center, left, right, and fade in.
+- Added line border styles including solid, dashed, and dotted.
+- Added solid color control for divider styling.
+- Added support for common CSS color formats including HEX, RGB, RGBA, HSL, HSLA, and CSS variables.
+- Added basic glow effect for divider lines.
+- Added spacing presets including tight, normal, and spacious.
+- Added alignment controls for left, center, and right positioning.
+- Added device visibility options.
+- Added animation duration control.
+- Added reduced motion handling for visitors who prefer less animation.
+- Added decorative accessibility handling with aria-hidden output.
+
+### Improved
+- Improved server-side validation for divider settings.
+- Improved numeric value clamping for animation and layout controls.
+- Improved color validation for supported CSS color formats.
+- Improved animation performance by using transform-based rendering.
+- Improved viewport detection for scroll-triggered reveals.
+- Improved dynamic cleanup when divider blocks are removed from the page.
+- Improved support for dynamically loaded content.
+- Improved fallback behavior for older browsers.
+- Improved full-width alignment styling.
+- Improved frontend output escaping and attribute handling.
+
+### Fixed
+- Fixed direct render structure for cleaner WordPress dynamic block rendering.
+- Fixed glow rendering so the divider displays a softer visual halo.
+- Fixed animation timing consistency for supported easing behavior.
+- Fixed mobile display consistency for the default responsive behavior.
+- Fixed cleanup behavior for scroll and resize listeners.
+- Fixed observer cleanup when no divider instances remain active.
+- Fixed decorative output handling for assistive technologies.
+- Fixed browser fallback behavior for color rendering.
+- Fixed version consistency across block files.

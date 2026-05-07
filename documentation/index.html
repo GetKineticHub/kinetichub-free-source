@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kinetichub Suite - Official Documentation</title>
+    <style>
+        :root {
+            --accent: #10b981;
+            --bg: #f8fafc;
+            --text: #334155;
+            --dark: #0f172a;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            font-weight: 900;
+        }
+        .header h1 span {
+            color: var(--accent);
+        }
+        .header p {
+            opacity: 0.8;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: var(--dark);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .code-block {
+            background: #1e293b;
+            color: #38bdf8;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Kinetic<span>Hub</span> Suite</h1>
+        <p>Enterprise Motion Toolkit for Gutenberg</p>
+        <span class="badge">Version 1.0.0</span>
+    </div>
+
+    <div class="container">
+        <h2>1. Welcome to kinetichub</h2>
+        <p>Thank you for choosing the <strong>kinetichub Suite</strong>. This plugin brings advanced, hardware-accelerated physics (LERP) and layout tools directly into your native WordPress Block Editor, without the performance bloat of third-party libraries like GSAP.</p>
+
+        <h2>2. Quick Installation</h2>
+        <ol>
+            <li>Download the <code>kinetichub.zip</code> file from your purchase confirmation email or account dashboard at <a href="https://getkinetichub.com" target="_blank">getkinetichub.com</a>.</li>
+            <li>Log into your WordPress Administrator Panel.</li>
+            <li>Navigate to <strong>Plugins > Add New</strong> and click <strong>Upload Plugin</strong>.</li>
+            <li>Select the downloaded <code>kinetichub.zip</code> file and click <strong>Install Now</strong>.</li>
+            <li>Click <strong>Activate</strong> once installation completes.</li>
+            <li>You will now see the <strong>kinetichub</strong> menu in the left sidebar of your dashboard.</li>
+        </ol>
+
+        <h2>3. License Activation (PRO Features)</h2>
+        <p>The <strong>free version</strong> includes all 12 blocks with core features. To unlock <strong>PRO features</strong> (advanced physics engines, WebGL effects, and extended controls), you'll need a PRO license.</p>
+        
+        <p><strong>Activation Steps:</strong></p>
+        <ol>
+            <li>Navigate to <strong>kinetichub > License & System</strong> in your WordPress dashboard.</li>
+            <li>Click <strong>Enter License Key</strong> or <strong>Manage Account</strong>.</li>
+            <li>Follow the secure Freemius activation flow to connect your purchase.</li>
+            <li>Once activated, all PRO features will unlock automatically across all blocks.</li>
+        </ol>
+        
+        <p><em>Note: License management is securely handled by Freemius. You can manage billing, renewals, and active sites from your account dashboard.</em></p>
+
+        <h2>4. Block Architecture</h2>
+        <p>Every block is engineered with <strong>Extreme Performance</strong> in mind. If you do not see an animation playing inside the Gutenberg editor, this is intentional. Heavy cursor-tracking mathematics are compiled strictly for the frontend to ensure your editing experience remains crash-free and fast.</p>
+
+        <p><strong>Included Blocks (12 Total):</strong></p>
+        <ul>
+            <li><strong>Kinetic Box:</strong> 3D tilt wrapper with magnetic physics. Place native WP blocks inside to apply perspective transforms.</li>
+            <li><strong>Kinetic Typography:</strong> Advanced text reveal animations with character-by-character effects. For best results with scramble animations, use plain text without complex inline formatting.</li>
+            <li><strong>Kinetic Magnetic Button:</strong> Call-to-action button with cursor-tracking magnetic pull effect.</li>
+            <li><strong>Kinetic Marquee:</strong> Infinite-scrolling gallery with hardware-accelerated physics and smart addons.</li>
+            <li><strong>Kinetic Scroll Divider:</strong> Animated SVG line dividers that draw themselves based on scroll position.</li>
+            <li><strong>Kinetic Video Modal:</strong> Lightbox video player with cinematic entrance animations.</li>
+            <li><strong>Kinetic Hero Mesh:</strong> Interactive 3D WebGL liquid mesh background. Requires a background image to render refractive shaders.</li>
+            <li><strong>Kinetic Before/After:</strong> Interactive image comparison slider with physics-based dragging.</li>
+            <li><strong>Kinetic Audio Player:</strong> Custom styled audio player with waveform display and accessible controls.</li>
+            <li><strong>Kinetic Split Scroll:</strong> Dual-column layout where content pins and snaps beautifully as you scroll.</li>
+            <li><strong>Kinetic Cursor Reveal:</strong> Custom cursor tracking with interactive media reveal on hover.</li>
+            <li><strong>Kinetic Ambient Aura:</strong> Generative background glows and ambient lighting effects.</li>
+        </ul>
+        
+        <p><em>Each block includes FREE core features and optional PRO enhancements. Check individual block settings in the editor for feature availability.</em></p>
+
+        <h2>5. Custom CSS & Variables</h2>
+        <p>If you need to override styles globally, do not hack the plugin files. Use the built-in <strong>Custom Code</strong> tab in the kinetichub Dashboard. We automatically inject CSS variables for easy theming:</p>
+        <div class="code-block">
+            /* Global accent color (used by buttons, borders, highlights) */<br>
+            :root {<br>
+            &nbsp;&nbsp;--kh-accent: #10b981;<br>
+            &nbsp;&nbsp;--kh-glass-blur: 20px;<br>
+            }<br>
+            <br>
+            /* Override accent for specific block */<br>
+            .kh-magnetic-button {<br>
+            &nbsp;&nbsp;--kh-accent: #ff6b6b;<br>
+            }<br>
+            <br>
+            /* Custom animations */<br>
+            @keyframes customSlide {<br>
+            &nbsp;&nbsp;from { transform: translateX(-100%); }<br>
+            &nbsp;&nbsp;to { transform: translateX(0); }<br>
+            }
+        </div>
+        <p><em>Note: Changes take effect immediately on the frontend. Clear your browser cache if styles don't update.</em></p>
+
+        <h2>6. Troubleshooting</h2>
+        
+        <p><strong>Block doesn't appear in editor:</strong></p>
+        <ul>
+            <li>Verify the block is enabled in <strong>kinetichub > My Suite</strong> dashboard.</li>
+            <li>Clear your browser cache and hard-reload the editor (Ctrl+Shift+R or Cmd+Shift+R).</li>
+            <li>Check WordPress version (requires 6.2+) and PHP version (requires 7.4+).</li>
+            <li>Temporarily disable other plugins to check for conflicts.</li>
+        </ul>
+
+        <p><strong>WebGL effects not working (Hero Mesh, Ambient Aura):</strong></p>
+        <ul>
+            <li>Check <strong>kinetichub > License & System</strong> for WebGL support status.</li>
+            <li>Try a different browser (Chrome, Firefox, Safari recommended).</li>
+            <li>Update your graphics drivers to the latest version.</li>
+            <li>Some hosting providers disable WebGL - contact your host if needed.</li>
+        </ul>
+
+        <p><strong>Animations not smooth / laggy performance:</strong></p>
+        <ul>
+            <li>Go to <strong>kinetichub > Global Settings</strong> and change Performance Mode to "Eco Mode".</li>
+            <li>Reduce the number of active blocks on a single page.</li>
+            <li>Disable unused blocks in <strong>My Suite</strong> to reduce script load.</li>
+        </ul>
+
+        <p><strong>Theme conflicts / styling issues:</strong></p>
+        <ul>
+            <li>Switch to Twenty Twenty-Four theme temporarily to isolate the issue.</li>
+            <li>Check if your theme loads custom normalize.css or reset.css that may conflict.</li>
+            <li>Use the Custom CSS tab to add overrides specific to your theme.</li>
+        </ul>
+
+        <p><strong>Custom CSS not applying:</strong></p>
+        <ul>
+            <li>Verify you saved changes in the <strong>Custom Code</strong> tab.</li>
+            <li>Clear browser cache and site caching plugins (WP Super Cache, W3 Total Cache, etc.).</li>
+            <li>Check browser console (F12) for CSS syntax errors.</li>
+        </ul>
+
+        <h2>7. Support & Resources</h2>
+        <p>If you encounter conflicts with legacy themes or need architectural advice, our engineering team is here to help.</p>
+        <p>Visit the official support desk at: <a href="https://getkinetichub.com/support" target="_blank">getkinetichub.com/support</a></p>
+    </div>
+
+    <div class="footer">
+        &copy; 2026 kinetichub. Built to scale WordPress motion design.
+    </div>
+
+</body>
+</html>

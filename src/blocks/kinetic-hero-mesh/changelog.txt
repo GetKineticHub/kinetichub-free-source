@@ -1,0 +1,45 @@
+Block Name: Kinetic Hero Mesh
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Hero Mesh.
+- Added a visual hero container block for building animated hero sections in WordPress.
+- Added nested content support inside the hero container.
+- Added Neural Plexus visual engine with Canvas-based node animation.
+- Added Classic Static Background mode.
+- Added image upload support for classic background layouts.
+- Added object fit controls for classic background images.
+- Added object position controls for classic background images.
+- Added desktop and mobile height controls.
+- Added vertical content alignment controls.
+- Added overlay color control.
+- Added overlay opacity control.
+- Added overlay blend mode options.
+- Added film grain visual texture option.
+- Added Plexus controls for node density, movement speed, connection distance, line width, interaction mode, and network color.
+- Added cursor interaction modes for Plexus backgrounds.
+- Added reduced motion handling for visitors who prefer less animation.
+- Added mobile performance optimizations for animated canvas rendering.
+
+### Improved
+- Improved animation lifecycle handling for hero sections entering and leaving the viewport.
+- Improved canvas rendering stability during viewport resize and device rotation.
+- Improved mobile rendering performance by scaling visual density on smaller devices.
+- Improved cleanup behavior when hero sections are removed from the page dynamically.
+- Improved background layering consistency between the editor and frontend.
+- Improved color validation for common CSS color formats.
+- Improved height control consistency between editor controls and frontend rendering.
+- Improved frontend output escaping and attribute handling.
+- Improved classic background visibility and viewport-based animation state handling.
+
+### Fixed
+- Fixed canvas transform accumulation during resize events.
+- Fixed animation observer cleanup when no hero sections remain active.
+- Fixed mobile canvas density behavior for smoother rendering.
+- Fixed background canvas layering conflicts.
+- Fixed height control range consistency.
+- Fixed Plexus connection distance control range consistency.
+- Fixed blend mode option consistency between editor controls and frontend rendering.
+- Fixed classic background grain animation visibility.
+- Fixed dynamic content output for nested blocks inside the hero container.
+- Fixed lazy initialization behavior for dynamically loaded hero sections.

@@ -1,0 +1,71 @@
+{
+  "apiVersion": 3,
+  "name": "kinetichub/cursor-reveal",
+  "version": "1.0.0",
+  "title": "Kinetic Cursor Reveal",
+  "category": "kinetic-suite",
+  "description": "Interactive list block with floating media reveal behavior.",
+  "keywords": [
+    "cursor reveal",
+    "floating media",
+    "physics-based"
+  ],
+  "attributes": {
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "items": {
+      "type": "array",
+      "default": [
+        {
+          "title": "Brand Identity",
+          "subtitle": "Strategy & Logo",
+          "mediaUrl": "",
+          "url": ""
+        },
+        {
+          "title": "Web Experience",
+          "subtitle": "FSE Development",
+          "mediaUrl": "",
+          "url": ""
+        }
+      ]
+    },
+    "openInNewTab": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "color": {
+      "text": true,
+      "background": true,
+      "gradients": true
+    },
+    "typography": {
+      "textAlign": true
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    }
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

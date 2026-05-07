@@ -1,0 +1,198 @@
+/**
+ * Kinetic Before/After - Stylesheet
+ * Version: 1.0.1
+ */
+
+.kh-ba-container {
+    box-sizing: border-box; 
+    *, *:before, *:after { box-sizing: border-box; }
+    width: 100%; 
+    user-select: none; 
+    -webkit-user-select: none; 
+    position: relative;
+    border-radius: 0; 
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+
+
+.wp-block-post-content.has-global-padding > .kh-ba-container.alignfull,
+.wp-block-post-content.has-global-padding > .kh-ba-container.is-forced-fullwidth {
+    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px));
+    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px));
+    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px));
+    max-width: none;
+    position: relative;
+    left: auto;
+    right: auto;
+    transform: none;
+    box-sizing: border-box;
+}
+
+.block-editor-page .kh-ba-container.alignfull,
+.block-editor-page .kh-ba-container.is-forced-fullwidth {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+}
+
+.kh-ba-container.has-shadow.shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+.kh-ba-container.has-shadow.shadow-crisp { box-shadow: 12px 12px 0px rgba(0,0,0,0.1); }
+.kh-ba-container.has-shadow.shadow-float { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transform: translateY(-4px); }
+.kh-ba-container.has-shadow.shadow-glow { box-shadow: 0 0 35px var(--kh-ba-handle); }
+.kh-ba-container.has-shadow.shadow-elegant { box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05); }
+
+.kh-ba-inner {
+    position: relative; 
+    width: 100%; 
+    overflow: hidden; 
+    border-radius: inherit; 
+    display: grid; 
+    grid-template-columns: 1fr;
+    isolation: isolate;
+    -webkit-mask-image: -webkit-linear-gradient(white, white); 
+    mask-image: linear-gradient(white, white);
+    transform: translateZ(0); 
+}
+
+.kh-ba-inner.has-aspect-ratio {
+    aspect-ratio: var(--kh-ba-aspect);
+}
+
+.kh-ba-layer { 
+    grid-area: 1 / 1; 
+    position: relative; 
+    width: 100%; 
+    height: 100%; 
+    min-height: 0;
+    min-width: 0;
+}
+
+.kh-ba-after { z-index: 1; }
+.kh-ba-before { z-index: 2; }
+
+.kh-ba-img-wrap { 
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    display: block !important;
+    visibility: visible !important;
+}
+
+.kh-ba-img { 
+    display: block !important; 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    pointer-events: none; 
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+    visibility: visible !important;
+}
+
+/* Conditional will-change for performance - only when interacting */
+.kh-ba-container:hover .kh-ba-img,
+.kh-ba-container.is-moving .kh-ba-img {
+    will-change: transform;
+}
+
+.kh-ba-container.is-moving { cursor: grabbing !important; }
+.kh-ba-container.is-moving .kh-ba-handle,
+.kh-ba-container.is-moving .kh-ba-circle { cursor: grabbing !important; }
+
+
+.kh-ba-container.has-hover-zoom:hover .kh-ba-img { transform: scale(1.05); }
+
+.kh-ba-overlay { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.kh-ba-overlay-before { background: var(--kh-ba-overlay-c, transparent); opacity: var(--kh-ba-overlay-o, 0); }
+.kh-ba-overlay-after { background: var(--kh-ba-a-overlay-c, transparent); opacity: var(--kh-ba-a-overlay-o, 0); }
+
+.kh-ba-label {
+    position: absolute; color: var(--kh-ba-label-c, #fff); background: var(--kh-ba-label-bg, rgba(0,0,0,0.5));
+    padding: 6px 14px; font-size: 12px; font-weight: 600; border-radius: 4px; z-index: 5; pointer-events: none; transition: opacity 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+}
+.kh-ba-horizontal .kh-ba-label-before { bottom: 20px; left: 20px; }
+.kh-ba-horizontal .kh-ba-label-after { bottom: 20px; right: 20px; }
+
+
+
+.kh-ba-container.is-moving.hide-labels-move .kh-ba-label { opacity: 0; }
+
+
+
+.kh-ba-handle {
+    position: absolute; z-index: 10; display: flex; align-items: center; justify-content: center; pointer-events: none; will-change: transform, left, top;
+}
+.kh-ba-horizontal .kh-ba-handle { top: 0; bottom: 0; width: 4px; background: var(--kh-ba-handle); transform: translateX(-50%); cursor: ew-resize; }
+
+
+
+
+
+
+
+.kh-ba-divider-neon .kh-ba-handle {
+    box-shadow: 0 0 16px var(--kh-ba-handle), 0 0 6px rgba(255,255,255,0.9);
+}
+.kh-ba-horizontal.kh-ba-divider-gradient .kh-ba-handle {
+    background: linear-gradient(to bottom, transparent, var(--kh-ba-handle) 15%, var(--kh-ba-handle) 85%, transparent);
+}
+
+
+
+.kh-ba-circle {
+    width: 44px; height: 44px; background: var(--kh-ba-handle); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); pointer-events: auto; border: none; outline: none; transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; z-index: 20; cursor: grab;
+    color: var(--kh-ba-icon-c, #333333);
+}
+
+.kh-ba-circle svg {
+    display: block !important;
+    visibility: visible !important;
+    width: 24px !important;
+    height: 24px !important;
+    flex-shrink: 0 !important;
+    opacity: 1 !important;
+}
+
+.kh-ba-circle polyline, 
+.kh-ba-circle path, 
+.kh-ba-circle line {
+    stroke: currentColor !important;
+}
+
+
+
+
+
+.kh-ba-circle:focus-visible { 
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.4), 0 4px 15px rgba(0,0,0,0.3); 
+    transform: scale(1.1); 
+    outline: 2px dashed var(--kh-accent, #10b981);
+    outline-offset: 4px;
+}
+
+
+
+
+
+/* Visibility: hide on mobile / desktop */
+@media (max-width: 768px) {
+    .kh-ba-container.kh-ba-hide-mobile { display: none !important; }
+}
+
+@media (min-width: 769px) {
+    .kh-ba-container.kh-ba-hide-desktop { display: none !important; }
+}
+
+@media (max-width: 768px) 
+    
+    
+
+@media (prefers-reduced-motion: reduce) {
+    .kh-ba-container *, .kh-ba-container *::before, .kh-ba-container *::after {
+        animation: none !important;
+        transition-duration: 0.01s !important;
+    }
+    .kh-ba-container.has-hover-zoom:hover .kh-ba-img {
+        transform: none !important;
+    }
+}

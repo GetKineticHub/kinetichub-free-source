@@ -1,0 +1,356 @@
+/**
+ * Kinetic Magnetic Button - Styling Engine
+ * Version: 1.0.0
+ */
+/* ==========================================================================
+   1. Wrapper & Layout
+   ========================================================================== */
+.kh-mb-wrapper {
+    display: flex;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+/* Elevate wrapper context during interaction to prevent sibling overlap */
+.kh-mb-wrapper:hover,
+.kh-mb-wrapper:focus-within {
+    z-index: 20;
+}
+
+
+
+:where(.is-layout-flex, .is-layout-grid) > .kh-mb-wrapper,
+.wp-block-columns .kh-mb-wrapper {
+    width: auto;
+    flex: 0 1 auto;
+}
+
+/* ==========================================================================
+   2. Entrance Animations (advanced)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   3. Button Core
+   ========================================================================== */
+.kh-mb-button {
+    --kh-js-x: 0px;
+    --kh-js-y: 0px;
+    --kh-js-scale: 1;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--kh-mb-bg);
+    color: var(--kh-mb-text);
+    border-radius: var(--kh-mb-br);
+    border: var(--kh-mb-bw) var(--kh-mb-bs) var(--kh-mb-bc);
+    box-shadow: var(--kh-mb-shadow);
+    padding: var(--kh-mb-pad-v) var(--kh-mb-pad-h);
+    text-decoration: none;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    overflow: visible;
+    white-space: nowrap;
+    font-size: var(--kh-mb-font);
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+    font-style: inherit;
+    
+    transform: translate3d(var(--kh-js-x), var(--kh-js-y), 0) scale(var(--kh-js-scale));
+    will-change: transform, background-color, color, box-shadow;
+    transition: background-color 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease, box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease;
+}
+
+.kh-mb-button:focus {
+    outline: none;
+}
+
+.kh-mb-button:focus-visible {
+    outline: 2px dashed var(--kh-accent, #10b981);
+    outline-offset: 4px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.kh-mb-button:hover {
+    color: var(--kh-mb-text-hov);
+    border-color: var(--kh-mb-bc-hov);
+    box-shadow: var(--kh-mb-shadow-hov);
+}
+
+.kh-mb-button.kh-mb-magnetic-active {
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Glassmorphism */
+.kh-mb-button.is-glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-color: transparent;
+}
+
+/* ==========================================================================
+   4. FX Layers & Hover Effects
+   ========================================================================== */
+.kh-mb-button-fx {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.kh-mb-button-fx::before,
+.kh-mb-button-fx::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.kh-mb-button-fx::before {
+    background-color: var(--kh-mb-bg-hov);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+    opacity: 0;
+}
+
+.kh-mb-button.is-glass .kh-mb-button-fx::before {
+    background-color: transparent;
+}
+
+.kh-mb-button-fx,
+.kh-mb-content-wrap {
+    --kh-js-px: 0px;
+    --kh-js-py: 0px;
+    --kh-hover-y: 0px;
+    --kh-hover-scale: 1;
+    
+    transform: translate3d(var(--kh-js-px), calc(var(--kh-js-py) + var(--kh-hover-y)), 0) scale(var(--kh-hover-scale));
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+}
+
+.kh-mb-content-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform;
+}
+
+.kh-mb-button:not(.kh-mb-magnetic-active) .kh-mb-content-wrap {
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.kh-mb-text-inner {
+    display: block;
+    transition: color 0.3s ease;
+}
+
+/* Base fade hover — FREE needs this for bgHoverColor via FX layer */
+.kh-mb-button:not([data-effect^="sweep-"]):hover .kh-mb-button-fx::before { opacity: 1; }
+
+
+
+.kh-mb-button[data-scale="true"]:hover .kh-mb-content-wrap,
+.kh-mb-button[data-scale="true"]:hover .kh-mb-button-fx { --kh-hover-scale: 1.05; }
+
+
+
+/* ==========================================================================
+   5. Keyframe Highlights (Pulse & Neon)
+   ========================================================================== */
+@keyframes khmbPulseBtn {
+    0% { box-shadow: 0 0 0 0 var(--kh-mb-pulse); }
+    70% { box-shadow: 0 0 0 15px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+
+
+.kh-mb-button.is-pulsing {
+    animation: khmbPulseBtn 2s infinite;
+}
+.kh-mb-button.is-pulsing:hover {
+    animation: none;
+}
+
+/* ==========================================================================
+   6. Status Indicators
+   ========================================================================== */
+.kh-mb-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    background-color: var(--kh-mb-dot);
+}
+
+@keyframes khmbRadarPulse {
+    0% { transform: scale(0.8); box-shadow: 0 0 0 0 var(--kh-mb-dot); opacity: 1; }
+    100% { transform: scale(1.1); box-shadow: 0 0 0 8px transparent; opacity: 0; }
+}
+.kh-mb-status-radar {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    border: 2px solid var(--kh-mb-dot);
+    position: relative;
+}
+.kh-mb-status-radar::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    border: 2px solid var(--kh-mb-dot);
+    animation: khmbRadarPulse 1.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.kh-mb-status-badge {
+    background-color: var(--kh-mb-dot);
+    color: var(--kh-mb-badge-txt);
+    font-size: 0.75em;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+@keyframes khmbSparkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+.kh-mb-status-sparkles {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    color: var(--kh-mb-dot);
+}
+.kh-mb-status-sparkles svg {
+    width: 18px;
+    height: 18px;
+    animation: khmbSparkle 2s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   7. Icons & Extras
+   ========================================================================== */
+.kh-mb-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0; /* Protects icon from being squished */
+    transition: max-width 0.3s cubic-bezier(0.25, 1, 0.5, 1), margin 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: max-width, margin, transform, opacity;
+}
+.kh-mb-icon svg {
+    width: var(--kh-mb-icon-sz);
+    height: var(--kh-mb-icon-sz);
+    min-width: var(--kh-mb-icon-sz);
+    flex-shrink: 0; /* Protects SVG explicitly */
+}
+
+/* Hide icons by default unless parent has icon-always-visible */
+.kh-mb-button:not(.icon-always-visible) .kh-mb-icon {
+    max-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+    opacity: 0;
+    transform: scale(0);
+}
+
+.kh-mb-button:hover .kh-mb-icon.pos-right:not(.icon-always-visible),
+.kh-mb-button:hover .kh-mb-icon.kh-mb-icon-right:not(.icon-always-visible),
+.kh-mb-button.icon-always-visible .kh-mb-icon.pos-right,
+.kh-mb-button.icon-always-visible .kh-mb-icon.kh-mb-icon-right {
+    max-width: var(--kh-mb-icon-sz);
+    opacity: 1;
+    margin-left: 8px;
+    transform: scale(1);
+}
+
+.kh-mb-button:hover .kh-mb-icon.pos-left:not(.icon-always-visible),
+.kh-mb-button:hover .kh-mb-icon.kh-mb-icon-left:not(.icon-always-visible),
+.kh-mb-button.icon-always-visible .kh-mb-icon.pos-left,
+.kh-mb-button.icon-always-visible .kh-mb-icon.kh-mb-icon-left {
+    max-width: var(--kh-mb-icon-sz);
+    opacity: 1;
+    margin-right: 8px;
+    transform: scale(1);
+}
+
+
+
+/* THE FIX: Fixed Hitbox layout to prevent blocking nearby elements */
+.kh-mb-hitbox {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    bottom: -15px;
+    left: -15px;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   8. Responsive & Accessibility
+   ========================================================================== */
+@media (max-width: 768px) {
+    .kh-mb-button {
+        font-size: var(--kh-mb-font-mob);
+        white-space: normal;
+        text-align: center;
+    }
+    .kh-mb-icon svg {
+        width: var(--kh-mb-icon-sz-mob);
+        height: var(--kh-mb-icon-sz-mob);
+        min-width: var(--kh-mb-icon-sz-mob);
+    }
+    .kh-mb-button:hover .kh-mb-icon.pos-right:not(.icon-always-visible),
+    .kh-mb-button:hover .kh-mb-icon.kh-mb-icon-right:not(.icon-always-visible),
+    .kh-mb-button.icon-always-visible .kh-mb-icon.pos-right,
+    .kh-mb-button.icon-always-visible .kh-mb-icon.kh-mb-icon-right {
+        max-width: var(--kh-mb-icon-sz-mob);
+    }
+    .kh-mb-button:hover .kh-mb-icon.pos-left:not(.icon-always-visible),
+    .kh-mb-button:hover .kh-mb-icon.kh-mb-icon-left:not(.icon-always-visible),
+    .kh-mb-button.icon-always-visible .kh-mb-icon.pos-left,
+    .kh-mb-button.icon-always-visible .kh-mb-icon.kh-mb-icon-left {
+        max-width: var(--kh-mb-icon-sz-mob);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kh-mb-button,
+    .kh-mb-button.is-pulsing,
+    .kh-mb-button.has-neon,
+    .kh-mb-button-fx::before,
+    .kh-mb-button-fx::after,
+    .kh-mb-text-inner,
+    .kh-mb-icon,
+    .kh-mb-wrapper[class*="anim-"] {
+        animation: none !important;
+        transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease !important;
+        transform: none !important;
+    }
+}

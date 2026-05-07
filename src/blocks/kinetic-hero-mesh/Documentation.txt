@@ -1,0 +1,210 @@
+Block Name: Kinetic Hero Mesh
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Hero Mesh is a Gutenberg container block for creating animated hero sections and visual background layouts in WordPress.
+
+It can hold nested blocks such as headings, paragraphs, buttons, columns, images, and other content. The block combines a flexible hero layout with visual background modes, overlay controls, film grain, and responsive height settings.
+
+Use it for landing page hero sections, portfolio introductions, product headers, service pages, campaign pages, and creative visual sections.
+
+---
+
+## 2. Features
+
+### Hero Container
+- Nested block support
+- Desktop height control
+- Mobile height control
+- Vertical content alignment
+- Responsive hero section layout
+- Background visual layer
+- Foreground content layer
+
+### Visual Modes
+- Neural Plexus
+- Classic Static Background
+
+### Neural Plexus Controls
+- Node density control
+- Movement speed control
+- Connection distance control
+- Line width control
+- Network color control
+- Cursor interaction mode
+
+### Plexus Interaction Modes
+- None
+- Repel
+- Attract
+- Constellation
+
+### Classic Background Controls
+- Background image upload
+- Object fit control
+- Object position control
+- Desktop-focused parallax toggle
+
+### Overlay Controls
+- Overlay color
+- Overlay opacity
+- Overlay blend mode
+
+### Overlay Blend Modes
+- Normal
+- Multiply
+- Overlay
+- Screen
+- Color Dodge
+- Difference
+
+### Visual Texture
+- Film grain toggle
+
+### Accessibility and Motion
+- Reduced motion handling
+- Static fallback behavior for visitors who prefer less animation
+- Standard focus behavior for nested interactive content
+
+### Performance
+- Viewport-aware animation lifecycle
+- Mobile rendering optimization
+- Dynamic cleanup when the block is removed from the page
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Hero Mesh".
+4. Insert the block into the page.
+5. Add your hero content inside the container.
+6. Choose a visual mode from the block settings.
+7. Adjust height, alignment, overlay, and visual controls from the sidebar.
+
+---
+
+## 4. Working With Nested Content
+
+Kinetic Hero Mesh works as a visual container.
+
+You can place common WordPress blocks inside it, including:
+
+- Heading
+- Paragraph
+- Buttons
+- Image
+- Columns
+- Group
+- Spacer
+- Custom layout blocks
+- Other Kinetic blocks
+
+Use the inner content area for the hero message, calls to action, and supporting layout. Use the background settings to control the visual atmosphere behind that content.
+
+---
+
+## 5. Visual Modes
+
+### Neural Plexus
+
+Neural Plexus creates an animated network-style background using connected nodes and lines.
+
+It works well for:
+
+- Technology pages
+- SaaS hero sections
+- AI and automation pages
+- Developer tools
+- Creative landing pages
+- Modern product introductions
+
+Available Plexus settings include node density, movement speed, connection distance, line width, cursor interaction mode, and network color.
+
+### Classic Static Background
+
+Classic Static Background displays a standard image-based background inside the hero container.
+
+It works well for:
+
+- Brand photography
+- Product imagery
+- Portfolio covers
+- Editorial headers
+- Service landing pages
+- Campaign hero sections
+
+Available classic background settings include image upload, object fit, object position, and a desktop-focused parallax toggle.
+
+---
+
+## 6. Height and Layout
+
+The block includes separate height controls for desktop and mobile layouts.
+
+Use desktop height to create large hero sections for wider screens. Use mobile height to keep the section balanced on smaller screens.
+
+Vertical alignment controls help position nested content near the top, center, or bottom of the hero container.
+
+---
+
+## 7. Overlay Settings
+
+Overlay controls help improve readability when text is placed over animated or image-based backgrounds.
+
+Available overlay settings include:
+
+- Overlay color
+- Overlay opacity
+- Overlay blend mode
+
+Use a darker overlay behind light text, or a lighter overlay behind dark text. Blend modes can create more expressive visual combinations depending on the background.
+
+---
+
+## 8. Film Grain
+
+The film grain option adds a subtle visual texture over the hero background.
+
+Use it sparingly when you want a more cinematic or tactile background style. For clean corporate layouts, leaving film grain disabled may produce a sharper result.
+
+---
+
+## 9. Motion and Accessibility
+
+Kinetic Hero Mesh respects the visitor's reduced motion preference.
+
+When reduced motion is active, motion-heavy behavior is reduced so the section remains more comfortable to view.
+
+Interactive content placed inside the hero container, such as buttons and links, keeps standard WordPress focus and keyboard behavior.
+
+---
+
+## 10. Performance Notes
+
+The animated visual layer is designed to pause or reduce work when the hero section is outside the viewport.
+
+On mobile devices, canvas rendering is optimized to reduce visual density and improve performance.
+
+For best results, avoid placing too many heavy animated sections on the same page, and optimize any background images before uploading them.
+
+---
+
+## 11. Recommended Usage
+
+Use Kinetic Hero Mesh for:
+
+- Homepage hero sections
+- Product landing pages
+- Portfolio introductions
+- Agency service pages
+- Campaign headers
+- Technology and SaaS pages
+- Creative project covers
+- Visual storytelling sections
+
+For best results, pair a clear headline with one or two calls to action, then use the visual background to support the message rather than overpower it.
