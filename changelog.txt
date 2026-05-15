@@ -1,54 +1,34 @@
-=== kinetichub ===
+# kinetichub SUITE - MASTER CHANGELOG
+Product: kinetichub Suite
+Current Version: 1.0.0
+Website: https://getkinetichub.com
 
-== 1.0.0 ==
+----------------------------------------------------------------------
+## [1.0.0] - 2026-03-25
+----------------------------------------------------------------------
+### System & Core Engine
+- Initial release of the kinetichub Suite.
+- Engineered the `KineticTicker` unified animation engine: A centralized `requestAnimationFrame` loop that prevents CPU throttling across all blocks.
+- Implemented global garbage collection: Event listeners and physics hooks are dynamically destroyed via `AbortController` upon component unmount.
+- Integrated OS-level accessibility: Engine globally intercepts `prefers-reduced-motion` to halt physics for visually sensitive users.
+- Built the React Master Control Dashboard for centralized block management, licensing, and global CSS variable injection.
 
-Initial stable release.
+### Blocks Included (12 Blocks)
+- Kinetic Ambient Aura (v1.0.0)
+- Kinetic Audio Player (v1.0.0)
+- Kinetic Before/After (v1.0.0)
+- Kinetic Box (v1.0.0)
+- Kinetic Cursor Reveal (v1.0.0)
+- Kinetic Hero Mesh (v1.0.0)
+- Kinetic Magnetic Button (v1.0.0)
+- Kinetic Marquee (v1.0.0)
+- Kinetic Scroll Divider (v1.0.0)
+- Kinetic Split Scroll (v1.0.0)
+- Kinetic Typography (v1.0.0)
+- Kinetic Video Modal (v1.0.0)
 
-= Added =
-
-* Added Kinetic Ambient Aura block.
-* Added Kinetic Audio Player block.
-* Added Kinetic Before/After block.
-* Added Kinetic Box block.
-* Added Kinetic Cursor Reveal block.
-* Added Kinetic Hero Mesh block.
-* Added Kinetic Magnetic Button block.
-* Added Kinetic Marquee block.
-* Added Kinetic Scroll Divider block.
-* Added Kinetic Split Scroll block.
-* Added Kinetic Typography block.
-* Added Kinetic Video Modal block.
-* Added kinetichub dashboard for included block management.
-* Added global settings for motion profile, global interpolation, mobile motion, glass intensity, asset loading, and accent color.
-* Added support for reduced-motion preferences.
-* Added lazy video initialization for supported video modal embeds.
-* Added accessible ARIA label controls for video modal interactions.
-* Added server-rendered text splitting for animated typography.
-* Added screen-reader friendly fallback text for animated typography.
-
-= Security =
-
-* Added strict server-side attribute normalization for dynamic blocks.
-* Added escaped output for server-rendered block markup.
-* Added URL sanitization for media and video URLs.
-* Added provider validation before frontend video embed creation.
-* Added REST nonce and capability checks for dashboard settings.
-
-= Performance =
-
-* Added contextual block asset loading through WordPress block registration.
-* Added lightweight shared frontend runtime registration.
-* Added global motion settings for performance tuning.
-* Added lazy iframe creation for video embeds.
-* Added media loading optimizations where supported.
-* Added viewport-aware behavior for motion-heavy block interactions.
-
-= Accessibility =
-
-* Added reduced-motion fallback behavior.
-* Added modal focus management for video playback.
-* Added keyboard dismissal for modal playback.
-* Added focus restoration after modal close.
-* Added accessible labels for video modal controls.
-* Added semantic fallback text for animated typography.
-* Added keyboard-friendly behavior across supported interactive blocks.
+### Security & Compliance
+- WordPress coding standards applied across all PHP render files.
+- Strict late escaping enforced: DOM nodes are processed safely.
+- REST API endpoints secured with strict permission callbacks and data sanitization schemas.
+- Data validation enforced natively via block.json attribute types.

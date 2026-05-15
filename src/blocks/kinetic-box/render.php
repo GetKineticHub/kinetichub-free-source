@@ -8,7 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$kh_box_inner_content = $content ?? '';
+// Sanitize InnerBlocks content through wp_kses_post() before output.
+$kh_box_inner_content = wp_kses_post( $content ?? '' );
 
     if ( ! function_exists( 'kinetichub_box_validate_color_strict' ) ) {
         /**
@@ -222,7 +223,7 @@ $kh_box_inner_content = $content ?? '';
         
 
         <div class="kh-box-inner-content">
-            <?php echo $kh_box_inner_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            <?php echo $kh_box_inner_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- InnerBlocks content is filtered through wp_kses_post() above. ?>
         </div>
 
         <?php if ( ! empty( $kh_box_url ) && $kh_box_stretched_link ) : ?>

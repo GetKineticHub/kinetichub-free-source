@@ -437,7 +437,7 @@
         });
 
         // ========================================
-        // MAGNETIC ANIMATION WITH CLEANUP
+        // MAGNETIC ANIMATION WITH ROBUST CLEANUP
         // ========================================
         ;
 
