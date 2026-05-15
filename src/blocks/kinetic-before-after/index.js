@@ -1,6 +1,6 @@
 /**
  * Kinetic Before/After - Editor Script
- * Version: 1.0.1
+ * Version: 1.0.0
  */
 
 import './style.scss';
@@ -43,7 +43,7 @@ registerBlockType(metadata.name, {
 
         const safeOffset = Math.max(0, Math.min(100, initialOffset));
 
-        let activeBeforeFilter = 'grayscale(100%)';
+        let activeBeforeFilter = 'none';
         
 
         let activeAfterFilter = 'none';
@@ -134,7 +134,7 @@ registerBlockType(metadata.name, {
                         
                         
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                            {__('Before image filter: Grayscale. Additional filters not included in this build.', 'kinetichub')}
+                            {__('Before image filter: None (original). Additional filters not included in this build.', 'kinetichub')}
                         </p>
                         
 

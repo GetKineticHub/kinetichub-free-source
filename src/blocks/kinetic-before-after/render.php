@@ -1,7 +1,7 @@
 <?php
 /**
  * Kinetic Before/After - Server-Side Render Logic
- * Version: 1.0.1
+ * Version: 1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -47,13 +47,15 @@ if ( empty( $kh_ba_before_image['url'] ) || empty( $kh_ba_after_image['url'] ) )
 /*
  * Free-safe defaults.
  * Everything here must remain valid for the WP.org free build even after advanced sections are stripped.
+ * Note: Before image filter is locked to "none" in FREE so the Before image renders in its original state.
+ * The advanced build expands the whitelist below and reads the user-selected value.
  */
 $kh_ba_orientation       = 'horizontal';
 $kh_ba_mobile_aspect     = 'inherit';
 $kh_ba_transition_style  = 'slide';
 $kh_ba_handle_style      = 'classic';
 $kh_ba_pulse_effect      = 'none';
-$kh_ba_before_filter     = 'grayscale';
+$kh_ba_before_filter     = 'none';
 $kh_ba_reverse_reveal    = false;
 $kh_ba_hover_slide       = false;
 $kh_ba_magnetic_snap     = false;
@@ -72,7 +74,7 @@ $kh_ba_handle_list        = array( 'classic' );
 $kh_ba_divider_list       = array( 'solid', 'neon', 'gradient' );
 $kh_ba_pulse_list         = array( 'none' );
 $kh_ba_shadow_list        = array( 'soft', 'crisp', 'float', 'glow', 'elegant' );
-$kh_ba_before_filter_list = array( 'grayscale' );
+$kh_ba_before_filter_list = array( 'none' );
 $kh_ba_after_filter_list  = array( 'none', 'grayscale', 'sepia', 'blur', 'invert', 'contrast', 'color' );
 $kh_ba_intro_list         = array( 'slide' );
 
@@ -193,7 +195,7 @@ $kh_ba_attrs = array(
 	'style'            => $kh_ba_css_vars,
 	'data-offset'      => (string) $kh_ba_initial_offset,
 	'data-orientation' => esc_attr( $kh_ba_orientation ),
-	'data-transition'  => esc_attr( $kh_ba_transition_style ),
+	'data-transition' => esc_attr( $kh_ba_transition_style ),
 	'data-click'       => $kh_ba_click_to_move ? 'true' : 'false',
 	'data-intro'       => $kh_ba_auto_play_intro ? 'true' : 'false',
 	'data-intro-style' => esc_attr( $kh_ba_intro_style ),
