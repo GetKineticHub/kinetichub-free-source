@@ -1,4 +1,4 @@
-=== kinetichub ===
+﻿=== kinetichub ===
 Contributors: kinetichub
 Tags: animation blocks, interactive blocks, scroll animations, ui effects, gutenberg blocks
 Requires at least: 6.2
@@ -12,135 +12,169 @@ Animated Gutenberg blocks for motion, video, audio, typography, sliders, marquee
 
 == Description ==
 
-kinetichub is a lightweight suite of animated blocks designed for designers, agencies, and developers who want to bring motion and interaction to WordPress websites.
+kinetichub is a lightweight suite of animated Gutenberg blocks for designers, agencies, and site builders who want to add motion and interactive UI effects to WordPress pages.
 
-The plugin provides a collection of modern UI blocks such as an interactive audio player, before/after image comparison slider, magnetic buttons, animated typography, cursor reveal effects, and generative hero backgrounds.
+The plugin includes a collection of visual blocks for animated typography, video modals, audio players, before/after image comparisons, marquees, interactive buttons, hero backgrounds, scroll dividers, split scroll layouts, cursor reveal lists, ambient visuals, and motion-ready containers.
 
-All animations are powered by a lightweight motion system using efficient JavaScript interpolation techniques.
+kinetichub focuses on stable block functionality, contextual asset loading, accessibility, reduced-motion handling, and WordPress-native editing workflows.
 
-kinetichub is designed with performance, accessibility, and modern WordPress standards in mind.
+= Included Blocks =
 
-= Included Blocks (12 Blocks) =
-
-* Kinetic Ambient Aura – Generative background glows and ambient lighting effects.
-* Kinetic Audio Player – Custom styled audio player with waveform display and accessible controls.
-* Kinetic Before/After – Interactive image comparison slider with physics-based dragging.
-* Kinetic Box – Advanced container with 3D tilt physics and dynamic lighting.
-* Kinetic Cursor Reveal – Custom cursor tracking and interactive media reveal on hover.
-* Kinetic Hero Mesh – Interactive 3D webGL mesh background for hero sections.
-* Kinetic Magnetic Button – Call-to-action button that pulls towards the user's cursor.
-* Kinetic Marquee – Infinite scrolling text and media bands with scroll-velocity detection.
-* Kinetic Scroll Divider – Animated SVG line dividers that draw themselves based on scroll position.
-* Kinetic Split Scroll – Dual-column layout where content pins and snaps beautifully as you scroll.
-* Kinetic Typography – Text reveal animations (lines, words, chars) with advanced staggered delays.
-* Kinetic Video Modal – Safelisted video player with cinematic entrance animations.
+* Kinetic Ambient Aura â€“ Soft ambient visual background effects.
+* Kinetic Audio Player â€“ Custom audio playback block with accessible controls.
+* Kinetic Before/After â€“ Interactive image comparison slider.
+* Kinetic Box â€“ Motion-ready container block for structured content.
+* Kinetic Cursor Reveal â€“ Interactive media reveal list.
+* Kinetic Hero Mesh â€“ Visual hero background block.
+* Kinetic Magnetic Button â€“ Custom call-to-action button with animated styling.
+* Kinetic Marquee â€“ Auto-scrolling media and logo marquee.
+* Kinetic Scroll Divider â€“ Animated scroll-triggered divider line.
+* Kinetic Split Scroll â€“ Split layout with pinned media and scrolling content.
+* Kinetic Typography â€“ Animated text reveal block with server-rendered text splitting.
+* Kinetic Video Modal â€“ Lazy video modal and inline playback block.
 
 = Performance Focused =
 
-kinetichub is engineered to avoid unnecessary overhead.
-* Block assets are loaded contextually, with lightweight global assets used for shared runtime behavior.
-* Where supported, motion effects pause automatically when blocks leave the viewport.
-* Designed to minimize layout recalculations and encourage smooth rendering.
-* Designed to work well with modern performance optimization tools.
+kinetichub is designed to avoid unnecessary page weight.
+
+* Block assets are loaded through WordPress block asset registration.
+* Shared runtime behavior is handled by lightweight frontend assets.
+* Video embeds are initialized lazily after user interaction.
+* Motion-heavy effects respect reduced-motion preferences.
+* Global motion settings can be configured from the dashboard.
 
 = Accessibility =
 
-kinetichub respects the user's system-level accessibility preferences.
-When a user enables prefers-reduced-motion in their operating system, motion-heavy animations automatically reduce or disable to provide a more comfortable browsing experience.
+kinetichub includes accessibility-oriented behavior across supported blocks.
 
-= Update to advanced =
+* Reduced-motion support.
+* Keyboard focus handling where interactive controls are used.
+* Screen-reader friendly fallback text for animated typography.
+* ARIA labels for video modal controls.
+* Semantic output and escaped server-side rendering.
 
-kinetichub advanced unlocks advanced motion engines and extended customization options including:
+= External Services =
 
-* Advanced motion backgrounds (including WebGL-based effects)
-* Sticky and floating interaction physics
-* Additional animation styles
-* Extended design controls
-* Advanced support
+The plugin does not connect to external services on activation.
 
-More information is available at:
-https://getkinetichub.com
+Some blocks may load third-party media only when a site administrator configures content that uses those providers. For example, the Kinetic Video Modal block can embed videos from YouTube or Vimeo when a YouTube or Vimeo URL is entered by the site administrator.
 
-== Source Code & Development ==
+Third-party services may receive visitor data when embedded media is loaded by the browser. This depends on the configured media URL, the provider used, and the visitor's browser behavior.
 
-In compliance with WordPress.org guidelines, the non-minified source code, build scripts, and webpack configurations used to generate this plugin are publicly available.
-GitHub Repository: https://github.com/GetKineticHub/kinetichub
+Supported optional video providers include:
+
+* YouTube
+* YouTube NoCookie
+* Vimeo
+
+Self-hosted media files can also be used.
+
+Provider endpoints that may be used when configured by the site administrator:
+
+* YouTube video embeds: https://www.youtube.com/
+* YouTube privacy-enhanced embeds: https://www.youtube-nocookie.com/
+* YouTube thumbnail images: https://img.youtube.com/
+* Vimeo video embeds: https://player.vimeo.com/
+
+Provider policies:
+
+* YouTube Terms of Service: https://www.youtube.com/t/terms
+* YouTube Privacy Policy: https://policies.google.com/privacy
+* Vimeo Terms of Service: https://vimeo.com/terms
+* Vimeo Privacy Policy: https://vimeo.com/privacy
+
+== Source Code ==
+
+This plugin includes compiled JavaScript and CSS generated with npm and WordPress build tools.
+
+The human-readable source files used to build the distributed assets are included directly in this plugin package in the following directory:
+
+`source/`
+
+The source directory includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed build directory.
+
+The same human-readable free-version source is also publicly available here:
+
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.0
+
+= Build Instructions =
+
+The plugin uses the standard WordPress block build pipeline based on @wordpress/scripts.
+
+To rebuild the distributed assets from the included source files:
+
+1. Open a terminal.
+2. Go to the included source directory:
+   `cd source`
+
+3. Install build dependencies:
+   `npm install`
+
+4. Generate production assets:
+   `npm run build`
+
+The build process compiles source files from the source/src directory into a build directory using the included webpack configuration.
+
+= Build Requirements =
+
+* Node.js 18 or later
+* npm 9 or later
 
 == Installation ==
 
-1. Upload the kinetichub folder to the /wp-content/plugins/ directory, or install the ZIP file via the WordPress Plugins screen.
+1. Upload the kinetichub folder to the /wp-content/plugins/ directory, or install the ZIP file from the WordPress Plugins screen.
 2. Activate the plugin through the Plugins menu in WordPress.
-3. Open the Gutenberg editor and search for Kinetic to start inserting blocks.
-4. (Optional) Configure global settings from the kinetichub Dashboard in the WordPress admin menu.
-
-== Screenshots ==
-
-1. Kinetic Audio Player block with custom styled playback controls
-2. Before / After image comparison slider interaction
-3. Animated hero background using Kinetic Hero Mesh
-4. Magnetic button interaction with cursor physics
-5. Animated typography reveal effects
-6. Cursor reveal portfolio list interaction
-7. Infinite scrolling marquee text block
-8. Split scroll layout with synchronized media panels
-
-== External Services & Privacy ==
-
-This plugin integrates with the  SDK to provide optional licensing, upgrades, and usage insights for users who choose to opt in.
-
-=  API Connection =
-
- may connect to its external API endpoints in order to:
-
-* Verify license keys for the Pro version
-* Deliver plugin updates for licensed users
-* Collect optional, anonymized usage statistics (only after explicit user consent)
-
-These requests are made to the following service:
-
-Service Provider: 
-API Base URL: https://api.freemius.com/
-
-= What data may be sent (only after opt-in) =
-
-If the user chooses to opt in to the  telemetry program, the following information may be transmitted:
-
-* Website URL
-* WordPress version
-* PHP version
-* Plugin version
-* Activated plugin modules or features
-
-No personal data, content, or user accounts are transmitted.
-
-= User Consent & Privacy =
-
-The plugin does not send any data to  until the site administrator explicitly approves the opt-in screen presented during plugin activation.
-
-Administrators can decline the opt-in and continue using the plugin without any telemetry or data transmission.
-
- Privacy Policy:
-https://freemius.com/privacy/
+3. Open the block editor and search for "Kinetic".
+4. Open the kinetichub dashboard from the WordPress admin menu to configure global settings.
 
 == Frequently Asked Questions ==
 
-= Do I need a advanced license to use this plugin? =
+= Does the plugin connect to external services on activation? =
 
-No. The free version includes all core blocks and foundational animations. A advanced license is optional and unlocks advanced motion engines and additional customization features.
+No. The plugin does not connect to external services on activation.
+
+= When are YouTube or Vimeo loaded? =
+
+YouTube or Vimeo content is loaded only when a site administrator adds a supported video URL to a video block and a visitor interacts with or views that configured video experience.
+
+= Can I use self-hosted media? =
+
+Yes. Supported blocks can use media files uploaded to the WordPress Media Library or direct self-hosted media file URLs.
 
 = Will this plugin slow down my website? =
 
-No. kinetichub loads block assets contextually, with lightweight global assets used for shared runtime behavior. Where supported, motion effects also pause when elements leave the viewport.
+The plugin is designed to load assets through WordPress block registration and to keep runtime behavior lightweight. Actual performance depends on the number of blocks used on a page, uploaded media size, theme structure, hosting, and caching.
 
-= Can I use multiple Kinetic blocks on the same page? =
+= Can I disable blocks I do not use? =
 
-Yes. The plugin is designed to support multiple blocks per page while maintaining stable performance.
+Yes. Open the kinetichub dashboard and disable blocks from the included suite as needed.
+
+= Does the plugin support reduced motion? =
+
+Yes. Motion-heavy behavior is reduced or disabled when the visitor has enabled reduced-motion preferences at the operating system level.
+
+= Can I use multiple kinetichub blocks on one page? =
+
+Yes. The plugin is designed to support multiple blocks on the same page.
+
+== Screenshots ==
+
+1. Dashboard overview for included animated blocks.
+2. Kinetic Typography block with text reveal animation.
+3. Kinetic Video Modal block with cover image and play button.
+4. Kinetic Before/After comparison slider.
+5. Kinetic Marquee media strip.
+6. Kinetic Hero Mesh visual background.
+7. Kinetic Audio Player block.
+8. Kinetic Split Scroll layout.
 
 == Changelog ==
 
 = 1.0.0 =
-* Initial stable release
-* Added 12 interactive blocks
-* Implemented unified motion engine
-* Integrated kinetichub dashboard for global settings
-* Performance optimizations, strong escaping and validation practices, and accessibility support
+* Initial stable release.
+* Added 12 animated Gutenberg blocks.
+* Added kinetichub dashboard for included block management and global settings.
+* Added reduced-motion handling for motion-heavy behavior.
+* Added contextual block asset loading.
+* Added server-side validation and escaped output for dynamic blocks.
+* Added accessibility improvements across interactive blocks.

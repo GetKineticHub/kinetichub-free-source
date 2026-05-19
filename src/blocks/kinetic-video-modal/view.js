@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Kinetic Video Modal - Frontend Logic
  * Version: 1.0.0
  */
@@ -437,7 +437,7 @@
         });
 
         // ========================================
-        // MAGNETIC ANIMATION WITH ROBUST CLEANUP
+        // MAGNETIC ANIMATION WITH PROPER CLEANUP
         // ========================================
         ;
 
