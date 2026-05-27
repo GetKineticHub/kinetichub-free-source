@@ -1,9 +1,16 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.1
+Current Version: 1.0.2
 Website: https://getkinetichub.com
 
 
+
+----------------------------------------------------------------------
+## [1.0.2] - 2026-05-27
+----------------------------------------------------------------------
+### Hotfix
+- Restored the WordPress.org-safe plugin bootstrap so the distributed package does not require a missing vendor dependency.
+- Kept the updated KineticHub plugin display name and WordPress.org readme improvements.
 ----------------------------------------------------------------------
 ## [1.0.1] - 2026-05-27
 ----------------------------------------------------------------------
