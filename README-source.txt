@@ -1,4 +1,4 @@
-﻿# KineticHub FREE Source
+# KineticHub FREE Source
 
 This directory contains the human-readable source files used to build the distributed JavaScript and CSS assets included with the WordPress.org free plugin package.
 
