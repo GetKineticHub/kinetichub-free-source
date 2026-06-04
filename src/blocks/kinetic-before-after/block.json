@@ -1,0 +1,77 @@
+{
+    "apiVersion": 3,
+    "name": "kinetichub/before-after",
+    "version": "1.0.0",
+    "title": "Kinetic Before/After",
+    "description": "Interactive image comparison slider with CSS-based masking and hardware-accelerated transitions.",
+    "category": "kinetic-suite",
+    "keywords": [ "before after", "image comparison", "slider", "photo compare","comparison"],
+    "attributes": {
+        "beforeImage": { "type": "object", "properties": { "url": { "type": "string" }, "alt": { "type": "string" } }, "default": null },
+        "afterImage": { "type": "object", "properties": { "url": { "type": "string" }, "alt": { "type": "string" } }, "default": null },
+        "initialOffset": { "type": "number", "default": 50 },
+        "orientation": { "type": "string", "default": "horizontal" },
+        "aspectRatio": { "type": "string", "default": "auto" },
+        "mobileAspectRatio": { "type": "string", "default": "inherit" },
+        "transitionStyle": { "type": "string", "default": "slide" },
+        "diagonalSlant": { "type": "number", "default": 15 },
+        "reverseReveal": { "type": "boolean", "default": false },
+        "hoverZoom": { "type": "boolean", "default": false },
+        
+        "handleStyle": { "type": "string", "default": "classic" },
+        "dividerStyle": { "type": "string", "default": "solid" },
+        "pulseEffect": { "type": "string", "default": "none" },
+        "beforeLabel": { "type": "string", "default": "Before" },
+        "afterLabel": { "type": "string", "default": "After" },
+        "showLabels": { "type": "boolean", "default": true },
+        "hideLabelsMobile": { "type": "boolean", "default": false },
+        
+        "labelColor": { "type": "string", "default": "#ffffff" },
+        "labelBg": { "type": "string", "default": "rgba(0,0,0,0.5)" },
+        "handleColor": { "type": "string", "default": "#ffffff" },
+        "handleIconColor": { "type": "string", "default": "#333333" },
+        
+        "containerShadow": { "type": "boolean", "default": true },
+        "shadowStyle": { "type": "string", "default": "soft" },
+        "forceFullWidth": { "type": "boolean", "default": false },
+        
+        "beforeFilter": { "type": "string", "default": "none" },
+        "blurIntensity": { "type": "number", "default": 4 },
+        "afterFilter": { "type": "string", "default": "none" },
+        "afterBlurIntensity": { "type": "number", "default": 4 },
+        
+        "hoverSlide": { "type": "boolean", "default": false },
+        "clickToMove": { "type": "boolean", "default": true },
+        "magneticSnap": { "type": "boolean", "default": true },
+        "enableInertia": { "type": "boolean", "default": true },
+        "autoPlayIntro": { "type": "boolean", "default": true },
+        "introStyle": { "type": "string", "default": "slide" },
+        "hideLabelsOnMove": { "type": "boolean", "default": true },
+        
+        "overlayColor": { "type": "string", "default": "#000000" },
+        "overlayOpacity": { "type": "number", "default": 0.4 },
+        "afterOverlayColor": { "type": "string", "default": "#000000" },
+        "afterOverlayOpacity": { "type": "number", "default": 0.4 },
+
+        "cursorBadge": { "type": "boolean", "default": false },
+        "cursorBadgeText": { "type": "string", "default": "Compare" },
+        "innerParallax": { "type": "boolean", "default": false },
+        "holdToPeek": { "type": "boolean", "default": false },
+
+        "hideOnMobile": { "type": "boolean", "default": false },
+        "hideOnDesktop": { "type": "boolean", "default": false }
+    },
+    "supports": {
+        "html": false,
+        "anchor": true,
+        "align": ["wide", "full"],
+        "spacing": { "margin": true, "padding": true },
+        "__experimentalBorder": { "color": true, "radius": true, "width": true, "style": true }
+    },
+    "textdomain": "kinetichub",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./index.css",
+    "render": "file:./render.php",
+    "viewScript": "file:./view.js"
+}

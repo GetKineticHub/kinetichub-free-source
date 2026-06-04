@@ -1,0 +1,314 @@
+/**
+ * Kinetic Box - Stylesheet
+ * Version: 1.0.0
+ */
+
+.kh-box-ease-smooth { --kh-box-bezier: cubic-bezier(0.25, 0.8, 0.25, 1); }
+.kh-box-ease-bouncy { --kh-box-bezier: cubic-bezier(0.68, -0.6, 0.32, 1.6); }
+.kh-box-ease-snappy { --kh-box-bezier: cubic-bezier(0.25, 1, 0.5, 1); }
+
+/* ==========================================================================
+   THE SILVER BULLET: Isolated Width & Alignment
+   This ONLY applies when the user moves the Box Width slider > 0.
+   "body" prefix strictly enforces maximum CSS specificity over WP FSE defaults.
+   ========================================================================== */
+body .kh-box-wrapper.kh-box-has-custom-width,
+body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
+    width: var(--kh-box-w) !important;
+    max-width: var(--kh-box-w) !important;
+    margin-left: var(--kh-box-ml) !important;
+    margin-right: var(--kh-box-mr) !important;
+    align-self: var(--kh-box-align-self) !important; 
+}
+
+.kh-box-wrapper, .wp-block-kinetichub-kinetic-box {
+    position: relative;
+    display: flex; 
+    flex-direction: column;
+    box-sizing: border-box; 
+    border: 1px solid transparent; 
+    min-height: var(--kh-box-min-h, auto);
+    width: 100%;
+
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    
+    transition: 
+        transform var(--kh-box-speed, 0.4s) var(--kh-box-bezier),
+        box-shadow var(--kh-box-speed, 0.4s) var(--kh-box-bezier),
+        background-color var(--kh-box-speed, 0.4s) ease,
+        border-color var(--kh-box-speed, 0.4s) ease,
+        color var(--kh-box-speed, 0.4s) ease,
+        filter 0.3s ease,
+        opacity 0.5s ease;
+    
+    box-shadow: 0 10px var(--kh-box-shadow-blur) rgb(from var(--kh-box-base-shadow) r g b / var(--kh-box-shadow-o, 0.1));
+
+    &:focus { outline: none; }
+    &:focus-visible {
+        outline: 2px dashed var(--kh-accent, #10b981);
+        outline-offset: 4px;
+        z-index: 20;
+    }
+
+    &:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.is-physics-active {
+        box-shadow: 0 25px var(--kh-box-shadow-blur) rgb(from var(--kh-box-hover-shadow) r g b / var(--kh-box-hover-o, 0.2)) !important;
+        z-index: 10;
+    }
+
+    &.kh-box-change-bg:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-change-bg.is-physics-active { 
+        background-color: var(--kh-box-hover-bg) !important; 
+    }
+
+    &.kh-box-change-border:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-change-border.is-physics-active { 
+        border-color: var(--kh-box-hover-border, transparent) !important; 
+    }
+
+    &.kh-box-change-text:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-change-text.is-physics-active {
+        color: var(--kh-box-hover-text) !important;
+        
+        h1:not([class*="kh-"]):not(.has-text-color), 
+        h2:not([class*="kh-"]):not(.has-text-color), 
+        h3:not([class*="kh-"]):not(.has-text-color), 
+        h4:not([class*="kh-"]):not(.has-text-color), 
+        h5:not([class*="kh-"]):not(.has-text-color), 
+        h6:not([class*="kh-"]):not(.has-text-color), 
+        p:not([class*="kh-"]):not(.has-text-color), 
+        a:not([class*="kh-"]):not(.has-text-color), 
+        li:not([class*="kh-"]):not(.has-text-color), 
+        blockquote:not([class*="kh-"]):not(.has-text-color) {
+            color: var(--kh-box-hover-text);
+            transition: color var(--kh-box-speed, 0.4s) ease;
+        }
+    }
+
+    &.kh-box-glow:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-glow.is-physics-active { 
+        box-shadow: 0 0 40px 10px var(--kh-box-hover-shadow) !important; 
+    }
+    
+    /* <fs_premium_only> */
+    &.kh-box-is-glass {
+        isolation: isolate;
+        background: rgba(255, 255, 255, var(--kh-box-glass-o, 0.2)) !important;
+        backdrop-filter: blur(var(--kh-box-blur, 10px));
+        -webkit-backdrop-filter: blur(var(--kh-box-blur, 10px));
+    }
+    &.kh-box-is-glass:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-is-glass.is-physics-active {
+        background: rgba(255, 255, 255, calc(var(--kh-box-glass-o) + 0.1)) !important;
+    }
+    /* </fs_premium_only> */
+
+    .kh-box-inner-content {
+        position: relative;
+        z-index: 20; 
+        pointer-events: auto;
+        width: 100%;
+        height: 100%;
+        flex-grow: 1; 
+        display: flex;
+        flex-direction: column;
+        justify-content: var(--kh-box-v-align, flex-start);
+        text-align: var(--kh-box-text-align, left);
+        
+        gap: inherit;
+        
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        > * { width: 100%; }
+    }
+
+    .kh-box-inner-content a, 
+    .kh-box-inner-content button, 
+    .kh-box-inner-content .wp-block-button__link,
+    .kh-box-inner-content iframe,
+    .kh-box-inner-content canvas,
+    .kh-box-inner-content .kh-ap-wrapper {
+        position: relative;
+        z-index: 30 !important;
+    }
+
+    .kh-box-stretched-link { 
+        position: static;
+        &::after {
+            content: '';
+            position: absolute; inset: 0; z-index: 5; pointer-events: auto;
+        }
+    }
+
+    /* <fs_premium_only> */
+    /* Smart Addons: Film Grain, Spotlight Glow, Crisp Edge, Idle Levitation */
+    &.has-grain .kh-box-grain {
+        position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: var(--kh-box-grain-o); mix-blend-mode: overlay; z-index: 1;
+    }
+
+    &.has-spotlight .kh-box-spotlight {
+        position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+        background: radial-gradient(circle var(--kh-box-spot-sz) at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--kh-box-spot-c), transparent);
+        z-index: 1; opacity: 0; transition: opacity 0.5s ease;
+    }
+    
+    &:hover.has-spotlight .kh-box-spotlight, &.is-physics-active.has-spotlight .kh-box-spotlight { opacity: 1; }
+
+    &.has-crisp-edge .kh-box-crisp-edge {
+        position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+        box-shadow: inset 0 0 0 1px var(--kh-box-edge-c); z-index: 5;
+    }
+
+    &.has-idle-levitation { animation: khBoxIdleLevitate 4s ease-in-out infinite alternate; will-change: translate; }
+    &.has-idle-levitation.is-physics-active, &.has-idle-levitation:not([data-tilt="true"]):not([data-magnetic="true"]):hover {
+        animation: khBoxIdleReturn 0.3s ease-out forwards;
+    }
+
+    @keyframes khBoxIdleLevitate { 0% { translate: 0 0; } 100% { translate: 0 -12px; } }
+    @keyframes khBoxIdleReturn { to { translate: 0 0; } }
+    /* </fs_premium_only> */
+
+    /* CSS Animations - FREE: lift, scale, tilt */
+    &.anim-lift:not([data-tilt="true"]):not([data-magnetic="true"]):hover { transform: translateY(calc(var(--kh-box-intensity) * -1px)) rotate(var(--kh-box-rot)); }
+    &.anim-scale:not([data-tilt="true"]):not([data-magnetic="true"]):hover { transform: scale(calc(1 + (var(--kh-box-intensity) / 500))) rotate(var(--kh-box-rot)); }
+    &.anim-tilt:not([data-tilt="true"]):not([data-magnetic="true"]):hover { transform: perspective(1000px) rotateX(calc(var(--kh-box-intensity) * 0.1deg)) rotateY(calc(var(--kh-box-intensity) * 0.1deg)); }
+    
+    /* <fs_premium_only> */
+    /* CSS Animations - PRO: sink, trace, shine */
+    &.anim-sink:not([data-tilt="true"]):not([data-magnetic="true"]):hover { transform: translateY(calc(var(--kh-box-intensity) * 1px)); }
+    
+    &.anim-trace {
+        overflow: hidden;
+        &::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 0; height: 4px; background: var(--kh-box-hover-border, currentColor); transition: width var(--kh-box-speed) ease;
+        }
+        &:not([data-tilt="true"]):not([data-magnetic="true"]):hover::before, &.is-physics-active::before { width: 100%; }
+    }
+
+    &.anim-shine {
+        overflow: hidden;
+        &::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); z-index: 15; pointer-events: none; transition: none;
+        }
+        &:not([data-tilt="true"]):not([data-magnetic="true"]):hover::after,
+        &.is-physics-active::after {
+            animation: khBoxShine var(--kh-box-speed, 0.6s) ease-out forwards;
+        }
+    }
+    @keyframes khBoxShine { 100% { left: 200%; } }
+    /* </fs_premium_only> */
+    
+    &.kh-box-grayscale { filter: grayscale(100%); transition: filter 0.4s ease; }
+    &.kh-box-grayscale:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-grayscale.is-physics-active { filter: grayscale(0%); }
+    
+    &.kh-box-zoom-img .kh-box-inner-content > * { transition: transform var(--kh-box-speed, 0.4s) ease; }
+    &.kh-box-zoom-img:not([data-tilt="true"]):not([data-magnetic="true"]):hover .kh-box-inner-content > img, 
+    &.kh-box-zoom-img:not([data-tilt="true"]):not([data-magnetic="true"]):hover .kh-box-inner-content > .wp-block-image,
+    &.kh-box-zoom-img.is-physics-active .kh-box-inner-content > img, 
+    &.kh-box-zoom-img.is-physics-active .kh-box-inner-content > .wp-block-image { 
+        transform: scale(var(--kh-box-zoom-int, 1.08)); 
+    }
+    
+    &.kh-box-z-top:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
+    &.kh-box-z-top.is-physics-active { z-index: 999 !important; }
+
+    /* <fs_premium_only> */
+    &.is-physics-active {
+        transition: transform 0.1s linear, box-shadow 0.1s linear, background-color var(--kh-box-speed, 0.4s) ease, border-color var(--kh-box-speed, 0.4s) ease; 
+        .kh-box-inner-content { transition: transform 0.1s linear; }
+    }
+
+    &.is-physics-returning {
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.6s ease, background-color 0.6s ease, border-color 0.6s ease !important;
+    }
+    /* </fs_premium_only> */
+
+    /* <fs_premium_only> */
+    /* Entrance Animations: fade, slide, zoom */
+    &[data-entrance]:not(.kh-box-animated) { opacity: 0; }
+    &[data-entrance="fade"].kh-box-animated { animation: khBoxFadeIn 0.8s forwards; }
+    &[data-entrance="slide"].kh-box-animated { transform: translateY(30px); animation: khBoxSlideUp 0.8s forwards; }
+    &[data-entrance="zoom"].kh-box-animated { transform: scale(0.9); animation: khBoxZoomIn 0.8s forwards; }
+    /* </fs_premium_only> */
+}
+
+/* <fs_premium_only> */
+@keyframes khBoxFadeIn { to { opacity: 1; } }
+@keyframes khBoxSlideUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes khBoxZoomIn { to { opacity: 1; transform: scale(1); } }
+/* </fs_premium_only> */
+
+.wp-block-post-content.has-global-padding > .kh-box-wrapper.alignfull {
+    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px));
+    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px));
+    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px));
+    max-width: none; position: relative; left: auto; right: auto; transform: none; box-sizing: border-box;
+}
+
+.block-editor-page .kh-box-wrapper.alignfull {
+    margin-left: 0 !important; margin-right: 0 !important; width: 100% !important;
+}
+
+/* --- EDITOR SAFEGUARDS --- */
+.is-editor-canvas {
+    opacity: 1 !important; visibility: visible !important;
+    &.anim-trace::before { display: none !important; }
+
+    /* Neutralize Stretched Link in Editor so text is selectable */
+    .kh-box-stretched-link { display: none !important; pointer-events: none !important; }
+
+    /* <fs_premium_only> */
+    &.has-spotlight .kh-box-spotlight { opacity: 1 !important; --mouse-x: 50%; --mouse-y: 50%; }
+    /* </fs_premium_only> */
+
+    transform-style: flat !important; perspective: none !important; transform: none !important;
+    .kh-box-inner-content { transform-style: flat !important; transform: none !important; }
+    &:hover, .kh-box-inner-content:hover { transform: none !important; }
+
+    /* UX FIX: Prevent Empty Container Collapse (Dropzone effect) */
+    &:not(:has(.wp-block)) {
+        min-height: 80px !important;
+        border: 2px dashed rgba(148, 163, 184, 0.6) !important;
+        border-radius: 8px;
+        background-color: rgba(248, 250, 252, 0.4);
+    }
+}
+
+/* Flex Alignment Sync Editor Fix */
+.kh-box-inner-content > .block-editor-inner-blocks,
+.kh-box-inner-content > .block-editor-inner-blocks > .block-editor-block-list__layout {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    min-height: inherit;
+    justify-content: var(--kh-box-v-align);
+    /* Notice: align-items has been removed so inner blocks stretch fully and accept text-align natively! */
+    width: 100%;
+    min-width: 0;
+}
+.kh-box-inner-content > .block-editor-inner-blocks > .block-editor-block-list__layout > * {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    body .wp-block-kinetichub-kinetic-box, body .kh-box-wrapper { 
+        --kh-box-intensity: var(--kh-box-m-intensity); 
+        --kh-box-shadow-blur: var(--kh-box-m-blur); 
+    }
+    .kh-box-hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) { .kh-box-hide-desktop { display: none !important; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .kh-box-wrapper, .kh-box-wrapper[data-entrance] {
+        transform: none !important; translate: none !important; transition: opacity 0.4s ease, background-color 0.4s ease !important; animation: none !important;
+        &.kh-box-zoom-img:hover .kh-box-inner-content > img, &.kh-box-zoom-img:hover .kh-box-inner-content > .wp-block-image,
+        &.is-physics-active .kh-box-inner-content > *, &.has-parallax .kh-box-inner-content > * { transform: none !important; }
+    }
+}

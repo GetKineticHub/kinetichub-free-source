@@ -1,0 +1,40 @@
+Block Name: Kinetic Before After
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Before After.
+- Added a horizontal image comparison slider for before and after visuals.
+- Added classic slide reveal behavior.
+- Added a circular handle with draggable interaction.
+- Added click-to-move support for repositioning the slider.
+- Added keyboard navigation support for the slider handle.
+- Added before and after image selection through the WordPress media workflow.
+- Added optional before and after labels with customizable label text.
+- Added the option to hide labels while the slider is moving.
+- Added divider style options including solid, neon, and gradient.
+- Added after image filter options including none, grayscale, sepia, blur, invert, contrast, and color overlay.
+- Added fixed grayscale styling support for the before image.
+- Added handle color and handle icon color controls.
+- Added container shadow and border radius controls.
+- Added hover zoom support.
+- Added aspect ratio options including auto, 16:9, 1:1, 4:3, and 3:4.
+- Added slide intro animation support.
+- Added responsive visibility controls for mobile and desktop layouts.
+- Added accessibility support with ARIA slider attributes, keyboard controls, and reduced motion handling.
+
+### Improved
+- Improved image stacking stability using a CSS grid-based layout.
+- Improved slider movement smoothness with interpolated handle positioning.
+- Improved fixed aspect ratio handling to reduce layout shifts.
+- Improved frontend cleanup for pointer, drag, and keyboard interactions.
+- Improved validation for color values and numeric slider settings.
+- Improved frontend output escaping and attribute handling.
+- Improved editor placeholder behavior when comparison images are missing.
+
+### Fixed
+- Fixed slider handle accessibility by exposing the control as a semantic slider.
+- Fixed dynamic slider value updates for assistive technologies.
+- Fixed image sizing consistency between the before and after layers.
+- Fixed editor duplication issues by keeping the block instance stateless.
+- Fixed unnecessary permanent GPU hints so rendering work is only requested during active interaction states.
+- Fixed frontend behavior when the slider is removed from the page dynamically.

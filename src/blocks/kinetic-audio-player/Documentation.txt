@@ -1,0 +1,163 @@
+Block Name: Kinetic Audio Player
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Audio Player is a custom Gutenberg block for adding styled audio playback to WordPress pages and posts.
+
+It is designed for music previews, podcast clips, portfolio pages, landing pages, product demos, and any layout that needs a clean audio player with visual feedback and accessible controls.
+
+---
+
+## 2. Features
+
+### Layouts
+- Extended bar layout
+- Compact circle layout
+
+### Audio Controls
+- Play and pause button
+- Seekbar control
+- Current time and duration display
+- Volume control
+- Browser preload options
+
+### Visual Display
+- Waveform visualizer
+- Optional cover artwork
+- Background color control
+- Text color control
+- Accent color control
+- Progress color control
+- Container shadow styles
+- Border radius control
+- Vertical and horizontal padding controls
+
+### Motion Options
+- No entrance animation
+- Fade entrance animation
+- Slide entrance animation
+- Zoom entrance animation
+- Animation delay control
+- Reduced motion handling for visitors who prefer less animation
+
+### Responsive Options
+- Hide on mobile
+- Hide on desktop
+- Compact sizing support
+
+### Accessibility
+- Keyboard-friendly playback controls
+- ARIA labels for interactive controls
+- Screen-reader friendly visual elements
+- Reduced motion support based on the visitor's system settings
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Audio Player".
+4. Insert the block into the page.
+5. Select or upload an audio file from the Media Library.
+6. Adjust the layout, colors, spacing, and playback options from the block sidebar.
+
+---
+
+## 4. Audio Source
+
+Use the block media controls to select an audio file from the WordPress Media Library or add a valid audio URL.
+
+For best compatibility, use common browser-supported audio formats such as MP3, WAV, or OGG.
+
+---
+
+## 5. Preload Options
+
+The preload setting controls how the browser prepares the audio file before playback.
+
+- None: The browser does not preload the audio file.
+- Metadata: The browser loads only basic file information such as duration.
+- Auto: The browser may preload more of the audio file before playback.
+
+For most pages, Metadata is a balanced option because it keeps the player responsive without requesting the full file immediately.
+
+---
+
+## 6. Styling
+
+The block includes controls for:
+
+- Player layout
+- Background color
+- Text color
+- Accent color
+- Progress color
+- Shadow style
+- Border radius
+- Vertical padding
+- Horizontal padding
+
+The editor color picker outputs standard color values. The frontend output validates supported CSS color formats before rendering them.
+
+---
+
+## 7. Entrance Animation
+
+The block can animate into view using the available entrance animation controls.
+
+Available options:
+
+- None
+- Fade
+- Slide
+- Zoom
+
+Use the delay control to offset the animation timing when multiple elements appear in the same section.
+
+---
+
+## 8. Responsive Behavior
+
+The block includes visibility controls for common responsive layouts.
+
+You can hide the audio player on mobile or desktop when a layout requires different content for different screen sizes.
+
+---
+
+## 9. Accessibility Notes
+
+Kinetic Audio Player is built with accessibility in mind.
+
+The block uses semantic controls, ARIA labels, and keyboard-friendly interactions. Decorative SVG elements are hidden from assistive technologies where appropriate.
+
+When a visitor has reduced motion enabled in their operating system, motion-heavy behavior is reduced for a more comfortable browsing experience.
+
+---
+
+## 10. Performance Notes
+
+The player is designed to work with multiple instances on the same page.
+
+Frontend scripts clean up event listeners and animation loops when a player is removed from the page dynamically, such as during AJAX navigation or layout updates.
+
+Waveform animation is handled efficiently and is tied to the playback state of the audio element.
+
+---
+
+## 11. Recommended Usage
+
+Use Kinetic Audio Player for:
+
+- Music previews
+- Podcast previews
+- Audio samples
+- Landing page media sections
+- Portfolio sound clips
+- Product audio demos
+- Voice samples
+
+For best results, keep audio files optimized for the web and avoid unnecessarily large uploads.

@@ -1,0 +1,66 @@
+{
+    "apiVersion": 3,
+    "name": "kinetichub/hero-mesh",
+    "version": "1.0.0",
+    "title": "Kinetic Hero Mesh",
+    "category": "kinetic-suite",
+    "icon": "cover-image",
+    "description": "Premium Generative Layout Container featuring Plexus, Liquid, Gradient, Lens, and Aurora engines.",
+    "keywords": ["hero section", "mesh", "background", "plexus", "liquid", "gradient", "webgl", "aurora"],
+    "attributes": {
+        "align": { "type": "string", "default": "full" },
+        "bgMode": { "type": "string", "default": "plexus" },
+        "heroHeightDesktop": { "type": "number", "default": 100 },
+        "heroHeightMobile": { "type": "number", "default": 100 },
+        "contentAlign": { "type": "string", "default": "center" },
+        
+        "mediaId": { "type": "number" },
+        "mediaUrl": { "type": "string", "default": "" },
+        
+        "objectFit": { "type": "string", "default": "cover" },
+        "objectPosition": { "type": "string", "default": "center" },
+
+        "overlayOpacity": { "type": "number", "default": 0.3 },
+        "overlayColor": { "type": "string", "default": "#000000" },
+        "blendMode": { "type": "string", "default": "normal" },
+
+        "liquidViscosity": { "type": "number", "default": 0.1 },
+        "liquidRGBShift": { "type": "number", "default": 0.5 },
+        "liquidIntensity": { "type": "number", "default": 0.02 },
+
+        "plexusColor": { "type": "string", "default": "#ffffff" },
+        "plexusDensity": { "type": "number", "default": 80 },
+        "plexusDistance": { "type": "number", "default": 150 },
+        "plexusSpeed": { "type": "number", "default": 1.0 },
+        "plexusInteraction": { "type": "string", "default": "repel" },
+        "plexusLineWidth": { "type": "number", "default": 1.0 },
+
+        "gradientFlowSpeed": { "type": "number", "default": 0.5 },
+        "gradientIntensity": { "type": "number", "default": 0.8 },
+        "useImageInMesh": { "type": "boolean", "default": true },
+        "meshColor1": { "type": "string", "default": "#3b82f6" },
+        "meshColor2": { "type": "string", "default": "#8b5cf6" },
+        "meshColor3": { "type": "string", "default": "#ec4899" },
+
+        "fxScale": { "type": "number", "default": 20 },
+        "fxSpeed": { "type": "number", "default": 1.0 },
+
+        "parallaxEffect": { "type": "boolean", "default": false },
+        "enableGrain": { "type": "boolean", "default": false },
+
+        "hideOnMobile": { "type": "boolean", "default": false },
+        "hideOnDesktop": { "type": "boolean", "default": false }
+    },
+    "supports": {
+        "align": ["wide", "full"],
+        "spacing": { "margin": true, "padding": true },
+        "typography": { "fontSize": true, "lineHeight": true },
+        "color": { "text": true, "background": true }
+    },
+    "textdomain": "kinetichub",
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./view.js",
+    "style": "file:./style.scss",
+    "editorStyle": "file:./style.scss",
+    "render": "file:./render.php"
+}

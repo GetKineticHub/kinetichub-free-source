@@ -1,0 +1,31 @@
+Block Name: Kinetic Audio Player
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Audio Player.
+- Added extended bar and compact circle layouts.
+- Added native audio playback controls with play, pause, seek, time display, and volume control.
+- Added a waveform visualizer that responds to audio playback state.
+- Added audio source selection through the WordPress media workflow.
+- Added cover artwork support for enhanced player presentation.
+- Added color controls for background, text, accent, and progress styling.
+- Added visual styling controls for container shadow, border radius, and spacing.
+- Added entrance animation options with configurable delay.
+- Added responsive visibility controls for mobile and desktop layouts.
+- Added preload strategy options for browser-level audio loading behavior.
+- Added accessibility support with ARIA labels, keyboard-friendly controls, and reduced motion handling.
+
+### Improved
+- Optimized frontend playback behavior for multiple audio player instances on the same page.
+- Improved cleanup behavior when audio players are removed from the page dynamically.
+- Improved waveform rendering performance during playback.
+- Improved color validation for common CSS color formats.
+- Improved frontend output escaping and attribute handling.
+- Improved editor and frontend consistency for spacing, layout, and visual styling.
+
+### Fixed
+- Fixed audio player state handling across repeated block instances.
+- Fixed visual SVG handling for screen readers.
+- Fixed focus and control labeling for better accessibility.
+- Fixed unused styling rules from the player stylesheet.
+- Fixed render output structure for better compatibility with WordPress coding standards.

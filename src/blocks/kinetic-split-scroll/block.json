@@ -1,0 +1,73 @@
+{
+    "apiVersion": 3,
+    "name": "kinetichub/split-scroll",
+    "version": "1.0.0",
+    "title": "Kinetic Split Scroll",
+    "category": "kinetic-suite",
+    "description": "Split-screen layout with sticky scrolling media, synchronized text, and hardware-accelerated physics.",
+    "keywords": ["split scroll", "sticky scroll", "synchronized text"],
+    "attributes": {
+        "pinnedSide": { "type": "string", "default": "left" },
+        "columnRatio": { "type": "string", "default": "50/50" },
+        "stickyOffset": { "type": "number", "default": 0 },
+        "stackOnMobile": { "type": "string", "default": "media-first" },
+        "enableStickyMobile": { "type": "boolean", "default": false },
+        
+        "mediaItems": { "type": "array", "default": [] },
+        "enableSmartSwap": { "type": "boolean", "default": true },
+        
+        "imageSize": { "type": "string", "default": "large" },
+        "objectFit": { "type": "string", "default": "cover" },
+        "objectPosition": { "type": "string", "default": "center" },
+        
+        "indicatorType": { "type": "string", "default": "line" },
+        "accentColor": { "type": "string" },
+        
+        "mediaShape": { "type": "string", "default": "default" },
+        "floatingCardShadowOpacity": { "type": "number", "default": 0.2 },
+        "enableKenBurns": { "type": "boolean", "default": false },
+        "overlayTint": { "type": "string", "default": "#000000" },
+        "overlayOpacity": { "type": "number", "default": 0 },
+        
+        "pinnedBgColor": { "type": "string", "default": "transparent" },
+
+        "textEffect": { "type": "string", "default": "none" },
+        "enableSnap": { "type": "boolean", "default": false },
+        
+        "dotsInteractive": { "type": "boolean", "default": true },
+        "swapTransition": { "type": "string", "default": "fade" },
+        "innerParallax": { "type": "boolean", "default": false },
+        "ambientGlow": { "type": "boolean", "default": false },
+        "ambientGlowColor": { "type": "string", "default": "rgba(16, 185, 129, 0.6)" },
+        "ambientGlowSpread": { "type": "number", "default": 40 },
+        "scrollBgMorphing": { "type": "boolean", "default": false },
+        "bgMorphStart": { "type": "string", "default": "transparent" },
+        "bgMorphEnd": { "type": "string", "default": "transparent" },
+
+        "align": { "type": "string" },
+
+        "hideOnMobile": { "type": "boolean", "default": false },
+        "hideOnDesktop": { "type": "boolean", "default": false },
+
+        "containerShadow": { "type": "boolean", "default": false },
+        "shadowStyle": { "type": "string", "default": "soft" },
+        "shadowSoftness": { "type": "number" },
+        "mobileShadowSoftness": { "type": "number" },
+        "shadowOpacity": { "type": "number" },
+        "hoverShadowOpacity": { "type": "number" },
+        "shadowColor": { "type": "string" },
+        "hoverShadowColor": { "type": "string" }
+    },
+    "supports": {
+        "align": ["wide", "full"],
+        "spacing": { "margin": true, "padding": true, "blockGap": true },
+        "color": { "background": true, "text": true, "gradients": true },
+        "__experimentalBorder": { "radius": true, "color": true, "width": true, "style": true }
+    },
+    "textdomain": "kinetichub",
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./view.js",
+    "style": "file:./index.css",
+    "editorStyle": "file:./index.css",
+    "render": "file:./render.php"
+}

@@ -1,0 +1,198 @@
+Block Name: Kinetic Split Scroll
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Split Scroll is a Gutenberg block for creating split-screen scrolling sections in WordPress.
+
+It displays a pinned media column beside a scrolling content column. As visitors move through the section, the media can update in sync with the content, creating an editorial, portfolio, or product storytelling layout.
+
+Use it for case studies, product walkthroughs, service explanations, visual stories, feature sections, process pages, and landing page narratives.
+
+---
+
+## 2. Features
+
+### Split Layout
+- Pinned media column
+- Scrolling content column
+- Pinned side control
+- Column ratio control
+- Mobile stacking controls
+- Mobile sticky toggle
+- Sticky offset control
+
+### Media Gallery
+- Up to 3 media items
+- Image support
+- Video support
+- Smart media swap
+- Fade transition between media items
+- Image fit control
+- Image position control
+
+### Progress Indicator
+- Vertical line progress indicator
+- Accent color styling
+- Scroll-aware progress behavior
+
+### Visual Styling
+- Overlay tint color
+- Overlay opacity
+- Pinned area background color
+- Soft shadow container style
+
+### Scroll Effects
+- Fade-up text entrance effect
+- Magnetic snap behavior for content sections
+
+### Responsive Behavior
+- Mobile stacking layout
+- Media first or content first arrangement
+- Modern mobile viewport sizing support
+
+### Accessibility
+- Reduced motion support based on the visitor's system settings
+- Standard focus behavior for nested interactive content
+- Native image and video output
+- Crawlable text content inside the scrolling column
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Split Scroll".
+4. Insert the block into the page.
+5. Add media items to the pinned column.
+6. Add text, buttons, headings, or other blocks to the scrolling content column.
+7. Adjust layout, media, progress, overlay, and mobile settings from the block sidebar.
+
+---
+
+## 4. Working With Media
+
+The block supports image and video media.
+
+Recommended media types:
+
+- Images for product visuals, case studies, portfolio work, or editorial storytelling.
+- Videos for product demos, motion previews, walkthroughs, or short visual loops.
+
+For best results, use optimized images and compressed video files. Keep media dimensions consistent so transitions feel smooth.
+
+---
+
+## 5. Smart Media Swap
+
+Smart Media Swap updates the pinned media as visitors scroll through the content column.
+
+The standard transition is a fade, which works well for clean storytelling sections and avoids distracting from the text.
+
+Use multiple media items when each content section needs a matching visual. Use fewer media items when the section should feel calmer and more focused.
+
+---
+
+## 6. Layout Controls
+
+The block includes controls for:
+
+- Pinned side
+- Column ratio
+- Sticky offset
+- Mobile stacking order
+- Mobile sticky behavior
+
+Use the pinned side control to place media on the left or right. Use the column ratio control to balance media width against the reading area.
+
+On smaller screens, the layout stacks so content remains readable and easier to interact with.
+
+---
+
+## 7. Image Fit and Position
+
+Image fit controls how media fills the pinned area.
+
+Common settings include:
+
+- Cover: fills the media area and crops if needed.
+- Contain: keeps the full image visible.
+- Fill: stretches the image to the available space.
+
+Image position controls help align the most important part of the image inside the pinned frame.
+
+---
+
+## 8. Overlay and Background
+
+The block includes overlay and background controls for the pinned media area.
+
+Available controls include:
+
+- Overlay tint color
+- Overlay opacity
+- Pinned area background color
+
+Use overlays to improve contrast when text or visual elements need better separation from media.
+
+---
+
+## 9. Progress Indicator
+
+The vertical line progress indicator helps visitors understand where they are inside the scroll section.
+
+It is useful for long storytelling layouts, step-by-step sections, and product walkthroughs.
+
+Choose an accent color that has enough contrast against the surrounding background.
+
+---
+
+## 10. Text Effects
+
+The fade-up text effect adds a subtle entrance animation to content as it appears during scrolling.
+
+Magnetic snap behavior can help the scrolling content settle into clear reading positions, especially in structured sections with multiple steps.
+
+When reduced motion is requested by the visitor's system settings, motion-heavy behavior is reduced.
+
+---
+
+## 11. Accessibility Notes
+
+Kinetic Split Scroll is built with accessibility in mind.
+
+The scrolling content remains standard HTML, so headings, paragraphs, buttons, and links stay readable and navigable. Images and videos should include meaningful alt text or surrounding context where appropriate.
+
+When a visitor has reduced motion enabled in their operating system, animations are reduced for a more comfortable browsing experience.
+
+---
+
+## 12. Performance Notes
+
+The block tracks scroll position and layout changes efficiently so media updates stay aligned with the content column.
+
+Resize handling helps the layout respond when images, videos, or lazy-loaded content finish loading. Animation updates are reduced when they are not needed.
+
+For best performance, use optimized images, compressed videos, and a limited number of large split-scroll sections on the same page.
+
+---
+
+## 13. Recommended Usage
+
+Use Kinetic Split Scroll for:
+
+- Product walkthroughs
+- Case studies
+- Portfolio project stories
+- Service explanations
+- Step-by-step process sections
+- Feature breakdowns
+- Editorial storytelling
+- Landing page narratives
+- Before-and-after project summaries
+- Visual campaign pages
+
+Keep each content section focused and pair it with media that directly supports the message.

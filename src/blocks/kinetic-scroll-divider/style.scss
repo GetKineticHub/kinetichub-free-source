@@ -1,0 +1,181 @@
+/**
+ * Kinetic Scroll Divider - Styling Engine
+ * Version: 1.0.0
+  (No Permanent Will-Change & Lightweight Presets)
+ */
+
+.kh-scroll-divider-container {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+
+    /* Spacing Presets */
+    &.space-tight { margin: 20px 0; }
+    &.space-normal { margin: 40px 0; }
+    &.space-spacious { margin: 80px 0; }
+
+    /* Base Visibility Rules */
+    &.vis-desktop { @media (max-width: 768px) { display: none !important; } }
+    &.vis-mobile { @media (min-width: 769px) { display: none !important; } }
+
+    /* Mobile Behavior Rules */
+    @media (max-width: 768px) {
+        /* <fs_premium_only> */
+        &.mob-hide { display: none !important; }
+        &.mob-thinner { --kh-div-h: 1px !important; }
+        &.mob-shorter { --kh-div-w: 50% !important; }
+        &.mob-custom-shorter { --kh-div-w: var(--kh-div-mob-w, 50%) !important; }
+        /* </fs_premium_only> */
+    }
+
+    /* Alignment System */
+    &.align-left { justify-content: flex-start; }
+    &.align-center { justify-content: center; }
+    &.align-right { justify-content: flex-end; }
+    
+    /* Timing Curves */
+    /* <fs_premium_only> */
+    &.curve-linear { --kh-div-ease: linear; }
+    /* </fs_premium_only> */
+    &.curve-soft { --kh-div-ease: cubic-bezier(0.165, 0.84, 0.44, 1); }
+    /* <fs_premium_only> */
+    &.curve-snappy { --kh-div-ease: cubic-bezier(0.87, 0, 0.13, 1); }
+
+    /* Easing Mode Overrides (PRO) */
+    &.easing-linear { --kh-div-ease: linear; }
+    &.easing-bouncy { --kh-div-ease: cubic-bezier(0.34, 1.56, 0.64, 1); }
+    /* </fs_premium_only> */
+}
+
+/* kinetichub: NATIVE WP FULL-WIDTH FIX */
+.wp-block-post-content.has-global-padding > .kh-scroll-divider-container.alignfull {
+    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px));
+    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px));
+    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px));
+    max-width: none;
+    position: relative;
+    left: auto;
+    right: auto;
+    transform: none;
+    box-sizing: border-box;
+}
+
+.is-root-container > .kh-scroll-divider-container.alignfull,
+.kh-editor-preview.alignfull {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+}
+
+.kh-divider-track {
+    width: var(--kh-div-w, 100%);
+    max-width: var(--kh-div-max-w, none);
+    height: var(--kh-div-h, 2px);
+    position: relative;
+    overflow: visible;
+    border-radius: 99px;
+}
+
+.kh-divider-line {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    border-top-width: var(--kh-div-h, 2px);
+    border-top-color: var(--kh-div-c, #10b981);
+    
+    opacity: 0;
+    transition: transform var(--kh-div-dur, 1.2s) var(--kh-div-ease, ease),
+                opacity calc(var(--kh-div-dur) * 0.5) ease;
+}
+
+/* Border Styles */
+.kh-scroll-divider-container.style-solid .kh-divider-line { border-top-style: solid; background: var(--kh-div-c); border-top-width: 0; }
+.kh-scroll-divider-container.style-dashed .kh-divider-line { border-top-style: dashed; }
+.kh-scroll-divider-container.style-dotted .kh-divider-line { border-top-style: dotted; }
+
+/* Dynamic Glow Options */
+.kh-scroll-divider-container.has-glow {
+    &.glow-mode-same { --kh-glow-c: var(--kh-div-c); }
+    /* <fs_premium_only> */
+    &.glow-mode-white-tint { --kh-glow-c: rgba(255, 255, 255, 0.4); }
+    &.glow-mode-soft-mix { 
+        --kh-glow-c: rgba(16, 185, 129, 0.5);
+        --kh-glow-c: color-mix(in srgb, var(--kh-div-c) 50%, transparent); 
+    }
+    /* </fs_premium_only> */
+
+    /* Glow renders on track to avoid clipping by line overflow */
+    &.glow-low .kh-divider-track { filter: drop-shadow(0 0 6px var(--kh-glow-c)) drop-shadow(0 0 2px var(--kh-glow-c)); }
+    /* <fs_premium_only> */
+    &.glow-medium .kh-divider-track { filter: drop-shadow(0 0 8px var(--kh-glow-c)) drop-shadow(0 0 16px var(--kh-glow-c)); }
+    &.glow-high .kh-divider-track { filter: drop-shadow(0 0 10px var(--kh-glow-c)) drop-shadow(0 0 20px var(--kh-glow-c)) drop-shadow(0 0 40px var(--kh-glow-c)); }
+    /* </fs_premium_only> */
+}
+
+/* Animation Origin States */
+.kh-scroll-divider-container.anim-draw-right .kh-divider-line { transform-origin: left center; transform: scaleX(0); }
+.kh-scroll-divider-container.anim-draw-left .kh-divider-line { transform-origin: right center; transform: scaleX(0); }
+.kh-scroll-divider-container.anim-draw-center .kh-divider-line { transform-origin: center center; transform: scaleX(0); }
+.kh-scroll-divider-container.anim-fade-in .kh-divider-line { transform: translateY(10px); }
+
+/* Execution Trigger */
+.kh-scroll-divider-container.is-animated .kh-divider-line {
+    opacity: var(--kh-div-o, 1);
+    transform: scaleX(1) translateY(0);
+}
+
+/* Mobile Static Instant Failsafe */
+@media (max-width: 768px) {
+    .kh-scroll-divider-container.mob-static .kh-divider-line {
+        opacity: var(--kh-div-o, 1) !important;
+        transform: scaleX(1) translateY(0) !important;
+        transition: none !important;
+    }
+}
+
+/* Editor Preview Fallback: Force visibility of the line in Gutenberg */
+.block-editor-block-list__block .kh-scroll-divider-container .kh-divider-line,
+.editor-styles-wrapper .kh-scroll-divider-container .kh-divider-line,
+.kh-editor-preview .kh-divider-line {
+    opacity: var(--kh-div-o, 1) !important;
+    transform: scaleX(1) translateY(0) !important;
+    transition: none !important;
+}
+
+/* Force correct display of the background (gradient or solid) in the editor */
+.editor-styles-wrapper .kh-scroll-divider-container.style-solid .kh-divider-line {
+    background: var(--kh-div-grad, var(--kh-div-c, #10b981)) !important;
+}
+
+/* A11y Vestibular Safety CSS Fallback */
+@media (prefers-reduced-motion: reduce) {
+    .kh-scroll-divider-container .kh-divider-line { transition: none !important; }
+}
+
+/* <fs_premium_only> */
+/* Gradient Fixes */
+.kh-scroll-divider-container.type-gradient .kh-divider-line {
+    background: var(--kh-div-grad, linear-gradient(90deg, var(--kh-div-c), transparent)) !important;
+    border-top-width: 0 !important;
+    height: var(--kh-div-h, 2px); 
+}
+/* </fs_premium_only> */
+
+/* <fs_premium_only> */
+/* Scrubbing Mode Overrides */
+.kh-scroll-divider-container.tether-scrub .kh-divider-line {
+    transition: none !important; /* Managed frame-by-frame by JS */
+}
+
+.kh-scroll-divider-container.tether-scrub.anim-draw-right .kh-divider-line,
+.kh-scroll-divider-container.tether-scrub.anim-draw-left .kh-divider-line,
+.kh-scroll-divider-container.tether-scrub.anim-draw-center .kh-divider-line {
+    transform: scaleX(var(--kh-div-progress, 0));
+    opacity: calc(var(--kh-div-o, 1) * var(--kh-div-progress, 0) + 0.05);
+}
+
+.kh-scroll-divider-container.tether-scrub.anim-fade-in .kh-divider-line {
+    transform: translateY(calc((1 - var(--kh-div-progress, 0)) * 20px));
+    opacity: calc(var(--kh-div-o, 1) * var(--kh-div-progress, 0));
+}
+/* </fs_premium_only> */

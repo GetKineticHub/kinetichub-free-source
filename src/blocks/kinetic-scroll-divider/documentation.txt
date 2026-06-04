@@ -1,0 +1,180 @@
+Block Name: Kinetic Scroll Divider
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Scroll Divider is a Gutenberg block for adding animated decorative dividers between sections in WordPress.
+
+It is designed as a visual replacement for static horizontal separators. Use it to separate content sections, landing page blocks, feature areas, service sections, pricing rows, portfolio entries, and editorial layouts.
+
+The divider is server-rendered and enhanced with lightweight frontend animation when the block enters the viewport.
+
+---
+
+## 2. Features
+
+### Divider Styles
+- Solid line style
+- Dashed line style
+- Dotted line style
+
+### Reveal Animations
+- Draw from center
+- Draw from left
+- Draw from right
+- Fade in
+
+### Color Controls
+- Solid divider color
+- Support for common CSS color formats:
+  - HEX
+  - RGB
+  - RGBA
+  - HSL
+  - HSLA
+  - CSS variables
+
+### Glow
+- Basic glow effect
+- Glow uses the divider line color
+
+### Layout Controls
+- Left alignment
+- Center alignment
+- Right alignment
+- Tight spacing preset
+- Normal spacing preset
+- Spacious spacing preset
+
+### Motion Controls
+- Animation duration control
+- Viewport-triggered reveal
+- Static display when reduced motion is requested
+
+### Responsive Visibility
+- Show on all devices
+- Show on desktop only
+- Show on mobile only
+
+### Accessibility
+- Decorative divider output
+- aria-hidden handling
+- Reduced motion support based on the visitor's system settings
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Scroll Divider".
+4. Insert the block between two content sections.
+5. Choose the divider style, color, spacing, alignment, and animation settings from the block sidebar.
+
+---
+
+## 4. Divider Style
+
+The block includes three line styles:
+
+- Solid
+- Dashed
+- Dotted
+
+Use solid dividers for clean modern sections. Use dashed or dotted dividers for lighter layouts, editorial designs, or visual rhythm between repeated content sections.
+
+---
+
+## 5. Animation Style
+
+The divider can animate when it enters the viewport.
+
+Available animation styles:
+
+- Draw from center
+- Draw from left
+- Draw from right
+- Fade in
+
+Draw animations are useful for stronger section transitions. Fade in is more subtle and works well in minimal layouts.
+
+---
+
+## 6. Spacing
+
+The block includes spacing presets:
+
+- Tight
+- Normal
+- Spacious
+
+Use Tight when the divider is part of a compact layout. Use Normal for standard content flow. Use Spacious when separating large landing page sections or hero-style content areas.
+
+You can also combine these presets with native WordPress spacing controls when your layout requires additional spacing.
+
+---
+
+## 7. Alignment
+
+The divider can be aligned to:
+
+- Left
+- Center
+- Right
+
+Centered dividers work well for balanced page sections. Left or right alignment can be useful for editorial layouts, service sections, or asymmetric designs.
+
+---
+
+## 8. Color and Glow
+
+The divider supports solid color styling.
+
+The glow option adds a subtle halo around the divider using the selected line color. Use glow carefully on clean layouts so the divider remains decorative and does not distract from the main content.
+
+---
+
+## 9. Responsive Visibility
+
+The block includes device visibility options.
+
+You can show the divider on all devices, desktop only, or mobile only. This is useful when a layout needs different visual spacing across screen sizes.
+
+---
+
+## 10. Accessibility Notes
+
+Kinetic Scroll Divider is decorative.
+
+The divider output is hidden from assistive technologies so screen readers do not announce unnecessary visual separators.
+
+When a visitor has reduced motion enabled in their operating system, the divider displays without motion-heavy behavior.
+
+---
+
+## 11. Performance Notes
+
+The animation uses transform-based rendering to avoid unnecessary layout recalculation.
+
+The block uses viewport detection so the reveal runs when the divider enters the visible area. Dynamic cleanup is handled when divider blocks are removed from the page during editor updates, AJAX navigation, or layout refreshes.
+
+For best results, use animated dividers to highlight important section breaks rather than placing too many animated separators close together.
+
+---
+
+## 12. Recommended Usage
+
+Use Kinetic Scroll Divider for:
+
+- Landing page section breaks
+- Feature section separators
+- Service page dividers
+- Portfolio layout separators
+- Pricing table section breaks
+- Editorial content rhythm
+- Decorative page transitions
+- Hero-to-content separation
+
+Keep the divider subtle enough to support the content rather than compete with it.

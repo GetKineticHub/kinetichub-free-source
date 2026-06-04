@@ -1,0 +1,57 @@
+{
+    "apiVersion": 3,
+    "name": "kinetichub/scroll-divider",
+    "version": "1.0.0",
+    "title": "Kinetic Scroll Divider",
+    "category": "kinetic-suite",
+    "description": "Server-rendered animated divider with strict validation and graceful degradation.",
+    "keywords": [
+        "divider",
+        "separator",
+        "line",
+        "hr",
+        "kinetic"
+    ],
+    "attributes": {
+        "lineColor": { "type": "string", "default": "#10b981" },
+        "lineOpacity": { "type": "number", "default": 1 },
+        "thickness": { "type": "number", "default": 2 },
+        "widthPercent": { "type": "number", "default": 100 },
+        "maxWidthPx": { "type": "number", "default": 0 },
+        "alignment": { "type": "string", "default": "center" },
+        "borderStyle": { "type": "string", "default": "solid" },
+        "animStyle": { "type": "string", "default": "draw-center" },
+        "duration": { "type": "number", "default": 1.2 },
+        "triggerOffset": { "type": "number", "default": 0 },
+        "opacityCurve": { "type": "string", "default": "soft" },
+        "glowEffect": { "type": "boolean", "default": true },
+        "glowIntensity": { "type": "string", "default": "medium" },
+        "glowColorMode": { "type": "string", "default": "same" },
+        "spacingPreset": { "type": "string", "default": "normal" },
+        "visibility": { "type": "string", "default": "all" },
+        "mobileBehavior": { "type": "string", "default": "same" },
+        "mobileWidthPercent": { "type": "number", "default": 50 },
+        "staticOnMobile": { "type": "boolean", "default": false },
+        "reducedMotionBehavior": { "type": "string", "default": "static" },
+        "lineType": { "type": "string", "default": "solid" },
+        "gradientColor": { "type": "string", "default": "" },
+        "scrollTether": { "type": "string", "default": "trigger" },
+        "easingMode": { "type": "string", "default": "smooth" }
+    },
+    "supports": {
+        "align": [
+            "wide",
+            "full"
+        ],
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "textdomain": "kinetichub",
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./view.js",
+    "style": "file:./index.css",
+    "editorStyle": "file:./index.css",
+    "render": "file:./render.php"
+}

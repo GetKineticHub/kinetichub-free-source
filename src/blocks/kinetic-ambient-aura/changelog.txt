@@ -1,0 +1,34 @@
+Block Name: Kinetic Ambient Aura
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Ambient Aura.
+- Added a decorative ambient glow block for WordPress layouts.
+- Added CSS-only frontend rendering with no frontend JavaScript required.
+- Added circle glow shape.
+- Added fixed positioning mode for viewport-anchored ambient effects.
+- Added absolute positioning mode for section-based ambient effects.
+- Added color control with support for common CSS color formats.
+- Added opacity control for glow intensity.
+- Added spread radius control.
+- Added softness falloff control.
+- Added horizontal and vertical position controls.
+- Added alpha-enabled color selection in the block editor.
+- Added decorative accessibility handling with aria-hidden output.
+
+### Improved
+- Improved server-side validation for color values.
+- Improved numerical clamping for opacity, spread, softness, and positioning controls.
+- Improved HSL and HSLA color format support.
+- Improved editor selection behavior inside the block editor.
+- Improved compatibility with WordPress Full Site Editing spacing behavior.
+- Improved zero-height layout behavior so the decorative glow does not create unwanted page gaps.
+- Improved radial gradient output for cleaner transparent edges on bright backgrounds.
+- Improved spacing compatibility with theme block gap settings.
+
+### Fixed
+- Fixed unwanted vertical spacing caused by theme and Full Site Editing block gap rules.
+- Fixed grey or dirty gradient edges on light backgrounds.
+- Fixed editor color control behavior for transparent color values.
+- Fixed overly aggressive spacing resets that could interfere with theme layout rhythm.
+- Fixed documentation wording for absolute positioning behavior.

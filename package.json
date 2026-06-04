@@ -1,0 +1,46 @@
+{
+  "name": "kinetichub-suite",
+  "version": "1.0.0",
+  "description": "Premium WordPress Block Suite with Advanced Motion Engine.",
+  "author": "kinetichub",
+  "license": "GPL-2.0-or-later",
+  "main": "build/index.js",
+  "files": [
+    "build",
+    "src",
+    "scripts",
+    "assets",
+    "languages",
+    "vendor",
+    "kinetichub.php",
+    "uninstall.php",
+    "readme.txt",
+    "changelog.txt",
+    "license.txt",
+    "documentation",
+    "webpack.config.js"
+  ],
+"scripts": {
+  "build": "wp-scripts build --webpack-src-dir=src --webpack-copy-php",
+  "build:free": "node scripts/build-free.js",
+  "build:pro": "node scripts/build-pro.js",
+  "format": "wp-scripts format",
+  "lint:css": "wp-scripts lint-style",
+  "lint:js": "wp-scripts lint-js",
+  "packages-update": "wp-scripts packages-update",
+  "plugin-zip": "wp-scripts plugin-zip",
+  "start": "wp-scripts start --webpack-src-dir=src --webpack-copy-php",
+  "test": "jest"
+},
+  "devDependencies": {
+    "@babel/preset-react": "^7.28.5",
+    "@testing-library/dom": "^10.4.1",
+    "@wordpress/scripts": "^31.5.0",
+    "jest": "^30.3.0",
+    "mini-css-extract-plugin": "^2.9.0"
+  },
+  "dependencies": {
+    "@wordpress/components": "^32.2.0",
+    "@wordpress/element": "^6.20.0"
+  }
+}

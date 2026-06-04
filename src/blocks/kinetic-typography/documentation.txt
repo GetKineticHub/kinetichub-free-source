@@ -1,0 +1,209 @@
+Block Name: Kinetic Typography
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Typography is a Gutenberg block for creating animated headings and short text sections in WordPress.
+
+It uses server-rendered text splitting, CSS animations, and viewport-based triggers to animate text while keeping the frontend lightweight and accessible.
+
+Use it for hero headlines, section titles, landing page copy, feature highlights, portfolio headings, editorial intros, and call-to-action text.
+
+---
+
+## 2. Features
+
+### Text Animation
+- Reveal animation
+- Blur In animation
+- Pop In animation
+- Scroll-triggered animation
+- Direction control
+- Duration control
+- Stagger delay control
+- Viewport threshold control
+- Easing control
+- Optional reverse animation order
+
+### Text Splitting
+- Character-based splitting
+- Word-based splitting
+- Screen-reader friendly fallback text
+
+### Semantic Output
+- Heading output
+- Paragraph output
+- Div output
+- Span output
+
+### Typography Styling
+- Optional outline text styling
+- Desktop font size control
+- Mobile font size control
+- Desktop line height control
+- Mobile line height control
+- Native WordPress typography support when available from the active theme
+
+### Accessibility
+- Preserved readable fallback text for assistive technologies
+- Reduced motion support based on the visitor's system settings
+- Semantic HTML tag selection
+- Lightweight frontend behavior
+
+### Performance
+- Server-rendered text structure
+- Viewport-based animation initialization
+- Dynamic cleanup for removed blocks
+- No external animation library required
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Typography".
+4. Insert the block into the page.
+5. Type your heading or short text directly into the block.
+6. Choose the HTML tag, split type, animation style, timing, direction, and typography settings from the block sidebar.
+
+---
+
+## 4. Writing Text Content
+
+Kinetic Typography works best with short, focused text.
+
+Recommended content types:
+
+- Hero headlines
+- Section titles
+- Short marketing lines
+- Feature headings
+- Portfolio titles
+- Editorial intros
+- Call-to-action text
+
+For long paragraphs, word-based splitting is usually more readable and performs better than character-based splitting.
+
+---
+
+## 5. Animation Styles
+
+The block includes three animation styles:
+
+- Reveal: A masked entrance effect for clean headline reveals.
+- Blur In: Text appears with a blur-to-sharp transition.
+- Pop In: Text appears with a more energetic scaling motion.
+
+Use Reveal for clean professional layouts, Blur In for softer cinematic sections, and Pop In for more expressive landing page headings.
+
+---
+
+## 6. Split Type
+
+The block can split text by:
+
+- Characters
+- Words
+
+Character splitting creates a detailed staggered animation and works best for short headlines.
+
+Word splitting creates a calmer animation and works better for longer headings or short sentences.
+
+---
+
+## 7. Direction and Timing
+
+Animation settings include:
+
+- Direction
+- Duration
+- Stagger delay
+- Viewport threshold
+- Easing
+- Reverse order
+
+Direction controls where the motion comes from. Duration controls the speed of each animated segment. Stagger controls the delay between each character or word.
+
+Viewport threshold controls when the animation starts as the block enters the visible area.
+
+---
+
+## 8. Semantic Tag Selection
+
+The block allows you to choose the output tag for the text.
+
+Available tag types include:
+
+- Heading tags
+- Paragraph
+- Div
+- Span
+
+Use heading tags for actual page headings. Use paragraph, div, or span output when the animated text is decorative or part of a larger layout structure.
+
+---
+
+## 9. Outline Text
+
+The outline option adds an outlined text style.
+
+This can be useful for hero sections, creative headlines, portfolio covers, and high-impact visual layouts.
+
+Always check readability when using outline styling, especially over busy backgrounds.
+
+---
+
+## 10. Responsive Typography
+
+The block includes optional custom typography controls for desktop and mobile.
+
+Available controls include:
+
+- Desktop font size
+- Mobile font size
+- Desktop line height
+- Mobile line height
+
+Use mobile-specific values when a large desktop headline needs to scale down for smaller screens.
+
+---
+
+## 11. Accessibility Notes
+
+Kinetic Typography is built with accessibility in mind.
+
+The animated text includes a readable fallback for assistive technologies, while the visual split elements are used for presentation.
+
+When a visitor has reduced motion enabled in their operating system, motion-heavy behavior is reduced for a more comfortable reading experience.
+
+Choose the correct semantic tag so the text keeps the right meaning in the page structure.
+
+---
+
+## 12. Performance Notes
+
+The text splitting structure is generated during server rendering.
+
+Animations are initialized when the block enters the viewport, helping avoid unnecessary animation work before the text is visible.
+
+For best results, keep character-based animation for shorter text and use word-based animation for longer text.
+
+---
+
+## 13. Recommended Usage
+
+Use Kinetic Typography for:
+
+- Hero headlines
+- Landing page section titles
+- Portfolio project titles
+- Feature headings
+- Service page intros
+- Editorial headers
+- Product launch copy
+- Call-to-action headings
+
+Keep the text concise, readable, and meaningful. Motion should support the message rather than make the text harder to read.

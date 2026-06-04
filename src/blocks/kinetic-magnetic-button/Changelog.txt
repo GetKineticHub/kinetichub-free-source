@@ -1,0 +1,41 @@
+Block Name: Kinetic Magnetic Button
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Magnetic Button.
+- Added a magnetic cursor attraction effect with configurable strength and detection range.
+- Added text parallax separation for layered hover interaction.
+- Added hover scale behavior.
+- Added pulse animation support.
+- Added fade hover background transition.
+- Added glass-style backdrop filtering.
+- Added outline mode.
+- Added base and hover shadow controls.
+- Added border controls for width, style, color, and radius.
+- Added vertical and horizontal padding controls.
+- Added desktop and mobile font size controls.
+- Added button alignment controls for left, center, and right positioning.
+- Added link controls for URL, open in new tab, and rel attributes.
+- Added built-in icon support with arrow, chevron, play, plus, download, external, cart, and check icons.
+- Added icon position, size, and visibility controls.
+- Added status indicators including dot, radar, sparkles, and badge.
+- Added accessibility support for decorative SVG handling and keyboard-friendly link behavior.
+- Added reduced motion handling for visitors who prefer less animation.
+
+### Improved
+- Improved magnetic interaction performance with shared pointer tracking.
+- Improved viewport-aware behavior so animation work pauses when the button is not visible.
+- Improved cleanup for observers and interaction listeners when buttons are removed from the page.
+- Improved color validation for common CSS color formats.
+- Improved shadow and pulse rendering in outline mode.
+- Improved status indicator consistency between editor and frontend output.
+- Improved frontend output escaping and attribute handling.
+
+### Fixed
+- Fixed sparkles status indicator availability in the editor and frontend styles.
+- Fixed icon and status indicator settings so they remain available as standard button features.
+- Fixed magnetic strength, range, and text parallax controls so they remain available as standard interaction settings.
+- Fixed fade hover background behavior.
+- Fixed pulse animation visibility when outline mode is active.
+- Fixed decorative SVG output so visual icons and indicators are hidden from assistive technologies where appropriate.
+- Fixed observer cleanup to prevent unnecessary monitoring after button instances are removed.

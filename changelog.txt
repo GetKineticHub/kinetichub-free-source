@@ -1,0 +1,65 @@
+# kinetichub SUITE - MASTER CHANGELOG
+Product: kinetichub Suite
+Current Version: 1.0.5
+Website: https://getkinetichub.com
+
+
+
+----------------------------------------------------------------------
+## [1.0.5] - 2026-06-04
+----------------------------------------------------------------------
+- Improved Split Scroll mobile inline media layout when "Enable Sticky Media on Mobile" is disabled.
+- Improved Split Scroll mobile media grouping so each media item stays with its related content section.
+- Reduced large spacer gaps in Split Scroll mobile inline mode.
+----------------------------------------------------------------------
+## [1.0.4] - 2026-06-04
+----------------------------------------------------------------------
+- Fixed Magnetic Button icon clipping when button icons are enabled.
+- Fixed Magnetic Button hover layer behavior where the normal background could remain visible behind animated effects.
+- Fixed Kinetic Box nested block rendering by preserving valid InnerBlocks markup instead of re-sanitizing rendered child block output.
+- Fixed Hero Mesh rendering when nested inside Kinetic Box.
+- Fixed Before/After Slider handle arrows/icons when nested inside Kinetic Box.
+- Fixed Split Scroll mobile media fallback when "Enable Sticky Media on Mobile" is disabled.
+- Updated selected block preview images.
+----------------------------------------------------------------------
+## [1.0.2] - 2026-05-27
+----------------------------------------------------------------------
+### Hotfix
+- Restored the WordPress.org-safe plugin bootstrap so the distributed package does not require a missing vendor dependency.
+- Kept the updated KineticHub plugin display name and WordPress.org readme improvements.
+----------------------------------------------------------------------
+## [1.0.1] - 2026-05-27
+----------------------------------------------------------------------
+### WordPress.org Listing & Branding
+- Updated the plugin display name to "KineticHub – Animated Gutenberg Blocks" for clearer branding in the WordPress Plugins screen.
+- Improved the WordPress.org readme content, formatting, FAQs, screenshots list, and public-facing descriptions.
+- Removed duplicate manual block listing from the readme so the WordPress.org block metadata section can remain the primary block list.
+----------------------------------------------------------------------
+## [1.0.0] - 2026-03-25
+----------------------------------------------------------------------
+### System & Core Engine
+- Initial release of the kinetichub Suite.
+- Engineered the `KineticTicker` unified animation engine: A centralized `requestAnimationFrame` loop that prevents CPU throttling across all blocks.
+- Implemented global garbage collection: Event listeners and physics hooks are dynamically destroyed via `AbortController` upon component unmount.
+- Integrated OS-level accessibility: Engine globally intercepts `prefers-reduced-motion` to halt physics for visually sensitive users.
+- Built the React Master Control Dashboard for centralized block management, licensing, and global CSS variable injection.
+
+### Blocks Included (12 Blocks)
+- Kinetic Ambient Aura (v1.0.0)
+- Kinetic Audio Player (v1.0.0)
+- Kinetic Before/After (v1.0.0)
+- Kinetic Box (v1.0.0)
+- Kinetic Cursor Reveal (v1.0.0)
+- Kinetic Hero Mesh (v1.0.0)
+- Kinetic Magnetic Button (v1.0.0)
+- Kinetic Marquee (v1.0.0)
+- Kinetic Scroll Divider (v1.0.0)
+- Kinetic Split Scroll (v1.0.0)
+- Kinetic Typography (v1.0.0)
+- Kinetic Video Modal (v1.0.0)
+
+### Security & Compliance
+- WordPress coding standards applied across all PHP render files.
+- Strict late escaping enforced: DOM nodes are processed safely.
+- REST API endpoints secured with strict permission callbacks and data sanitization schemas.
+- Data validation enforced natively via block.json attribute types.

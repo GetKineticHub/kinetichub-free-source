@@ -1,0 +1,247 @@
+Block Name: Kinetic Box
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Box is a Gutenberg container block for creating styled, interactive content sections in WordPress.
+
+It can hold nested blocks such as headings, paragraphs, images, buttons, audio players, or other layout elements. Use it to create cards, feature boxes, call-to-action sections, service panels, pricing highlights, portfolio items, and reusable content containers.
+
+---
+
+## 2. Features
+
+### Container Structure
+- Nested block support
+- Flexible width control
+- Left, center, and right box alignment
+- Horizontal content alignment
+- Vertical content alignment
+- Minimum height control
+- Native WordPress spacing support
+- Native WordPress typography support
+- Native WordPress color support
+- Native WordPress border support
+
+### Quick Presets
+- Soft Elevate
+- Minimal Scale
+
+### Hover Animations
+- None
+- Lift
+- Scale
+- CSS Tilt
+
+### Hover Styling
+- Hover background color
+- Hover border color
+- Hover text color
+- Box glow effect
+- Grayscale filter toggle
+- Image zoom on hover
+- Bring to front on hover
+
+### Motion Settings
+- Transition speed control
+- Easing mode selection:
+  - Smooth
+  - Bouncy
+  - Snappy
+- Rotation angle control for CSS tilt behavior
+- Reduced motion handling for visitors who prefer less animation
+
+### Shadow Settings
+- Shadow softness control
+- Shadow opacity control
+- Shadow color control
+- Mobile-specific shadow settings
+
+### Links and Navigation
+- Box URL field
+- Option to make the full box clickable
+- Open in new tab option
+- Rel attribute control
+- Custom link label support
+
+### Responsive Options
+- Hide on mobile
+- Hide on desktop
+
+### Accessibility
+- Semantic wrapper structure
+- Dynamic role output based on clickable behavior
+- ARIA label support for clickable boxes
+- Keyboard-friendly link behavior
+- Reduced motion support based on the visitor's system settings
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Box".
+4. Insert the block into the page.
+5. Add nested content inside the box.
+6. Adjust the layout, styling, hover behavior, link settings, and responsive options from the block sidebar.
+
+---
+
+## 4. Working With Nested Content
+
+Kinetic Box is designed to act as a flexible wrapper for other blocks.
+
+You can place common WordPress blocks inside it, including:
+
+- Heading
+- Paragraph
+- Image
+- Button
+- List
+- Columns
+- Group
+- Media blocks
+- Other Kinetic blocks
+
+Use the inner content area to build the structure, then use the Kinetic Box settings to style the container around that content.
+
+---
+
+## 5. Layout Controls
+
+The block includes flexible layout controls for common card and section designs.
+
+Use the width control to define how wide the box should be inside its parent container. Use the alignment controls to position the box to the left, center, or right.
+
+Content alignment controls adjust how nested blocks are positioned inside the box.
+
+The minimum height control is useful for keeping multiple cards visually consistent in grid layouts.
+
+---
+
+## 6. Quick Presets
+
+The block includes two starting presets:
+
+- Soft Elevate: A clean raised-card style for modern content sections.
+- Minimal Scale: A subtle hover scale style for lightweight interactive cards.
+
+Presets are intended as starting points. You can adjust colors, shadows, spacing, animation, and link settings after selecting a preset.
+
+---
+
+## 7. Hover Animations
+
+Available hover animation options:
+
+- None: No hover animation.
+- Lift: Moves the box slightly upward on hover.
+- Scale: Slightly enlarges the box on hover.
+- CSS Tilt: Applies a lightweight perspective rotation.
+
+Use the transition speed and easing controls to tune how the hover effect feels.
+
+For a more subtle experience, keep the transition speed moderate and use Smooth easing. For a more expressive card interaction, use Bouncy or Snappy easing.
+
+---
+
+## 8. Hover Styling
+
+Kinetic Box can change visual styles on hover.
+
+Available hover styling options include:
+
+- Background color change
+- Border color change
+- Text color change
+- Box glow
+- Grayscale filter
+- Image zoom
+- Bring to front
+
+The bring-to-front option is useful when boxes appear in a grid and need to visually rise above neighboring elements during hover.
+
+---
+
+## 9. Shadow Settings
+
+The block includes shadow customization controls for:
+
+- Shadow softness
+- Shadow opacity
+- Shadow color
+- Mobile shadow behavior
+
+Mobile-specific shadow settings help keep smaller screens visually clean and reduce unnecessary visual weight.
+
+---
+
+## 10. Clickable Box Setup
+
+Kinetic Box can be used as a clickable card.
+
+To create a clickable box:
+
+1. Add a URL in the Box URL field.
+2. Enable the option to make the full box clickable.
+3. Add a clear link label for accessibility.
+4. Choose whether the link should open in a new tab.
+5. Adjust the rel attribute when needed.
+
+When the full-box clickable option is enabled, the block outputs link-oriented semantics. When it is not enabled, the block behaves as a standard grouped container.
+
+---
+
+## 11. Stretched Link Behavior
+
+The stretched link option makes the full box clickable while preserving the ability to edit nested content in the block editor.
+
+Interactive elements placed inside the box, such as links or buttons, should remain usable when the theme and layout do not override the block's layering styles.
+
+Avoid placing too many competing links inside a fully clickable card, as this can create confusing navigation behavior for visitors.
+
+---
+
+## 12. Responsive Behavior
+
+The block includes visibility controls for common responsive layouts.
+
+You can hide the box on mobile or desktop when a page needs different layouts for different screen sizes.
+
+---
+
+## 13. Accessibility Notes
+
+Kinetic Box is built with accessibility in mind.
+
+Clickable boxes can include an accessible label so visitors using assistive technologies understand the purpose of the card link. The wrapper role changes based on whether the box is used as a clickable card or a standard content group.
+
+When a visitor has reduced motion enabled in their operating system, motion-heavy behavior is reduced for a more comfortable browsing experience.
+
+---
+
+## 14. Performance Notes
+
+Kinetic Box uses CSS-based hover behavior for lightweight interaction.
+
+The block is suitable for repeated use in card grids, feature sections, landing pages, and content layouts. For best results, avoid overly heavy nested media in large grids and optimize images before uploading them.
+
+---
+
+## 15. Recommended Usage
+
+Use Kinetic Box for:
+
+- Feature cards
+- Service boxes
+- Pricing highlights
+- Portfolio cards
+- Call-to-action sections
+- Product benefit sections
+- Landing page panels
+- Content groups
+- Clickable card layouts
+- Reusable visual containers

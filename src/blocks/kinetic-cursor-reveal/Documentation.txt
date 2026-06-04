@@ -1,0 +1,162 @@
+Block Name: Kinetic Cursor Reveal
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Cursor Reveal is a Gutenberg block for creating interactive lists where each item reveals a floating image or video preview.
+
+It is useful for portfolio indexes, project lists, service menus, editorial navigation, case study links, product highlights, and creative landing pages where text items need a visual preview on hover, focus, or tap.
+
+---
+
+## 2. Features
+
+### List Structure
+- Up to 3 reveal items
+- Editable title for each item
+- Editable subtitle for each item
+- Optional link URL for each item
+- Item reordering
+- Item deletion
+- Inline item editing in the block sidebar
+
+### Media Reveal
+- Image reveal support
+- Video reveal support
+- Inline media upload
+- Inline media preview in the editor
+- Cursor-following floating media preview
+- Basic fade reveal behavior
+- Video pause handling when reveal ends
+
+### Link Behavior
+- Optional URL per item
+- Global open in new tab option
+- Safer rel handling for links that open in a new tab
+- Click navigation for linked items
+
+### Mobile and Touch Behavior
+- Tap-to-reveal interaction on touch devices
+- Touch-friendly fallback behavior
+- Reduced motion handling
+
+### Keyboard and Accessibility
+- Focus-based reveal behavior
+- Enter key activation for linked items
+- Space key activation for linked items
+- Semantic list structure
+- Reduced motion support based on the visitor's system settings
+
+### Editor Experience
+- Sidebar item editor
+- Inline media preview
+- Contextual help text for controls
+- Responsive item management layout
+- Contained editor preview
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Cursor Reveal".
+4. Insert the block into the page.
+5. Open the block sidebar settings.
+6. Add or edit list items.
+7. Add titles, subtitles, media, and optional links for each item.
+8. Preview the reveal behavior in the editor and on the frontend.
+
+---
+
+## 4. Adding Items
+
+Each item can include:
+
+- Title
+- Subtitle
+- Image or video media
+- Optional link URL
+
+Use concise titles for best visual impact. Subtitles work well for categories, dates, locations, short descriptions, or supporting labels.
+
+---
+
+## 5. Media Setup
+
+Each item can display an image or video as its reveal preview.
+
+Recommended media types:
+
+- Images for portfolio previews, product visuals, case studies, or service thumbnails.
+- Videos for motion previews, reels, product demos, or short visual loops.
+
+For best performance, optimize images before uploading and keep videos short and web-friendly.
+
+---
+
+## 6. Interaction Behavior
+
+On pointer-based devices, the media preview appears when a visitor hovers or focuses an item.
+
+On touch devices, the block uses tap-to-reveal behavior so visitors can still access the preview without hover support.
+
+Keyboard users can focus list items and activate linked items with Enter or Space.
+
+---
+
+## 7. Link Setup
+
+Each item can include an optional URL.
+
+Use item links for:
+
+- Portfolio project pages
+- Case studies
+- Product pages
+- Service pages
+- External references
+- Contact or booking destinations
+
+The open in new tab option applies globally to item links inside the block.
+
+---
+
+## 8. Accessibility Notes
+
+Kinetic Cursor Reveal is built with accessibility in mind.
+
+The block uses a semantic list structure and supports keyboard focus behavior. Linked items can be activated with standard keyboard controls.
+
+When a visitor has reduced motion enabled in their operating system, motion-heavy behavior is reduced for a more comfortable browsing experience.
+
+Use clear titles and meaningful link destinations so visitors understand where each item leads.
+
+---
+
+## 9. Performance Notes
+
+The reveal preview is positioned in a way that helps avoid clipping inside theme containers with restrictive overflow styles.
+
+The block cleans up interaction listeners and media behavior when it is removed from the page dynamically, such as during AJAX navigation, editor refreshes, or layout updates.
+
+Videos pause when the reveal state ends so hidden media does not continue playing in the background.
+
+---
+
+## 10. Recommended Usage
+
+Use Kinetic Cursor Reveal for:
+
+- Portfolio project lists
+- Creative agency case studies
+- Service menus
+- Product collections
+- Editorial feature indexes
+- Team or artist showcases
+- Interactive navigation sections
+- Landing page highlights
+
+For best results, use consistent media dimensions across all items and keep item text short enough to scan quickly.

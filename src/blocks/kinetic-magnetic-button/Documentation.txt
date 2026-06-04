@@ -1,0 +1,238 @@
+Block Name: Kinetic Magnetic Button
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Magnetic Button is a Gutenberg block for creating animated call-to-action buttons in WordPress.
+
+It combines standard button controls with a magnetic cursor interaction, icon support, status indicators, hover styling, and responsive sizing options.
+
+Use it for hero calls to action, product links, landing page buttons, feature highlights, downloads, external links, cart actions, and interactive navigation prompts.
+
+---
+
+## 2. Features
+
+### Magnetic Interaction
+- Cursor attraction effect
+- Configurable magnetic strength
+- Configurable detection range
+- Text parallax separation
+- Hover scale behavior
+- Reduced motion handling
+
+### Button Content
+- Editable button text
+- Optional icon
+- Icon position control
+- Icon size control
+- Option to always show the icon
+- Status indicator support
+
+### Built-in Icons
+- Arrow
+- Chevron
+- Play
+- Plus
+- Download
+- External
+- Cart
+- Check
+
+### Status Indicators
+- Dot
+- Radar
+- Sparkles
+- Badge
+
+### Styling
+- Background color
+- Text color
+- Border color
+- Hover background color
+- Hover text color
+- Hover border color
+- Glass-style backdrop filtering
+- Outline mode
+- Pulse animation
+- Base shadow controls
+- Hover shadow controls
+- Border width control
+- Border style control
+- Border radius control
+
+### Layout and Spacing
+- Left alignment
+- Center alignment
+- Right alignment
+- Vertical padding control
+- Horizontal padding control
+- Desktop font size control
+- Mobile font size control
+
+### Link Settings
+- URL field
+- Open in new tab option
+- Rel attribute control
+
+### Accessibility
+- Keyboard-friendly link behavior
+- Decorative SVG hiding for assistive technologies
+- Reduced motion support based on the visitor's system settings
+- Standard link semantics when a URL is provided
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Magnetic Button".
+4. Insert the block into the page.
+5. Edit the button text directly in the editor.
+6. Add the destination URL in the block settings.
+7. Adjust colors, spacing, icon settings, status indicator, and magnetic behavior from the sidebar controls.
+
+---
+
+## 4. Text and Link Setup
+
+Click inside the button to edit the button label.
+
+Use the link settings to configure:
+
+- Destination URL
+- Open in new tab behavior
+- Rel attribute
+
+When linking to an external page, opening in a new tab can be useful. The rel attribute field gives you control over link relationship values when needed.
+
+---
+
+## 5. Magnetic Settings
+
+The magnetic interaction moves the button toward the cursor while the pointer is near the element.
+
+Available settings:
+
+- Detection range: controls how close the cursor must be before the effect starts.
+- Magnetic strength: controls how strongly the button reacts to the cursor.
+- Text parallax: moves the inner text and icon separately from the button background.
+- Hover scale: slightly increases the button size on hover.
+
+For subtle interactions, use a lower strength value and a moderate detection range. For a stronger call-to-action effect, increase the strength and range carefully.
+
+On touch devices or when reduced motion is requested, the button can fall back to a calmer static interaction.
+
+---
+
+## 6. Icons
+
+The block includes eight built-in icons:
+
+- Arrow
+- Chevron
+- Play
+- Plus
+- Download
+- External
+- Cart
+- Check
+
+You can place the icon on the left or right side of the text. You can also adjust icon size and choose whether the icon is always visible or appears as part of the hover interaction.
+
+---
+
+## 7. Status Indicators
+
+Status indicators can add extra visual context to a button.
+
+Available indicators:
+
+- Dot: a simple circular indicator.
+- Radar: an animated ring indicator.
+- Sparkles: a decorative sparkle indicator.
+- Badge: a small text badge.
+
+Use indicators sparingly so the button remains readable and focused.
+
+---
+
+## 8. Styling
+
+The block includes separate controls for normal and hover styling.
+
+Common styling options include:
+
+- Background color
+- Text color
+- Border color
+- Hover background color
+- Hover text color
+- Hover border color
+- Shadow settings
+- Border radius
+- Outline mode
+- Pulse animation
+- Glass-style backdrop filtering
+
+Outline mode is useful for lighter layouts where the button should feel less heavy. Shadow controls are useful for stronger call-to-action sections and hero areas.
+
+---
+
+## 9. Spacing and Sizing
+
+The block includes controls for:
+
+- Vertical padding
+- Horizontal padding
+- Desktop font size
+- Mobile font size
+- Border radius
+- Alignment
+
+Use the mobile font size control when the desktop button size feels too large on smaller screens.
+
+---
+
+## 10. Accessibility Notes
+
+Kinetic Magnetic Button is built with accessibility in mind.
+
+When a URL is provided, the button uses standard link behavior. Keyboard users can focus and activate it using normal browser navigation.
+
+Decorative SVG icons and visual indicators are hidden from assistive technologies where appropriate.
+
+When a visitor has reduced motion enabled in their operating system, motion-heavy behavior is reduced for a more comfortable browsing experience.
+
+Always use clear button text that describes the action, such as "Download File", "View Pricing", "Start Project", or "Add to Cart".
+
+---
+
+## 11. Performance Notes
+
+The button uses shared pointer tracking for efficient magnetic interaction across multiple instances on the same page.
+
+Animation work is paused when the button is outside the viewport, and event listeners are cleaned up when button instances are removed from the page dynamically.
+
+For best results, use magnetic buttons for important actions rather than every link on a page.
+
+---
+
+## 12. Recommended Usage
+
+Use Kinetic Magnetic Button for:
+
+- Hero section calls to action
+- Product buttons
+- Download links
+- Pricing page actions
+- Portfolio project links
+- Contact prompts
+- Cart actions
+- Demo links
+- Feature section buttons
+
+Keep button text concise and action-oriented. A short label usually performs better visually and remains easier to scan.

@@ -1,0 +1,46 @@
+Block Name: Kinetic Video Modal
+Version: 1.0.0
+
+----------------------------------------------------------------------
+
+## [1.0.0] - 2026-04-02
+
+### Added
+- Initial release of Kinetic Video Modal.
+- Added modal playback for YouTube, Vimeo, and self-hosted video URLs.
+- Added inline playback mode that replaces the preview container with the active video.
+- Added custom cover image support.
+- Added automatic YouTube thumbnail detection with fallback handling.
+- Added aspect ratio options: 16:9, 4:3, 21:9, and 1:1.
+- Added button style options: solid, glass, and outline.
+- Added button color control.
+- Added play icon color control.
+- Added button size control.
+- Added image overlay opacity control.
+- Added backdrop style options for modal playback.
+- Added close on backdrop click setting.
+- Added optional outside close button positioning.
+- Added local video preload setting.
+- Added ARIA label controls for the play button, dialog, and close button.
+- Added server-side developer hooks for render customization and thumbnail filtering.
+
+### Security
+- Added frontend URL validation before creating iframe or native video elements.
+- Added support for YouTube, YouTube NoCookie, Vimeo, and direct self-hosted video files.
+- Added safe fallback behavior for unsupported or malformed video URLs.
+- Added DOM-based close button SVG creation.
+- Added server-side validation and escaping for rendered output values.
+
+### Accessibility
+- Added modal focus trap.
+- Added Escape key close handling.
+- Added focus restoration after modal close.
+- Added screen-reader announcements for modal open and close actions.
+- Added configurable ARIA labels for key interactive elements.
+- Added dialog semantics for modal playback.
+
+### Performance
+- Added lazy iframe creation so third-party video embeds are not initialized during the initial page render.
+- Added YouTube thumbnail fallback timeout handling.
+- Added local video preload handling.
+- Added viewport-aware preload upgrade behavior for self-hosted videos.

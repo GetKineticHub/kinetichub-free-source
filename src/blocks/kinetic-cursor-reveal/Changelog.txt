@@ -1,0 +1,42 @@
+Block Name: Kinetic Cursor Reveal
+Version: 1.0.0
+
+### Added
+- Initial release of Kinetic Cursor Reveal.
+- Added an interactive list block with cursor-following media reveal.
+- Added support for up to 3 reveal items.
+- Added title and subtitle fields for each item.
+- Added image and video media support for reveal previews.
+- Added inline media upload and preview in the block editor.
+- Added item management controls for editing, reordering, and deleting items.
+- Added optional link URL support for each item.
+- Added a global option to open item links in a new tab.
+- Added tap-to-reveal behavior for touch devices.
+- Added keyboard support for activating focused items with Enter and Space.
+- Added focus-based reveal behavior for keyboard navigation.
+- Added reduced motion handling for visitors who prefer less animation.
+- Added contextual help text for editor controls.
+
+### Improved
+- Improved floating media behavior by positioning reveal previews outside restrictive theme containers.
+- Improved cleanup behavior when blocks are removed from the page dynamically.
+- Improved video lifecycle handling so videos pause when the reveal state ends.
+- Improved media URL detection for common video formats and URLs with query strings.
+- Improved editor preview containment to prevent overflow issues.
+- Improved default editor text color for better visibility.
+- Improved item editing responsiveness across different editor widths.
+- Improved floating media positioning so previews stay within document boundaries.
+- Improved link safety for links that open in a new tab.
+- Improved color validation for common CSS color formats.
+
+### Fixed
+- Fixed mobile reveal behavior so touch-specific layouts do not affect desktop display.
+- Fixed keyboard activation for linked list items.
+- Fixed hidden video playback after reveal interactions end.
+- Fixed unnecessary observer activity after all block instances are removed.
+- Fixed video detection for .mov, .ogg, and media URLs with query strings.
+- Fixed editor preview overflow.
+- Fixed low-contrast default text in the editor.
+- Fixed item management layout issues in narrow editor panels.
+- Fixed floating preview positioning near document edges.
+- Fixed external link rel handling when opening links in a new tab.

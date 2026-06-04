@@ -1,0 +1,156 @@
+Block Name: Kinetic Ambient Aura
+Version: 1.0.0
+
+---
+
+## 1. Overview
+
+Kinetic Ambient Aura is a Gutenberg block for adding decorative ambient glow effects to WordPress pages.
+
+It is designed for background lighting, soft visual accents, hero sections, feature areas, landing pages, and creative page compositions.
+
+The block renders with CSS only on the frontend and does not require frontend JavaScript.
+
+---
+
+## 2. Features
+
+### Glow Shape
+- Circle glow
+
+### Positioning
+- Fixed positioning
+- Absolute positioning
+
+### Color Controls
+- Color picker support
+- Alpha transparency support
+- Support for common CSS color formats:
+  - HEX
+  - RGB
+  - RGBA
+  - HSL
+  - HSLA
+  - CSS variables
+
+### Visual Controls
+- Opacity control
+- Spread radius control
+- Softness falloff control
+- Horizontal position control
+- Vertical position control
+
+### Layout Behavior
+- Zero-height DOM footprint
+- Decorative background-style rendering
+- Theme spacing compatibility
+
+### Accessibility
+- Decorative output
+- aria-hidden handling
+- No required keyboard interaction
+
+### Performance
+- CSS-only frontend rendering
+- No frontend JavaScript required
+- Radial gradient based visual output
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter button.
+3. Search for "Kinetic Ambient Aura".
+4. Insert the block near the section where you want the glow effect.
+5. Choose the color, opacity, spread, softness, position, and positioning mode from the block sidebar.
+
+---
+
+## 4. Positioning Modes
+
+### Fixed
+
+Fixed positioning anchors the glow to the viewport.
+
+The glow remains in the same screen position while the visitor scrolls. This is useful for page-wide ambient lighting or decorative visual atmosphere that should stay visible across sections.
+
+### Absolute
+
+Absolute positioning places the glow relative to where the block appears in the document flow.
+
+This is useful for section-specific ambient effects, such as adding a soft glow behind a hero section, feature row, or visual content area.
+
+---
+
+## 5. Color Setup
+
+The block supports common CSS color formats.
+
+Supported formats include:
+
+- HEX
+- RGB
+- RGBA
+- HSL
+- HSLA
+- CSS variables
+
+The editor color picker outputs standard color values and supports alpha transparency. CSS variable values can also be used when added through compatible workflows or block markup.
+
+---
+
+## 6. Opacity, Spread, and Softness
+
+The main visual controls are:
+
+- Opacity: controls how visible the glow is.
+- Spread: controls the size of the glow.
+- Softness: controls how gradually the glow fades out.
+
+Use lower opacity for subtle background ambience. Use larger spread values for soft page-wide lighting. Use higher softness values for smoother falloff.
+
+---
+
+## 7. Layout Notes
+
+Kinetic Ambient Aura is decorative and is designed not to create visible layout height.
+
+The block uses a zero-height footprint so it can add visual atmosphere without pushing surrounding content down the page.
+
+Place the block close to the section it is meant to decorate so the editor layout remains easy to understand.
+
+---
+
+## 8. Accessibility Notes
+
+Kinetic Ambient Aura is a decorative visual effect.
+
+The rendered glow is hidden from assistive technologies with aria-hidden output. It does not add interactive controls to the frontend and does not require keyboard focus.
+
+Avoid using the glow as the only way to communicate meaning. Important information should always be available through visible text or semantic content.
+
+---
+
+## 9. Performance Notes
+
+The block uses CSS radial gradients and does not load frontend JavaScript.
+
+For best results, use a small number of large ambient effects instead of many overlapping glows. Very large, highly opaque glows can be visually heavy on lower-powered devices, especially when layered over complex sections.
+
+---
+
+## 10. Recommended Usage
+
+Use Kinetic Ambient Aura for:
+
+- Hero section background lighting
+- Landing page visual accents
+- Soft color atmosphere
+- Feature section decoration
+- Portfolio page ambience
+- Product page highlights
+- Creative layout depth
+- Decorative page transitions
+
+Keep the effect subtle enough to support the content without reducing readability.

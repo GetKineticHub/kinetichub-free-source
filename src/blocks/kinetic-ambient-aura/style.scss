@@ -1,0 +1,123 @@
+/**
+ * Kinetic Ambient Aura - Styling Engine
+ * Version: 1.0.0
+ */
+
+.wp-block-kinetichub-ambient-aura,
+.kh-ambient-aura {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+    border: none !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+    position: relative;
+}
+
+.kh-aura-core {
+    position: var(--kh-aura-pos, fixed) !important;
+    top: var(--kh-aura-y, -10%);
+    left: var(--kh-aura-x, 50%);
+    width: var(--kh-aura-s, 800px);
+    height: var(--kh-aura-s, 800px); /* FREE: always circle (ratio 1) */
+    transform: translateX(-50%) translateZ(0); 
+    z-index: -1; /* FREE: always -1 */
+    mix-blend-mode: normal; /* FREE: always normal */
+    pointer-events: none;
+    opacity: var(--kh-aura-o, 0.15);
+    background: radial-gradient(circle closest-side at center, var(--kh-aura-c) 0%, transparent var(--kh-aura-f, 70%)); /* FREE: always circle */
+}
+
+/* Absolute mode: Y offset via translateY (percentage of element height, not container) */
+.kh-aura-pos-absolute .kh-aura-core {
+    top: 0;
+    transform: translateX(-50%) translateY(var(--kh-aura-y, -10%)) translateZ(0);
+}
+
+/* <fs_premium_only> */
+/* PRO: Z-index control, Blend modes, Ellipse shapes */
+.kh-ambient-aura .kh-aura-core {
+    height: calc(var(--kh-aura-s, 800px) * var(--kh-aura-ratio, 1));
+    z-index: var(--kh-aura-z, -1);
+    mix-blend-mode: var(--kh-aura-blend, normal);
+    background: radial-gradient(var(--kh-aura-sh, circle) closest-side at center, var(--kh-aura-c) 0%, transparent var(--kh-aura-f, 70%));
+}
+/* </fs_premium_only> */
+
+/* <fs_premium_only> */
+/* PRO: Mobile behaviors */
+@media (max-width: 768px) {
+    .kh-ambient-aura.kh-aura-mobile-hide .kh-aura-core { display: none !important; }
+    .kh-ambient-aura.kh-aura-mobile-reduce .kh-aura-core { opacity: calc(var(--kh-aura-o) * 0.4) !important; }
+    .kh-ambient-aura.kh-aura-mobile-no-blend .kh-aura-core { mix-blend-mode: normal !important; }
+}
+/* </fs_premium_only> */
+
+.is-editor-canvas .kh-ambient-aura,
+.block-editor-page .kh-ambient-aura,
+.block-editor-block-list__block[data-type="kinetichub/ambient-aura"] {
+    --kh-aura-pos: relative !important;
+    --kh-aura-y: 0 !important;
+    --kh-aura-x: 0 !important;
+    --kh-aura-s: 100% !important;
+    --kh-aura-ratio: 0 !important; 
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    background: #f8fafc !important;
+    border: 1px dashed #cbd5e1 !important;
+    border-radius: 8px !important;
+    margin: 10px 0 20px 0 !important;
+    margin-block-start: 10px !important;
+    margin-block-end: 20px !important;
+    padding: 0 15px !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+    mix-blend-mode: normal !important;
+    overflow: hidden !important;
+}
+
+.is-editor-canvas .kh-aura-core,
+.block-editor-page .kh-aura-core { 
+    display: none !important; 
+}
+
+.kh-aura-editor-placeholder {
+    color: #475569;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.kh-aura-editor-placeholder::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--kh-aura-c, #3b82f6);
+    box-shadow: 0 0 10px var(--kh-aura-c, #3b82f6);
+    border: 2px solid #fff;
+}
+
+.is-editor-canvas .kh-ambient-aura.is-selected,
+.block-editor-block-list__block[data-type="kinetichub/ambient-aura"].is-selected {
+    box-shadow: 0 0 0 1px var(--wp-admin-theme-color) !important;
+}

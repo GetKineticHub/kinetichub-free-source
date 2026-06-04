@@ -1,0 +1,93 @@
+{
+    "apiVersion": 3,
+    "name": "kinetichub/typography",
+    "version": "1.0.0",
+    "title": "Kinetic Typography",
+    "category": "kinetic-suite",
+    "description": "Professional kinetic typography engine with advanced splitting, 3D perspective, and hardware-accelerated triggers.",
+    "keywords": ["animated text", "headline", "typography", "text animation", "title"],
+    "attributes": {
+        "content": { "type": "string", "default": "" },
+        "tagName": { "type": "string", "default": "h2" },
+        "animationType": { "type": "string", "default": "reveal" },
+        "speed": { "type": "number", "default": 0.6 },
+        "stagger": { "type": "number", "default": 0.05 },
+        "splitType": { "type": "string", "default": "chars" },
+        "threshold": { "type": "number", "default": 0.2 },
+        "trigger": { "type": "string", "default": "scroll" },
+        "direction": { "type": "string", "default": "up" },
+        "easing": { "type": "string", "default": "smooth" },
+        "reverseOrder": { "type": "boolean", "default": false },
+        "randomize": { "type": "boolean", "default": false },
+        "iterations": { "type": "string", "default": "1" },
+        
+        "pulseIntensity": { "type": "number", "default": 0.06 },
+        "pulseMinOpacity": { "type": "number", "default": 0.88 },
+        "pulseMode": { "type": "string", "default": "soft" },
+        
+        "blendMode": { "type": "string", "default": "normal" },
+        "useGradient": { "type": "boolean", "default": false },
+        "gradColor1": { "type": "string" },
+        "gradColor2": { "type": "string", "default": "#6610f2" },
+        "gradAngle": { "type": "number", "default": 45 },
+        "useOutline": { "type": "boolean", "default": false },
+        "outlineWidth": { "type": "number", "default": 1 },
+        "useGlow": { "type": "boolean", "default": false },
+        "glowColor": { "type": "string" },
+        
+        "hoverGlitch": { "type": "boolean", "default": false },
+        "floorReflection": { "type": "boolean", "default": false },
+        "reflectionDistance": { "type": "number", "default": 0 },
+        "reflectionOpacity": { "type": "number", "default": 0.3 },
+        
+        "auroraBacklight": { "type": "boolean", "default": false },
+        "auroraColor": { "type": "string", "default": "rgba(16, 185, 129, 0.4)" },
+        "auroraSpread": { "type": "number", "default": 50 },
+        "infiniteLevitation": { "type": "boolean", "default": false },
+        "highlightSweep": { "type": "boolean", "default": false },
+        "highlightColor": { "type": "string", "default": "rgba(16, 185, 129, 0.3)" },
+
+        "plexusDensity": { "type": "number", "default": 60 },
+        "plexusSpeed": { "type": "number", "default": 0.5 },
+        "plexusNodeSize": { "type": "number", "default": 1.5 },
+        "plexusLineDistance": { "type": "number", "default": 45 },
+        "plexusNodeColor": { "type": "string", "default": "#10b981" },
+        "plexusLineColor": { "type": "string", "default": "#10b981" },
+        "plexusOpacity": { "type": "number", "default": 0.8 },
+        "plexusContinuous": { "type": "boolean", "default": true },
+        "plexusSpread": { "type": "string", "default": "inside" },
+        "plexusInteraction": { "type": "string", "default": "none" },
+        
+        "perspective": { "type": "number", "default": 1000 },
+        "resetOnLeave": { "type": "boolean", "default": true },
+        "triggerAlways": { "type": "boolean", "default": false },
+        
+        "hideOnMobile": { "type": "boolean", "default": false },
+        "hideOnDesktop": { "type": "boolean", "default": false },
+        
+        "customFontSize": { "type": "number" },
+        "customFontSizeMobile": { "type": "number" },
+        "customLineHeight": { "type": "number" },
+        "customLineHeightMobile": { "type": "number" },
+        "textAlignMobile": { "type": "string" }
+    },
+    "supports": {
+        "spacing": { "margin": true, "padding": true },
+        "typography": {
+            "fontSize": true, "lineHeight": true, "textAlign": true,
+            "__experimentalFontFamily": true, "__experimentalFontWeight": true,
+            "__experimentalFontStyle": true, "__experimentalLetterSpacing": true,
+            "__experimentalTextTransform": true
+        },
+        "color": { "text": true, "background": true, "link": true, "gradients": true },
+        "__experimentalBorder": { "color": true, "radius": true, "width": true, "style": true },
+        "html": false,
+        "align": true
+    },
+    "textdomain": "kinetichub",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./index.css",
+    "viewScript": "file:./view.js",
+    "render": "file:./render.php"
+}

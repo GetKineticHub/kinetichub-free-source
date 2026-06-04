@@ -1,0 +1,53 @@
+{
+    "apiVersion": 3,
+    "name": "kinetichub/video-modal",
+    "version": "1.0.0",
+    "title": "Kinetic Video Modal",
+    "category": "kinetic-suite",
+    "description": "Enterprise-ready video container with graceful lazy loading, inline playback, and strict URL safelists.",
+    "keywords": ["video", "modal", "youtube", "vimeo", "player"],
+    "attributes": {
+        "videoUrl": { "type": "string", "default": "" },
+        "coverImage": { "type": "object", "default": null },
+        "autoExtractCover": { "type": "boolean", "default": true },
+
+        "playbackMode": { "type": "string", "default": "modal" },
+        "preloadLocalVideo": { "type": "string", "default": "metadata" },
+
+        "buttonStyle": { "type": "string", "default": "solid" },
+        "buttonColor": { "type": "string", "default": "#10b981" },
+        "iconColor": { "type": "string", "default": "#ffffff" },
+        "buttonSize": { "type": "number", "default": 80 },
+        "magneticPull": { "type": "boolean", "default": false },
+        "pulseAnimation": { "type": "boolean", "default": false },
+
+        "dialogAriaLabel": { "type": "string", "default": "Video Player" },
+        "playButtonAriaLabel": { "type": "string", "default": "Play Video" },
+        "closeButtonAriaLabel": { "type": "string", "default": "Close Video" },
+        "teaserBadgeText": { "type": "string", "default": "" },
+        "hoverZoomLevel": { "type": "string", "default": "none" },
+
+        "backdropStyle": { "type": "string", "default": "glass-dark" },
+        "modalEntrance": { "type": "string", "default": "zoom" },
+        "aspectRatio": { "type": "string", "default": "16x9" },
+        "closeOnBackdrop": { "type": "boolean", "default": true },
+        "showCloseButtonOutside": { "type": "boolean", "default": false },
+
+        "autoplayVideo": { "type": "boolean", "default": false },
+        "muteLocalVideo": { "type": "boolean", "default": true },
+        "forceLoop": { "type": "boolean", "default": false },
+        "startTime": { "type": "number", "default": 0 },
+
+        "imageOverlayOpacity": { "type": "number", "default": 0.3 }
+    },
+    "supports": {
+        "align": ["wide", "full"],
+        "spacing": { "margin": true, "padding": true }
+    },
+    "textdomain": "kinetichub",
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./view.js",
+    "style": "file:./index.css",
+    "editorStyle": "file:./index.css",
+    "render": "file:./render.php"
+}
