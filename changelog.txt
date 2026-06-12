@@ -1,10 +1,14 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.5
+Current Version: 1.0.6
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.0.6] - 2026-06-12
+----------------------------------------------------------------------
+- Fixed unexpected output during activation caused by UTF-8 BOM characters in the plugin bootstrap file.
 ----------------------------------------------------------------------
 ## [1.0.5] - 2026-06-04
 ----------------------------------------------------------------------

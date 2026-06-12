@@ -1,9 +1,9 @@
-=== KineticHub – Animated Gutenberg Blocks ===
+=== KineticHub - Animated Gutenberg Blocks ===
 Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -162,7 +162,7 @@ The source directory includes the uncompiled free-version source files, package.
 
 The same human-readable free-version source is also publicly available here:
 
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.2
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.6
 
 = Build Instructions =
 
@@ -191,6 +191,9 @@ The build process compiles source files from the `source/src` directory into a `
 * npm 9 or later
 
 == Changelog ==
+
+= 1.0.6 =
+* Fixed unexpected output during activation caused by UTF-8 BOM characters in the plugin bootstrap file.
 
 = 1.0.5 =
 * Improved Split Scroll mobile inline media layout when sticky media on mobile is disabled.
