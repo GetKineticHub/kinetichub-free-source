@@ -67,7 +67,7 @@ $kh_cr_entrance_anim    = 'none';
 
 $kh_cr_font_size        = 40;
 $kh_cr_mobile_font      = 30;
-$kh_cr_hover_font       = 95;
+
 $kh_cr_sub_size         = 13;
 $kh_cr_sub_space        = 3;
 $kh_cr_media_width      = 350;
@@ -82,68 +82,23 @@ $kh_cr_inner_parallax   = false;
 $kh_cr_hide_mobile      = false;
 $kh_cr_hide_desktop     = false;
 
-/* <fs_premium_only> */
-$kh_cr_text_style_list = array( 'solid', 'outline', 'blur', 'lift' );
-$kh_cr_text_style      = in_array( $attributes['textStyle'] ?? '', $kh_cr_text_style_list, true ) ? $attributes['textStyle'] : 'solid';
-
-$kh_cr_bg_type_list = array( 'none', 'protection', 'glass', 'vignette', 'wash', 'polaroid', 'glow' );
-$kh_cr_bg_type      = in_array( $attributes['titleBgType'] ?? '', $kh_cr_bg_type_list, true ) ? $attributes['titleBgType'] : 'none';
-
-$kh_cr_media_layer_list = array( 'under', 'over' );
-$kh_cr_media_layer      = in_array( $attributes['mediaLayer'] ?? '', $kh_cr_media_layer_list, true ) ? $attributes['mediaLayer'] : 'over';
-
-$kh_cr_blend_mode_list = array( 'normal', 'difference', 'exclusion', 'luminosity' );
-$kh_cr_blend_mode      = in_array( $attributes['blendMode'] ?? '', $kh_cr_blend_mode_list, true ) ? $attributes['blendMode'] : 'normal';
-
-$kh_cr_accent_color = kinetichub_cr_validate_color_strict( $attributes['accentColor'] ?? '', 'var(--kh-accent, #10b981)' );
-
-$kh_cr_enable_dimming   = ! empty( $attributes['enableDimming'] );
-$kh_cr_enable_tilt      = ! empty( $attributes['enableTilt'] );
-$kh_cr_enable_noise     = ! empty( $attributes['enableNoise'] );
-$kh_cr_container_shadow = ! empty( $attributes['containerShadow'] );
-
-$kh_cr_lerp_amount = max( 0.01, min( 0.5, (float) ( $attributes['lerpAmount'] ?? 0.08 ) ) );
-$kh_cr_offset_x    = max( -1000, min( 1000, (int) ( $attributes['offsetX'] ?? 0 ) ) );
-$kh_cr_offset_y    = max( -1000, min( 1000, (int) ( $attributes['offsetY'] ?? 0 ) ) );
-
-$kh_cr_max_items = 50;
-
 $kh_cr_media_ratio_list = array( '1/1', '4/5', '16/9', '21/9' );
 $kh_cr_media_ratio      = in_array( $attributes['mediaRatio'] ?? '', $kh_cr_media_ratio_list, true ) ? $attributes['mediaRatio'] : '4/5';
 
-$kh_cr_mobile_behavior_list = array( 'tap', 'always', 'hide' );
-$kh_cr_mobile_action        = in_array( $attributes['mobileBehavior'] ?? '', $kh_cr_mobile_behavior_list, true ) ? $attributes['mobileBehavior'] : 'tap';
-
-$kh_cr_mask_list    = array( 'fade', 'circle', 'diagonal', 'curtain' );
-$kh_cr_reveal_mask  = in_array( $attributes['revealMask'] ?? '', $kh_cr_mask_list, true ) ? $attributes['revealMask'] : 'fade';
+$kh_cr_mask_list   = array( 'fade', 'circle', 'diagonal', 'curtain' );
+$kh_cr_reveal_mask = in_array( $attributes['revealMask'] ?? '', $kh_cr_mask_list, true ) ? $attributes['revealMask'] : 'fade';
 
 $kh_cr_filter_list  = array( 'none', 'grayscale' );
 $kh_cr_hover_filter = in_array( $attributes['hoverFilter'] ?? '', $kh_cr_filter_list, true ) ? $attributes['hoverFilter'] : 'none';
 
-$kh_cr_shadow_list  = array( 'soft', 'crisp', 'float', 'glow', 'elegant' );
-$kh_cr_shadow_style = in_array( $attributes['shadowStyle'] ?? '', $kh_cr_shadow_list, true ) ? $attributes['shadowStyle'] : 'soft';
+$kh_cr_font_size   = max( 10, min( 300, (int) ( $attributes['fontSize'] ?? 40 ) ) );
+$kh_cr_mobile_font = max( 10, min( 200, (int) ( $attributes['mobileFontSize'] ?? 30 ) ) );
+$kh_cr_sub_size    = max( 8, min( 100, (int) ( $attributes['subtitleSize'] ?? 13 ) ) );
+$kh_cr_sub_space   = max( 0, min( 50, (int) ( $attributes['subtitleSpacing'] ?? 3 ) ) );
+$kh_cr_media_width = max( 100, min( 1200, (int) ( $attributes['mediaWidth'] ?? 350 ) ) );
+$kh_cr_sub_color   = kinetichub_cr_validate_color_strict( $attributes['subtitleColor'] ?? '', '#666666' );
 
-$kh_cr_entrance_list = array( 'none', 'fade', 'slide', 'zoom' );
-$kh_cr_entrance_anim = in_array( $attributes['entranceAnimation'] ?? '', $kh_cr_entrance_list, true ) ? $attributes['entranceAnimation'] : 'none';
 
-$kh_cr_font_size      = max( 10, min( 300, (int) ( $attributes['fontSize'] ?? 40 ) ) );
-$kh_cr_mobile_font    = max( 10, min( 200, (int) ( $attributes['mobileFontSize'] ?? 30 ) ) );
-$kh_cr_hover_font     = max( 10, min( 400, (int) ( $attributes['hoverFontSize'] ?? 95 ) ) );
-
-$kh_cr_sub_size       = max( 8, min( 100, (int) ( $attributes['subtitleSize'] ?? 13 ) ) );
-$kh_cr_sub_space      = max( 0, min( 50, (int) ( $attributes['subtitleSpacing'] ?? 3 ) ) );
-$kh_cr_media_width    = max( 100, min( 1200, (int) ( $attributes['mediaWidth'] ?? 350 ) ) );
-$kh_cr_entrance_delay = max( 0.0, min( 10.0, (float) ( $attributes['entranceDelay'] ?? 0 ) ) );
-
-$kh_cr_sub_color = kinetichub_cr_validate_color_strict( $attributes['subtitleColor'] ?? '', '#666666' );
-
-$kh_cr_enable_magnetic = ! empty( $attributes['enableMagnetic'] );
-$kh_cr_cursor_badge    = ! empty( $attributes['cursorBadge'] );
-$kh_cr_badge_text      = ! empty( $attributes['cursorBadgeText'] ) ? sanitize_text_field( $attributes['cursorBadgeText'] ) : 'View';
-$kh_cr_inner_parallax  = ! empty( $attributes['innerParallax'] );
-$kh_cr_hide_mobile     = ! empty( $attributes['hideOnMobile'] );
-$kh_cr_hide_desktop    = ! empty( $attributes['hideOnDesktop'] );
-/* </fs_premium_only> */
 
 if ( empty( $kh_cr_items ) ) {
     return;
@@ -178,15 +133,9 @@ if ( empty( $kh_cr_valid_items ) ) {
     return;
 }
 
-$kh_cr_scale_factor = $kh_cr_font_size > 0 ? number_format( $kh_cr_hover_font / $kh_cr_font_size, 3, '.', '' ) : '1';
+$kh_cr_scale_factor = $kh_cr_font_size > 0 ? number_format( ( $kh_cr_font_size + 5 ) / $kh_cr_font_size, 3, '.', '' ) : '1';
 
-// FREE: hardcoded safe defaults for wrapper style vars
-$kh_cr_wrapper_style_vars = sprintf(
-    '--kh-cr-font-size: %1$dpx; --kh-cr-font-mob: %2$dpx; --kh-cr-scale: %3$s; --kh-cr-accent: %4$s; --kh-cr-sub-color: %5$s; --kh-cr-sub-size: %6$dpx; --kh-cr-sub-space: %7$dpx;',
-    40, 30, '2.375', 'var(--kh-accent, #10b981)', '#666666', 13, 3
-);
 
-/* <fs_premium_only> */
 $kh_cr_wrapper_style_vars = sprintf(
     '--kh-cr-font-size: %1$dpx; --kh-cr-font-mob: %2$dpx; --kh-cr-scale: %3$s; --kh-cr-accent: %4$s; --kh-cr-sub-color: %5$s; --kh-cr-sub-size: %6$dpx; --kh-cr-sub-space: %7$dpx;',
     $kh_cr_font_size,
@@ -198,15 +147,8 @@ $kh_cr_wrapper_style_vars = sprintf(
     $kh_cr_sub_space
 );
 
-if ( $kh_cr_entrance_delay > 0 ) {
-    $kh_cr_wrapper_style_vars .= sprintf( ' animation-delay: %ss;', number_format( $kh_cr_entrance_delay, 2, '.', '' ) );
-}
-/* </fs_premium_only> */
 
-// FREE: hardcoded safe defaults for floating box style vars
-$kh_cr_box_style_vars = '--kh-cr-media-w: 350px; --kh-cr-media-ratio: 4/5; --kh-cr-media-z: 999999; --kh-cr-blend-mode: normal;';
 
-/* <fs_premium_only> */
 $kh_cr_box_style_vars = sprintf(
     '--kh-cr-media-w: %1$dpx; --kh-cr-media-ratio: %2$s; --kh-cr-media-z: %3$d; --kh-cr-blend-mode: %4$s;',
     $kh_cr_media_width,
@@ -214,7 +156,6 @@ $kh_cr_box_style_vars = sprintf(
     ( 'over' === $kh_cr_media_layer ? 999999 : -1 ),
     $kh_cr_blend_mode
 );
-/* </fs_premium_only> */
 
 $kh_cr_classes = array_filter(
     array(
@@ -223,65 +164,21 @@ $kh_cr_classes = array_filter(
     )
 );
 
-/* <fs_premium_only> */
-$kh_cr_classes[] = 'style-' . $kh_cr_text_style;
-if ( $kh_cr_enable_dimming ) {
-    $kh_cr_classes[] = 'has-dimming';
-}
-if ( $kh_cr_container_shadow ) {
-    $kh_cr_classes[] = 'has-shadow';
-    $kh_cr_classes[] = 'shadow-' . $kh_cr_shadow_style;
-}
-if ( $kh_cr_cursor_badge ) {
-    $kh_cr_classes[] = 'has-cursor-badge';
-}
-if ( 'none' !== $kh_cr_entrance_anim ) {
-    $kh_cr_classes[] = 'kh-entrance';
-    $kh_cr_classes[] = 'anim-' . $kh_cr_entrance_anim;
-}
-if ( $kh_cr_hide_mobile ) {
-    $kh_cr_classes[] = 'kh-cr-hide-mobile';
-}
-if ( $kh_cr_hide_desktop ) {
-    $kh_cr_classes[] = 'kh-cr-hide-desktop';
-}
-/* </fs_premium_only> */
+
 
 $kh_cr_wrapper_attrs_array = array(
-    'class'        => implode( ' ', $kh_cr_classes ),
-    'style'        => $kh_cr_wrapper_style_vars,
-    'data-blockid' => $kh_cr_block_id,
-    'role'         => 'list',
-    'aria-label'   => __( 'Interactive Portfolio List', 'kinetichub' ),
+    'class'              => implode( ' ', $kh_cr_classes ),
+    'style'              => $kh_cr_wrapper_style_vars,
+    'data-blockid'       => $kh_cr_block_id,
+    'data-mobile-action' => $kh_cr_mobile_action,
+    'role'               => 'list',
+    'aria-label'         => __( 'Interactive Portfolio List', 'kinetichub' ),
 );
 
-/* <fs_premium_only> */
-$kh_cr_wrapper_attrs_array['data-layer']          = $kh_cr_media_layer;
-$kh_cr_wrapper_attrs_array['data-lerp']           = (string) $kh_cr_lerp_amount;
-$kh_cr_wrapper_attrs_array['data-tilt']           = $kh_cr_enable_tilt ? 'true' : 'false';
-$kh_cr_wrapper_attrs_array['data-magnetic']       = $kh_cr_enable_magnetic ? 'true' : 'false';
-$kh_cr_wrapper_attrs_array['data-offx']           = (string) $kh_cr_offset_x;
-$kh_cr_wrapper_attrs_array['data-offy']           = (string) $kh_cr_offset_y;
-$kh_cr_wrapper_attrs_array['data-mobile-action']  = $kh_cr_mobile_action;
-$kh_cr_wrapper_attrs_array['data-inner-parallax'] = $kh_cr_inner_parallax ? 'true' : 'false';
 
-if ( 'none' !== $kh_cr_entrance_anim ) {
-    $kh_cr_wrapper_attrs_array['data-entrance'] = $kh_cr_entrance_anim;
-}
-/* </fs_premium_only> */
 
 $kh_cr_wrapper_attrs = get_block_wrapper_attributes( $kh_cr_wrapper_attrs_array );
 
-$kh_cr_box_classes = array(
-    'kh-cr-floating-box',
-    'kh-cr-floating-box-' . $kh_cr_block_id,
-    'mask-fade',
-    'filter-none',
-    'bg-none',
-);
-
-/* <fs_premium_only> */
-// Override floating box classes with actual PRO values
 $kh_cr_box_classes = array(
     'kh-cr-floating-box',
     'bg-' . sanitize_html_class( $kh_cr_bg_type ),
@@ -290,10 +187,7 @@ $kh_cr_box_classes = array(
     'filter-' . sanitize_html_class( $kh_cr_hover_filter ),
 );
 
-if ( $kh_cr_enable_noise ) {
-    $kh_cr_box_classes[] = 'has-noise';
-}
-/* </fs_premium_only> */
+
 
 ?>
 
@@ -331,17 +225,7 @@ if ( $kh_cr_enable_noise ) {
                     <span class="kh-cr-subtitle"><?php echo wp_kses_post( $kh_cr_item['subtitle'] ); ?></span>
                 <?php endif; ?>
 
-                <?php /* <fs_premium_only> */ ?>
-                <?php if ( 'always' === $kh_cr_mobile_action ) : ?>
-                    <div class="kh-cr-mobile-stack-media">
-                        <?php if ( preg_match( '/\.(mp4|webm|mov|ogg)(\?|$)/i', $kh_cr_item['mediaUrl'] ) ) : ?>
-                            <video src="<?php echo esc_url( $kh_cr_item['mediaUrl'] ); ?>" autoplay loop muted playsinline></video>
-                        <?php else : ?>
-                            <img src="<?php echo esc_url( $kh_cr_item['mediaUrl'] ); ?>" alt="<?php echo esc_attr( $kh_cr_safe_alt ); ?>" loading="lazy" />
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-                <?php /* </fs_premium_only> */ ?>
+
             </div>
         <?php endforeach; ?>
     </div>
@@ -350,11 +234,7 @@ if ( $kh_cr_enable_noise ) {
         <div class="kh-cr-media-layer kh-cr-layer-1"></div>
         <div class="kh-cr-media-layer kh-cr-layer-2"></div>
 
-        <?php /* <fs_premium_only> */ ?>
-        <?php if ( $kh_cr_cursor_badge ) : ?>
-            <div class="kh-cr-cursor-badge"><?php echo esc_html( $kh_cr_badge_text ); ?></div>
-        <?php endif; ?>
-        <?php /* </fs_premium_only> */ ?>
+
 
         <div class="kh-cr-close-btn">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

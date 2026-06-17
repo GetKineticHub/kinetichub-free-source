@@ -84,17 +84,7 @@ $kh_vm_mute_local        = true;
 $kh_vm_force_loop        = false;
 $kh_vm_start_time        = 0;
 
-/* <fs_premium_only> */
-$kh_vm_hover_zoom_level  = in_array( $attributes['hoverZoomLevel'] ?? '', array( 'none', 'subtle', 'cinematic' ), true ) ? $attributes['hoverZoomLevel'] : 'none';
-$kh_vm_modal_entrance    = in_array( $attributes['modalEntrance'] ?? '', array( 'zoom', 'slide', 'flip', 'fade' ), true ) ? $attributes['modalEntrance'] : 'zoom';
-$kh_vm_teaser_badge_text = sanitize_text_field( $attributes['teaserBadgeText'] ?? '' );
-$kh_vm_magnetic_pull     = ! empty( $attributes['magneticPull'] );
-$kh_vm_pulse_anim        = ! empty( $attributes['pulseAnimation'] );
-$kh_vm_autoplay          = ! empty( $attributes['autoplayVideo'] );
-$kh_vm_mute_local        = isset( $attributes['muteLocalVideo'] ) ? (bool) $attributes['muteLocalVideo'] : true;
-$kh_vm_force_loop        = ! empty( $attributes['forceLoop'] );
-$kh_vm_start_time        = max( 0, (int) ( $attributes['startTime'] ?? 0 ) );
-/* </fs_premium_only> */
+
 
 if ( empty( $kh_vm_video_url ) ) {
 	return '';
@@ -154,10 +144,7 @@ $kh_vm_classes = array_filter(
 		'ratio-' . $kh_vm_aspect_ratio,
 		'btn-style-' . $kh_vm_button_style,
 		'zoom-' . $kh_vm_hover_zoom_level,
-		/* <fs_premium_only> */
-		$kh_vm_pulse_anim ? 'has-pulse' : '',
-		$kh_vm_magnetic_pull ? 'has-magnetic' : '',
-		/* </fs_premium_only> */
+
 	)
 );
 
@@ -227,11 +214,7 @@ $kh_vm_data_attrs = array(
 				</span>
 			</button>
 
-			<?php /* <fs_premium_only> */ ?>
-			<?php if ( $kh_vm_teaser_badge_text ) : ?>
-				<span class="kh-vm-teaser-badge"><?php echo esc_html( $kh_vm_teaser_badge_text ); ?></span>
-			<?php endif; ?>
-			<?php /* </fs_premium_only> */ ?>
+
 		</div>
 	</div>
 </div>

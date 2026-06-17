@@ -38,16 +38,7 @@ export const KineticLinkControls = ({ attributes, setAttributes }) => {
                         help={__('e.g., nofollow, noopener', 'kinetichub')}
                     />
 
-                    {/* <fs_premium_only> */}
-                    <div style={{ marginTop: '15px' }}>
-                        <ToggleControl
-                            label={__('Stretched Link', 'kinetichub')}
-                            checked={!!stretchedLink}
-                            onChange={(value) => setAttributes({ stretchedLink: !!value })}
-                            help={__('Makes the entire parent container clickable when the parent block supports it.', 'kinetichub')}
-                        />
-                    </div>
-                    {/* </fs_premium_only> */}
+
                 </>
             )}
         </PanelBody>

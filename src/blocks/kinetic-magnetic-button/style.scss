@@ -13,25 +13,22 @@
     box-sizing: border-box;
 }
 
+/* Core alignment classes position the button through the wrapper flex layout. */
+.kh-mb-wrapper.alignleft,
+.kh-mb-wrapper.aligncenter,
+.kh-mb-wrapper.alignright {
+    float: none;
+    clear: none;
+    max-width: none;
+}
+
 /* Elevate wrapper context during interaction to prevent sibling overlap */
 .kh-mb-wrapper:hover,
 .kh-mb-wrapper:focus-within {
     z-index: 20;
 }
 
-/* <fs_premium_only> */
-@media (max-width: 768px) {
-    .kh-mb-wrapper.kh-mb-hide-mobile {
-        display: none !important;
-    }
-}
 
-@media (min-width: 769px) {
-    .kh-mb-wrapper.kh-mb-hide-desktop {
-        display: none !important;
-    }
-}
-/* </fs_premium_only> */
 
 :where(.is-layout-flex, .is-layout-grid) > .kh-mb-wrapper,
 .wp-block-columns .kh-mb-wrapper {
@@ -40,30 +37,9 @@
 }
 
 /* ==========================================================================
-   2. Entrance Animations (PRO)
+   2. Entrance Animations (advanced)
    ========================================================================== */
-/* <fs_premium_only> */
-.kh-mb-wrapper.anim-fade { opacity: 0; }
-.kh-mb-wrapper.anim-slide { opacity: 0; }
-.kh-mb-wrapper.anim-zoom { opacity: 0; }
 
-.kh-mb-wrapper.anim-fade.is-inview { animation: khmbFadeIn 0.8s ease forwards; }
-.kh-mb-wrapper.anim-slide.is-inview { animation: khmbSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.kh-mb-wrapper.anim-zoom.is-inview { animation: khmbZoomIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-@keyframes khmbFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-@keyframes khmbSlideUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes khmbZoomIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-/* </fs_premium_only> */
 
 /* ==========================================================================
    3. Button Core
@@ -192,90 +168,12 @@
 /* Base fade hover — FREE needs this for bgHoverColor via FX layer */
 .kh-mb-button:not([data-effect^="sweep-"]):hover .kh-mb-button-fx::before { opacity: 1; }
 
-/* <fs_premium_only> */
-/* Ghost Text Hover Effect (PRO) */
-.kh-mb-button.is-ghost:hover .kh-mb-text-inner {
-    color: transparent !important;
-    -webkit-text-stroke: 1px var(--kh-mb-text-hov);
-}
 
-/* Advanced Hover Effects (PRO) */
-.kh-mb-button[data-effect^="sweep-"] .kh-mb-button-fx::before { opacity: 1; }
-
-.kh-mb-button[data-effect="sweep-right"] .kh-mb-button-fx::before { transform: scaleX(0); transform-origin: left; }
-.kh-mb-button[data-effect="sweep-right"]:hover .kh-mb-button-fx::before { transform: scaleX(1); }
-
-.kh-mb-button[data-effect="sweep-left"] .kh-mb-button-fx::before { transform: scaleX(0); transform-origin: right; }
-.kh-mb-button[data-effect="sweep-left"]:hover .kh-mb-button-fx::before { transform: scaleX(1); }
-
-.kh-mb-button[data-effect="sweep-top"] .kh-mb-button-fx::before { transform: scaleY(0); transform-origin: bottom; }
-.kh-mb-button[data-effect="sweep-top"]:hover .kh-mb-button-fx::before { transform: scaleY(1); }
-
-.kh-mb-button[data-effect="sweep-bottom"] .kh-mb-button-fx::before { transform: scaleY(0); transform-origin: top; }
-.kh-mb-button[data-effect="sweep-bottom"]:hover .kh-mb-button-fx::before { transform: scaleY(1); }
-
-.kh-mb-button[data-effect="shine"] .kh-mb-button-fx::after {
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.4), rgba(255,255,255,0));
-    transform: skewX(-25deg);
-    transition: left 0.5s ease;
-}
-.kh-mb-button[data-effect="shine"]:hover .kh-mb-button-fx::after { left: 150%; }
-
-.kh-mb-button[data-effect="lift-up"]:hover { --kh-effect-y: -6px; }
-
-.kh-mb-button[data-effect="push-down"]:hover { --kh-effect-y: 4px; }
-/* </fs_premium_only> */
 
 .kh-mb-button[data-scale="true"]:hover .kh-mb-content-wrap,
 .kh-mb-button[data-scale="true"]:hover .kh-mb-button-fx { --kh-hover-scale: 1.05; }
 
-/* <fs_premium_only> */
-/* Sonar Ripple (PRO) */
-.kh-mb-button[data-effect="ripple"]::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    box-shadow: 0 0 0 0 var(--kh-mb-bg-hov);
-    opacity: 0.8;
-    z-index: -1;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-.kh-mb-button[data-effect="ripple"]:hover::before {
-    animation: khmbRippleAnim 0.7s ease-out forwards;
-}
-@keyframes khmbRippleAnim {
-    100% { box-shadow: 0 0 0 18px transparent; opacity: 0; }
-}
 
-/* Cyber Glitch (PRO) */
-@keyframes khmbGlitchText {
-    0% { text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9; }
-    50% { text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9; }
-    100% { text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9; }
-}
-.kh-mb-button[data-effect="glitch"]:hover .kh-mb-text-inner {
-    animation: khmbGlitchText 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-}
-
-/* Inner Outline Reveal (PRO) */
-.kh-mb-button[data-effect="outline-in"] .kh-mb-button-fx::after {
-    inset: 4px;
-    border: 1px solid var(--kh-mb-text-hov);
-    opacity: 0;
-    transform: scale(1.05);
-    transition: all 0.3s ease;
-}
-.kh-mb-button[data-effect="outline-in"]:hover .kh-mb-button-fx::after {
-    opacity: 0.6;
-    transform: scale(1);
-}
-/* </fs_premium_only> */
 
 /* ==========================================================================
    5. Keyframe Highlights (Pulse & Neon)
@@ -286,18 +184,7 @@
     100% { box-shadow: 0 0 0 0 transparent; }
 }
 
-/* <fs_premium_only> */
-/* Neon Glow (PRO) */
-@keyframes khmbNeon {
-    0% { box-shadow: 0 0 5px var(--kh-mb-bg-hov), 0 0 10px var(--kh-mb-bg-hov) !important; }
-    100% { box-shadow: 0 0 10px var(--kh-mb-bg-hov), 0 0 25px var(--kh-mb-bg-hov) !important; }
-}
 
-.kh-mb-button.has-neon:hover {
-    animation: khmbNeon 1.5s infinite alternate !important;
-    box-shadow: none;
-}
-/* </fs_premium_only> */
 
 .kh-mb-button.is-pulsing {
     animation: khmbPulseBtn 2s infinite;
@@ -428,18 +315,7 @@
     transform: scale(1);
 }
 
-/* <fs_premium_only> */
-/* Stretched Link (PRO) - Makes parent container clickable */
-.kh-mb-button.has-stretched-link::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-}
-/* </fs_premium_only> */
+
 
 /* THE FIX: Fixed Hitbox layout to prevent blocking nearby elements */
 .kh-mb-hitbox {

@@ -271,9 +271,15 @@ registerBlockType(metadata.name, {
             '--kh-mb-pulse': bgColor || 'var(--kh-accent, #10b981)'
         };
 
+        const alignmentMap = {
+            left: 'flex-start',
+            center: 'center',
+            right: 'flex-end'
+        };
+
         const wrapperProps = useBlockProps({
             className: 'kh-mb-wrapper',
-            style: { justifyContent: align || 'center' }
+            style: { justifyContent: alignmentMap[align] || 'center' }
         });
 
         const btnClasses = [
@@ -281,11 +287,7 @@ registerBlockType(metadata.name, {
             glassmorphism && !isOutline ? 'is-glass' : '',
             enablePulse ? 'is-pulsing' : '',
             showIconNormal ? 'icon-always-visible' : '',
-            /* <fs_premium_only> */
-            ghostTextHover && !isOutline ? 'is-ghost' : '',
-            neonGlow ? 'has-neon' : '',
-            stretchedLink ? 'has-stretched-link' : ''
-            /* </fs_premium_only> */
+
         ].filter(Boolean).join(' ');
 
         const renderStatus = () => {
@@ -378,46 +380,13 @@ registerBlockType(metadata.name, {
 
                                             <hr />
 
-                                            {/* <fs_free_only> */}
+
                                             <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginTop: '10px' }}>
-                                                {__('This free build includes the core hover effect. Additional hover styles are reserved for the commercial edition.', 'kinetichub')}
+                                                {__('This free build includes the core hover effect. Additional hover styles are not included in this build.', 'kinetichub')}
                                             </p>
-                                            {/* </fs_free_only> */}
 
-                                            {/* <fs_premium_only> */}
-                                            <SelectControl
-                                                label={__('Hover Effect', 'kinetichub')}
-                                                value={hoverEffect}
-                                                options={[
-                                                    { label: __('Fade (Default)', 'kinetichub'), value: 'none' },
-                                                    { label: __('Glass Shine', 'kinetichub'), value: 'shine' },
-                                                    { label: __('Sweep Right', 'kinetichub'), value: 'sweep-right' },
-                                                    { label: __('Sweep Left', 'kinetichub'), value: 'sweep-left' },
-                                                    { label: __('Sweep Top', 'kinetichub'), value: 'sweep-top' },
-                                                    { label: __('Sweep Bottom', 'kinetichub'), value: 'sweep-bottom' },
-                                                    { label: __('Float / Lift Up', 'kinetichub'), value: 'lift-up' },
-                                                    { label: __('Tactile Press', 'kinetichub'), value: 'push-down' },
-                                                    { label: __('Sonar Ripple', 'kinetichub'), value: 'ripple' },
-                                                    { label: __('Cyber Glitch', 'kinetichub'), value: 'glitch' },
-                                                    { label: __('Inner Outline Reveal', 'kinetichub'), value: 'outline-in', disabled: isOutline }
-                                                ]}
-                                                onChange={(value) => setAttributes({ hoverEffect: value })}
-                                            />
 
-                                            <ToggleControl
-                                                label={__('Neon Glow', 'kinetichub')}
-                                                checked={neonGlow}
-                                                onChange={(value) => setAttributes({ neonGlow: value })}
-                                            />
 
-                                            {!isOutline && (
-                                                <ToggleControl
-                                                    label={__('Ghost Text', 'kinetichub')}
-                                                    checked={ghostTextHover}
-                                                    onChange={(value) => setAttributes({ ghostTextHover: value })}
-                                                />
-                                            )}
-                                            {/* </fs_premium_only> */}
 
                                             <ToggleControl
                                                 label={__('Scale Up on Hover', 'kinetichub')}
@@ -636,13 +605,9 @@ registerBlockType(metadata.name, {
                         <KineticBorderControls attributes={attributes} setAttributes={setAttributes} />
                     )}
 
-                    {/* <fs_premium_only> */}
-                    <KineticEntranceControls attributes={attributes} setAttributes={setAttributes} />
-                    {/* </fs_premium_only> */}
 
-                    {/* <fs_premium_only> */}
-                    <KineticVisibilityControls attributes={attributes} setAttributes={setAttributes} />
-                    {/* </fs_premium_only> */}
+
+
                 </InspectorControls>
 
                 <div {...wrapperProps}>

@@ -85,18 +85,7 @@ registerBlockType(metadata.name, {
 			closeButtonAriaLabel,
 			closeOnBackdrop,
 			showCloseButtonOutside,
-			/* <fs_premium_only> */
-			autoplayVideo,
-			muteLocalVideo,
-			forceLoop,
-			startTime,
-			modalEntrance,
-			hoverZoomLevel,
-			teaserBadgeText,
-			magneticPull,
-			pulseAnimation,
-			/* </fs_premium_only> */
-		} = attributes;
+			 = attributes;
 
 		let editorHoverZoomLevel = 'none';
 		let editorModalEntrance = 'zoom';
@@ -104,13 +93,7 @@ registerBlockType(metadata.name, {
 		let editorMagneticPull = false;
 		let editorPulseAnimation = false;
 
-		/* <fs_premium_only> */
-		editorHoverZoomLevel = hoverZoomLevel || 'none';
-		editorModalEntrance = modalEntrance || 'zoom';
-		editorTeaserBadgeText = teaserBadgeText || '';
-		editorMagneticPull = !!magneticPull;
-		editorPulseAnimation = !!pulseAnimation;
-		/* </fs_premium_only> */
+
 
 		const blockProps = useBlockProps({
 			className: [
@@ -118,10 +101,7 @@ registerBlockType(metadata.name, {
 				`ratio-${aspectRatio || '16x9'}`,
 				`btn-style-${buttonStyle || 'solid'}`,
 				`zoom-${editorHoverZoomLevel}`,
-				/* <fs_premium_only> */
-				editorPulseAnimation ? 'has-pulse' : '',
-				editorMagneticPull ? 'has-magnetic' : '',
-				/* </fs_premium_only> */
+
 			]
 				.filter(Boolean)
 				.join(' '),
@@ -208,56 +188,16 @@ registerBlockType(metadata.name, {
 							onChange={(value) => setAttributes({ playbackMode: value })}
 						/>
 
-						{/* <fs_premium_only> */}
-						<div
-							style={{
-								padding: '10px',
-								background: '#f8fafc',
-								border: '1px solid #e2e8f0',
-								borderRadius: '6px',
-								marginTop: '15px',
-							}}
-						>
-							<p style={{ marginTop: 0, fontWeight: 'bold', fontSize: '13px' }}>
-								{__('Playback Settings', 'kinetichub')}
-							</p>
 
-							<ToggleControl
-								label={__('Autoplay Video', 'kinetichub')}
-								checked={!!autoplayVideo}
-								onChange={(value) => setAttributes({ autoplayVideo: value })}
-							/>
 
-							<ToggleControl
-								label={__('Force Loop', 'kinetichub')}
-								checked={!!forceLoop}
-								onChange={(value) => setAttributes({ forceLoop: value })}
-							/>
 
-							<ToggleControl
-								label={__('Mute Local/Inline Video', 'kinetichub')}
-								checked={!!muteLocalVideo}
-								onChange={(value) => setAttributes({ muteLocalVideo: value })}
-							/>
-
-							<RangeControl
-								label={__('Start Time (Seconds)', 'kinetichub')}
-								value={startTime || 0}
-								onChange={(value) => setAttributes({ startTime: value })}
-								min={0}
-								max={300}
-							/>
-						</div>
-						{/* </fs_premium_only> */}
-
-						{/* <fs_free_only> */}
 						<StaticTeaser
 							message={__(
-								'Advanced playback controls such as custom start time, forced loop, and autoplay parameters are available in the separate premium version.',
+								'Advanced playback controls such as custom start time, forced loop, and autoplay parameters are available in the separate advanced version.',
 								'kinetichub'
 							)}
 						/>
-						{/* </fs_free_only> */}
+
 					</PanelBody>
 
 					<PanelBody title={__('🖼️ Cover Image', 'kinetichub')} initialOpen={false}>
@@ -325,29 +265,16 @@ registerBlockType(metadata.name, {
 							onChange={(value) => setAttributes({ aspectRatio: value })}
 						/>
 
-						{/* <fs_premium_only> */}
-						<div style={{ marginTop: '15px' }}>
-							<SelectControl
-								label={__('Image Hover Zoom', 'kinetichub')}
-								value={editorHoverZoomLevel}
-								options={[
-									{ label: __('None', 'kinetichub'), value: 'none' },
-									{ label: __('Subtle', 'kinetichub'), value: 'subtle' },
-									{ label: __('Cinematic (Slow)', 'kinetichub'), value: 'cinematic' },
-								]}
-								onChange={(value) => setAttributes({ hoverZoomLevel: value })}
-							/>
-						</div>
-						{/* </fs_premium_only> */}
 
-						{/* <fs_free_only> */}
+
+
 						<StaticTeaser
 							message={__(
-								'Additional cover hover zoom styles are available in the separate premium version.',
+								'Additional cover hover zoom styles are available in the separate advanced version.',
 								'kinetichub'
 							)}
 						/>
-						{/* </fs_free_only> */}
+
 					</PanelBody>
 
 					<PanelBody title={__('▶️ Play Button Design', 'kinetichub')} initialOpen={false}>
@@ -386,42 +313,20 @@ registerBlockType(metadata.name, {
 							onChange={(value) => setAttributes({ iconColor: value || '#ffffff' })}
 						/>
 
-						{/* <fs_premium_only> */}
-						<hr style={{ margin: '15px 0' }} />
-						<TextControl
-							label={__('Teaser Badge Text (Optional)', 'kinetichub')}
-							value={editorTeaserBadgeText}
-							onChange={(value) => setAttributes({ teaserBadgeText: value })}
-							help={__('For example: "Watch Trailer"', 'kinetichub')}
-						/>
-						{/* </fs_premium_only> */}
+
 					</PanelBody>
 
 					<PanelBody title={__('⚡ Advanced Interactions', 'kinetichub')} initialOpen={false}>
-						{/* <fs_premium_only> */}
-						<ToggleControl
-							label={__('Magnetic Button Pull', 'kinetichub')}
-							checked={editorMagneticPull}
-							onChange={(value) => setAttributes({ magneticPull: value })}
-							help={__('Button follows the cursor slightly on hover.', 'kinetichub')}
-						/>
 
-						<ToggleControl
-							label={__('Idle Pulse Animation', 'kinetichub')}
-							checked={editorPulseAnimation}
-							onChange={(value) => setAttributes({ pulseAnimation: value })}
-							help={__('Subtle breathing effect on the play button.', 'kinetichub')}
-						/>
-						{/* </fs_premium_only> */}
 
-						{/* <fs_free_only> */}
+
 						<StaticTeaser
 							message={__(
-								'Magnetic button movement and idle pulse animation are available in the separate premium version.',
+								'Magnetic button movement and idle pulse animation are available in the separate advanced version.',
 								'kinetichub'
 							)}
 						/>
-						{/* </fs_free_only> */}
+
 					</PanelBody>
 
 					{playbackMode === 'modal' && (
@@ -438,28 +343,16 @@ registerBlockType(metadata.name, {
 								onChange={(value) => setAttributes({ backdropStyle: value })}
 							/>
 
-							{/* <fs_premium_only> */}
-							<SelectControl
-								label={__('Modal Entrance Animation', 'kinetichub')}
-								value={editorModalEntrance}
-								options={[
-									{ label: __('Scale / Zoom', 'kinetichub'), value: 'zoom' },
-									{ label: __('Slide Up', 'kinetichub'), value: 'slide' },
-									{ label: __('3D Flip', 'kinetichub'), value: 'flip' },
-									{ label: __('Fade Only', 'kinetichub'), value: 'fade' },
-								]}
-								onChange={(value) => setAttributes({ modalEntrance: value })}
-							/>
-							{/* </fs_premium_only> */}
 
-							{/* <fs_free_only> */}
+
+
 							<StaticTeaser
 								message={__(
-									'Additional modal entrance animations are available in the separate premium version. The free build uses the default zoom entrance.',
+									'Additional modal entrance animations are available in the separate advanced version. The free build uses the default zoom entrance.',
 									'kinetichub'
 								)}
 							/>
-							{/* </fs_free_only> */}
+
 
 							<ToggleControl
 								label={__('Close on Backdrop Click', 'kinetichub')}
@@ -590,11 +483,7 @@ registerBlockType(metadata.name, {
 								</span>
 							</button>
 
-							{/* <fs_premium_only> */}
-							{editorTeaserBadgeText && (
-								<span className="kh-vm-teaser-badge">{editorTeaserBadgeText}</span>
-							)}
-							{/* </fs_premium_only> */}
+
 						</div>
 					</div>
 

@@ -1,10 +1,18 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.6
+Current Version: 1.0.7
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.0.7] - 2026-06-16
+----------------------------------------------------------------------
+- Fixed Magnetic Button SVG icon scaling and added left, center, and right alignment controls.
+- Restored useful FREE controls for Cursor Reveal, including responsive title sizing, subtitle styling, media sizing, reveal masks, hover filters, and a subtle relative hover scale.
+- Balanced Scroll Divider vertical spacing.
+- Added Split Scroll media reordering and restored compatibility with third-party nested blocks.
+- Improved the Audio Player Extended layout on smaller screens.
 ----------------------------------------------------------------------
 ## [1.0.6] - 2026-06-12
 ----------------------------------------------------------------------

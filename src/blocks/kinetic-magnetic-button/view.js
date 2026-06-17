@@ -14,9 +14,7 @@
         abortController: null,
         activeUpdateNode: null,
         viewObserver: null,
-        /* <fs_premium_only> */
-        entranceObserver: null,
-        /* </fs_premium_only> */
+
         mutationObserver: null,
         initTimer: null,
 
@@ -52,19 +50,7 @@
                 }, { rootMargin: '100px' });
             }
 
-            /* <fs_premium_only> */
-            if (!this.entranceObserver) {
-                this.entranceObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-inview');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 });
-            }
-            /* </fs_premium_only> */
-        },
+            ,
 
         startTracking() {
             if (this.isTracking) return;
@@ -100,18 +86,9 @@
         },
 
         scanDOM() {
-            document.querySelectorAll('.kh-mb-wrapper:not(.is-inview)').forEach(wrapper => {
-                /* <fs_premium_only> */
-                const hasAnim = Array.from(wrapper.classList).some(c => c.startsWith('anim-'));
-                if (hasAnim) {
-                    this.entranceObserver.observe(wrapper);
-                } else {
-                /* </fs_premium_only> */
+            document.querySelectorAll('.kh-mb-wrapper:not(.is-inview)').forEach(wrapper =>
                     wrapper.classList.add('is-inview');
-                /* <fs_premium_only> */
-                }
-                /* </fs_premium_only> */
-            });
+                );
 
             const buttons = document.querySelectorAll('.kh-mb-button:not(.js-ready)');
             if (buttons.length > 0) {
@@ -183,13 +160,7 @@
                     this.viewObserver = null;
                 }
                 
-                /* <fs_premium_only> */
-                if (this.entranceObserver) {
-                    this.entranceObserver.disconnect();
-                    this.entranceObserver = null;
-                }
-                /* </fs_premium_only> */
-            }
+
         }
     };
 
@@ -228,34 +199,9 @@
             this.el.classList.add('js-ready');
             this.manager.viewObserver.observe(this.el);
             this.setupListeners();
-            /* <fs_premium_only> */
-            this.setupStretchedLink();
-            /* </fs_premium_only> */
-        }
 
-        /* <fs_premium_only> */
-        setupStretchedLink() {
-            if (!this.el.classList.contains('has-stretched-link')) return;
 
-            const scope = this.el.closest('[data-kh-stretch-scope]') || 
-                          this.el.closest('.wp-block-group, .wp-block-cover, .wp-block-column, .wp-block-columns, .wp-block-media-text, article, .card, .kh-mb-stretch-container');
-            
-            if (scope && !scope._kh_mb_stretched) {
-                scope._kh_mb_stretched = true;
-                scope.style.cursor = 'pointer';
-                this.stretchScope = scope;
 
-                scope.addEventListener('click', (e) => {
-                    if (this.state.isDestroyed) return;
-                    
-                    const isInteractive = e.target.closest('a, button, input, select, textarea, summary, [role="button"], [role="link"], .wp-block-button__link');
-                    if (this.el.contains(e.target) || isInteractive) return;
-                    
-                    this.el.click();
-                }, { signal: this.abortController.signal });
-            }
-        }
-        /* </fs_premium_only> */
 
         setupListeners() {
             const options = { passive: true, signal: this.abortController.signal };

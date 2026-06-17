@@ -12,9 +12,7 @@ import {
 import { PanelBody, ToggleControl, SelectControl, Button, RangeControl, TabPanel, ColorPalette, TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-/* <fs_premium_only> */
-import { KineticEntranceControls } from '../../components/EntranceControls';
-/* </fs_premium_only> */
+
 import { KineticVisibilityControls } from '../../components/VisibilityControls';
 import { KineticEditorNotice } from '../../components/EditorNotice';
 
@@ -46,24 +44,12 @@ registerBlockType(metadata.name, {
 
         const applyPreset = (type) => {
             const baseReset = { preset: 'custom', animationType: 'lift', hoverIntensity: 20, shadowSoftness: 20, shadowOpacity: 0.1, hoverShadowOpacity: 0.2, hoverBgColor: '', hoverBorderColor: '', hoverTextColor: '' };
-            /* <fs_premium_only> */
-            baseReset.enableGlass = false;
-            baseReset.glassOpacity = 0.2;
-            baseReset.blurIntensity = 10;
-            baseReset.tiltEffect = false;
-            baseReset.magneticHover = false;
-            baseReset.enableParallax = false;
-            /* </fs_premium_only> */
+
             const presets = {
                 reset: { ...baseReset },
                 soft_elevate: { ...baseReset, preset: 'soft_elevate', hoverIntensity: 15, shadowSoftness: 40, shadowOpacity: 0.05, hoverShadowOpacity: 0.15 },
                 minimal_scale: { ...baseReset, preset: 'minimal_scale', animationType: 'scale', hoverIntensity: 5, shadowSoftness: 10 },
-                /* <fs_premium_only> */
-                pro_glass: { ...baseReset, preset: 'pro_glass', enableGlass: true, glassOpacity: 0.15, blurIntensity: 15, shadowSoftness: 30, shadowOpacity: 0.05 },
-                tech_trace: { ...baseReset, preset: 'tech_trace', animationType: 'trace', hoverIntensity: 0, hoverBorderColor: '#0073aa' },
-                kinetic_3d: { ...baseReset, preset: 'kinetic_3d', animationType: 'none', hoverIntensity: 10, tiltEffect: true, enableParallax: true, shadowSoftness: 30 },
-                /* </fs_premium_only> */
-            };
+                ;
             if(presets[type]) {
                 setAttributes(presets[type]);
             }
@@ -73,11 +59,7 @@ registerBlockType(metadata.name, {
             { label: __('Custom', 'kinetichub'), value: 'custom' }, 
             { label: __('Soft Elevate', 'kinetichub'), value: 'soft_elevate' }, 
             { label: __('Minimal Scale', 'kinetichub'), value: 'minimal_scale' }, 
-            /* <fs_premium_only> */
-            { label: __('Pro Glass', 'kinetichub'), value: 'pro_glass' }, 
-            { label: __('Tech Trace', 'kinetichub'), value: 'tech_trace' },
-            { label: __('Kinetic 3D', 'kinetichub'), value: 'kinetic_3d' },
-            /* </fs_premium_only> */
+
         ];
 
         const animOptions = [
@@ -85,11 +67,7 @@ registerBlockType(metadata.name, {
             {label: __('Lift (Z-Axis)', 'kinetichub'), value: 'lift'},
             {label: __('Scale (Grow)', 'kinetichub'), value: 'scale'},
             {label: __('Tilt (CSS)', 'kinetichub'), value: 'tilt'},
-            /* <fs_premium_only> */
-            {label: __('Trace (Border)', 'kinetichub'), value: 'trace'},
-            {label: __('Shine', 'kinetichub'), value: 'shine'},
-            {label: __('Sink (Click effect)', 'kinetichub'), value: 'sink'},
-            /* </fs_premium_only> */
+
         ];
 
         const hasCustomBg = (hoverBgColor && hoverBgColor.length > 1);
@@ -104,9 +82,7 @@ registerBlockType(metadata.name, {
         const mappedEngineSpeed = (0.6 + ((safeSpeedRaw - 0.1) / 1.9) * 1.4).toFixed(2);
 
         let isPhysicsActive = false;
-        /* <fs_premium_only> */
-        isPhysicsActive = tiltEffect || magneticHover;
-        /* </fs_premium_only> */
+
 
         let marginL = '0'; let marginR = '0'; let alignSelf = 'center';
         if (boxAlign === 'center') { marginL = 'auto'; marginR = 'auto'; alignSelf = 'center'; }
@@ -139,20 +115,7 @@ registerBlockType(metadata.name, {
             '--kh-box-text-align': hAlign
         };
 
-        /* <fs_premium_only> */
-        cssVars['--kh-box-blur'] = `${blurIntensity}px`;
-        cssVars['--kh-box-glass-o'] = glassOpacity;
-        if (spotlightGlow) {
-            cssVars['--kh-box-spot-c'] = spotlightColor;
-            cssVars['--kh-box-spot-sz'] = `${spotlightSize}px`;
-        }
-        if (filmGrain) {
-            cssVars['--kh-box-grain-o'] = grainOpacity;
-        }
-        if (crispEdge) {
-            cssVars['--kh-box-edge-c'] = edgeColor;
-        }
-        /* </fs_premium_only> */
+
 
         const classes = [
             'kh-box-wrapper', 'kh-box-editor-preview', 'is-editor-canvas',
@@ -167,25 +130,11 @@ registerBlockType(metadata.name, {
             bringToFront ? 'kh-box-z-top' : '',
             hideOnMobile ? 'kh-box-hide-mobile' : '',
             hideOnDesktop ? 'kh-box-hide-desktop' : '',
-            /* <fs_premium_only> */
-            enableGlass ? 'kh-box-is-glass' : '',
-            enableParallax ? 'has-parallax' : '',
-            spotlightGlow ? 'has-spotlight' : '',
-            filmGrain ? 'has-grain' : '',
-            idleLevitation ? 'has-idle-levitation' : '',
-            crispEdge ? 'has-crisp-edge' : '',
-            /* </fs_premium_only> */
+
         ].filter(Boolean).join(' ');
 
         let editorDataAttrs = {};
-        /* <fs_premium_only> */
-        editorDataAttrs = {
-            'data-tilt': tiltEffect,
-            'data-magnetic': magneticHover,
-            'data-parallax': enableParallax,
-            'data-spotlight': spotlightGlow,
-        };
-        /* </fs_premium_only> */
+
 
         const blockProps = useBlockProps({ className: classes, style: cssVars, ...editorDataAttrs });
 
@@ -285,92 +234,25 @@ registerBlockType(metadata.name, {
                         )}
                     </PanelBody>
 
-                    {/* <fs_premium_only> */}
-                    <PanelBody title={__('🧠 Kinetic Physics', 'kinetichub')} initialOpen={false}>
-                        <ToggleControl 
-                            label={__('3D Mouse Tilt', 'kinetichub')} 
-                            checked={tiltEffect} 
-                            onChange={(v) => {
-                                setAttributes({ tiltEffect: v });
-                                if (v) setAttributes({ animationType: 'none' });
-                            }} 
-                            help={__('Hardware-accelerated 3D tracking. Overrides standard CSS hover animations (Lift/Scale).', 'kinetichub')} 
-                        />
-                        <ToggleControl 
-                            label={__('Magnetic Hover', 'kinetichub')} 
-                            checked={magneticHover} 
-                            onChange={(v) => {
-                                setAttributes({ magneticHover: v });
-                                if (v) setAttributes({ animationType: 'none' });
-                            }} 
-                            help={__('The entire box organically follows the mouse cursor.', 'kinetichub')}
-                        />
-                        <ToggleControl 
-                            label={__('Inner Parallax Layers', 'kinetichub')} 
-                            checked={enableParallax} 
-                            onChange={(v) => setAttributes({enableParallax:v})} 
-                            help={__('Inner blocks move in the opposite direction of the 3D tilt, creating intense depth.', 'kinetichub')}
-                        />
-                    </PanelBody>
-                    {/* </fs_premium_only> */}
-                    {/* <fs_free_only> */}
+
+
                     <PanelBody title={__('🧠 Kinetic Physics', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>
-                            {__('3D Mouse Tilt, Magnetic Hover, and Inner Parallax Layers are available in PRO.', 'kinetichub')}
+                            {__('3D Mouse Tilt, Magnetic Hover, and Inner Parallax Layers are not included in this build.', 'kinetichub')}
                         </p>
                     </PanelBody>
-                    {/* </fs_free_only> */}
 
-                    {/* <fs_premium_only> */}
-                    <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
-                        <ToggleControl 
-                            label={__('Interactive Spotlight Glow', 'kinetichub')} 
-                            checked={spotlightGlow} 
-                            onChange={(v) => setAttributes({ spotlightGlow: v })} 
-                            help={__('Renders a radial flashlight effect that dynamically follows the cursor. Best used on dark backgrounds.', 'kinetichub')}
-                        />
-                        {spotlightGlow && (
-                            <div style={{ padding: '10px', background: '#f8f9fa', borderRadius: '8px', marginBottom: '15px' }}>
-                                <p style={{marginTop:0, fontWeight:'bold', fontSize:'12px'}}>{__('Spotlight Color (RGBA support)', 'kinetichub')}</p>
-                                <ColorPalette value={spotlightColor} onChange={(v) => setAttributes({ spotlightColor: v })} enableAlpha={true} />
-                                <RangeControl label={__('Spotlight Size (px)', 'kinetichub')} value={spotlightSize} onChange={(v) => setAttributes({ spotlightSize: v })} min={100} max={1000} />
-                            </div>
-                        )}
-                        <hr/>
-                        <ToggleControl label={__('Cinematic Film Grain', 'kinetichub')} checked={filmGrain} onChange={(v) => setAttributes({ filmGrain: v })} />
-                        {filmGrain && (
-                            <div style={{ padding: '10px', background: '#f8f9fa', borderRadius: '8px', marginBottom: '15px' }}>
-                                <RangeControl label={__('Grain Opacity', 'kinetichub')} value={grainOpacity} onChange={(v) => setAttributes({ grainOpacity: v })} min={0.01} max={0.5} step={0.01} />
-                            </div>
-                        )}
-                        <hr/>
-                        <ToggleControl 
-                            label={__('Idle Levitation', 'kinetichub')} 
-                            checked={idleLevitation} 
-                            onChange={(v) => setAttributes({ idleLevitation: v })} 
-                            help={__('The box will breathe and float on the Y-axis when the user is not interacting with it.', 'kinetichub')}
-                        />
-                        <hr/>
-                        <ToggleControl label={__('Crisp Inner 3D Edge', 'kinetichub')} checked={crispEdge} onChange={(v) => setAttributes({ crispEdge: v })} />
-                        {crispEdge && (
-                            <div style={{ padding: '10px', background: '#f8f9fa', borderRadius: '8px', marginBottom: '15px' }}>
-                                <p style={{marginTop:0, fontWeight:'bold', fontSize:'12px'}}>{__('Edge Highlight Color', 'kinetichub')}</p>
-                                <ColorPalette value={edgeColor} onChange={(v) => setAttributes({ edgeColor: v })} enableAlpha={true} />
-                            </div>
-                        )}
-                    </PanelBody>
-                    {/* </fs_premium_only> */}
-                    {/* <fs_free_only> */}
+
+
+
                     <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>
-                            {__('Spotlight Glow, Film Grain, Idle Levitation, and Crisp Edge are available in PRO.', 'kinetichub')}
+                            {__('Spotlight Glow, Film Grain, Idle Levitation, and Crisp Edge are not included in this build.', 'kinetichub')}
                         </p>
                     </PanelBody>
-                    {/* </fs_free_only> */}
 
-                    {/* <fs_premium_only> */}
-                    <KineticEntranceControls attributes={attributes} setAttributes={setAttributes} />
-                    {/* </fs_premium_only> */}
+
+
 
                     <PanelBody title={__('⚙️ Detailed Config', 'kinetichub')} initialOpen={false}>
                         <TabPanel className="kh-tab-panel" tabs={[
@@ -407,13 +289,7 @@ registerBlockType(metadata.name, {
 
                                             <RangeControl label={__('Transition Speed (s)', 'kinetichub')} value={transitionSpeed} onChange={(v) => setAttributes({ transitionSpeed: v })} min={0.1} max={2.0} step={0.1} />
                                             
-                                            {/* <fs_premium_only> */}
-                                            <SelectControl label={__('Easing Mode', 'kinetichub')} value={easing} options={[{label: __('Smooth (Default)', 'kinetichub'), value: 'smooth'}, {label: __('Bouncy (Elastic)', 'kinetichub'), value: 'bouncy'}, {label: __('Snappy (Fast)', 'kinetichub'), value: 'snappy'}]} onChange={(v) => setAttributes({ easing: v })} />
                                             
-                                            {(!isPhysicsActive && (animationType === 'lift' || animationType === 'scale')) && (
-                                                <RangeControl label={__('Rotation Angle', 'kinetichub')} value={rotation} onChange={(v) => setAttributes({ rotation: v })} min={-15} max={15} />
-                                            )}
-                                            {/* </fs_premium_only> */}
 
                                             <ToggleControl 
                                                 label={__('Bring to Front on Hover', 'kinetichub')} 
@@ -430,9 +306,7 @@ registerBlockType(metadata.name, {
                                             <ColorPalette value={shadowColor} onChange={(v) => setAttributes({ shadowColor: v })} enableAlpha={true} />
                                             <RangeControl label={__('Shadow Opacity', 'kinetichub')} value={shadowOpacity} onChange={(v) => setAttributes({ shadowOpacity: v })} min={0} max={1} step={0.05} />
                                             <RangeControl label={__('Blur / Softness (Desktop)', 'kinetichub')} value={shadowSoftness} onChange={(v) => setAttributes({ shadowSoftness: v })} min={0} max={100} />
-                                            {/* <fs_premium_only> */}
-                                            <RangeControl label={__('Blur / Softness (Mobile)', 'kinetichub')} value={mobileShadowSoftness} onChange={(v) => setAttributes({ mobileShadowSoftness: v })} min={0} max={100} />
-                                            {/* </fs_premium_only> */}
+
                                             <hr style={{margin: '20px 0'}} />
                                             <p style={{ fontWeight: 'bold', fontSize: '13px', marginBottom: '5px' }}>{__('Hover Shadow Color', 'kinetichub')}</p>
                                             <ColorPalette value={hoverShadowColor} onChange={(v) => setAttributes({ hoverShadowColor: v })} enableAlpha={true} />
@@ -452,12 +326,7 @@ registerBlockType(metadata.name, {
                                                 <ColorPalette value={hoverBorderColor} onChange={(v)=>setAttributes({hoverBorderColor:v})} enableAlpha={true} />
                                             </div>
                                             
-                                            {/* <fs_premium_only> */}
-                                            <p style={{ fontSize: '13px', marginBottom: '5px', padding: '0 16px', fontWeight: 'bold', marginTop: '10px' }}>{__('Hover Text Color', 'kinetichub')}</p>
-                                            <div style={{ padding: '0 16px' }}>
-                                                <ColorPalette value={hoverTextColor} onChange={(v)=>setAttributes({hoverTextColor:v})} enableAlpha={true} />
-                                            </div>
-                                            {/* </fs_premium_only> */}
+
                                         </>
                                     )}
                                 </div>
@@ -475,32 +344,14 @@ registerBlockType(metadata.name, {
                         <ToggleControl label={__('Outer Glow Effect', 'kinetichub')} checked={hasGlow} onChange={(v)=>setAttributes({hasGlow:v})} />
                         <ToggleControl label={__('Grayscale to Color', 'kinetichub')} checked={isGrayscale} onChange={(v)=>setAttributes({isGrayscale:v})} />
                         
-                        {/* <fs_premium_only> */}
-                        <ToggleControl 
-                            label={__('Enable Glassmorphism', 'kinetichub')} 
-                            checked={enableGlass} 
-                            onChange={(v)=>setAttributes({enableGlass:v})} 
-                            help={__('Controls the white overlay opacity. Set to 0 for pure blur, or 0.2 for a frosted look.', 'kinetichub')}
-                        />
-                        {enableGlass && (
-                            <div style={{ background: '#f0f5ff', padding: '10px', borderRadius: '4px', marginTop: '10px' }}>
-                                <strong>{__('Glassmorphism Engine', 'kinetichub')}</strong>
-                                <RangeControl label={__('White Layer Opacity', 'kinetichub')} value={glassOpacity} onChange={(v)=>setAttributes({glassOpacity:v})} min={0} max={1} step={0.05} />
-                                <RangeControl label={__('Backdrop Blur Strength', 'kinetichub')} value={blurIntensity} onChange={(v)=>setAttributes({blurIntensity:v})} min={0} max={40} />
-                            </div>
-                        )}
-                        {/* </fs_premium_only> */}
+
                     </PanelBody>
                     
                     <KineticVisibilityControls attributes={attributes} setAttributes={setAttributes} />
                 </InspectorControls>
 
                 <div {...blockProps}>
-                    {/* <fs_premium_only> */}
-                    {filmGrain && <div className="kh-box-grain" aria-hidden="true"></div>}
-                    {spotlightGlow && <div className="kh-box-spotlight" aria-hidden="true"></div>}
-                    {crispEdge && <div className="kh-box-crisp-edge" aria-hidden="true"></div>}
-                    {/* </fs_premium_only> */}
+
                     
                     <div className="kh-box-inner-content">
                         <InnerBlocks />
@@ -510,13 +361,7 @@ registerBlockType(metadata.name, {
                         KB {minHeight > 0 && `| ${minHeight}px`} {boxWidth > 0 && `| W: ${boxWidth}%`}
                     </div>
 
-                    {/* <fs_premium_only> */}
-                    {isSelected && (
-                        <div style={{ position: 'relative', width: '100%', zIndex: 99, marginTop: '15px' }}>
-                            <KineticEditorNotice message={__('Interaction physics execute on live frontend.', 'kinetichub')} />
-                        </div>
-                    )}
-                    {/* </fs_premium_only> */}
+
                 </div>
             </>
         );

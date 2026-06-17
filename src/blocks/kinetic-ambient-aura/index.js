@@ -6,7 +6,7 @@
 import './style.scss';
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, RangeControl, SelectControl, ColorPalette/* <fs_premium_only> */, ToggleControl/* </fs_premium_only> */ } from '@wordpress/components';
+import { PanelBody, RangeControl, SelectControl, ColorPalette from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import metadata from './block.json';
 
@@ -18,21 +18,9 @@ registerBlockType(metadata.name, {
         const { attributes, setAttributes } = props;
         const { 
             color, opacity, spread, falloff, shape, positionType, 
-            offsetX, offsetY/* <fs_premium_only> */,
-            zIndex, blendMode, mobileBehavior, disableBlendMobile
-            /* </fs_premium_only> */
-        } = attributes;
+            offsetX, offsetY = attributes;
 
-        /* <fs_premium_only> */
-        const isPro = window.khData?.isPro === true;
 
-        const proLabel = (text) => (
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                <span>{text}</span>
-                {!isPro && <span style={{ fontSize: '10px', background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', marginLeft: '10px' }}>PRO</span>}
-            </span>
-        );
-        /* </fs_premium_only> */
 
         let currentShape = 'circle';
         let cssShape = 'circle';
@@ -40,18 +28,10 @@ registerBlockType(metadata.name, {
         let editorZIndex = -1;
         let editorBlendMode = 'normal';
 
-        /* <fs_premium_only> */
-        currentShape = isPro ? shape : 'circle';
-        cssShape = currentShape === 'ellipse-horizontal' || currentShape === 'ellipse-vertical' ? 'ellipse' : 'circle';
-        cssRatio = currentShape === 'ellipse-horizontal' ? '1.5' : (currentShape === 'ellipse-vertical' ? '0.65' : '1');
-        editorZIndex = isPro ? zIndex : -1;
-        editorBlendMode = isPro ? blendMode : 'normal';
-        /* </fs_premium_only> */
+
 
         let shapeLabel = __('Shape', 'kinetichub');
-        /* <fs_premium_only> */
-        shapeLabel = proLabel(__('Shape', 'kinetichub'));
-        /* </fs_premium_only> */
+
 
         const blockProps = useBlockProps({
             className: `kh-ambient-aura kh-aura-pos-${positionType}`,
@@ -88,10 +68,7 @@ registerBlockType(metadata.name, {
                             help={__('Circle or stretched oval form.', 'kinetichub')}
                             options={[
                                 {label: __('Circle', 'kinetichub'), value: 'circle'},
-                                /* <fs_premium_only> */
-                                {label: __('Ellipse (Horizontal)', 'kinetichub'), value: 'ellipse-horizontal'},
-                                {label: __('Ellipse (Vertical)', 'kinetichub'), value: 'ellipse-vertical'}
-                                /* </fs_premium_only> */
+
                             ]} 
                             onChange={(v) => setAttributes({ shape: v })} 
                         />
@@ -145,57 +122,16 @@ registerBlockType(metadata.name, {
                             help={__('Negative moves it above the block.', 'kinetichub')}
                         />
                         
-                        {/* <fs_premium_only> */}
-                        <div style={{ marginTop: '15px' }}>
-                            <RangeControl 
-                                label={proLabel(__('Z-Index Layer', 'kinetichub'))} 
-                                value={zIndex} 
-                                onChange={(v) => setAttributes({ zIndex: v })} 
-                                min={-10} max={100} 
-                                help={__('Layer order. Negative = behind content.', 'kinetichub')}
-                            />
-                        </div>
-                        {/* </fs_premium_only> */}
+
                     </PanelBody>
                     
                     <PanelBody title={__('⚙️ Advanced & Performance', 'kinetichub')} initialOpen={false}>
-                        {/* <fs_premium_only> */}
-                        <SelectControl 
-                            label={proLabel(__('Optical Blend Mode', 'kinetichub'))} 
-                            value={blendMode} 
-                            help={__('How glow mixes with content below.', 'kinetichub')}
-                            options={[
-                                {label: __('Normal (Fastest)', 'kinetichub'), value: 'normal'},
-                                {label: __('Screen (Lighten)', 'kinetichub'), value: 'screen'},
-                                {label: __('Overlay', 'kinetichub'), value: 'overlay'},
-                                {label: __('Color Dodge', 'kinetichub'), value: 'color-dodge'}
-                            ]} 
-                            onChange={(v) => setAttributes({ blendMode: v })} 
-                        />
-                        <hr style={{margin: '20px 0'}} />
-                        <SelectControl 
-                            label={proLabel(__('Mobile Behavior', 'kinetichub'))} 
-                            value={mobileBehavior} 
-                            help={__('Glow appearance on small screens.', 'kinetichub')}
-                            options={[
-                                {label: __('Reduce Opacity (Recommended)', 'kinetichub'), value: 'reduce'},
-                                {label: __('Hide Completely', 'kinetichub'), value: 'hide'},
-                                {label: __('Show Unchanged', 'kinetichub'), value: 'show'}
-                            ]} 
-                            onChange={(v) => setAttributes({ mobileBehavior: v })} 
-                        />
-                        <ToggleControl 
-                            label={proLabel(__('Disable Blend Mode on Mobile', 'kinetichub'))} 
-                            checked={disableBlendMobile} 
-                            onChange={(v) => setAttributes({ disableBlendMobile: v })} 
-                            help={__('Improves performance on mobile.', 'kinetichub')}
-                        />
-                        {/* </fs_premium_only> */}
-                        {/* <fs_free_only> */}
+
+
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', margin: '10px 0 0' }}>
                             {__('Additional shape, blend, mobile, and layering options are available in KineticHub Pro, distributed separately from WordPress.org.', 'kinetichub')}
                         </p>
-                        {/* </fs_free_only> */}
+
                     </PanelBody>
                 </InspectorControls>
 

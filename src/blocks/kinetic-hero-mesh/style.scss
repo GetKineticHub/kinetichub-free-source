@@ -22,10 +22,7 @@
         &.has-parallax { background-attachment: scroll !important; }
     }
 
-    /* <fs_premium_only> */
-    &.kh-hm-hide-mobile { @media (max-width: 768px) { display: none !important; } }
-    &.kh-hm-hide-desktop { @media (min-width: 769px) { display: none !important; } }
-    /* </fs_premium_only> */
+
 
     .kh-hm-canvas-engine, 
     .kh-hm-overlay, 

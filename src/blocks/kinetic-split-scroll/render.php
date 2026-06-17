@@ -72,38 +72,25 @@ $kh_ss_object_position  = in_array( $attributes['objectPosition'] ?? '', $kh_ss_
 
 // FREE: indicator limited to line/none
 $kh_ss_indicator_list   = array( 'line', 'none' );
-/* <fs_premium_only> */
-$kh_ss_indicator_list   = array( 'line', 'none', 'dots', 'percentage' );
-/* </fs_premium_only> */
+
 $kh_ss_indicator_type   = in_array( $attributes['indicatorType'] ?? '', $kh_ss_indicator_list, true ) ? $attributes['indicatorType'] : 'line';
 
 // FREE: media shape always default
 $kh_ss_media_shape = 'default';
-/* <fs_premium_only> */
-$kh_ss_shape_list       = array( 'default', 'floating', 'arch', 'pill' );
-$kh_ss_media_shape      = in_array( $attributes['mediaShape'] ?? '', $kh_ss_shape_list, true ) ? $attributes['mediaShape'] : 'default';
-/* </fs_premium_only> */
+
 
 // FREE: text effect limited to none/fade-up
 $kh_ss_text_fx_list     = array( 'none', 'fade-up' );
-/* <fs_premium_only> */
-$kh_ss_text_fx_list     = array( 'none', 'fade-up', 'focus' );
-/* </fs_premium_only> */
+
 $kh_ss_text_effect      = in_array( $attributes['textEffect'] ?? '', $kh_ss_text_fx_list, true ) ? $attributes['textEffect'] : 'none';
 
 // FREE: swap transition always fade
 $kh_ss_swap_transition = 'fade';
-/* <fs_premium_only> */
-$kh_ss_swap_list        = array( 'fade', 'wipe', 'circle', 'diagonal' );
-$kh_ss_swap_transition  = in_array( $attributes['swapTransition'] ?? '', $kh_ss_swap_list, true ) ? $attributes['swapTransition'] : 'fade';
-/* </fs_premium_only> */
+
 
 // FREE: shadow style always soft
 $kh_ss_shadow_style = 'soft';
-/* <fs_premium_only> */
-$kh_ss_shadow_list      = array( 'soft', 'crisp', 'float', 'glow', 'elegant' );
-$kh_ss_shadow_style     = in_array( $attributes['shadowStyle'] ?? '', $kh_ss_shadow_list, true ) ? $attributes['shadowStyle'] : 'soft';
-/* </fs_premium_only> */
+
 
 $kh_ss_sticky_offset    = max( 0, min( 200, (int) ( $attributes['stickyOffset'] ?? 0 ) ) );
 $kh_ss_overlay_opacity  = max( 0.0, min( 1.0, (float) ( $attributes['overlayOpacity'] ?? 0 ) ) );
@@ -131,34 +118,17 @@ $kh_ss_glow_color      = 'rgba(16, 185, 129, 0.6)';
 $kh_ss_glow_spread     = 40;
 $kh_ss_bg_morph_start  = 'transparent';
 $kh_ss_bg_morph_end    = 'transparent';
-$kh_ss_shadow_color    = '';
-$kh_ss_shadow_softness = '';
+$kh_ss_shadow_color           = '';
+$kh_ss_hover_shadow_color     = '';
+$kh_ss_shadow_softness        = '';
+$kh_ss_mobile_shadow_softness = '';
+$kh_ss_shadow_opacity         = '';
+$kh_ss_hover_shadow_opacity   = '';
 
-/* <fs_premium_only> */
-$kh_ss_dots_interactive  = ! empty( $attributes['dotsInteractive'] );
-$kh_ss_inner_parallax    = ! empty( $attributes['innerParallax'] );
-$kh_ss_ambient_glow      = ! empty( $attributes['ambientGlow'] );
-$kh_ss_bg_morphing       = ! empty( $attributes['scrollBgMorphing'] );
-$kh_ss_enable_ken_burns  = ! empty( $attributes['enableKenBurns'] );
-$kh_ss_hide_mobile       = ! empty( $attributes['hideOnMobile'] );
-$kh_ss_hide_desktop      = ! empty( $attributes['hideOnDesktop'] );
-$kh_ss_container_shadow  = ! empty( $attributes['containerShadow'] );
 
-$kh_ss_glow_spread      = max( 10, min( 150, (int) ( $attributes['ambientGlowSpread'] ?? 40 ) ) );
-$kh_ss_glow_color       = kinetichub_ss_validate_color_strict( $attributes['ambientGlowColor'] ?? '', 'rgba(16, 185, 129, 0.6)' );
-$kh_ss_bg_morph_start   = kinetichub_ss_validate_color_strict( $attributes['bgMorphStart'] ?? '', 'transparent' );
-$kh_ss_bg_morph_end     = kinetichub_ss_validate_color_strict( $attributes['bgMorphEnd'] ?? '', 'transparent' );
-$kh_ss_shadow_color     = kinetichub_ss_validate_color_strict( $attributes['shadowColor'] ?? '', '' );
-$kh_ss_shadow_softness  = isset($attributes['shadowSoftness']) ? (int) $attributes['shadowSoftness'] : '';
-$kh_ss_floating_shadow_opacity = isset( $attributes['floatingCardShadowOpacity'] )
-    ? max( 0, min( 0.4, (float) $attributes['floatingCardShadowOpacity'] ) )
-    : 0.2;
-/* </fs_premium_only> */
 
 $kh_ss_max_items = 3;
-/* <fs_premium_only> */
-$kh_ss_max_items = 50;
-/* </fs_premium_only> */
+
 
 $kh_ss_left_width  = '50%';
 $kh_ss_right_width = '50%';
@@ -192,29 +162,7 @@ $kh_ss_css_vars = sprintf(
     $kh_ss_pinned_bg_color
 );
 
-/* <fs_premium_only> */
-$kh_ss_css_vars .= sprintf(
-    ' --kh-ss-glow-c: %1$s; --kh-ss-glow-s: %2$dpx; --kh-ss-bg-start: %3$s; --kh-ss-bg-end: %4$s;',
-    $kh_ss_glow_color,
-    $kh_ss_glow_spread,
-    $kh_ss_bg_morph_start,
-    $kh_ss_bg_morph_end
-);
 
-$kh_ss_css_vars .= sprintf(
-    ' --kh-ss-floating-shadow-opacity: %s;',
-    esc_attr( (string) $kh_ss_floating_shadow_opacity )
-);
-
-if ( $kh_ss_container_shadow ) {
-    if ( '' !== $kh_ss_shadow_color ) {
-        $kh_ss_css_vars .= sprintf( ' --kh-ss-shadow-c: %s;', $kh_ss_shadow_color );
-    }
-    if ( '' !== $kh_ss_shadow_softness ) {
-        $kh_ss_css_vars .= sprintf( ' --kh-ss-shadow-blur: %dpx;', $kh_ss_shadow_softness );
-    }
-}
-/* </fs_premium_only> */
 
 $kh_ss_classes = array_filter(
     array(
@@ -228,24 +176,7 @@ $kh_ss_classes = array_filter(
     )
 );
 
-/* <fs_premium_only> */
-if ( $kh_ss_enable_ken_burns ) {
-    $kh_ss_classes[] = 'has-ken-burns';
-}
-if ( $kh_ss_bg_morphing ) {
-    $kh_ss_classes[] = 'has-bg-morph';
-}
-if ( $kh_ss_hide_mobile ) {
-    $kh_ss_classes[] = 'kh-hide-mobile';
-}
-if ( $kh_ss_hide_desktop ) {
-    $kh_ss_classes[] = 'kh-hide-desktop';
-}
-if ( $kh_ss_container_shadow ) {
-    $kh_ss_classes[] = 'has-shadow';
-    $kh_ss_classes[] = 'shadow-' . $kh_ss_shadow_style;
-}
-/* </fs_premium_only> */
+
 
 $kh_ss_wrapper_attrs = get_block_wrapper_attributes(
     array(
@@ -275,11 +206,7 @@ $kh_ss_allowed_media_tags = array(
 
 <div <?php echo $kh_ss_wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
     <div class="kh-ss-pinned-col">
-        <?php /* <fs_premium_only> */ ?>
-        <?php if ( $kh_ss_ambient_glow ) : ?>
-            <div class="kh-ss-ambient-glow" aria-hidden="true"></div>
-        <?php endif; ?>
-        <?php /* </fs_premium_only> */ ?>
+
 
         <div class="kh-ss-media-inner">
             <?php foreach ( $kh_ss_media_items as $kh_ss_index => $kh_ss_item ) : ?>
@@ -308,21 +235,7 @@ $kh_ss_allowed_media_tags = array(
                 <?php if ( 'line' === $kh_ss_indicator_type ) : ?>
                     <div class="kh-ss-progress-line" aria-hidden="true"><div class="kh-ss-progress-fill"></div></div>
                 <?php endif; ?>
-                <?php /* <fs_premium_only> */ ?>
-                <?php if ( 'dots' === $kh_ss_indicator_type ) : ?>
-                    <?php foreach ( $kh_ss_media_items as $kh_ss_index => $kh_ss_item ) : ?>
-                    <button
-                        class="kh-ss-dot <?php echo esc_attr( 0 === $kh_ss_index ? 'is-active' : '' ); ?>"
-                        aria-label="<?php
-                        /* translators: %d: section number for navigation dot */
-                        echo esc_attr( sprintf( __( 'Go to section %d', 'kinetichub' ), $kh_ss_index + 1 ) ); ?>"
-                        data-dot-index="<?php echo esc_attr( $kh_ss_index ); ?>"
-                    ></button>
-                    <?php endforeach; ?>
-                <?php elseif ( 'percentage' === $kh_ss_indicator_type ) : ?>
-                    <div class="kh-ss-percentage" aria-live="polite">0%</div>
-                <?php endif; ?>
-                <?php /* </fs_premium_only> */ ?>
+
             </div>
         <?php endif; ?>
     </div>
@@ -333,6 +246,6 @@ $kh_ss_allowed_media_tags = array(
         data-texteffect="<?php echo esc_attr( $kh_ss_text_effect ); ?>"
         data-mediacount="<?php echo esc_attr( count( $kh_ss_media_items ) ); ?>"
     >
-        <?php echo wp_kses_post( $kh_ss_raw_content ); ?>
+        <?php echo $kh_ss_raw_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Rendered InnerBlocks markup must be preserved; individual blocks are responsible for escaping their output. ?>
     </div>
 </div>

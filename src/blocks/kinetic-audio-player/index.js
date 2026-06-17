@@ -75,19 +75,13 @@ registerBlockType(metadata.name, {
         };
 
         let editorGlowClass = '';
-        /* <fs_premium_only> */
-        editorGlowClass = glowStyle !== 'none' ? `kh-ap-glow-${glowStyle}` : '';
-        /* </fs_premium_only> */
+
 
         let editorWaveformStyle = 'default';
-        /* <fs_premium_only> */
-        editorWaveformStyle = waveformStyle;
-        /* </fs_premium_only> */
+
 
         let showEditorTools = !isCompact && enableVolume;
-        /* <fs_premium_only> */
-        showEditorTools = !isCompact && (allowDownload || enableVolume);
-        /* </fs_premium_only> */
+
 
         return (
             <>
@@ -150,32 +144,14 @@ registerBlockType(metadata.name, {
                         {isCompact && <RangeControl label={__('Circle Size (px)', 'kinetichub')} value={compactSize} onChange={(v) => setAttributes({ compactSize: v })} min={60} max={300} step={5} help={__('Diameter of the circle player.', 'kinetichub')} />}
                         <SelectControl label={__('Block Alignment', 'kinetichub')} value={align} options={[{label: 'Left', value: 'flex-start'}, {label: 'Center', value: 'center'}, {label: 'Right', value: 'flex-end'}]} onChange={(v) => setAttributes({ align: v })} help={__('Player position in the container.', 'kinetichub')} />
                         
-                        {/* <fs_premium_only> */}
-                        <hr/>
-                        <SelectControl 
-                            label={__('Sticky Mode', 'kinetichub')} 
-                            value={stickyBehavior} 
-                            options={[{label: 'Disabled', value: 'none'}, {label: 'Sticky Top', value: 'sticky-top'}, {label: 'Floating Widget', value: 'floating'}]} 
-                            onChange={(v) => setAttributes({ stickyBehavior: v })} 
-                            help={__('Pins player while scrolling.', 'kinetichub')}
-                        />
                         
-                        {stickyBehavior !== 'none' && (
-                            <>
-                                <SelectControl label={__('Sticky Position', 'kinetichub')} value={stickyPosition} options={[{label: 'Left Side', value: 'left'}, {label: 'Center', value: 'center'}, {label: 'Right Side', value: 'right'}]} onChange={(v) => setAttributes({ stickyPosition: v })} help={__('Side where the player floats.', 'kinetichub')} />
-                                {!isCompact && <SelectControl label={__('Frontend Sticky Style', 'kinetichub')} value={stickyStyle} options={[{label: 'Classic Box', value: 'box'}, {label: 'Modern Pill', value: 'pill'}, {label: 'Custom Glass', value: 'custom'}]} onChange={(v) => setAttributes({ stickyStyle: v })} help={__('Visual shape of the sticky player.', 'kinetichub')} />}
-                                
-                                <KineticEditorNotice message={__('Notice: Sticky and Floating behaviors are frontend-only features and will not render inside the Gutenberg editor.', 'kinetichub')} status="info" />
-                            </>
-                        )}
-                        {/* </fs_premium_only> */}
 
-                        {/* <fs_free_only> */}
+
                         <hr/>
                         <p style={{ fontSize: '12px', opacity: 0.6, marginTop: '4px' }}>
                             {__('Additional sticky and floating options are available in KineticHub Pro, distributed separately from WordPress.org.', 'kinetichub')}
                         </p>
-                        {/* </fs_free_only> */}
+
                         
                         {!isCompact && <SelectControl label={__('Time Display Mode', 'kinetichub')} value={timeDisplayMode} options={[{label: 'Hidden', value: 'none'}, {label: 'Elapsed Time', value: 'elapsed'}, {label: 'Remaining Time', value: 'remaining'}, {label: 'Total Duration', value: 'total'}]} onChange={(v) => setAttributes({ timeDisplayMode: v })} help={__('Shows current, remaining, or total.', 'kinetichub')} />}
                     </PanelBody>
@@ -201,82 +177,36 @@ registerBlockType(metadata.name, {
                     </PanelBody>
 
                     <PanelBody title={__('🧠 Engine & Advanced', 'kinetichub')} initialOpen={false}>
-                        {/* <fs_premium_only> */}
-                        <ToggleControl label={__('Magnetic Hover Effect', 'kinetichub')} checked={magneticHover} onChange={(v) => setAttributes({ magneticHover: v })} help={__('Player leans toward cursor.', 'kinetichub')} />
                         
-                        <SelectControl 
-                            label={__('Player Glow Style', 'kinetichub')} 
-                            value={glowStyle} 
-                            options={[{label: 'None', value: 'none'}, {label: 'Soft Ambient', value: 'soft-ambient'}, {label: 'Neon Cyberpunk', value: 'neon-cyberpunk'}, {label: 'Pulsing Aura', value: 'pulsing-aura'}]} 
-                            onChange={(v) => setAttributes({ glowStyle: v })} 
-                            help={__('Ambient light around the player.', 'kinetichub')}
-                        />
-                        <hr/>
-                        {/* </fs_premium_only> */}
                         
                         <ToggleControl label={__('Show Animated Waveform', 'kinetichub')} checked={showWaveform} onChange={(v) => setAttributes({ showWaveform: v })} help={__('Animated bars synced to audio.', 'kinetichub')} />
                         {showWaveform && (
                             <>
-                                {/* <fs_premium_only> */}
-                                <SelectControl 
-                                    label={__('Waveform Style', 'kinetichub')} 
-                                    value={waveformStyle} 
-                                    options={[{label: 'Default (Bars)', value: 'default'}, {label: 'Box (Sharp)', value: 'box'}, {label: 'Pill (Rounded)', value: 'pill'}]} 
-                                    onChange={(v) => setAttributes({ waveformStyle: v })} 
-                                    help={__('Shape of the visualizer bars.', 'kinetichub')}
-                                />
-                                {/* </fs_premium_only> */}
+
                             </>
                         )}
                         
                         <ToggleControl label={__('Enable Interactive Seekbar', 'kinetichub')} checked={enableSeekbar} onChange={(v) => setAttributes({ enableSeekbar: v })} help={__('Click to jump to any position.', 'kinetichub')} />
                         {enableSeekbar && (
                             <>
-                                {/* <fs_premium_only> */}
-                                <ToggleControl 
-                                    label={__('Disable Seek on Mobile', 'kinetichub')} 
-                                    checked={disableMobileSeek} 
-                                    onChange={(v) => setAttributes({ disableMobileSeek: v })} 
-                                    help={__('Prevents accidental seeks on touch.', 'kinetichub')}
-                                />
-                                {/* </fs_premium_only> */}
+
                             </>
                         )}
 
-                        {/* <fs_premium_only> */}
-                        <ToggleControl 
-                            label={__('Remember Playback Position', 'kinetichub')} 
-                            checked={rememberPosition} 
-                            onChange={(v) => setAttributes({ rememberPosition: v })} 
-                            help={__('Saves user progress in localStorage.', 'kinetichub')}
-                        />
-                        <ToggleControl 
-                            label={__('Pause on Tab Switch', 'kinetichub')} 
-                            checked={pauseOnTabSwitch} 
-                            onChange={(v) => setAttributes({ pauseOnTabSwitch: v })} 
-                            help={__('Pauses when browser tab is hidden.', 'kinetichub')}
-                        />
-                        {/* </fs_premium_only> */}
+
                         
                         {!isCompact && (
                             <>
                                 <ToggleControl label={__('Show Volume Control', 'kinetichub')} checked={enableVolume} onChange={(v) => setAttributes({ enableVolume: v })} help={__('Volume button and slider.', 'kinetichub')} />
-                                {/* <fs_premium_only> */}
-                                <ToggleControl 
-                                    label={__('Allow Audio Download', 'kinetichub')} 
-                                    checked={allowDownload} 
-                                    onChange={(v) => setAttributes({ allowDownload: v })} 
-                                    help={__('Shows download link for the audio.', 'kinetichub')}
-                                />
-                                {/* </fs_premium_only> */}
+
                             </>
                         )}
 
-                        {/* <fs_free_only> */}
+
                         <p style={{ fontSize: '12px', opacity: 0.6, marginTop: '10px' }}>
                             {__('Additional options are available in KineticHub Pro, distributed separately from WordPress.org.', 'kinetichub')}
                         </p>
-                        {/* </fs_free_only> */}
+
                     </PanelBody>
 
                     <PanelBody title={__('📦 Shadow & Depth', 'kinetichub')} initialOpen={false}>
@@ -329,9 +259,7 @@ registerBlockType(metadata.name, {
                                         <input type="range" className="kh-ap-vol-slider" min="0" max="100" defaultValue="100" readOnly />
                                     </div>
                                 )}
-                                {/* <fs_premium_only> */}
-                                {allowDownload && <a href="#" className="kh-ap-tool-btn kh-ap-dl-btn" onClick={(e) => e.preventDefault()}><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></a>}
-                                {/* </fs_premium_only> */}
+
                             </div>
                         )}
                     </div>

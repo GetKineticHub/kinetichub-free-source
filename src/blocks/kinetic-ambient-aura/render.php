@@ -54,23 +54,7 @@ $kinetichub_aa_mobile_behavior      = 'reduce';
 $kinetichub_aa_disable_blend_mobile = true;
 $kinetichub_aa_z_index              = -1;
 
-/* <fs_premium_only> */
-$kinetichub_aa_shape_allowed  = array( 'circle', 'ellipse-horizontal', 'ellipse-vertical' );
-$kinetichub_aa_blend_allowed  = array( 'normal', 'screen', 'overlay', 'color-dodge' );
-$kinetichub_aa_mobile_allowed = array( 'show', 'reduce', 'hide' );
 
-$kinetichub_aa_raw_shape = isset( $attributes['shape'] ) ? (string) $attributes['shape'] : 'circle';
-$kinetichub_aa_shape     = in_array( $kinetichub_aa_raw_shape, $kinetichub_aa_shape_allowed, true ) ? $kinetichub_aa_raw_shape : 'circle';
-
-$kinetichub_aa_raw_blend = isset( $attributes['blendMode'] ) ? (string) $attributes['blendMode'] : 'normal';
-$kinetichub_aa_blend     = in_array( $kinetichub_aa_raw_blend, $kinetichub_aa_blend_allowed, true ) ? $kinetichub_aa_raw_blend : 'normal';
-
-$kinetichub_aa_raw_mobile_behavior = isset( $attributes['mobileBehavior'] ) ? (string) $attributes['mobileBehavior'] : 'reduce';
-$kinetichub_aa_mobile_behavior     = in_array( $kinetichub_aa_raw_mobile_behavior, $kinetichub_aa_mobile_allowed, true ) ? $kinetichub_aa_raw_mobile_behavior : 'reduce';
-
-$kinetichub_aa_z_index              = max( -10, min( 100, (int) ( $attributes['zIndex'] ?? -1 ) ) );
-$kinetichub_aa_disable_blend_mobile = ! empty( $attributes['disableBlendMobile'] );
-/* </fs_premium_only> */
 
 $kinetichub_aa_opacity  = max( 0.01, min( 0.35, (float) ( $attributes['opacity'] ?? 0.15 ) ) );
 $kinetichub_aa_spread   = max( 200, min( 2500, (int) ( $attributes['spread'] ?? 800 ) ) );
@@ -83,15 +67,7 @@ $kinetichub_aa_color = kinetichub_aa_validate_color( $attributes['color'] ?? '',
 $kinetichub_aa_css_shape = 'circle';
 $kinetichub_aa_css_ratio = '1';
 
-/* <fs_premium_only> */
-if ( 'ellipse-horizontal' === $kinetichub_aa_shape ) {
-	$kinetichub_aa_css_shape = 'ellipse';
-	$kinetichub_aa_css_ratio = '1.5';
-} elseif ( 'ellipse-vertical' === $kinetichub_aa_shape ) {
-	$kinetichub_aa_css_shape = 'ellipse';
-	$kinetichub_aa_css_ratio = '0.65';
-}
-/* </fs_premium_only> */
+
 
 $kinetichub_aa_css_vars = sprintf(
 	'--kh-aura-c: %s; --kh-aura-o: %s; --kh-aura-s: %dpx; --kh-aura-f: %d%%; --kh-aura-pos: %s; --kh-aura-x: %d%%; --kh-aura-y: %d%%;',
@@ -104,24 +80,13 @@ $kinetichub_aa_css_vars = sprintf(
 	$kinetichub_aa_offset_y
 );
 
-/* <fs_premium_only> */
-$kinetichub_aa_css_vars .= sprintf(
-	' --kh-aura-z: %d; --kh-aura-blend: %s; --kh-aura-sh: %s; --kh-aura-ratio: %s;',
-	$kinetichub_aa_z_index,
-	$kinetichub_aa_blend,
-	$kinetichub_aa_css_shape,
-	$kinetichub_aa_css_ratio
-);
-/* </fs_premium_only> */
+
 
 $kinetichub_aa_classes = array_filter(
 	array(
 		'kh-ambient-aura',
 		'kh-aura-pos-' . sanitize_html_class( $kinetichub_aa_position ),
-		/* <fs_premium_only> */
-		'kh-aura-mobile-' . sanitize_html_class( $kinetichub_aa_mobile_behavior ),
-		$kinetichub_aa_disable_blend_mobile ? 'kh-aura-mobile-no-blend' : '',
-		/* </fs_premium_only> */
+
 	)
 );
 

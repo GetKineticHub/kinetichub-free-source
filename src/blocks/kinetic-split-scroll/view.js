@@ -8,14 +8,9 @@
 
     const VIEWPORT_OBSERVER_MARGIN = '100px 0px';
     const FADE_UP_MARGIN = '0px 0px -10% 0px';
-    /* <fs_premium_only> */
-    const FOCUS_MARGIN = '-40% 0px -40% 0px';
-    /* </fs_premium_only> */
+
     const INIT_DELAY_MS = 150;
-    /* <fs_premium_only> */
-    const PARALLAX_SHIFT_FACTOR = 10;
-    const DOT_CLICK_OFFSET = 0.05;
-    /* </fs_premium_only> */
+
 
     let isMobile = window.matchMedia('(max-width: 768px)').matches;
     let viewportHeight = window.innerHeight;
@@ -70,10 +65,7 @@
         const mediaInner = wrapper.querySelector('.kh-ss-media-inner');
         const mediaLayers = wrapper.querySelectorAll('.kh-ss-media-layer');
         const progressFill = wrapper.querySelector('.kh-ss-progress-fill');
-        /* <fs_premium_only> */
-        const percentageText = wrapper.querySelector('.kh-ss-percentage');
-        const dots = wrapper.querySelectorAll('.kh-ss-dot');
-        /* </fs_premium_only> */
+
         
         const textNodes = Array.from(scrollCol.children);
         const enableStickyMobile = wrapper.dataset.stickyMobile === 'true';
@@ -256,11 +248,7 @@
         const stickyOffset = parseInt(wrapper.dataset.offset) || 0;
         
         // Smart Addons State Extraction
-        /* <fs_premium_only> */
-        const hasParallax = wrapper.dataset.parallax === 'true';
-        const hasBgMorph = wrapper.dataset.bgMorph === 'true';
-        const isDotsInteractive = wrapper.dataset.dotsInteractive === 'true';
-        /* </fs_premium_only> */
+
 
         // FIX: Dynamic Geometry Recalculation (No Stale Cache when content loads late)
         const resizeObserver = new ResizeObserver(() => {
@@ -277,21 +265,7 @@
         resizeObserver.observe(wrapper);
         wrapper._kh_ss_observers.push(resizeObserver);
 
-        /* <fs_premium_only> */
-        // --- Smart Addon: Interactive Click-to-Scroll Dots ---
-        if (isDotsInteractive && dots.length > 0 && !isMobile) {
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', () => {
-                    const geometry = blockGeometries.get(wrapper);
-                    if (!geometry) return;
-                    // FIX: Math Safe Guard to prevent backwards jumping on short sections
-                    const scrollDistance = Math.max(0, geometry.height - viewportHeight);
-                    const targetScroll = geometry.absoluteTop - stickyOffset + ((index + DOT_CLICK_OFFSET) / Math.max(1, mediaCount)) * scrollDistance;
-                    window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-                });
-            });
-        }
-        /* </fs_premium_only> */
+
 
         // --- Fade-Up Entrance Observer (FREE feature) ---
         if (textEffect === 'fade-up' && !prefersReducedMotion) {
@@ -309,29 +283,11 @@
             wrapper._kh_ss_observers.push(fadeObserver); 
         }
 
-        /* <fs_premium_only> */
-        // --- Focus Effect Observer ---
-        if (textEffect === 'focus' && !prefersReducedMotion) {
-            const focusObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-focused');
-                    } else {
-                        entry.target.classList.remove('is-focused');
-                    }
-                });
-            }, { rootMargin: FOCUS_MARGIN });
-            
-            textNodes.forEach(node => focusObserver.observe(node));
-            wrapper._kh_ss_observers.push(focusObserver); 
-        }
-        /* </fs_premium_only> */
+
 
         let isEngineRunning = false;
         let lastActiveIndex = -1; 
-        /* <fs_premium_only> */
-        let lastPercentInt = -1; 
-        /* </fs_premium_only> */
+
         let lastScrollY = -1; // FIX: CPU Drain tracking
 
         // Technical Note: 60FPS RAF Engine operating STRICTLY on memory-cached geometrics
@@ -364,30 +320,11 @@
             let rawProgress = scrollDistance > 0 ? (0 - scrollStart) / scrollDistance : 1;
             const progress = Math.max(0, Math.min(1, rawProgress));
 
-            /* <fs_premium_only> */
-            // Smart Addon: Background Morphing
-            if (hasBgMorph) {
-                wrapper.style.setProperty('--kh-ss-progress-dec', progress.toFixed(3));
-            }
 
-            // Smart Addon: Inner Image Parallax (3D Window Effect)
-            if (hasParallax && mediaInner && !prefersReducedMotion) {
-                const shiftY = (progress - 0.5) * PARALLAX_SHIFT_FACTOR; 
-                mediaInner.style.transform = `translate3d(0, ${shiftY}%, 0) scale(1.1)`;
-            }
-            /* </fs_premium_only> */
 
             if (progressFill) progressFill.style.transform = `scaleY(${progress})`;
             
-            /* <fs_premium_only> */
-            if (percentageText) {
-                const percentInt = Math.round(progress * 100);
-                if (percentInt !== lastPercentInt) {
-                    percentageText.textContent = `${percentInt}%`;
-                    lastPercentInt = percentInt;
-                }
-            }
-            /* </fs_premium_only> */
+
 
             if (mediaCount > 1 && enableSmartSwap && !prefersReducedMotion) {
                 let activeIndex = Math.floor(progress * mediaCount);
@@ -399,19 +336,7 @@
                         else layer.classList.remove('is-active');
                     });
                     
-                    /* <fs_premium_only> */
-                    if (dots.length > 0) {
-                        dots.forEach((dot, index) => {
-                            if (index === activeIndex) {
-                                dot.classList.add('is-active');
-                                dot.setAttribute('aria-current', 'true');
-                            } else {
-                                dot.classList.remove('is-active');
-                                dot.removeAttribute('aria-current');
-                            }
-                        });
-                    }
-                    /* </fs_premium_only> */
+
                     lastActiveIndex = activeIndex;
                 }
             }

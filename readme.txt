@@ -3,7 +3,7 @@ Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -162,7 +162,7 @@ The source directory includes the uncompiled free-version source files, package.
 
 The same human-readable free-version source is also publicly available here:
 
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.6
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.7
 
 = Build Instructions =
 
@@ -191,6 +191,13 @@ The build process compiles source files from the `source/src` directory into a `
 * npm 9 or later
 
 == Changelog ==
+
+= 1.0.7 =
+* Fixed Magnetic Button SVG icon scaling and added left, center, and right alignment.
+* Restored useful Cursor Reveal controls in FREE, including responsive typography, subtitle styling, media sizing, reveal masks, hover filters, and a subtle relative hover scale.
+* Balanced Scroll Divider vertical spacing.
+* Added Split Scroll media reordering and restored compatibility with third-party nested blocks.
+* Improved the Audio Player Extended layout on smaller screens.
 
 = 1.0.6 =
 * Fixed unexpected output during activation caused by UTF-8 BOM characters in the plugin bootstrap file.

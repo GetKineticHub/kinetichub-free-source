@@ -10,11 +10,7 @@ import { PanelBody, RangeControl, SelectControl, ColorPalette, Button, TextContr
 import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-/* <fs_premium_only> */
-import { KineticEntranceControls } from '../../components/EntranceControls';
-import { KineticVisibilityControls } from '../../components/VisibilityControls';
-import { KineticShadowControls } from '../../components/ShadowControls';
-/* </fs_premium_only> */
+
 import metadata from './block.json';
 
 const kineticCursorIcon = <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 12H12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M14.5 11L18.5 19L20 17.5L22 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>;
@@ -31,14 +27,10 @@ registerBlockType(metadata.name, {
         const { attributes, setAttributes, isSelected, clientId } = props;
         const {
             blockId, items, openInNewTab,
-            /* <fs_premium_only> */
-            textStyle, titleBgType, enableDimming, fontSize, mobileFontSize, hoverFontSize, accentColor,
-            subtitleColor, subtitleSize, subtitleSpacing, mediaLayer, mediaWidth, mediaRatio, offsetX, offsetY,
-            lerpAmount, enableTilt, enableMagnetic, enableNoise, blendMode, mobileBehavior,
-            revealMask, hoverFilter, cursorBadge, cursorBadgeText, innerParallax,
-            containerShadow, shadowStyle,
-            /* </fs_premium_only> */
-        } = attributes;
+            fontSize, mobileFontSize,
+            subtitleColor, subtitleSize, subtitleSpacing,
+            mediaWidth, mediaRatio, revealMask, hoverFilter,
+             = attributes;
 
         const prevClientIdRef = useRef(clientId);
 
@@ -63,19 +55,17 @@ registerBlockType(metadata.name, {
         }, [items, setAttributes]);
 
         let editorClassName = `kh-cr-editor-wrapper ${blockId || ''}`;
-        let editorStyle = { color: '#1a1a1a' };
-        /* <fs_premium_only> */
-        editorClassName = `kh-cr-editor-wrapper ${blockId || ''} ${containerShadow ? `has-shadow shadow-${shadowStyle}` : ''}`;
-        editorStyle = {
+        let editorStyle = {
             '--kh-cr-font-size': `${fontSize}px`,
-            '--kh-cr-scale': fontSize > 0 ? (hoverFontSize / fontSize).toFixed(3) : '1',
-            '--kh-cr-accent': accentColor || 'var(--kh-accent, #10b981)',
+            '--kh-cr-font-mob': `${mobileFontSize}px`,
+            '--kh-cr-scale': fontSize > 0 ? ((fontSize + 5) / fontSize).toFixed(3) : '1',
+            '--kh-cr-accent': 'var(--kh-accent, #10b981)',
             '--kh-cr-sub-color': subtitleColor || '#666666',
             '--kh-cr-sub-size': `${subtitleSize}px`,
             '--kh-cr-sub-space': `${subtitleSpacing}px`,
             color: '#1a1a1a'
         };
-        /* </fs_premium_only> */
+
 
         const blockProps = useBlockProps({
             className: editorClassName,
@@ -90,9 +80,7 @@ registerBlockType(metadata.name, {
         };
 
         let maxItems = 3;
-        /* <fs_premium_only> */
-        maxItems = 50;
-        /* </fs_premium_only> */
+
 
         const addItem = () => {
             if (items.length >= maxItems) {
@@ -119,18 +107,12 @@ registerBlockType(metadata.name, {
 
         const canAddMore = items.length < maxItems;
 
-        let previewFontSize = 40;
-        let previewSubtitleSize = 13;
-        let previewSubtitleColor = '#666666';
-        let previewSubtitleSpacing = 3;
+        const previewFontSize = fontSize;
+        const previewSubtitleSize = subtitleSize;
+        const previewSubtitleColor = subtitleColor;
+        const previewSubtitleSpacing = subtitleSpacing;
         let previewContainerShadow = false;
-        /* <fs_premium_only> */
-        previewFontSize = fontSize;
-        previewSubtitleSize = subtitleSize;
-        previewSubtitleColor = subtitleColor;
-        previewSubtitleSpacing = subtitleSpacing;
-        previewContainerShadow = containerShadow;
-        /* </fs_premium_only> */
+
 
         return (
             <>
@@ -141,13 +123,13 @@ registerBlockType(metadata.name, {
                             {__('Add and edit your list items with titles, subtitles, media, and links.', 'kinetichub')}
                         </p>
 
-                        {/* <fs_free_only> */}
+
                         {items.length >= 3 && (
                             <div style={{ marginBottom: '15px', padding: '10px 12px', background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '6px', fontSize: '12px', color: '#856404' }}>
-                                {__('FREE version supports up to 3 items. More items available in PRO.', 'kinetichub')}
+                                {__('FREE version supports up to 3 items. More items not included in this build.', 'kinetichub')}
                             </div>
                         )}
-                        {/* </fs_free_only> */}
+
 
                         {items.map((item, index) => (
                             <div key={index} style={{
@@ -223,13 +205,13 @@ registerBlockType(metadata.name, {
                             </Button>
                         )}
 
-                        {/* <fs_free_only> */}
+
                         {!canAddMore && (
                             <p style={{ fontSize: '12px', color: '#6b7280', textAlign: 'center', padding: '10px 0' }}>
-                                {__('Up to 50 items available in PRO.', 'kinetichub')}
+                                {__('Up to 50 items not included in this build.', 'kinetichub')}
                             </p>
                         )}
-                        {/* </fs_free_only> */}
+
 
                         {items.length > 0 && (
                             <>
@@ -239,93 +221,41 @@ registerBlockType(metadata.name, {
                         )}
                     </PanelBody>
 
-                    {/* <fs_premium_only> */}
                     <PanelBody title={__('✍️ Text Styling', 'kinetichub')} initialOpen={false}>
-                        <SelectControl label={__('Text Reveal Style', 'kinetichub')} value={textStyle} options={[ { label: __('Solid Text', 'kinetichub'), value: 'solid' }, { label: __('Outline to Solid', 'kinetichub'), value: 'outline' }, { label: __('Blur Reveal', 'kinetichub'), value: 'blur' }, { label: __('Lift & Float', 'kinetichub'), value: 'lift' } ]} onChange={(v) => setAttributes({ textStyle: v })} help={__('Choose how text appears on hover', 'kinetichub')} />
                         <RangeControl label={__('Font Size (Desktop)', 'kinetichub')} value={fontSize} onChange={(v) => setAttributes({ fontSize: v })} min={10} max={300} help={__('Base text size on desktop devices', 'kinetichub')} />
                         <RangeControl label={__('Font Size (Mobile)', 'kinetichub')} value={mobileFontSize} onChange={(v) => setAttributes({ mobileFontSize: v })} min={10} max={200} help={__('Text size on mobile devices', 'kinetichub')} />
-                        <RangeControl label={__('Hover Scale Size', 'kinetichub')} value={hoverFontSize} onChange={(v) => setAttributes({ hoverFontSize: v })} min={10} max={400} help={__('How large text grows on hover', 'kinetichub')} />
-                        <ToggleControl label={__('Enable Focus Dimming', 'kinetichub')} help={__('Dims non-hovered list items to highlight the active one', 'kinetichub')} checked={enableDimming} onChange={(v) => setAttributes({ enableDimming: v })} />
-                        <p style={{ fontWeight: 'bold', marginTop: '15px' }}>{__('Accent Hover Color', 'kinetichub')}</p>
-                        <p style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>{__('Color applied to text and effects on hover', 'kinetichub')}</p>
-                        <ColorPalette value={accentColor} onChange={(v) => setAttributes({ accentColor: v })} />
-                    </PanelBody>
-                    {/* </fs_premium_only> */}
-                    {/* <fs_free_only> */}
-                    <PanelBody title={__('✍️ Text Styling', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>{__('Text reveal styles, font sizes, focus dimming, and accent colors are available in PRO.', 'kinetichub')}</p>
-                    </PanelBody>
-                    {/* </fs_free_only> */}
 
-                    {/* <fs_premium_only> */}
+
+                        <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px' }}>{__('Advanced reveal styles, hover scale, focus dimming, and accent color are not included in this build.', 'kinetichub')}</p>
+
+                    </PanelBody>
+
                     <PanelBody title={__('🏷️ Subtitle Styling', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontWeight: 'bold', marginBottom: '10px' }}>{__('Subtitle Color', 'kinetichub')}</p>
                         <ColorPalette value={subtitleColor} onChange={(v) => setAttributes({ subtitleColor: v })} />
                         <RangeControl label={__('Subtitle Size', 'kinetichub')} value={subtitleSize} onChange={(v) => setAttributes({ subtitleSize: v })} min={8} max={100} help={__('Font size for subtitle text', 'kinetichub')} />
                         <RangeControl label={__('Letter Spacing', 'kinetichub')} value={subtitleSpacing} onChange={(v) => setAttributes({ subtitleSpacing: v })} min={0} max={50} help={__('Space between letters in subtitle', 'kinetichub')} />
                     </PanelBody>
-                    {/* </fs_premium_only> */}
-                    {/* <fs_free_only> */}
-                    <PanelBody title={__('🏷️ Subtitle Styling', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>{__('Subtitle color, size, and spacing customization are available in PRO.', 'kinetichub')}</p>
-                    </PanelBody>
-                    {/* </fs_free_only> */}
 
-                    {/* <fs_premium_only> */}
                     <PanelBody title={__('🎬 Media Settings', 'kinetichub')} initialOpen={false}>
-                        <SelectControl label={__('Container Media Style', 'kinetichub')} value={titleBgType} options={[ { label: __('None (Clean Image)', 'kinetichub'), value: 'none' }, { label: __('Subtle Protection', 'kinetichub'), value: 'protection' }, { label: __('Glassmorphism Shine', 'kinetichub'), value: 'glass' }, { label: __('Vignette Edge', 'kinetichub'), value: 'vignette' }, { label: __('Accent Color Wash', 'kinetichub'), value: 'wash' }, { label: __('Polaroid Frame', 'kinetichub'), value: 'polaroid' }, { label: __('Soft Glow Base', 'kinetichub'), value: 'glow' } ]} onChange={(v) => setAttributes({ titleBgType: v })} help={__('Background effect for floating media container', 'kinetichub')} />
-                        <SelectControl label={__('Optical Blend Mode', 'kinetichub')} value={blendMode} options={[ { label: __('Normal (Respect Z-Index)', 'kinetichub'), value: 'normal' }, { label: __('Difference (Invert Text)', 'kinetichub'), value: 'difference' }, { label: __('Exclusion', 'kinetichub'), value: 'exclusion' }, { label: __('Luminosity', 'kinetichub'), value: 'luminosity' } ]} onChange={(v) => setAttributes({ blendMode: v })} help={__('How media interacts with text below', 'kinetichub')} />
-                        <SelectControl label={__('Z-Index Layer', 'kinetichub')} value={mediaLayer} options={[ { label: __('Above Everything (Over)', 'kinetichub'), value: 'over' }, { label: __('Below Text (Under)', 'kinetichub'), value: 'under' } ]} onChange={(v) => setAttributes({ mediaLayer: v })} help={__('Position media above or behind your text', 'kinetichub')} />
-                        {mediaLayer === 'under' && ( <Notice status="warning" isDismissible={false} style={{ marginBottom: '15px' }}>{__('Warning: "Under" places media behind your layout. If your theme uses a solid background color, the media will be hidden behind it.', 'kinetichub')}</Notice> )}
-                        <ToggleControl label={__('Noise Grain Overlay', 'kinetichub')} checked={enableNoise} onChange={(v) => setAttributes({ enableNoise: v })} help={__('Adds cinematic film grain texture to media', 'kinetichub')} />
                         <RangeControl label={__('Media Width', 'kinetichub')} value={mediaWidth} onChange={(v) => setAttributes({ mediaWidth: v })} min={100} max={1200} help={__('Width of floating media container', 'kinetichub')} />
                         <SelectControl label={__('Media Aspect Ratio', 'kinetichub')} value={mediaRatio} options={[ { label: __('4:5 Portrait', 'kinetichub'), value: '4/5' }, { label: __('1:1 Square', 'kinetichub'), value: '1/1' }, { label: __('16:9 Landscape', 'kinetichub'), value: '16/9' }, { label: __('21:9 Ultrawide', 'kinetichub'), value: '21/9' } ]} onChange={(v) => setAttributes({ mediaRatio: v })} help={__('Shape of media container', 'kinetichub')} />
                         <SelectControl label={__('Reveal Mask', 'kinetichub')} value={revealMask} options={[ { label: __('Fade', 'kinetichub'), value: 'fade' }, { label: __('Circle Expand', 'kinetichub'), value: 'circle' }, { label: __('Diagonal Wipe', 'kinetichub'), value: 'diagonal' }, { label: __('Curtain', 'kinetichub'), value: 'curtain' } ]} onChange={(v) => setAttributes({ revealMask: v })} help={__('Animation when media appears', 'kinetichub')} />
                         <SelectControl label={__('Hover Filter', 'kinetichub')} value={hoverFilter} options={[ { label: __('None', 'kinetichub'), value: 'none' }, { label: __('Grayscale to Color', 'kinetichub'), value: 'grayscale' } ]} onChange={(v) => setAttributes({ hoverFilter: v })} help={__('Color filter applied on hover', 'kinetichub')} />
-                    </PanelBody>
-                    {/* </fs_premium_only> */}
-                    {/* <fs_free_only> */}
-                    <PanelBody title={__('🎬 Media Settings', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>{__('Media styles, blend modes, layer control, masks, filters, width, and aspect ratio are available in PRO.', 'kinetichub')}</p>
-                    </PanelBody>
-                    {/* </fs_free_only> */}
 
-                    {/* <fs_premium_only> */}
+
+                        <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px' }}>{__('Container styles, blend modes, layer control, and noise effects are not included in this build.', 'kinetichub')}</p>
+
+                    </PanelBody>
+
+
+
                     <PanelBody title={__('⚡ Physics Engine', 'kinetichub')} initialOpen={false}>
-                        <ToggleControl label={__('Enable Magnetic Hover', 'kinetichub')} checked={enableMagnetic} onChange={(v) => setAttributes({ enableMagnetic: v })} help={__('Text follows cursor movement', 'kinetichub')} />
-                        <ToggleControl label={__('Enable Inner Parallax', 'kinetichub')} checked={innerParallax} onChange={(v) => setAttributes({ innerParallax: v })} help={__('Media content moves opposite to cursor', 'kinetichub')} />
-                        <div style={{ marginTop: '15px' }}>
-                            <RangeControl label={__('Offset X', 'kinetichub')} value={offsetX} onChange={(v) => setAttributes({ offsetX: v })} min={-1000} max={1000} help={__('Horizontal position adjustment', 'kinetichub')} />
-                            <RangeControl label={__('Offset Y', 'kinetichub')} value={offsetY} onChange={(v) => setAttributes({ offsetY: v })} min={-1000} max={1000} help={__('Vertical position adjustment', 'kinetichub')} />
-                            <RangeControl label={__('Smoothness (Lerp)', 'kinetichub')} value={lerpAmount} onChange={(v) => setAttributes({ lerpAmount: v })} min={0.01} max={0.5} step={0.01} help={__('How smoothly media follows cursor (lower = smoother)', 'kinetichub')} />
-                            <ToggleControl label={__('Enable Velocity Tilt', 'kinetichub')} checked={enableTilt} onChange={(v) => setAttributes({ enableTilt: v })} help={__('Rotates media based on cursor movement speed', 'kinetichub')} />
-                        </div>
-                    </PanelBody>
-                    {/* </fs_premium_only> */}
-                    {/* <fs_free_only> */}
-                    <PanelBody title={__('⚡ Physics Engine', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>{__('Magnetic hover, inner parallax, offset positioning, smoothness, and velocity tilt are available in PRO.', 'kinetichub')}</p>
-                    </PanelBody>
-                    {/* </fs_free_only> */}
-
-                    {/* <fs_premium_only> */}
-                    <PanelBody title={__('🎯 Cursor Badge', 'kinetichub')} initialOpen={false}>
-                        <ToggleControl label={__('Show Cursor Badge', 'kinetichub')} checked={cursorBadge} onChange={(v) => setAttributes({ cursorBadge: v })} help={__('Display custom text near cursor on hover', 'kinetichub')} />
-                        {cursorBadge && ( <TextControl label={__('Badge Text', 'kinetichub')} value={cursorBadgeText} onChange={(v) => setAttributes({ cursorBadgeText: v })} placeholder="View" help={__('Text shown in cursor badge', 'kinetichub')} /> )}
+                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>{__('Magnetic hover, inner parallax, offset positioning, smoothness, and velocity tilt are not included in this build.', 'kinetichub')}</p>
                     </PanelBody>
 
-                    <PanelBody title={__('📱 Mobile Behavior', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '12px', color: '#666', marginBottom: '15px', lineHeight: '1.5' }}>{__('Controls how the block behaves on touch devices (phones, tablets). Desktop behavior is unaffected.', 'kinetichub')}</p>
-                        <SelectControl label={__('Touch Device Interaction', 'kinetichub')} value={mobileBehavior} options={[ { label: __('Tap to Reveal (Default)', 'kinetichub'), value: 'tap' }, { label: __('Always Visible Stack', 'kinetichub'), value: 'always' }, { label: __('Hide Media', 'kinetichub'), value: 'hide' } ]} onChange={(v) => setAttributes({ mobileBehavior: v })} help={__('Desktop users always see hover-based reveals regardless of this setting', 'kinetichub')} />
-                    </PanelBody>
 
-                    <PanelBody title={__('📦 Custom Shadows', 'kinetichub')} initialOpen={false}>
-                        <KineticShadowControls attributes={attributes} setAttributes={setAttributes} />
-                    </PanelBody>
 
-                    <KineticEntranceControls attributes={attributes} setAttributes={setAttributes} />
-                    <KineticVisibilityControls attributes={attributes} setAttributes={setAttributes} />
-                    {/* </fs_premium_only> */}
                 </InspectorControls>
 
                 {/* PREVIEW */}

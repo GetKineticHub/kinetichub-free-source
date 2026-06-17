@@ -77,20 +77,7 @@ $block      = $block ?? null;
     $kh_sd_easing_mode         = 'smooth';
     $kh_sd_glow_intensity_safe = 'low';
 
-    /* <fs_premium_only> */
-    $kh_sd_line_type        = in_array( $attributes['lineType'] ?? '', array( 'solid', 'gradient' ), true ) ? $attributes['lineType'] : 'solid';
-    $kh_sd_opacity_curve    = in_array( $attributes['opacityCurve'] ?? '', array( 'linear', 'soft', 'snappy' ), true ) ? $attributes['opacityCurve'] : 'soft';
-    $kh_sd_max_width_px     = max( 0, min( 2000, (int) ( $attributes['maxWidthPx'] ?? 0 ) ) );
-    $kh_sd_trigger_offset   = max( -50, min( 50, (int) ( $attributes['triggerOffset'] ?? 0 ) ) );
-    $kh_sd_mobile_behavior  = in_array( $attributes['mobileBehavior'] ?? '', array( 'same', 'thinner', 'shorter', 'custom-shorter', 'hide' ), true ) ? $attributes['mobileBehavior'] : 'same';
-    $kh_sd_rm_behavior      = in_array( $attributes['reducedMotionBehavior'] ?? '', array( 'static', 'fade', 'hide' ), true ) ? $attributes['reducedMotionBehavior'] : 'static';
-    $kh_sd_glow_color_mode  = in_array( $attributes['glowColorMode'] ?? '', array( 'same', 'white-tint', 'soft-mix' ), true ) ? $attributes['glowColorMode'] : 'same';
-    $kh_sd_static_on_mobile = ! empty( $attributes['staticOnMobile'] );
-    $kh_sd_gradient_color   = ! empty( $attributes['gradientColor'] ) ? sanitize_text_field( $attributes['gradientColor'] ) : '';
-    $kh_sd_scroll_tether    = in_array( $attributes['scrollTether'] ?? '', array( 'trigger', 'scrub' ), true ) ? $attributes['scrollTether'] : 'trigger';
-    $kh_sd_easing_mode      = in_array( $attributes['easingMode'] ?? '', array( 'smooth', 'linear', 'bouncy' ), true ) ? $attributes['easingMode'] : 'smooth';
-    $kh_sd_glow_intensity_safe = $kh_sd_glow_intensity;
-    /* </fs_premium_only> */
+
 
     /* --- Build CSS custom properties --- */
     $kh_sd_css_vars = sprintf(
@@ -102,28 +89,7 @@ $block      = $block ?? null;
         $kh_sd_width_percent
     );
 
-    /* <fs_premium_only> */
-    if ( 'gradient' === $kh_sd_line_type && ! empty( $kh_sd_gradient_color ) ) {
-        if ( preg_match( '/^(linear|radial|conic)-gradient\(/', $kh_sd_gradient_color ) ) {
-            $kh_sd_clean_gradient = wp_strip_all_tags( $kh_sd_gradient_color );
-            $kh_sd_clean_gradient = preg_replace( '/[^a-zA-Z0-9#\(\),\-\.\%\s]/', '', $kh_sd_clean_gradient );
-            $kh_sd_css_vars .= sprintf( ' --kh-div-grad: %s;', $kh_sd_clean_gradient );
-        }
-    }
 
-    if ( $kh_sd_max_width_px > 0 ) {
-        $kh_sd_css_vars .= sprintf( ' --kh-div-max-w: %dpx;', $kh_sd_max_width_px );
-    }
-
-    if ( 0 !== $kh_sd_trigger_offset ) {
-        $kh_sd_css_vars .= sprintf( ' --kh-div-offset: %d%%;', $kh_sd_trigger_offset );
-    }
-
-    if ( 'custom-shorter' === $kh_sd_mobile_behavior ) {
-        $kh_sd_mob_w = max( 10, min( 100, (int) ( $attributes['mobileWidthPercent'] ?? 50 ) ) );
-        $kh_sd_css_vars .= sprintf( ' --kh-div-mob-w: %d%%;', $kh_sd_mob_w );
-    }
-    /* </fs_premium_only> */
 
     /* --- Build outer class list --- */
     $kh_sd_outer_classes = array_filter(

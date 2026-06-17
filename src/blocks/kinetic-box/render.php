@@ -125,44 +125,9 @@ $kh_box_inner_content = $content ?? '';
     $kh_box_crisp_edge         = false;
     $kh_box_edge_color         = 'rgba(255, 255, 255, 0.3)';
 
-    /* <fs_premium_only> */
-    $kh_box_entrance_list      = array( 'none', 'fade', 'slide', 'zoom' );
-    $kh_box_entrance_animation = in_array( $attributes['entranceAnimation'] ?? '', $kh_box_entrance_list, true ) ? $attributes['entranceAnimation'] : 'none';
-    $kh_box_entrance_delay     = max( 0, min( 5, (float) ( $attributes['entranceDelay'] ?? 0 ) ) );
 
-    // PRO animation types: trace, shine, sink
-    $kh_box_anim_list      = array( 'none', 'lift', 'scale', 'tilt', 'trace', 'shine', 'sink' );
-    $kh_box_animation_type = in_array( $attributes['animationType'] ?? '', $kh_box_anim_list, true ) ? $attributes['animationType'] : 'lift';
 
-    // Physics Engine
-    $kh_box_tilt_effect     = ! empty( $attributes['tiltEffect'] );
-    $kh_box_magnetic_hover  = ! empty( $attributes['magneticHover'] );
-    $kh_box_enable_parallax = ! empty( $attributes['enableParallax'] );
 
-    // Glassmorphism
-    $kh_box_enable_glass   = ! empty( $attributes['enableGlass'] );
-    $kh_box_glass_opacity  = max( 0, min( 1, (float) ( $attributes['glassOpacity'] ?? 0.2 ) ) );
-    $kh_box_blur_intensity = max( 0, min( 100, (float) ( $attributes['blurIntensity'] ?? 10 ) ) );
-
-    // Smart Addons
-    $kh_box_spotlight_glow  = ! empty( $attributes['spotlightGlow'] );
-    $kh_box_spotlight_size  = max( 0, min( 1000, (int) ( $attributes['spotlightSize'] ?? 400 ) ) );
-    $kh_box_spotlight_color = kinetichub_box_validate_color_strict( $attributes['spotlightColor'] ?? '', 'rgba(255, 255, 255, 0.1)' );
-
-    $kh_box_film_grain    = ! empty( $attributes['filmGrain'] );
-    $kh_box_grain_opacity = max( 0, min( 1, (float) ( $attributes['grainOpacity'] ?? 0.15 ) ) );
-
-    $kh_box_idle_levitate = ! empty( $attributes['idleLevitation'] );
-
-    $kh_box_crisp_edge = ! empty( $attributes['crispEdge'] );
-    $kh_box_edge_color = kinetichub_box_validate_color_strict( $attributes['edgeColor'] ?? '', 'rgba(255, 255, 255, 0.3)' );
-    /* </fs_premium_only> */
-
-    /* <fs_premium_only> */
-    if ( $kh_box_tilt_effect || $kh_box_magnetic_hover || $kh_box_enable_parallax || $kh_box_spotlight_glow || 'none' !== $kh_box_entrance_animation ) {
-        wp_enqueue_script( 'kinetichub-core-engine' );
-    }
-    /* </fs_premium_only> */
 
     $kh_box_flex_h_align = 'left' === $kh_box_h_align ? 'flex-start' : ( 'right' === $kh_box_h_align ? 'flex-end' : 'center' );
     $kh_box_flex_v_align = 'top' === $kh_box_v_align ? 'flex-start' : ( 'bottom' === $kh_box_v_align ? 'flex-end' : 'center' );
@@ -215,21 +180,7 @@ $kh_box_inner_content = $content ?? '';
         '--kh-box-text-align'   => $kh_box_h_align,
     );
 
-    /* <fs_premium_only> */
-    $kh_box_css_vars['--kh-box-blur']    = $kh_box_blur_intensity . 'px';
-    $kh_box_css_vars['--kh-box-glass-o'] = (string) $kh_box_glass_opacity;
-    $kh_box_css_vars['animation-delay']  = $kh_box_entrance_delay > 0 ? $kh_box_entrance_delay . 's' : '0s';
-    if ( $kh_box_spotlight_glow ) {
-        $kh_box_css_vars['--kh-box-spot-c']  = $kh_box_spotlight_color;
-        $kh_box_css_vars['--kh-box-spot-sz'] = $kh_box_spotlight_size . 'px';
-    }
-    if ( $kh_box_film_grain ) {
-        $kh_box_css_vars['--kh-box-grain-o'] = (string) $kh_box_grain_opacity;
-    }
-    if ( $kh_box_crisp_edge ) {
-        $kh_box_css_vars['--kh-box-edge-c'] = $kh_box_edge_color;
-    }
-    /* </fs_premium_only> */
+
 
     $kh_box_style_string = '';
     foreach ( $kh_box_css_vars as $kh_box_key => $kh_box_val ) {
@@ -254,26 +205,7 @@ $kh_box_inner_content = $content ?? '';
         )
     );
 
-    /* <fs_premium_only> */
-    if ( $kh_box_enable_glass ) {
-        $kh_box_classes[] = 'kh-box-is-glass';
-    }
-    if ( $kh_box_enable_parallax ) {
-        $kh_box_classes[] = 'has-parallax';
-    }
-    if ( $kh_box_spotlight_glow ) {
-        $kh_box_classes[] = 'has-spotlight';
-    }
-    if ( $kh_box_film_grain ) {
-        $kh_box_classes[] = 'has-grain';
-    }
-    if ( $kh_box_idle_levitate ) {
-        $kh_box_classes[] = 'has-idle-levitation';
-    }
-    if ( $kh_box_crisp_edge ) {
-        $kh_box_classes[] = 'has-crisp-edge';
-    }
-    /* </fs_premium_only> */
+
 
     $kh_box_attrs = array(
         'class'          => implode( ' ', $kh_box_classes ),
@@ -282,34 +214,13 @@ $kh_box_inner_content = $content ?? '';
         'aria-label'     => ( ! empty( $kh_box_url ) && $kh_box_stretched_link && ! empty( $kh_box_link_label ) ) ? $kh_box_link_label : __( 'Interactive Content Box', 'kinetichub' ),
     );
 
-    /* <fs_premium_only> */
-    $kh_box_attrs['data-tilt']      = $kh_box_tilt_effect ? 'true' : 'false';
-    $kh_box_attrs['data-magnetic']  = $kh_box_magnetic_hover ? 'true' : 'false';
-    $kh_box_attrs['data-parallax']  = $kh_box_enable_parallax ? 'true' : 'false';
-    $kh_box_attrs['data-spotlight'] = $kh_box_spotlight_glow ? 'true' : 'false';
 
-    if ( 'none' !== $kh_box_entrance_animation ) {
-        $kh_box_attrs['data-entrance'] = $kh_box_entrance_animation;
-    }
-    /* </fs_premium_only> */
 
     $kh_box_wrapper_attrs = get_block_wrapper_attributes( $kh_box_attrs );
     ?>
 
     <div <?php echo $kh_box_wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-        <?php /* <fs_premium_only> */ ?>
-        <?php if ( $kh_box_film_grain ) : ?>
-            <div class="kh-box-grain" aria-hidden="true"></div>
-        <?php endif; ?>
 
-        <?php if ( $kh_box_spotlight_glow ) : ?>
-            <div class="kh-box-spotlight" aria-hidden="true"></div>
-        <?php endif; ?>
-
-        <?php if ( $kh_box_crisp_edge ) : ?>
-            <div class="kh-box-crisp-edge" aria-hidden="true"></div>
-        <?php endif; ?>
-        <?php /* </fs_premium_only> */ ?>
 
         <div class="kh-box-inner-content">
             <?php

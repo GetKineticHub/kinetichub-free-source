@@ -87,6 +87,11 @@ $kh_mb_url  = ! empty( $attributes['url'] ) ? esc_url_raw( $attributes['url'] ) 
 
     $kh_mb_align_list = array( 'left', 'center', 'right' );
     $kh_mb_align      = in_array( $attributes['align'] ?? '', $kh_mb_align_list, true ) ? $attributes['align'] : 'center';
+    $kh_mb_justify_content_map = array(
+        'left'   => 'flex-start',
+        'center' => 'center',
+        'right'  => 'flex-end',
+    );
 
     $kh_mb_magnetic_strength = max( 0.1, min( 1.0, (float) ( $attributes['magneticStrength'] ?? 0.3 ) ) );
     $kh_mb_magnetic_range    = max( 10, min( 200, (int) ( $attributes['magneticRange'] ?? 60 ) ) );
@@ -134,18 +139,7 @@ $kh_mb_entrance_delay = 0;
 $kh_mb_hide_mobile    = false;
 $kh_mb_hide_desktop   = false;
 
-/* <fs_premium_only> */
-$kh_mb_hover_list     = array( 'none', 'shine', 'sweep-right', 'sweep-left', 'sweep-top', 'sweep-bottom', 'lift-up', 'push-down', 'ripple', 'glitch', 'outline-in' );
-$kh_mb_hover_effect   = in_array( $attributes['hoverEffect'] ?? '', $kh_mb_hover_list, true ) ? $attributes['hoverEffect'] : 'none';
-$kh_mb_ghost_text     = ! empty( $attributes['ghostTextHover'] );
-$kh_mb_neon_glow      = ! empty( $attributes['neonGlow'] );
-$kh_mb_stretched_link = ! empty( $attributes['stretchedLink'] );
-$kh_mb_entrance_list  = array( 'none', 'fade', 'slide', 'zoom' );
-$kh_mb_entrance_anim  = in_array( $attributes['entranceAnimation'] ?? '', $kh_mb_entrance_list, true ) ? $attributes['entranceAnimation'] : 'none';
-$kh_mb_entrance_delay = max( 0.0, min( 10.0, (float) ( $attributes['entranceDelay'] ?? 0 ) ) );
-$kh_mb_hide_mobile    = ! empty( $attributes['hideOnMobile'] );
-$kh_mb_hide_desktop   = ! empty( $attributes['hideOnDesktop'] );
-/* </fs_premium_only> */
+
 
     $kh_mb_active_bg              = $kh_mb_is_outline ? 'transparent' : $kh_mb_bg_color;
     $kh_mb_active_text            = $kh_mb_is_outline ? $kh_mb_bg_color : $kh_mb_text_color;
@@ -191,27 +185,13 @@ $kh_mb_hide_desktop   = ! empty( $attributes['hideOnDesktop'] );
 
     $kh_mb_wrapper_classes = array( 'kh-mb-wrapper' );
 
-    /* <fs_premium_only> */
-    if ( 'none' !== $kh_mb_entrance_anim ) {
-        $kh_mb_wrapper_classes[] = 'anim-' . $kh_mb_entrance_anim;
-    }
-    if ( $kh_mb_hide_mobile ) {
-        $kh_mb_wrapper_classes[] = 'kh-mb-hide-mobile';
-    }
-    if ( $kh_mb_hide_desktop ) {
-        $kh_mb_wrapper_classes[] = 'kh-mb-hide-desktop';
-    }
-    /* </fs_premium_only> */
+
 
     $kh_mb_wrapper_classes = array_filter( $kh_mb_wrapper_classes );
 
-    $kh_mb_wrapper_style = 'justify-content: ' . $kh_mb_align . ';';
+    $kh_mb_wrapper_style = 'justify-content: ' . $kh_mb_justify_content_map[ $kh_mb_align ] . ';';
 
-    /* <fs_premium_only> */
-    if ( $kh_mb_entrance_delay > 0 ) {
-        $kh_mb_wrapper_style .= sprintf( ' animation-delay: %ss;', number_format( $kh_mb_entrance_delay, 2, '.', '' ) );
-    }
-    /* </fs_premium_only> */
+
 
     $kh_mb_wrapper_attrs = get_block_wrapper_attributes(
         array(
@@ -227,11 +207,7 @@ $kh_mb_hide_desktop   = ! empty( $attributes['hideOnDesktop'] );
         $kh_mb_show_icon_normal ? 'icon-always-visible' : '',
     );
 
-    /* <fs_premium_only> */
-    $kh_mb_btn_classes[] = $kh_mb_ghost_text && ! $kh_mb_is_outline ? 'is-ghost' : '';
-    $kh_mb_btn_classes[] = $kh_mb_neon_glow ? 'has-neon' : '';
-    $kh_mb_btn_classes[] = $kh_mb_stretched_link ? 'has-stretched-link' : '';
-    /* </fs_premium_only> */
+
 
     $kh_mb_btn_classes = array_filter( $kh_mb_btn_classes );
 
@@ -263,9 +239,7 @@ $kh_mb_hide_desktop   = ! empty( $attributes['hideOnDesktop'] );
     // is registered elsewhere and not a duplicate of the viewScript handle.
     $kh_mb_needs_engine = $kh_mb_hover_scale || $kh_mb_text_separation;
 
-    /* <fs_premium_only> */
-    $kh_mb_needs_engine = $kh_mb_needs_engine || 'none' !== $kh_mb_hover_effect || 'none' !== $kh_mb_entrance_anim || $kh_mb_stretched_link;
-    /* </fs_premium_only> */
+
 
     if ( $kh_mb_needs_engine ) {
         wp_enqueue_script( 'kinetichub-core-engine' );
@@ -304,7 +278,7 @@ $kh_mb_hide_desktop   = ! empty( $attributes['hideOnDesktop'] );
                                         'width' => true,
                                         'height' => true,
                                         'aria-hidden' => true,
-                                        'viewBox' => true,
+                                        'viewbox' => true,
                                         'fill' => true,
                                         'stroke' => true,
                                         'stroke-width' => true,
@@ -331,7 +305,7 @@ $kh_mb_hide_desktop   = ! empty( $attributes['hideOnDesktop'] );
                                     'width' => true,
                                     'height' => true,
                                     'aria-hidden' => true,
-                                    'viewBox' => true,
+                                    'viewbox' => true,
                                     'fill' => true,
                                     'stroke' => true,
                                     'stroke-width' => true,
@@ -359,7 +333,7 @@ $kh_mb_hide_desktop   = ! empty( $attributes['hideOnDesktop'] );
                                     'width' => true,
                                     'height' => true,
                                     'aria-hidden' => true,
-                                    'viewBox' => true,
+                                    'viewbox' => true,
                                     'fill' => true,
                                     'stroke' => true,
                                     'stroke-width' => true,

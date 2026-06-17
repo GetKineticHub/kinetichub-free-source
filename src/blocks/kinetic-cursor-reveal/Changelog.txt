@@ -1,5 +1,15 @@
 Block Name: Kinetic Cursor Reveal
-Version: 1.0.0
+Version: 1.0.7
+
+### 1.0.7
+
+### Fixed
+- Restored useful FREE controls for responsive title sizing, subtitle styling, media sizing, reveal masks, and hover filters.
+- Fixed FREE frontend rendering so saved Cursor Reveal styling and media settings are honored instead of being replaced with hardcoded defaults.
+- Adjusted the FREE hover growth to a subtle 5px increase over the selected base title size instead of the legacy 95px target.
+- Kept advanced text effects, media container effects, physics, cursor badge, mobile modes, shadows, entrance animation, and visibility controls exclusive to advanced.
+
+### 1.0.0
 
 ### Added
 - Initial release of Kinetic Cursor Reveal.

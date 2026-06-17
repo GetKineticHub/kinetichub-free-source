@@ -9,9 +9,7 @@ import { useBlockProps, useInnerBlocksProps, InnerBlocks, InspectorControls, Med
 import { PanelBody, RangeControl, ToggleControl, ColorPalette, SelectControl, Button, ResizableBox } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-/* <fs_premium_only> */
-import { KineticVisibilityControls } from '../../components/VisibilityControls';
-/* </fs_premium_only> */
+
 import metadata from './block.json';
 
 const getDynamicTemplate = () => {
@@ -72,33 +70,23 @@ registerBlockType(metadata.name, {
         const {
             bgMode, heroHeightDesktop, heroHeightMobile, contentAlign, mediaUrl,
             objectFit, objectPosition, overlayOpacity, overlayColor, blendMode,
-            /* <fs_premium_only> */
-            liquidViscosity, liquidRGBShift, liquidIntensity,
-            gradientFlowSpeed, gradientIntensity, useImageInMesh, meshColor1, meshColor2, meshColor3,
-            fxScale, fxSpeed,
-            /* </fs_premium_only> */
+
             plexusColor, plexusDensity, plexusDistance, plexusSpeed, plexusInteraction, plexusLineWidth,
             align, parallaxEffect, enableGrain
         } = attributes;
 
         const modesWithImage = [
             'classic',
-            /* <fs_premium_only> */
-            'liquid', 'refractive',
-            /* </fs_premium_only> */
+
         ];
         const isPlaceholder = !mediaUrl && modesWithImage.includes(bgMode);
 
         const hasNativeBg = attributes.backgroundColor || (attributes.style && attributes.style.color && attributes.style.color.background);
         let baseEditorColor = '';
-        if (!hasNativeBg) {
-            /* <fs_premium_only> */
-            baseEditorColor = bgMode === 'gradient' ? '#1e293b' : '#0f172a';
-            /* </fs_premium_only> */
-            /* <fs_free_only> */
+        if (!hasNativeBg)
+
             baseEditorColor = '#0f172a';
-            /* </fs_free_only> */
-        }
+
 
         let finalEditorBackground = baseEditorColor; 
         if (modesWithImage.includes(bgMode) && mediaUrl) {
@@ -120,18 +108,7 @@ registerBlockType(metadata.name, {
             'data-plexus-speed': plexusSpeed || 1.0,
             'data-plexus-width': plexusLineWidth || 1.0,
             'data-plexus-int': plexusInteraction || 'repel',
-            /* <fs_premium_only> */
-            'data-viscosity': liquidViscosity || 0.1,
-            'data-rgb': liquidRGBShift || 0.5,
-            'data-liquid-int': liquidIntensity || 0.02,
-            'data-use-img-mesh': useImageInMesh ? 'true' : 'false',
-            'data-mesh-colors': `${meshColor1 || '#3b82f6'},${meshColor2 || '#8b5cf6'},${meshColor3 || '#ec4899'}`,
-            'data-grad-speed': gradientFlowSpeed || 0.5,
-            'data-grad-int': gradientIntensity || 0.8,
-            'data-fx-scale': fxScale || 20,
-            'data-fx-speed': fxSpeed || 1.0,
-            /* </fs_premium_only> */
-        });
+            );
 
         const innerBlocksProps = useInnerBlocksProps(
             { 
@@ -150,12 +127,7 @@ registerBlockType(metadata.name, {
                             options={[
                                 { label: __('Neural Network (Plexus)', 'kinetichub'), value: 'plexus' },
                                 { label: __('Classic Static', 'kinetichub'), value: 'classic' },
-                                /* <fs_premium_only> */
-                                { label: __('Gradient Mesh (Blobs)', 'kinetichub'), value: 'gradient' },
-                                { label: __('Liquid Displacement', 'kinetichub'), value: 'liquid' },
-                                { label: __('Refractive Lens (Crystal)', 'kinetichub'), value: 'refractive' },
-                                { label: __('Aurora Silk Ribbons', 'kinetichub'), value: 'aurora' },
-                                /* </fs_premium_only> */
+
                             ]}
                             onChange={(v) => setAttributes({ bgMode: v })}
                         />
@@ -221,25 +193,7 @@ registerBlockType(metadata.name, {
 
                     </PanelBody>
 
-                    {/* <fs_premium_only> */}
-                    {bgMode === 'gradient' && (
-                        <PanelBody title={__('🌈 Mesh Lava Colors', 'kinetichub')} initialOpen={false}>
-                            <ToggleControl label={__('Blend over Image', 'kinetichub')} checked={useImageInMesh} onChange={(v) => setAttributes({ useImageInMesh: v })} />
-                            {useImageInMesh && (
-                                <MediaUploadCheck>
-                                    <MediaUpload onSelect={(m) => setAttributes({ mediaUrl: m.url, mediaId: m.id })} allowedTypes={['image']} render={({ open }) => (<Button variant="secondary" onClick={open} style={{ width: '100%', marginBottom: '15px', justifyContent: 'center' }}>{mediaUrl ? __('Change Source Image', 'kinetichub') : __('Set Source Image', 'kinetichub')}</Button>)} />
-                                </MediaUploadCheck>
-                            )}
-                            <RangeControl label={__('Layer Opacity', 'kinetichub')} value={gradientIntensity} onChange={(v) => setAttributes({ gradientIntensity: v })} min={0.1} max={1.0} step={0.1} />
-                            <RangeControl label={__('Flow Speed', 'kinetichub')} value={gradientFlowSpeed} onChange={(v) => setAttributes({ gradientFlowSpeed: v })} min={0.1} max={2.0} step={0.1} />
 
-                            <p style={{ marginBottom: '5px', fontWeight: 'bold', marginTop: '15px' }}>{__('Mesh Node Colors', 'kinetichub')}</p>
-                            <ColorPalette value={meshColor1} onChange={(v) => setAttributes({ meshColor1: v })} enableAlpha={true} />
-                            <ColorPalette value={meshColor2} onChange={(v) => setAttributes({ meshColor2: v })} enableAlpha={true} />
-                            <ColorPalette value={meshColor3} onChange={(v) => setAttributes({ meshColor3: v })} enableAlpha={true} />
-                        </PanelBody>
-                    )}
-                    {/* </fs_premium_only> */}
 
                     {bgMode === 'plexus' && (
                         <PanelBody title={__('🌌 Plexus Settings', 'kinetichub')} initialOpen={true}>
@@ -257,35 +211,15 @@ registerBlockType(metadata.name, {
                         </PanelBody>
                     )}
 
-                    {/* <fs_premium_only> */}
-                    {['liquid', 'refractive', 'aurora'].includes(bgMode) && (
-                        <PanelBody title={__('🌊 WebGL Engine Settings', 'kinetichub')} initialOpen={true}>
-                            {bgMode === 'liquid' && (
-                                <>
-                                    <RangeControl label={__('Liquid Viscosity', 'kinetichub')} value={liquidViscosity} onChange={(v) => setAttributes({ liquidViscosity: v })} min={0.01} max={0.5} step={0.01} />
-                                    <RangeControl label={__('RGB Shift / Chromatic Aberration', 'kinetichub')} value={liquidRGBShift} onChange={(v) => setAttributes({ liquidRGBShift: v })} min={0.1} max={2.0} step={0.1} />
-                                    <RangeControl label={__('Wave Intensity', 'kinetichub')} value={liquidIntensity} onChange={(v) => setAttributes({ liquidIntensity: v })} min={0.01} max={0.1} step={0.01} />
-                                </>
-                            )}
 
-                            {bgMode === 'refractive' && (
-                                <RangeControl label={__('Crystal Scale', 'kinetichub')} value={fxScale} onChange={(v) => setAttributes({ fxScale: v })} min={5} max={50} step={1} />
-                            )}
 
-                            {bgMode === 'aurora' && (
-                                <RangeControl label={__('Flow Speed', 'kinetichub')} value={fxSpeed} onChange={(v) => setAttributes({ fxSpeed: v })} min={0.1} max={3.0} step={0.1} />
-                            )}
-                        </PanelBody>
-                    )}
-                    {/* </fs_premium_only> */}
 
-                    {/* <fs_free_only> */}
                     <PanelBody title={__('🚀 More Engines', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '13px', color: '#64748b', lineHeight: '1.5' }}>
                             {__('Gradient Mesh, Liquid Displacement, Refractive Lens, and Aurora Silk engines are available in Kinetic Hero Mesh Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
-                    {/* </fs_free_only> */}
+
 
                     <PanelBody title={__('✨ Composition (Overlay)', 'kinetichub')} initialOpen={false}>
                         <SelectControl 
@@ -305,9 +239,7 @@ registerBlockType(metadata.name, {
                         />
                     </PanelBody>
 
-                    {/* <fs_premium_only> */}
-                    <KineticVisibilityControls attributes={attributes} setAttributes={setAttributes} />
-                    {/* </fs_premium_only> */}
+
                 </InspectorControls>
 
                 <div {...blockProps}>

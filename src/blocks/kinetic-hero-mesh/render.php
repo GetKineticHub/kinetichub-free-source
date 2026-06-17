@@ -65,12 +65,8 @@ $kh_hm_blend_mode      = in_array( $attributes['blendMode'] ?? '', $kh_hm_blend_
 /*
  * Background mode validation.
  */
-/* <fs_premium_only> */
-$kh_hm_mode_list = array( 'gradient', 'plexus', 'liquid', 'refractive', 'aurora', 'classic' );
-/* </fs_premium_only> */
-/* <fs_free_only> */
 $kh_hm_mode_list = array( 'plexus', 'classic' );
-/* </fs_free_only> */
+
 $kh_hm_bg_mode = in_array( $attributes['bgMode'] ?? '', $kh_hm_mode_list, true ) ? $attributes['bgMode'] : 'plexus';
 
 $kh_hm_interact_list   = array( 'none', 'repel', 'attract', 'constellation' );
@@ -89,22 +85,7 @@ $kh_hm_plexus_speed      = max( 0.1, min( 3.0, (float) ( $attributes['plexusSpee
 $kh_hm_plexus_line_width = max( 0.1, min( 3.0, (float) ( $attributes['plexusLineWidth'] ?? 1.0 ) ) );
 $kh_hm_plexus_color      = kinetichub_hm_validate_color_strict( $attributes['plexusColor'] ?? '', '#ffffff' );
 
-/* <fs_premium_only> */
-$kh_hm_viscosity           = max( 0.01, min( 0.5, (float) ( $attributes['liquidViscosity'] ?? 0.1 ) ) );
-$kh_hm_rgb_shift           = max( 0.0, min( 2.0, (float) ( $attributes['liquidRGBShift'] ?? 0.5 ) ) );
-$kh_hm_liquid_intensity    = max( 0.0, min( 0.2, (float) ( $attributes['liquidIntensity'] ?? 0.02 ) ) );
-$kh_hm_gradient_flow_speed = max( 0.1, min( 3.0, (float) ( $attributes['gradientFlowSpeed'] ?? 0.5 ) ) );
-$kh_hm_gradient_intensity  = max( 0.1, min( 1.0, (float) ( $attributes['gradientIntensity'] ?? 0.8 ) ) );
-$kh_hm_fx_scale            = max( 1, min( 100, (int) ( $attributes['fxScale'] ?? 20 ) ) );
-$kh_hm_fx_speed            = max( 0.1, min( 5.0, (float) ( $attributes['fxSpeed'] ?? 1.0 ) ) );
-$kh_hm_use_image_in_mesh   = ! empty( $attributes['useImageInMesh'] ) ? 'true' : 'false';
-$kh_hm_hide_mobile         = ! empty( $attributes['hideOnMobile'] );
-$kh_hm_hide_desktop        = ! empty( $attributes['hideOnDesktop'] );
-$kh_hm_mesh_color_1        = kinetichub_hm_validate_color_strict( $attributes['meshColor1'] ?? '', '#3b82f6' );
-$kh_hm_mesh_color_2        = kinetichub_hm_validate_color_strict( $attributes['meshColor2'] ?? '', '#8b5cf6' );
-$kh_hm_mesh_color_3        = kinetichub_hm_validate_color_strict( $attributes['meshColor3'] ?? '', '#ec4899' );
-$kh_hm_mesh_colors         = $kh_hm_mesh_color_1 . ',' . $kh_hm_mesh_color_2 . ',' . $kh_hm_mesh_color_3;
-/* </fs_premium_only> */
+
 
 $kh_hm_parallax_effect = ! empty( $attributes['parallaxEffect'] );
 $kh_hm_enable_grain    = ! empty( $attributes['enableGrain'] );
@@ -120,22 +101,15 @@ $kh_hm_classes = array_filter(
 		'align' . $kh_hm_align,
 		$kh_hm_parallax_effect ? 'has-parallax' : '',
 		$kh_hm_enable_grain ? 'has-grain' : '',
-		/* <fs_premium_only> */
-		$kh_hm_hide_mobile ? 'kh-hm-hide-mobile' : '',
-		$kh_hm_hide_desktop ? 'kh-hm-hide-desktop' : '',
-		/* </fs_premium_only> */
+
 	)
 );
 
 $kh_hm_safe_opacity  = number_format( $kh_hm_overlay_opacity, 2, '.', '' );
 $kh_hm_has_native_bg = isset( $attributes['backgroundColor'] ) || isset( $attributes['style']['color']['background'] );
 
-/* <fs_premium_only> */
-$kh_hm_fallback_bg_color = 'gradient' === $kh_hm_bg_mode ? '#1e293b' : '#0f172a';
-/* </fs_premium_only> */
-/* <fs_free_only> */
 $kh_hm_fallback_bg_color = '#0f172a';
-/* </fs_free_only> */
+
 
 $kh_hm_bg_style_inline = '';
 
@@ -143,12 +117,8 @@ if ( ! $kh_hm_has_native_bg ) {
 	$kh_hm_bg_style_inline = sprintf( 'background-color: %s;', $kh_hm_fallback_bg_color );
 }
 
-/* <fs_premium_only> */
-$kh_hm_modes_with_image = array( 'liquid', 'classic', 'refractive' );
-/* </fs_premium_only> */
-/* <fs_free_only> */
 $kh_hm_modes_with_image = array( 'classic' );
-/* </fs_free_only> */
+
 
 if ( ! empty( $kh_hm_media_url ) && in_array( $kh_hm_bg_mode, $kh_hm_modes_with_image, true ) ) {
 	$kh_hm_bg_style_inline .= sprintf( ' background-image: url(%s);', esc_url( $kh_hm_media_url ) );
@@ -203,17 +173,7 @@ $kh_hm_wrapper_attrs = get_block_wrapper_attributes(
 		'data-plexus-speed'   => (string) $kh_hm_plexus_speed,
 		'data-plexus-width'   => (string) $kh_hm_plexus_line_width,
 		'data-plexus-int'     => $kh_hm_plexus_interact,
-		/* <fs_premium_only> */
-		'data-viscosity'      => (string) $kh_hm_viscosity,
-		'data-rgb'            => (string) $kh_hm_rgb_shift,
-		'data-liquid-int'     => (string) $kh_hm_liquid_intensity,
-		'data-use-img-mesh'   => $kh_hm_use_image_in_mesh,
-		'data-mesh-colors'    => $kh_hm_mesh_colors,
-		'data-grad-speed'     => (string) $kh_hm_gradient_flow_speed,
-		'data-grad-int'       => (string) $kh_hm_gradient_intensity,
-		'data-fx-scale'       => (string) $kh_hm_fx_scale,
-		'data-fx-speed'       => (string) $kh_hm_fx_speed,
-		/* </fs_premium_only> */
+
 	)
 );
 ?>

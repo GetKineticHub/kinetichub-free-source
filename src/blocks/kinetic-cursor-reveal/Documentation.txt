@@ -22,13 +22,22 @@ It is useful for portfolio indexes, project lists, service menus, editorial navi
 - Item deletion
 - Inline item editing in the block sidebar
 
+### Text and Subtitle Styling
+- Responsive title font size controls for desktop and mobile
+- Subtitle color control
+- Subtitle font size control
+- Subtitle letter spacing control
+
 ### Media Reveal
 - Image reveal support
 - Video reveal support
 - Inline media upload
 - Inline media preview in the editor
 - Cursor-following floating media preview
-- Basic fade reveal behavior
+- Adjustable media width
+- Portrait, square, landscape, and ultrawide aspect ratios
+- Fade, circle, diagonal, and curtain reveal masks
+- Optional grayscale-to-color hover filter
 - Video pause handling when reveal ends
 
 ### Link Behavior
@@ -67,7 +76,8 @@ It is useful for portfolio indexes, project lists, service menus, editorial navi
 5. Open the block sidebar settings.
 6. Add or edit list items.
 7. Add titles, subtitles, media, and optional links for each item.
-8. Preview the reveal behavior in the editor and on the frontend.
+8. Configure responsive typography, subtitle styling, media size, reveal mask, and hover filter.
+9. Preview the reveal behavior in the editor and on the frontend.
 
 ---
 
@@ -95,9 +105,21 @@ Recommended media types:
 
 For best performance, optimize images before uploading and keep videos short and web-friendly.
 
+The Media Settings panel lets you adjust the floating preview width, aspect ratio, reveal mask, and optional grayscale-to-color hover filter.
+
 ---
 
-## 6. Interaction Behavior
+## 6. Styling Controls
+
+Use the Text Styling panel to set the title size independently for desktop and mobile devices.
+
+Use the Subtitle Styling panel to control subtitle color, size, and letter spacing.
+
+These controls apply to the frontend output and are reflected in the editor preview where applicable.
+
+---
+
+## 7. Interaction Behavior
 
 On pointer-based devices, the media preview appears when a visitor hovers or focuses an item.
 
@@ -107,7 +129,7 @@ Keyboard users can focus list items and activate linked items with Enter or Spac
 
 ---
 
-## 7. Link Setup
+## 8. Link Setup
 
 Each item can include an optional URL.
 
@@ -124,7 +146,7 @@ The open in new tab option applies globally to item links inside the block.
 
 ---
 
-## 8. Accessibility Notes
+## 9. Accessibility Notes
 
 Kinetic Cursor Reveal is built with accessibility in mind.
 
@@ -136,7 +158,7 @@ Use clear titles and meaningful link destinations so visitors understand where e
 
 ---
 
-## 9. Performance Notes
+## 10. Performance Notes
 
 The reveal preview is positioned in a way that helps avoid clipping inside theme containers with restrictive overflow styles.
 
@@ -146,7 +168,7 @@ Videos pause when the reveal state ends so hidden media does not continue playin
 
 ---
 
-## 10. Recommended Usage
+## 11. Recommended Usage
 
 Use Kinetic Cursor Reveal for:
 

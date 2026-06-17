@@ -24,9 +24,9 @@ import {
 import { starEmpty, layout, cog, shield } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 
-if ( typeof khData !== 'undefined' ) {
-    apiFetch.use( apiFetch.createRootURLMiddleware( khData.restUrl ) );
-    apiFetch.use( apiFetch.createNonceMiddleware( khData.nonce ) );
+if ( typeof  !== 'undefined' ) {
+    apiFetch.use( apiFetch.createRootURLMiddleware( .restUrl ) );
+    apiFetch.use( apiFetch.createNonceMiddleware( .nonce ) );
 }
 
 const Dashboard = () => {
@@ -95,8 +95,8 @@ const Dashboard = () => {
         });
     };
 
-    const pluginBaseUrl = typeof khData !== 'undefined' ? khData.pluginUrl : '';
-    const isProActive = typeof khData !== 'undefined' ? khData.isPro : false;
+    const pluginBaseUrl = typeof  !== 'undefined' ? .pluginUrl : '';
+    const isProActive = typeof  !== 'undefined' ? . : false;
 
     // Complete list of installed Kinetic blocks
     const blocksList = [
@@ -160,7 +160,7 @@ const Dashboard = () => {
                                 <PanelRow>
                                     <div>{__('License Status', 'kinetichub')}</div>
                                     <div className="kh-badge-status" style={{ color: isProActive ? '#10b981' : '#94a3b8' }}>
-                                        {isProActive ? 'PRO Active' : 'License Not Connected'}
+                                        {isProActive ? 'advanced Active' : 'License Not Connected'}
                                     </div>
                                 </PanelRow>
                             </PanelBody>
@@ -210,10 +210,10 @@ const Dashboard = () => {
                         <div style={{ background: 'linear-gradient(135deg, #1e293b, #0f172a)', padding: '25px', borderRadius: '12px', marginBottom: '30px', color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                             <div style={{ maxWidth: '70%' }}>
                                 <h4 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span className="dashicons dashicons-yes-alt"></span> {__('KineticHub PRO is installed', 'kinetichub')}
+                                    <span className="dashicons dashicons-yes-alt"></span> {__('KineticHub advanced is installed', 'kinetichub')}
                                 </h4>
                                 <p style={{ margin: 0, fontSize: '14px', color: '#cbd5e1', lineHeight: '1.6' }}>
-                                    {__('Your PRO license includes one year of updates and support. Activate your license key to connect this site to your KineticHub account. After the license period ends, your installed PRO blocks remain available, but updates and support require renewal.', 'kinetichub')}
+                                    {__('Your advanced license includes one year of updates and support. Activate your license key to connect this site to your KineticHub account. After the license period ends, your installed advanced blocks remain available, but updates and support require renewal.', 'kinetichub')}
                                 </p>
                             </div>
                             <Button variant="primary" onClick={() => setActiveTab('license')} style={{ background: 'linear-gradient(135deg, #10b981, #059669)', border: 'none', padding: '0 25px', height: '45px', borderRadius: '8px', fontWeight: 'bold' }}>
@@ -229,7 +229,7 @@ const Dashboard = () => {
                             return (
                                 <div key={block.id} className="kh-block-card" style={{ transition: 'all 0.3s ease' }}>
 
-                                    <div className="kh-pro-badge" style={{background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff'}}>PRO</div>
+                                    <div className="kh-pro-badge" style={{background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff'}}>advanced</div>
 
                                     <div
                                         className="kh-card-image"
@@ -363,12 +363,12 @@ const Dashboard = () => {
                             <PanelBody title={__('🔑 Software License', 'kinetichub')} initialOpen={true}>
                                 <div style={{ padding: '10px 0' }}>
                                     <h4 style={{ margin: '0 0 10px 0', fontSize: '16px' }}>
-                                        {isProActive ? __('PRO License Active', 'kinetichub') : __('License Not Connected', 'kinetichub')}
+                                        {isProActive ? __('advanced License Active', 'kinetichub') : __('License Not Connected', 'kinetichub')}
                                     </h4>
                                     <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '20px', lineHeight: '1.5' }}>
                                         {__('License activation, subscription management, and billing are securely handled by our unified engine. Click below to access your portal.', 'kinetichub')}
                                     </p>
-                                    {/* TODO: If a Freemius account/license URL helper becomes available in PHP, localize it to khData (e.g. accountUrl/licenseUrl) and use it here instead of the static admin.php link. */}
+                                    {/* TODO: If a  account/license URL helper becomes available in PHP, localize it to  (e.g. accountUrl/licenseUrl) and use it here instead of the static admin.php link. */}
                                     <Button variant="primary" href="admin.php?page=kinetichub-account" style={{ height: '40px', padding: '0 20px', borderRadius: '6px', backgroundColor: settings.accentColor }}>
                                         {isProActive ? __('Manage Account', 'kinetichub') : __('Activate License', 'kinetichub')}
                                     </Button>
@@ -409,7 +409,7 @@ const Dashboard = () => {
                     <h1>KineticHub <span>{__('Master Control', 'kinetichub')}</span></h1>
                 </div>
                 <div style={{display:'flex', gap:'10px'}}>
-                    <span style={{opacity:0.6, fontSize:'12px'}}>{__('Suite v', 'kinetichub')}{typeof khData !== 'undefined' && khData.version ? khData.version : '1.0.0'}</span>
+                    <span style={{opacity:0.6, fontSize:'12px'}}>{__('Suite v', 'kinetichub')}{typeof  !== 'undefined' && .version ? .version : '1.0.0'}</span>
                 </div>
             </header>
             <TabPanel key={activeTab} className="kh-main-tabs" activeClass="is-active" tabs={ tabs } initialTabName={ activeTab } onSelect={ ( tabName ) => setActiveTab( tabName ) }>

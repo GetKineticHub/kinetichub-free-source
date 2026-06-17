@@ -64,30 +64,10 @@ $kh_ap_player_layout  = in_array( $attributes['playerLayout'] ?? '', $kh_ap_layo
 $kh_ap_preload_list      = array( 'none', 'metadata', 'auto' );
 $kh_ap_preload_strategy  = in_array( $attributes['preloadStrategy'] ?? '', $kh_ap_preload_list, true ) ? $attributes['preloadStrategy'] : 'metadata';
 
-/* <fs_premium_only> */
-$kh_ap_sticky_list      = array( 'none', 'sticky-top', 'floating' );
-$kh_ap_sticky_behavior  = in_array( $attributes['stickyBehavior'] ?? '', $kh_ap_sticky_list, true ) ? $attributes['stickyBehavior'] : 'none';
 
-$kh_ap_pos_list         = array( 'left', 'center', 'right' );
-$kh_ap_sticky_position  = in_array( $attributes['stickyPosition'] ?? '', $kh_ap_pos_list, true ) ? $attributes['stickyPosition'] : 'right';
-
-$kh_ap_style_list      = array( 'box', 'pill', 'custom' );
-$kh_ap_sticky_style    = in_array( $attributes['stickyStyle'] ?? '', $kh_ap_style_list, true ) ? $attributes['stickyStyle'] : 'pill';
-
-$kh_ap_glow_list    = array( 'none', 'soft-ambient', 'neon-cyberpunk', 'pulsing-aura' );
-$kh_ap_glow_style   = in_array( $attributes['glowStyle'] ?? '', $kh_ap_glow_list, true ) ? $attributes['glowStyle'] : 'none';
-
-$kh_ap_magnetic_hover      = ! empty( $attributes['magneticHover'] ) ? 'true' : 'false';
-$kh_ap_remember_position   = ! empty( $attributes['rememberPosition'] );
-$kh_ap_pause_on_tab_switch = ! empty( $attributes['pauseOnTabSwitch'] );
-$kh_ap_disable_mobile_seek = ! empty( $attributes['disableMobileSeek'] );
-$kh_ap_allow_download      = ! empty( $attributes['allowDownload'] );
-/* </fs_premium_only> */
 
 $kh_ap_wave_list = array( 'default' );
-/* <fs_premium_only> */
-$kh_ap_wave_list = array( 'default', 'box', 'pill' );
-/* </fs_premium_only> */
+
 $kh_ap_waveform_style  = in_array( $attributes['waveformStyle'] ?? '', $kh_ap_wave_list, true ) ? $attributes['waveformStyle'] : 'default';
 
 $kh_ap_time_list         = array( 'none', 'elapsed', 'remaining', 'total' );
@@ -173,16 +153,10 @@ $kh_ap_btn_classes = array_filter(
 	)
 );
 
-/* <fs_premium_only> */
-if ( 'none' !== $kh_ap_glow_style ) {
-	$kh_ap_btn_classes[] = 'kh-ap-glow-' . $kh_ap_glow_style;
-}
-/* </fs_premium_only> */
+
 
 $kh_ap_show_tools = ! $kh_ap_is_compact && $kh_ap_enable_volume;
-/* <fs_premium_only> */
-$kh_ap_show_tools = ! $kh_ap_is_compact && ( $kh_ap_allow_download || $kh_ap_enable_volume );
-/* </fs_premium_only> */
+
 ?>
 
 <div <?php echo $kh_ap_wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
@@ -193,15 +167,7 @@ $kh_ap_show_tools = ! $kh_ap_is_compact && ( $kh_ap_allow_download || $kh_ap_ena
 		data-preload="<?php echo esc_attr( $kh_ap_preload_strategy ); ?>"
 		data-timemode="<?php echo esc_attr( $kh_ap_time_display_mode ); ?>"
 		data-compact="<?php echo esc_attr( $kh_ap_is_compact ? 'true' : 'false' ); ?>"
-		<?php /* <fs_premium_only> */ ?>
-		data-sticky="<?php echo esc_attr( $kh_ap_sticky_behavior ); ?>"
-		data-sticky-pos="<?php echo esc_attr( $kh_ap_sticky_position ); ?>"
-		data-sticky-style="<?php echo esc_attr( $kh_ap_sticky_style ); ?>"
-		data-magnetic="<?php echo esc_attr( $kh_ap_magnetic_hover ); ?>"
-		data-remember="<?php echo esc_attr( $kh_ap_remember_position ? 'true' : 'false' ); ?>"
-		data-pausetab="<?php echo esc_attr( $kh_ap_pause_on_tab_switch ? 'true' : 'false' ); ?>"
-		data-disable-mob-seek="<?php echo esc_attr( $kh_ap_disable_mobile_seek ? 'true' : 'false' ); ?>"
-		<?php /* </fs_premium_only> */ ?>
+
 	>
 		<?php if ( $kh_ap_enable_seekbar ) : ?>
 			<div
@@ -227,14 +193,7 @@ $kh_ap_show_tools = ! $kh_ap_is_compact && ( $kh_ap_allow_download || $kh_ap_ena
 			</svg>
 		<?php endif; ?>
 
-		<?php /* <fs_premium_only> */ ?>
-		<button type="button" class="kh-ap-sticky-dismiss" aria-label="<?php echo esc_attr__( 'Close Player', 'kinetichub' ); ?>" tabindex="0">
-			<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-				<line x1="18" y1="6" x2="6" y2="18"></line>
-				<line x1="6" y1="6" x2="18" y2="18"></line>
-			</svg>
-		</button>
-		<?php /* </fs_premium_only> */ ?>
+
 
 		<span class="kh-ap-play-pause-trigger">
 			<button class="kh-ap-absolute-trigger" aria-label="<?php echo esc_attr__( 'Play or Pause Audio', 'kinetichub' ); ?>"></button>
@@ -281,17 +240,7 @@ $kh_ap_show_tools = ! $kh_ap_is_compact && ( $kh_ap_allow_download || $kh_ap_ena
 					</div>
 				<?php endif; ?>
 
-				<?php /* <fs_premium_only> */ ?>
-				<?php if ( $kh_ap_allow_download ) : ?>
-					<a href="<?php echo esc_url( $kh_ap_audio_url ); ?>" download class="kh-ap-tool-btn kh-ap-dl-btn" aria-label="<?php echo esc_attr__( 'Download Audio', 'kinetichub' ); ?>">
-						<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-							<polyline points="7 10 12 15 17 10"></polyline>
-							<line x1="12" y1="15" x2="12" y2="3"></line>
-						</svg>
-					</a>
-				<?php endif; ?>
-				<?php /* </fs_premium_only> */ ?>
+
 			</div>
 		<?php endif; ?>
 	</div>

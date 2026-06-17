@@ -1,70 +1,121 @@
 {
-    "apiVersion": 3,
-    "name": "kinetichub/marquee",
-    "version": "1.0.2",
-    "title": "Kinetic Marquee",
-    "category": "kinetic-suite",
-    "description": "Infinite scrolling marquee optimized for logos and images with hardware-accelerated physics.",
-    "keywords": [ "marquee", "scrolling text", "ticker", "moving text", "loop text" ],
-    "attributes": {
-        "images": { "type": "array", "default": [] },
-        
-        "speed": { "type": "number", "default": 30 },
-        "itemHeight": { "type": "number", "default": 120 },
-        "mobileItemHeight": { "type": "number" },
-        
-        "useMaxWidth": { "type": "boolean", "default": false },
-        "logoMaxWidth": { "type": "number", "default": 200 },
-        "gap": { "type": "number", "default": 50 },
-        
-        "pauseOnHover": { "type": "boolean", "default": true },
-        "hoverSlowDown": { "type": "boolean", "default": false },
-        "edgeFade": { "type": "boolean", "default": true },
-        "openInNewTab": { "type": "boolean", "default": false },
-        
-        "grayscale": { "type": "boolean", "default": false },
-        "liftEffect": { "type": "boolean", "default": true },
-        "idleOpacity": { "type": "boolean", "default": false },
-        "reverseDirection": { "type": "boolean", "default": false },
-
-        "showProgressRail": { "type": "boolean", "default": false },
-        "progressRailPosition": { "type": "string", "default": "right" },
-        "showInteractionIndicator": { "type": "boolean", "default": false },
-        "highlightActiveCenter": { "type": "boolean", "default": false },
-        "siblingBlur": { "type": "boolean", "default": false },
-        "siblingBlurIntensity": { "type": "number", "default": 3 },
-        
-        "showFrame": { "type": "boolean", "default": true },
-        "frameBg": { "type": "string", "default": "#ffffff" },
-        "frameRadius": { "type": "number", "default": 12 },
-        "frameShadow": { "type": "string", "default": "soft" },
-        
-        "align": { "type": "string", "default": "full" },
-
-        "entranceAnimation": { "type": "string", "default": "none" },
-        "entranceDelay": { "type": "number", "default": 0 },
-        "hideOnMobile": { "type": "boolean", "default": false },
-        "hideOnDesktop": { "type": "boolean", "default": false },
-
-        "containerShadow": { "type": "boolean", "default": false },
-        "shadowStyle": { "type": "string", "default": "soft" },
-        "shadowSoftness": { "type": "number" },
-        "mobileShadowSoftness": { "type": "number" },
-        "shadowOpacity": { "type": "number" },
-        "hoverShadowOpacity": { "type": "number" },
-        "shadowColor": { "type": "string" },
-        "hoverShadowColor": { "type": "string" }
+  "apiVersion": 3,
+  "name": "kinetichub/marquee",
+  "version": "1.0.2",
+  "title": "Kinetic Marquee",
+  "category": "kinetic-suite",
+  "description": "Animated logo and image marquee block for scrolling visual rows.",
+  "keywords": [
+    "marquee",
+    "scrolling text",
+    "ticker",
+    "moving text",
+    "loop text"
+  ],
+  "attributes": {
+    "images": {
+      "type": "array",
+      "default": []
     },
-    "supports": {
-        "align": ["full", "wide"],
-        "spacing": { "margin": true, "padding": false, "blockGap": false },
-        "color": { "background": true, "text": true, "gradients": true },
-        "__experimentalBorder": { "color": true, "radius": true, "width": true, "style": true }
+    "speed": {
+      "type": "number",
+      "default": 30
     },
-    "textdomain": "kinetichub",
-    "editorScript": "file:./index.js",
-    "viewScript": "file:./view.js",
-    "style": "file:./index.css",
-    "editorStyle": "file:./index.css",
-    "render": "file:./render.php"
+    "itemHeight": {
+      "type": "number",
+      "default": 120
+    },
+    "pauseOnHover": {
+      "type": "boolean",
+      "default": true
+    },
+    "hoverSlowDown": {
+      "type": "boolean",
+      "default": false
+    },
+    "edgeFade": {
+      "type": "boolean",
+      "default": true
+    },
+    "openInNewTab": {
+      "type": "boolean",
+      "default": false
+    },
+    "liftEffect": {
+      "type": "boolean",
+      "default": true
+    },
+    "reverseDirection": {
+      "type": "boolean",
+      "default": false
+    },
+    "showProgressRail": {
+      "type": "boolean",
+      "default": false
+    },
+    "progressRailPosition": {
+      "type": "string",
+      "default": "right"
+    },
+    "showInteractionIndicator": {
+      "type": "boolean",
+      "default": false
+    },
+    "highlightActiveCenter": {
+      "type": "boolean",
+      "default": false
+    },
+    "siblingBlur": {
+      "type": "boolean",
+      "default": false
+    },
+    "siblingBlurIntensity": {
+      "type": "number",
+      "default": 3
+    },
+    "showFrame": {
+      "type": "boolean",
+      "default": true
+    },
+    "frameBg": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "frameRadius": {
+      "type": "number",
+      "default": 12
+    },
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": false,
+      "blockGap": false
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
 }

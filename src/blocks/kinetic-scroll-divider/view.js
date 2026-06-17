@@ -67,43 +67,7 @@
                 return;
             }
 
-            /* <fs_premium_only> */
-            if (isScrub) {
-                const offsetStr = block.style.getPropertyValue('--kh-div-offset') || '0';
-                const offsetPercent = parseFloat(offsetStr) || 0;
-                
-                block._kh_sd_abort = new AbortController();
-                const scrubSignal = block._kh_sd_abort.signal;
 
-                const updateScrub = () => {
-                    try {
-                        const rect = block.getBoundingClientRect();
-                        const winH = window.innerHeight;
-                        
-                        const triggerPoint = winH * (1 - (offsetPercent / 100));
-                        const travelDistance = winH * SCRUB_TRAVEL_DISTANCE; 
-                        
-                        let progress = (triggerPoint - rect.top) / travelDistance;
-                        progress = Math.max(0, Math.min(1, progress));
-                        
-                        block.style.setProperty('--kh-div-progress', progress.toFixed(3));
-                    } catch (error) {
-                        console.error('Scrubbing update error:', error);
-                    }
-                };
-
-                window.addEventListener('scroll', () => {
-                    requestAnimationFrame(updateScrub);
-                }, { passive: true, signal: scrubSignal });
-                
-                window.addEventListener('resize', () => {
-                    requestAnimationFrame(updateScrub);
-                }, { passive: true, signal: scrubSignal });
-                
-                updateScrub();
-
-            } else {
-            /* </fs_premium_only> */
                 const offsetVal = block.style.getPropertyValue('--kh-div-offset') || '0%';
                 const rootMargin = `0px 0px ${offsetVal} 0px`;
 
@@ -117,10 +81,7 @@
                 }, { rootMargin, threshold: 0 });
 
                 observer.observe(block);
-            /* <fs_premium_only> */
-            }
-            /* </fs_premium_only> */
-        });
+            );
     };
 
     // Safeload execution

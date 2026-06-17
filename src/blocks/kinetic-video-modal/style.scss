@@ -78,20 +78,7 @@
     transition: none;
 }
 
-/* <fs_premium_only> */
-.kh-video-modal-container.zoom-subtle .kh-vm-cover-img {
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-.kh-video-modal-container.zoom-subtle:hover .kh-vm-cover-img {
-    transform: scale(1.05);
-}
-.kh-video-modal-container.zoom-cinematic .kh-vm-cover-img {
-    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-.kh-video-modal-container.zoom-cinematic:hover .kh-vm-cover-img {
-    transform: scale(1.15);
-}
-/* </fs_premium_only> */
+
 
 .kh-vm-fallback-bg {
     position: absolute;
@@ -186,55 +173,7 @@
     color: var(--kh-vm-btn-c);
 }
 
-/* <fs_premium_only> */
-.kh-video-modal-container.has-pulse .kh-vm-play-button::before {
-    content: '';
-    position: absolute;
-    inset: -10%;
-    border-radius: 50%;
-    border: 2px solid var(--kh-vm-btn-c);
-    animation: khVmPulse 2s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
-    pointer-events: none;
-    opacity: 0;
-}
 
-@keyframes khVmPulse {
-    0% {
-        transform: scale(0.9);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1.6);
-        opacity: 0;
-    }
-}
-
-.kh-vm-teaser-badge {
-    position: absolute;
-    bottom: 0;
-    transform: translateY(100%);
-    margin-top: 15px;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 6px 14px;
-    border-radius: 50px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.kh-video-modal-container:hover .kh-vm-teaser-badge {
-    opacity: 1;
-    transform: translateY(140%);
-}
-/* </fs_premium_only> */
 
 /* ==========================================================================
    Modal frontend styling
@@ -344,36 +283,7 @@ body.kh-vm-body-scroll-lock {
     opacity: 1;
 }
 
-/* <fs_premium_only> */
-.kh-vm-dialog-overlay.anim-slide .kh-vm-dialog-content {
-    transform: translateY(40px);
-    opacity: 0;
-}
 
-.kh-vm-dialog-overlay.anim-slide.is-open .kh-vm-dialog-content {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.kh-vm-dialog-overlay.anim-flip .kh-vm-dialog-content {
-    transform: rotateX(20deg) scale(0.95);
-    opacity: 0;
-    transform-origin: bottom;
-}
-
-.kh-vm-dialog-overlay.anim-flip.is-open .kh-vm-dialog-content {
-    transform: rotateX(0deg) scale(1);
-    opacity: 1;
-}
-
-.kh-vm-dialog-overlay.anim-fade .kh-vm-dialog-content {
-    opacity: 0;
-}
-
-.kh-vm-dialog-overlay.anim-fade.is-open .kh-vm-dialog-content {
-    opacity: 1;
-}
-/* </fs_premium_only> */
 
 .kh-vm-dialog-content.ratio-16x9 {
     aspect-ratio: 16/9;
@@ -412,16 +322,3 @@ body.kh-vm-body-scroll-lock {
         transition: none !important;
         animation: none !important;
     }
-
-    /* <fs_premium_only> */
-    .kh-video-modal-container .kh-vm-teaser-badge {
-        transition: none !important;
-        animation: none !important;
-    }
-
-    .kh-video-modal-container.has-pulse .kh-vm-play-button::before {
-        animation: none !important;
-        opacity: 0 !important;
-    }
-    /* </fs_premium_only> */
-}

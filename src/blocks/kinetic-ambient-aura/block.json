@@ -1,32 +1,58 @@
 {
-    "apiVersion": 3,
-    "name": "kinetichub/ambient-aura",
-    "version": "1.0.0",
-    "title": "Kinetic Ambient Aura",
-    "category": "kinetic-suite",
-    "description": "Static decorative ambient glow effect rendered server-side.",
-    "keywords": ["glow", "aura", "ambient", "light", "background"],
-    "attributes": {
-        "color": { "type": "string", "default": "#3b82f6" },
-        "opacity": { "type": "number", "default": 0.15 },
-        "spread": { "type": "number", "default": 800 },
-        "falloff": { "type": "number", "default": 70 },
-        "shape": { "type": "string", "default": "circle" },
-        "positionType": { "type": "string", "default": "fixed" },
-        "offsetX": { "type": "number", "default": 50 },
-        "offsetY": { "type": "number", "default": -10 },
-        "zIndex": { "type": "number", "default": -1 },
-        "blendMode": { "type": "string", "default": "normal" },
-        "mobileBehavior": { "type": "string", "default": "reduce" },
-        "disableBlendMobile": { "type": "boolean", "default": true }
+  "apiVersion": 3,
+  "name": "kinetichub/ambient-aura",
+  "version": "1.0.0",
+  "title": "Kinetic Ambient Aura",
+  "category": "kinetic-suite",
+  "description": "Decorative animated background aura block for Gutenberg layouts.",
+  "keywords": [
+    "glow",
+    "aura",
+    "ambient",
+    "light",
+    "background"
+  ],
+  "attributes": {
+    "color": {
+      "type": "string",
+      "default": "#3b82f6"
     },
-    "supports": {
-        "html": false,
-        "customClassName": false
+    "opacity": {
+      "type": "number",
+      "default": 0.15
     },
-    "textdomain": "kinetichub",
-    "editorScript": "file:./index.js",
-    "style": "file:./index.css",
-    "editorStyle": "file:./index.css",
-    "render": "file:./render.php"
+    "spread": {
+      "type": "number",
+      "default": 800
+    },
+    "falloff": {
+      "type": "number",
+      "default": 70
+    },
+    "shape": {
+      "type": "string",
+      "default": "circle"
+    },
+    "positionType": {
+      "type": "string",
+      "default": "fixed"
+    },
+    "offsetX": {
+      "type": "number",
+      "default": 50
+    },
+    "offsetY": {
+      "type": "number",
+      "default": -10
+    }
+  },
+  "supports": {
+    "html": false,
+    "customClassName": false
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
 }

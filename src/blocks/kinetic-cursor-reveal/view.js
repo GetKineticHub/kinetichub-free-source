@@ -24,12 +24,7 @@
             wrapper._kh_cr_animFrameId = null;
         }
 
-        /* <fs_premium_only> */
-        if (wrapper._kh_cr_entranceObserver) {
-            wrapper._kh_cr_entranceObserver.disconnect();
-            wrapper._kh_cr_entranceObserver = null;
-        }
-        /* </fs_premium_only> */
+
 
         // Pause any active videos before DOM restore
         if (wrapper._kh_cr_floatingBox) {
@@ -79,29 +74,14 @@
             isMouseTracking = true;
         }
 
-        /* <fs_premium_only> */
-        const initEntrance = (wrapper) => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('kh-cr-animated');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.25 });
-            if (wrapper.hasAttribute('data-entrance')) observer.observe(wrapper);
-            wrapper._kh_cr_entranceObserver = observer;
-        };
-        /* </fs_premium_only> */
+
 
         wrappers.forEach(wrapper => {
             wrapper.classList.add('kh-cr-ready');
             wrapper._kh_cr_isDestroyed = false;
             activeInstances.add(wrapper);
             
-            /* <fs_premium_only> */
-            initEntrance(wrapper);
-            /* </fs_premium_only> */
+
 
             const blockId = wrapper.dataset.blockid;
             const floatingBox = document.querySelector(`.kh-cr-floating-box-${blockId}`);
@@ -124,27 +104,9 @@
             let mediaLayer = 'over';
             let mobileAction = 'tap';
 
-            /* <fs_premium_only> */
-            lerpAmount = parseFloat(wrapper.dataset.lerp) || 0.08;
-            offsetX = parseInt(wrapper.dataset.offx) || 0;
-            offsetY = parseInt(wrapper.dataset.offy) || 0;
-            enableTilt = wrapper.dataset.tilt === 'true';
-            enableMagnetic = wrapper.dataset.magnetic === 'true';
-            innerParallax = wrapper.dataset.innerParallax === 'true';
-            mediaLayer = wrapper.dataset.layer || 'over';
-            mobileAction = prefersReducedMotion ? 'always' : (wrapper.dataset.mobileAction || 'tap');
-            if (prefersReducedMotion) wrapper.dataset.mobileAction = 'always';
-            /* </fs_premium_only> */
 
-            /* <fs_premium_only> */
-            if ((isTouchDevice || prefersReducedMotion) && (mobileAction === 'hide' || mobileAction === 'always')) {
-                if (floatingBox.parentNode !== wrapper) {
-                    wrapper.appendChild(floatingBox);
-                }
-                floatingBox.style.display = 'none';
-                return;
-            }
-            /* </fs_premium_only> */
+
+
 
             if (mediaLayer === 'over') {
                 document.body.appendChild(floatingBox);
@@ -300,10 +262,7 @@
                 item.classList.remove('is-magnetic-active'); 
                 item.dataset.tapped = 'false'; 
                 
-                /* <fs_premium_only> */
-                const titleWrapper = item.querySelector('.kh-cr-title-wrapper');
-                if (titleWrapper && enableMagnetic) titleWrapper.style.transform = `translate3d(0, 0, 0)`;
-                /* </fs_premium_only> */
+
 
                 floatingBox.style.transform = '';
             };
@@ -319,22 +278,12 @@
                     pos.x += diffX * lerpAmount;
                     pos.y += diffY * lerpAmount;
 
-                    /* <fs_premium_only> */
-                    if (enableTilt) {
-                        rotation = Math.min(Math.max(diffX * 0.12, -12), 12);
-                    }
-                    /* </fs_premium_only> */
+
 
                     let targetX = pos.x;
                     let targetY = pos.y;
 
-                    /* <fs_premium_only> */
-                    if (mediaLayer === 'under') {
-                        const rect = wrapper.getBoundingClientRect();
-                        targetX = pos.x - (rect.left + window.scrollX);
-                        targetY = pos.y - (rect.top + window.scrollY);
-                    }
-                    /* </fs_premium_only> */
+
 
                     const finalX = targetX + offsetX;
                     const finalY = targetY + offsetY;
@@ -349,30 +298,7 @@
 
                     floatingBox.style.transform = `translate3d(${clampedX}px, ${clampedY}px, 0) translate(-50%, -50%) rotate(${rotation}deg)`;
 
-                    /* <fs_premium_only> */
-                    if (innerParallax) {
-                        const innerX = diffX * -0.6;
-                        const innerY = diffY * -0.6;
-                        const currentLayer = activeLayer === 1 ? layer1 : layer2;
-                        const mediaTarget = currentLayer.querySelector('img, video');
-                        if (mediaTarget) mediaTarget.style.transform = `translate3d(${innerX}px, ${innerY}px, 0) scale(1.15)`;
-                    }
 
-                    if (enableMagnetic && hoveredItem) {
-                        const titleWrapper = hoveredItem.querySelector('.kh-cr-title-wrapper');
-                        if (titleWrapper) {
-                            const rect = hoveredItem.getBoundingClientRect();
-                            const centerX = rect.left + window.scrollX + (rect.width / 2);
-                            const centerY = rect.top + window.scrollY + (rect.height / 2);
-                            
-                            const magnetStrength = 0.08;
-                            const moveX = (globalMouse.x - centerX) * magnetStrength;
-                            const moveY = (globalMouse.y - centerY) * magnetStrength;
-                            
-                            titleWrapper.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
-                        }
-                    }
-                    /* </fs_premium_only> */
                     
                     wrapper._kh_cr_animFrameId = requestAnimationFrame(animate);
                 } else {

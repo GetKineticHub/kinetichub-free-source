@@ -439,76 +439,7 @@
         // ========================================
         // MAGNETIC ANIMATION WITH PROPER CLEANUP
         // ========================================
-        /* <fs_premium_only> */
-        if (container.classList.contains('has-magnetic') && playBtn && !prefersReducedMotion) {
-            let targetX = 0, targetY = 0;
-            let currentX = 0, currentY = 0;
-            let isHovering = false;
-            let rafId = null;
-            let isActive = true; // Lifecycle flag
-            let cleanupObserver = null; //  Observer reference
-
-            const updatePos = () => {
-                //  Stop if container removed from DOM
-                if (!isActive || !document.body.contains(container)) {
-                    cancelAnimationFrame(rafId);
-                    if (cleanupObserver) {
-                        cleanupObserver.disconnect();
-                        cleanupObserver = null;
-                    }
-                    return;
-                }
-
-                if (!isHovering && Math.abs(currentX) < 0.1 && Math.abs(currentY) < 0.1) {
-                    playBtn.style.transform = 'translate(0px, 0px)';
-                    return;
-                }
-                
-                currentX = lerp(currentX, targetX, MAGNETIC_LERP);
-                currentY = lerp(currentY, targetY, MAGNETIC_LERP);
-                playBtn.style.transform = `translate(${currentX}px, ${currentY}px)`;
-                rafId = requestAnimationFrame(updatePos);
-            };
-
-            triggerZone.addEventListener('mouseenter', () => {
-                isHovering = true;
-                cancelAnimationFrame(rafId);
-                updatePos();
-            }, { passive: true });
-
-            triggerZone.addEventListener('mousemove', (e) => {
-                if (!isHovering) return;
-                const rect = triggerZone.getBoundingClientRect();
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const mouseX = e.clientX - rect.left;
-                const mouseY = e.clientY - rect.top;
-                
-                targetX = (mouseX - centerX) * MAGNETIC_FORCE;
-                targetY = (mouseY - centerY) * MAGNETIC_FORCE;
-            }, { passive: true });
-
-            triggerZone.addEventListener('mouseleave', () => {
-                isHovering = false;
-                targetX = 0;
-                targetY = 0;
-            }, { passive: true });
-
-            // Cleanup observer to detect container removal
-            if (typeof MutationObserver === 'function') {
-                cleanupObserver = new MutationObserver((mutations) => {
-                    if (!document.body.contains(container)) {
-                        isActive = false;
-                        cancelAnimationFrame(rafId);
-                        cleanupObserver.disconnect();
-                        cleanupObserver = null;
-                    }
-                });
-                cleanupObserver.observe(document.body, { childList: true, subtree: true });
-            }
-        }
-        /* </fs_premium_only> */
-    };
+        ;
 
     /**
      * Initialize all video modal blocks on page

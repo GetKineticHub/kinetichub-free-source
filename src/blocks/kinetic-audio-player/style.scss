@@ -71,11 +71,7 @@
     &.shadow-elegant { box-shadow: 0 8px 24px rgba(17, 17, 26, 0.1), 0 16px 56px rgba(17, 17, 26, 0.1) !important; }
 }
 
-/* <fs_premium_only> */
-/* PRO: Magnetic hover - disable default hover when magnetic is active */
-.kh-ap-button:not([data-magnetic="true"]):not(.kh-ap-editor-preview):hover { transform: scale(1.02); }
-.kh-ap-button:not([data-magnetic="true"]):not(.kh-ap-editor-preview):active { transform: scale(0.98); }
-/* </fs_premium_only> */
+
 
 .block-editor-block-list__block .kh-ap-text-wrapper { pointer-events: auto !important; }
 
@@ -134,12 +130,7 @@
 
 .kh-ap-visualizer { display: flex; align-items: flex-end; gap: 3px; height: 16px; margin-left: auto; z-index: 2; pointer-events: none; min-width: 32px; justify-content: center; }
 .kh-ap-bar { width: 3px; background: var(--kh-ap-accent, var(--kh-accent, #10b981)); animation: khApWave 1s ease-in-out infinite; transform-origin: bottom; border-radius: 2px; min-height: 3px; will-change: transform; }
-/* <fs_premium_only> */
-/* PRO: Waveform style variants - Box and Pill */
-.kh-ap-visualizer.is-style-box .kh-ap-bar { border-radius: 0; width: 5px; gap: 2px; }
-.kh-ap-visualizer.is-style-pill { margin-left: 10px; gap: 4px; }
-.kh-ap-visualizer.is-style-pill .kh-ap-bar { border-radius: 10px; width: 4px; }
-/* </fs_premium_only> */
+
 .kh-ap-bar:nth-child(1) { height: 40%; animation-delay: 0.0s; }
 .kh-ap-bar:nth-child(2) { height: 80%; animation-delay: 0.1s; }
 .kh-ap-bar:nth-child(3) { height: 50%; animation-delay: 0.2s; }
@@ -147,16 +138,7 @@
 @keyframes khApWave { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
 .kh-ap-button:not(.is-playing) .kh-ap-bar { animation: none !important; transform: scaleY(0.2) !important; }
 
-/* <fs_premium_only> */
-/* PRO: Glow styles - Soft Ambient, Neon Cyberpunk, Pulsing Aura */
-.kh-ap-button[class*="kh-ap-glow-"]::after { content: ''; position: absolute; inset: -2px; border-radius: inherit; z-index: -1; opacity: 0; pointer-events: none; will-change: transform, opacity, box-shadow; transition: opacity 0.5s ease; }
-.kh-ap-button.kh-ap-glow-soft-ambient.is-playing::after { opacity: 1; box-shadow: 0 0 40px -10px var(--kh-ap-accent, var(--kh-accent, #10b981)); animation: khApAmbientPulse 4s ease-in-out infinite alternate; }
-@keyframes khApAmbientPulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.05); opacity: 1; } }
-.kh-ap-button.kh-ap-glow-neon-cyberpunk.is-playing { border: 1px solid var(--kh-ap-accent, var(--kh-accent, #10b981)); box-shadow: 0 0 10px var(--kh-ap-accent, var(--kh-accent, #10b981)), 0 0 20px var(--kh-ap-accent, var(--kh-accent, #10b981)), inset 0 0 15px rgba(255,255,255,0.1) !important; animation: khApNeonFlicker 3s linear infinite; }
-@keyframes khApNeonFlicker { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.2); } }
-.kh-ap-button.kh-ap-glow-pulsing-aura.is-playing::after { opacity: 1; border: 2px solid var(--kh-ap-accent, var(--kh-accent, #10b981)); animation: khApAuraExpand 2.5s cubic-bezier(0.165, 0.84, 0.44, 1) infinite; }
-@keyframes khApAuraExpand { 0% { transform: scale(1); opacity: 0.8; border-width: 2px; } 100% { transform: scale(1.15, 1.4); opacity: 0; border-width: 0px; } }
-/* </fs_premium_only> */
+
 
 .kh-ap-tools { display: flex; align-items: center; gap: 8px; margin-left: 10px; z-index: 5; }
 .kh-ap-tool-btn { background: transparent; border: none; color: var(--kh-ap-text); opacity: 0.6; cursor: pointer; padding: 4px; display: flex; transition: opacity 0.2s; outline: none; }
@@ -176,41 +158,7 @@
 .kh-ap-button[data-compact="true"] .kh-ap-visualizer { position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%); margin: 0; height: 12px; }
 .kh-ap-button[data-compact="true"] .kh-ap-bar { width: 4px; }
 
-/* <fs_premium_only> */
-/* PRO: Sticky and Floating player positioning */
-.kh-ap-button.is-floating, .kh-ap-button.is-sticky-top { position: fixed !important; z-index: 999999 !important; margin: 0 !important; display: flex !important; }
-.kh-ap-button.is-floating:not([data-compact="true"]), .kh-ap-button.is-sticky-top:not([data-compact="true"]) { padding-right: 40px !important; }
-.kh-ap-button[data-compact="true"].is-floating, .kh-ap-button[data-compact="true"].is-sticky-top { padding-right: 0 !important; }
 
-.kh-ap-sticky-dismiss { position: absolute; width: 22px; height: 22px; background: var(--kh-ap-bg); color: var(--kh-ap-text); border: 2px solid var(--kh-ap-text); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: transform 0.2s, background 0.2s; }
-.kh-ap-sticky-dismiss:hover { transform: scale(1.1); background: #ff4757; color: white; border-color: #ff4757; }
-.kh-ap-sticky-dismiss:focus-visible { outline: 2px dashed var(--kh-accent, #10b981); outline-offset: 4px; }
-.kh-ap-button.is-floating .kh-ap-sticky-dismiss, .kh-ap-button.is-sticky-top .kh-ap-sticky-dismiss { display: flex; }
-
-.kh-ap-button.is-sticky-top:not([data-compact="true"]) .kh-ap-sticky-dismiss { top: 50%; right: 10px; transform: translateY(-50%); }
-.kh-ap-button.is-floating:not([data-compact="true"]) .kh-ap-sticky-dismiss { top: -8px; right: -8px; }
-.kh-ap-button[data-compact="true"] .kh-ap-sticky-dismiss { top: 0 !important; right: 0 !important; transform: translate(25%, -25%) !important; }
-
-.kh-ap-button.is-floating { animation: khApFadeSmooth 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-@keyframes khApFadeSmooth { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.kh-ap-button.is-floating[data-sticky-pos="right"] { bottom: 30px !important; right: 30px !important; left: auto !important; }
-.kh-ap-button.is-floating[data-sticky-pos="left"] { bottom: 30px !important; left: 30px !important; right: auto !important; }
-.kh-ap-button.is-floating[data-sticky-pos="center"] { bottom: 30px !important; left: 50% !important; right: auto !important; transform: translateX(-50%); animation-name: khApFadeSmoothCenter; }
-@keyframes khApFadeSmoothCenter { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-
-.kh-ap-button.is-sticky-top { top: 20px !important; animation: khApSlideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-.kh-ap-button.is-sticky-top[data-sticky-pos="right"] { right: 30px !important; left: auto !important; }
-.kh-ap-button.is-sticky-top[data-sticky-pos="left"] { left: 30px !important; right: auto !important; }
-.kh-ap-button.is-sticky-top[data-sticky-pos="center"] { left: 50% !important; right: auto !important; transform: translateX(-50%); animation-name: khApSlideDownCenter; }
-@keyframes khApSlideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-@keyframes khApSlideDownCenter { from { transform: translateX(-50%) translateY(-100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
-
-.kh-ap-button.is-sticky-style-box.is-floating:not([data-compact="true"]), .kh-ap-button.is-sticky-style-box.is-sticky-top:not([data-compact="true"]) { border-radius: 0 !important; width: 100% !important; left: 0 !important; right: 0 !important; transform: none !important; padding-left: 5% !important; padding-right: 5% !important; }
-.kh-ap-button.is-sticky-style-box.is-floating:not([data-compact="true"]) { bottom: 0 !important; }
-.kh-ap-button.is-sticky-style-box.is-sticky-top:not([data-compact="true"]) { top: 0 !important; }
-.kh-ap-button.is-sticky-style-pill.is-floating:not([data-compact="true"]), .kh-ap-button.is-sticky-style-pill.is-sticky-top:not([data-compact="true"]) { border-radius: 50px !important; border: 1px solid rgba(255,255,255,0.05); }
-.kh-ap-button.is-sticky-style-custom.is-floating:not([data-compact="true"]), .kh-ap-button.is-sticky-style-custom.is-sticky-top:not([data-compact="true"]) { border-radius: 16px !important; backdrop-filter: blur(16px) saturate(180%) !important; -webkit-backdrop-filter: blur(16px) saturate(180%) !important; background-color: rgba(17, 17, 17, 0.7) !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1) !important; }
-/* </fs_premium_only> */
 
 .kh-ap-wrapper[data-entrance]:not(.kh-animated) { opacity: 0; }
 .kh-ap-wrapper[data-entrance="fade"].kh-animated { animation: khApFadeIn 0.8s forwards; }
@@ -223,25 +171,62 @@
 .kh-ap-button.is-error { opacity: 0.7; }
 .kh-ap-button.is-error .kh-ap-title { color: #ff4757; }
 
+/* Responsive extended layout: keep all controls usable without forcing compact mode. */
+@media (max-width: 720px) {
+    .kh-ap-button.is-extended {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        min-width: 0;
+        padding-inline: min(var(--kh-ap-pad-h, 32px), 24px);
+        column-gap: 12px;
+        row-gap: 10px;
+        justify-content: flex-start;
+    }
+
+    .kh-ap-button.is-extended .kh-ap-play-pause-trigger {
+        order: 1;
+        width: 48px !important;
+        flex: 0 0 48px;
+    }
+
+    .kh-ap-button.is-extended .kh-ap-text-wrapper {
+        order: 2;
+        flex: 1 1 calc(100% - 60px);
+        min-width: 0;
+    }
+
+    .kh-ap-button.is-extended .kh-ap-time-display {
+        order: 3;
+        margin-left: 0;
+        flex: 0 0 auto;
+    }
+
+    .kh-ap-button.is-extended .kh-ap-visualizer {
+        order: 4;
+        margin-left: 0;
+        flex: 0 0 auto;
+    }
+
+    .kh-ap-button.is-extended .kh-ap-tools {
+        order: 5;
+        margin-left: auto;
+        flex: 0 0 auto;
+    }
+
+    /* Fixed extended players must remain inside the mobile viewport. */
+    .kh-ap-button.is-extended.is-floating,
+    .kh-ap-button.is-extended.is-sticky-top {
+        width: min(calc(100vw - 30px), 520px);
+    }
+}
+
 @media (max-width: 480px) {
     .kh-ap-button:not([data-compact="true"]) { padding-left: 15px !important; padding-right: 15px !important; gap: 10px; }
     .kh-ap-seek-layer { transform: scale(1.2); } 
-    /* <fs_premium_only> */
-    .kh-ap-button.is-floating[data-sticky-pos="right"] { right: 15px !important; bottom: 20px !important; }
-    .kh-ap-button.is-floating[data-sticky-pos="left"] { left: 15px !important; bottom: 20px !important; }
-    .kh-ap-button.is-sticky-top[data-sticky-pos="right"] { right: 15px !important; }
-    .kh-ap-button.is-sticky-top[data-sticky-pos="left"] { left: 15px !important; }
-    /* </fs_premium_only> */
-}
 
-@media (prefers-reduced-motion: reduce) {
-    /* <fs_premium_only> */
-    .kh-ap-button[class*="kh-ap-glow-"]::after {
-        animation: none !important;
-        opacity: 0 !important;
-        box-shadow: none !important;
-    }
-    /* </fs_premium_only> */
+
+@media (prefers-reduced-motion: reduce)
     .kh-ap-bar {
         animation: none !important;
         transform: scaleY(0.2) !important;

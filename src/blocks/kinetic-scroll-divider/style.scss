@@ -6,27 +6,21 @@
 
 .kh-scroll-divider-container {
     display: flex;
+    align-items: center;
     width: 100%;
     box-sizing: border-box;
 
     /* Spacing Presets */
-    &.space-tight { margin: 20px 0; }
-    &.space-normal { margin: 40px 0; }
-    &.space-spacious { margin: 80px 0; }
+    &.space-tight { padding-block: 20px; }
+    &.space-normal { padding-block: 40px; }
+    &.space-spacious { padding-block: 80px; }
 
     /* Base Visibility Rules */
     &.vis-desktop { @media (max-width: 768px) { display: none !important; } }
     &.vis-mobile { @media (min-width: 769px) { display: none !important; } }
 
     /* Mobile Behavior Rules */
-    @media (max-width: 768px) {
-        /* <fs_premium_only> */
-        &.mob-hide { display: none !important; }
-        &.mob-thinner { --kh-div-h: 1px !important; }
-        &.mob-shorter { --kh-div-w: 50% !important; }
-        &.mob-custom-shorter { --kh-div-w: var(--kh-div-mob-w, 50%) !important; }
-        /* </fs_premium_only> */
-    }
+    @media (max-width: 768px)
 
     /* Alignment System */
     &.align-left { justify-content: flex-start; }
@@ -34,18 +28,9 @@
     &.align-right { justify-content: flex-end; }
     
     /* Timing Curves */
-    /* <fs_premium_only> */
-    &.curve-linear { --kh-div-ease: linear; }
-    /* </fs_premium_only> */
-    &.curve-soft { --kh-div-ease: cubic-bezier(0.165, 0.84, 0.44, 1); }
-    /* <fs_premium_only> */
-    &.curve-snappy { --kh-div-ease: cubic-bezier(0.87, 0, 0.13, 1); }
 
-    /* Easing Mode Overrides (PRO) */
-    &.easing-linear { --kh-div-ease: linear; }
-    &.easing-bouncy { --kh-div-ease: cubic-bezier(0.34, 1.56, 0.64, 1); }
-    /* </fs_premium_only> */
-}
+    &.curve-soft { --kh-div-ease: cubic-bezier(0.165, 0.84, 0.44, 1); }
+
 
 /* kinetichub: NATIVE WP FULL-WIDTH FIX */
 .wp-block-post-content.has-global-padding > .kh-scroll-divider-container.alignfull {
@@ -96,21 +81,11 @@
 /* Dynamic Glow Options */
 .kh-scroll-divider-container.has-glow {
     &.glow-mode-same { --kh-glow-c: var(--kh-div-c); }
-    /* <fs_premium_only> */
-    &.glow-mode-white-tint { --kh-glow-c: rgba(255, 255, 255, 0.4); }
-    &.glow-mode-soft-mix { 
-        --kh-glow-c: rgba(16, 185, 129, 0.5);
-        --kh-glow-c: color-mix(in srgb, var(--kh-div-c) 50%, transparent); 
-    }
-    /* </fs_premium_only> */
+
 
     /* Glow renders on track to avoid clipping by line overflow */
     &.glow-low .kh-divider-track { filter: drop-shadow(0 0 6px var(--kh-glow-c)) drop-shadow(0 0 2px var(--kh-glow-c)); }
-    /* <fs_premium_only> */
-    &.glow-medium .kh-divider-track { filter: drop-shadow(0 0 8px var(--kh-glow-c)) drop-shadow(0 0 16px var(--kh-glow-c)); }
-    &.glow-high .kh-divider-track { filter: drop-shadow(0 0 10px var(--kh-glow-c)) drop-shadow(0 0 20px var(--kh-glow-c)) drop-shadow(0 0 40px var(--kh-glow-c)); }
-    /* </fs_premium_only> */
-}
+
 
 /* Animation Origin States */
 .kh-scroll-divider-container.anim-draw-right .kh-divider-line { transform-origin: left center; transform: scaleX(0); }
@@ -151,31 +126,3 @@
 @media (prefers-reduced-motion: reduce) {
     .kh-scroll-divider-container .kh-divider-line { transition: none !important; }
 }
-
-/* <fs_premium_only> */
-/* Gradient Fixes */
-.kh-scroll-divider-container.type-gradient .kh-divider-line {
-    background: var(--kh-div-grad, linear-gradient(90deg, var(--kh-div-c), transparent)) !important;
-    border-top-width: 0 !important;
-    height: var(--kh-div-h, 2px); 
-}
-/* </fs_premium_only> */
-
-/* <fs_premium_only> */
-/* Scrubbing Mode Overrides */
-.kh-scroll-divider-container.tether-scrub .kh-divider-line {
-    transition: none !important; /* Managed frame-by-frame by JS */
-}
-
-.kh-scroll-divider-container.tether-scrub.anim-draw-right .kh-divider-line,
-.kh-scroll-divider-container.tether-scrub.anim-draw-left .kh-divider-line,
-.kh-scroll-divider-container.tether-scrub.anim-draw-center .kh-divider-line {
-    transform: scaleX(var(--kh-div-progress, 0));
-    opacity: calc(var(--kh-div-o, 1) * var(--kh-div-progress, 0) + 0.05);
-}
-
-.kh-scroll-divider-container.tether-scrub.anim-fade-in .kh-divider-line {
-    transform: translateY(calc((1 - var(--kh-div-progress, 0)) * 20px));
-    opacity: calc(var(--kh-div-o, 1) * var(--kh-div-progress, 0));
-}
-/* </fs_premium_only> */

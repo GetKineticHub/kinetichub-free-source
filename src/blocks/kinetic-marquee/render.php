@@ -95,35 +95,17 @@ $kh_mq_container_shadow    = false;
 $kh_mq_shadow_style        = 'soft';
 $kh_mq_shadow_color        = '';
 $kh_mq_hover_shadow_color  = '';
-$kh_mq_shadow_softness     = '';
-$kh_mq_hide_mobile         = false;
+$kh_mq_shadow_softness        = '';
+$kh_mq_mobile_shadow_softness = '';
+$kh_mq_shadow_opacity         = '';
+$kh_mq_hover_shadow_opacity   = '';
+$kh_mq_hide_mobile            = false;
 $kh_mq_hide_desktop        = false;
 $kh_mq_entrance_anim       = 'none';
 $kh_mq_entrance_delay      = 0;
 $kh_mq_frame_shadow        = 'soft';
 
-/* <fs_premium_only> */
-// PRO overrides
-$kh_mq_max_items           = 999;
-$kh_mq_mobile_item_height  = max( 20, min( 500, (int) ( $attributes['mobileItemHeight'] ?? $kh_mq_item_height ) ) );
-$kh_mq_logo_max_width      = max( 20, min( 1000, (int) ( $attributes['logoMaxWidth'] ?? 200 ) ) );
-$kh_mq_gap                 = max( 0, min( 500, (int) ( $attributes['gap'] ?? 50 ) ) );
-$kh_mq_use_max_width       = ! empty( $attributes['useMaxWidth'] );
-$kh_mq_grayscale           = ! empty( $attributes['grayscale'] );
-$kh_mq_idle_opacity        = ! empty( $attributes['idleOpacity'] );
-$kh_mq_container_shadow    = ! empty( $attributes['containerShadow'] );
-$kh_mq_shadow_style        = in_array( $attributes['shadowStyle'] ?? '', $kh_mq_shadow_list, true ) ? $attributes['shadowStyle'] : 'soft';
-$kh_mq_shadow_color        = kinetichub_mq_validate_color_strict( $attributes['shadowColor'] ?? '', '' );
-$kh_mq_hover_shadow_color  = kinetichub_mq_validate_color_strict( $attributes['hoverShadowColor'] ?? '', '' );
-$kh_mq_shadow_softness     = isset( $attributes['shadowSoftness'] ) ? (int) $attributes['shadowSoftness'] : '';
-// TODO: mobileShadowSoftness, shadowOpacity, hoverShadowOpacity declared in block.json
-// but not yet consumed here. Verify if KineticShadowControls needs them on frontend.
-$kh_mq_hide_mobile         = ! empty( $attributes['hideOnMobile'] );
-$kh_mq_hide_desktop        = ! empty( $attributes['hideOnDesktop'] );
-$kh_mq_entrance_anim       = in_array( $attributes['entranceAnimation'] ?? '', $kh_mq_entrance_list, true ) ? $attributes['entranceAnimation'] : 'none';
-$kh_mq_entrance_delay      = max( 0.0, min( 10.0, (float) ( $attributes['entranceDelay'] ?? 0 ) ) );
-$kh_mq_frame_shadow        = in_array( $attributes['frameShadow'] ?? '', $kh_mq_frame_shadow_list, true ) ? $attributes['frameShadow'] : 'soft';
-/* </fs_premium_only> */
+
 
 $kh_mq_images = array_slice( $kh_mq_images, 0, $kh_mq_max_items );
 $kh_mq_images = array_map( static function ( $img ) { return is_array( $img ) ? $img : (array) $img; }, $kh_mq_images );
@@ -149,21 +131,7 @@ $kh_mq_css_vars = sprintf(
     $kh_mq_sibling_blur_int
 );
 
-/* <fs_premium_only> */
-if ( $kh_mq_entrance_delay > 0 ) $kh_mq_css_vars .= sprintf( ' animation-delay: %ss;', number_format( $kh_mq_entrance_delay, 2, '.', '' ) );
 
-if ( $kh_mq_container_shadow ) {
-    if ( '' !== $kh_mq_shadow_color ) {
-        $kh_mq_css_vars .= sprintf( ' --kh-mq-shadow-c: %s;', $kh_mq_shadow_color );
-    }
-    if ( '' !== $kh_mq_hover_shadow_color ) {
-        $kh_mq_css_vars .= sprintf( ' --kh-mq-shadow-c-hov: %s;', $kh_mq_hover_shadow_color );
-    }
-    if ( '' !== $kh_mq_shadow_softness ) {
-        $kh_mq_css_vars .= sprintf( ' --kh-mq-shadow-blur: %dpx;', $kh_mq_shadow_softness );
-    }
-}
-/* </fs_premium_only> */
 
 $kh_mq_outer_classes = array_filter(
     array(
@@ -179,14 +147,7 @@ $kh_mq_outer_classes = array_filter(
         $kh_mq_show_indicator ? 'has-interaction-indicator' : '',
         $kh_mq_highlight_active ? 'has-active-center-highlight' : '',
         $kh_mq_sibling_blur ? 'has-sibling-blur' : '',
-        /* <fs_premium_only> */
-        $kh_mq_grayscale ? 'has-grayscale' : '',
-        $kh_mq_idle_opacity ? 'has-idle-opacity' : '',
-        $kh_mq_container_shadow ? 'has-shadow shadow-' . $kh_mq_shadow_style : '',
-        'none' !== $kh_mq_entrance_anim ? 'anim-' . $kh_mq_entrance_anim : '',
-        $kh_mq_hide_mobile ? 'kh-mq-hide-mobile' : '',
-        $kh_mq_hide_desktop ? 'kh-mq-hide-desktop' : '',
-        /* </fs_premium_only> */
+
     )
 );
 

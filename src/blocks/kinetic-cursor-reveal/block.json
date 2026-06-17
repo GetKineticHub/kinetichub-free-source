@@ -1,72 +1,107 @@
 {
-    "apiVersion": 3,
-    "name": "kinetichub/cursor-reveal",
-    "version": "1.0.0",
-    "title": "Kinetic Cursor Reveal",
-    "category": "kinetic-suite",
-    "description": "Premium list interactions with floating media reveal and physics-based cursor trailing.",
-    "keywords": ["cursor reveal", "floating media", "physics-based"],
-    "attributes": {
-        "blockId": { "type": "string", "default": "" },
-        "items": {
-            "type": "array",
-            "default": [
-                { "title": "Brand Identity", "subtitle": "Strategy & Logo", "mediaUrl": "", "url": "" },
-                { "title": "Web Experience", "subtitle": "FSE Development", "mediaUrl": "", "url": "" }
-            ]
+  "apiVersion": 3,
+  "name": "kinetichub/cursor-reveal",
+  "version": "1.0.0",
+  "title": "Kinetic Cursor Reveal",
+  "category": "kinetic-suite",
+  "description": "Interactive list block with floating media reveal behavior.",
+  "keywords": [
+    "cursor reveal",
+    "floating media",
+    "physics-based"
+  ],
+  "attributes": {
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "items": {
+      "type": "array",
+      "default": [
+        {
+          "title": "Brand Identity",
+          "subtitle": "Strategy & Logo",
+          "mediaUrl": "",
+          "url": ""
         },
-        "openInNewTab": { "type": "boolean", "default": false },
-        "textStyle": { "type": "string", "default": "solid" },
-        "titleBgType": { "type": "string", "default": "none" },
-        "enableDimming": { "type": "boolean", "default": false },
-        
-        "fontSize": { "type": "number", "default": 40 },
-        "mobileFontSize": { "type": "number", "default": 30 },
-        "hoverFontSize": { "type": "number", "default": 95 },
-        
-        "accentColor": { "type": "string", "default": "" },
-        "subtitleColor": { "type": "string", "default": "#666666" },
-        "subtitleSize": { "type": "number", "default": 13 },
-        "subtitleSpacing": { "type": "number", "default": 3 },
-        
-        "mediaLayer": { "type": "string", "default": "over" },
-        "mediaWidth": { "type": "number", "default": 350 },
-        "mediaRatio": { "type": "string", "default": "4/5" },
-        "offsetX": { "type": "number", "default": 0 },
-        "offsetY": { "type": "number", "default": 0 },
-        
-        "lerpAmount": { "type": "number", "default": 0.08 },
-        "enableTilt": { "type": "boolean", "default": false },
-        "enableMagnetic": { "type": "boolean", "default": false },
-        "enableNoise": { "type": "boolean", "default": false },
-        "blendMode": { "type": "string", "default": "normal" },
-        "mobileBehavior": { "type": "string", "default": "tap" },
-        
-        "revealMask": { "type": "string", "default": "fade" },
-        "hoverFilter": { "type": "string", "default": "none" },
-        "cursorBadge": { "type": "boolean", "default": false },
-        "cursorBadgeText": { "type": "string", "default": "View" },
-        "innerParallax": { "type": "boolean", "default": false },
-
-        "containerShadow": { "type": "boolean", "default": false },
-        "shadowStyle": { "type": "string", "default": "soft" },
-
-        "entranceAnimation": { "type": "string", "default": "none" },
-        "entranceDelay": { "type": "number", "default": 0 },
-        "hideOnMobile": { "type": "boolean", "default": false },
-        "hideOnDesktop": { "type": "boolean", "default": false }
+        {
+          "title": "Web Experience",
+          "subtitle": "FSE Development",
+          "mediaUrl": "",
+          "url": ""
+        }
+      ]
     },
-    "supports": {
-        "align": ["wide", "full"],
-        "spacing": { "margin": true, "padding": true, "blockGap": true },
-        "color": { "text": true, "background": true, "gradients": true },
-        "typography": { "textAlign": true },
-        "__experimentalBorder": { "color": true, "radius": true, "style": true, "width": true }
+    "openInNewTab": {
+      "type": "boolean",
+      "default": false
     },
-    "textdomain": "kinetichub",
-    "editorScript": "file:./index.js",
-    "viewScript": "file:./view.js",
-    "style": "file:./index.css",
-    "editorStyle": "file:./index.css",
-    "render": "file:./render.php"
+    "fontSize": {
+      "type": "number",
+      "default": 40
+    },
+    "mobileFontSize": {
+      "type": "number",
+      "default": 30
+    },
+    "subtitleColor": {
+      "type": "string",
+      "default": "#666666"
+    },
+    "subtitleSize": {
+      "type": "number",
+      "default": 13
+    },
+    "subtitleSpacing": {
+      "type": "number",
+      "default": 3
+    },
+    "mediaWidth": {
+      "type": "number",
+      "default": 350
+    },
+    "mediaRatio": {
+      "type": "string",
+      "default": "4/5"
+    },
+    "revealMask": {
+      "type": "string",
+      "default": "fade"
+    },
+    "hoverFilter": {
+      "type": "string",
+      "default": "none"
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "color": {
+      "text": true,
+      "background": true,
+      "gradients": true
+    },
+    "typography": {
+      "textAlign": true
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    }
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
 }

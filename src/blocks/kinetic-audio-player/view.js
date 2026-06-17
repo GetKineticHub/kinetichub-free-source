@@ -43,15 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 cancelAnimationFrame(playerInstance.rafId);
             }
 
-            /* <fs_premium_only> */
-            if (playerInstance.magnetRafId) {
-                cancelAnimationFrame(playerInstance.magnetRafId);
-            }
 
-            if (playerInstance.btn && playerInstance.btn.parentNode === document.body) {
-                playerInstance.btn.remove();
-            }
-            /* </fs_premium_only> */
 
             window.khApPlayers = window.khApPlayers.filter(p => p.id !== playerInstance.id);
             if (window.khApActiveAudioElement === playerInstance.audio) {
@@ -107,28 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const { signal: globalSignal } = globalAbortController;
 
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    /* <fs_premium_only> */
-                    window.khApPlayers.forEach(p => {
-                        if (p.config.pauseTab && !p.audio.paused) p.audio.pause();
-                    });
-                    /* </fs_premium_only> */
-                } else {
-                    /* <fs_premium_only> */
-                    setTimeout(() => { window.khApPlayers.forEach(p => { if(p.checkStickyState) p.checkStickyState(); }); }, 600);
-                    /* </fs_premium_only> */
-                }
+                if (document.hidden)  else
             }, { signal: globalSignal });
 
-            /* <fs_premium_only> */
-            window.addEventListener('beforeunload', () => {
-                window.khApPlayers.forEach(p => {
-                    if (p.config.remember && !p.audio.paused && p.audio.currentTime > 0) {
-                        try { localStorage.setItem(p.storageKey, p.audio.currentTime); } catch(e){}
-                    }
-                });
-            }, { signal: globalSignal });
-            /* </fs_premium_only> */
+
 
             isGlobalTrackerActive = true;
         }
@@ -178,9 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const initPlayer = (btn) => {
         btn.classList.remove('kh-ap-editor-preview');
-        /* <fs_premium_only> */
-        btn.classList.remove('is-floating', 'is-sticky-top', 'is-sticky-style-box', 'is-sticky-style-pill', 'is-sticky-style-custom');
-        /* </fs_premium_only> */
+
         
         const wrapper = btn.closest('.kh-ap-wrapper');
         const audioSrc = btn.dataset.audio;
@@ -208,14 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allowVisuals: !prefersReducedMotion
         };
 
-        /* <fs_premium_only> */
-        config.sticky = btn.dataset.sticky;
-        config.stickyStyle = btn.dataset.stickyStyle || 'pill';
-        config.remember = btn.dataset.remember === 'true';
-        config.pauseTab = btn.dataset.pausetab === 'true';
-        config.disableMobSeek = btn.dataset.disableMobSeek === 'true';
-        config.magnetic = btn.dataset.magnetic === 'true';
-        /* </fs_premium_only> */
+
 
         const playerInstance = { 
             id: blockId, 
@@ -227,18 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
             rafId: null,
             observer: null
         };
-        /* <fs_premium_only> */
-        playerInstance.dismissed = false;
-        playerInstance.storageKey = `kh_ap_pos_${blockId}`;
-        playerInstance.magnetRafId = null;
-        /* </fs_premium_only> */
+
         window.khApPlayers.push(playerInstance);
         instances.set(wrapper, playerInstance);
 
-        if (!config.allowVisuals) {
-            /* <fs_premium_only> */
-            btn.classList.remove('kh-ap-glow-soft-ambient', 'kh-ap-glow-neon-cyberpunk', 'kh-ap-glow-pulsing-aura');
-            /* </fs_premium_only> */
+        if (!config.allowVisuals)
             const visualizer = btn.querySelector('.kh-ap-visualizer');
             if (visualizer) visualizer.style.display = 'none';
         }
@@ -253,22 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         audio.addEventListener('error', onAudioError, { signal });
 
-        /* <fs_premium_only> */
-        if (config.remember) {
-            try {
-                const savedTime = localStorage.getItem(playerInstance.storageKey);
-                if (savedTime) {
-                    audio.addEventListener('loadedmetadata', function setTime() {
-                        if (wrapper._kh_ap_isDestroyed) return;
-                        if (parseFloat(savedTime) < audio.duration) { 
-                            audio.currentTime = parseFloat(savedTime); 
-                        }
-                        updateVisuals();
-                    }, { once: true, signal });
-                }
-            } catch(err) {}
-        }
-        /* </fs_premium_only> */
+
 
         // Architecture Fix: Instant time display initialization
         audio.addEventListener('loadedmetadata', () => {
@@ -296,54 +239,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let initialLoadDelay = true; 
         setTimeout(() => { initialLoadDelay = false; }, 800);
 
-        /* PRO: Sticky/Floating Engine */
+        /* advanced: Sticky/Floating Engine */
         let checkStickyState = () => {};
-        /* <fs_premium_only> */
-        const stickyClass = config.sticky === 'floating' ? 'is-floating' : 'is-sticky-top';
-        const styleClass = `is-sticky-style-${config.stickyStyle}`;
 
-        checkStickyState = () => {
-            if (wrapper._kh_ap_isDestroyed || config.sticky === 'none' || initialLoadDelay) return;
-            const isPlaying = !audio.paused;
-            const isCurrentlySticky = btn.classList.contains(stickyClass);
-            const isTargetInstance = (window.khApActiveAudioElement === audio);
-            let shouldStick = isTargetInstance && !isIntersecting && !playerInstance.dismissed;
-
-            if (!isCurrentlySticky && !isPlaying) shouldStick = false;
-
-            if (shouldStick && !isCurrentlySticky) {
-                wrapper.style.minHeight = `${wrapper.offsetHeight}px`;
-                document.body.appendChild(btn);
-                btn.getBoundingClientRect();
-                btn.classList.add(stickyClass, styleClass);
-                if (!audio.paused) startMotor();
-            } else if (!shouldStick && isCurrentlySticky) {
-                btn.classList.remove(stickyClass, styleClass);
-                wrapper.appendChild(btn);
-                setTimeout(() => { 
-                    if (!wrapper._kh_ap_isDestroyed && !btn.classList.contains(stickyClass)) wrapper.style.minHeight = ''; 
-                }, 300);
-                if (!audio.paused && isIntersecting) startMotor();
-                else stopMotor();
-            }
-        };
-        /* </fs_premium_only> */
         playerInstance.checkStickyState = checkStickyState;
 
         const stopAllOtherPlayers = () => {
             window.khApPlayers.forEach(p => {
                 if (p.audio !== audio) {
                     if (!p.audio.paused) p.audio.pause();
-                    /* <fs_premium_only> */
-                    if (p.btn.classList.contains('is-floating') || p.btn.classList.contains('is-sticky-top')) {
-                        p.btn.classList.remove('is-floating', 'is-sticky-top', 'is-sticky-style-box', 'is-sticky-style-pill', 'is-sticky-style-custom');
-                        if (p.wrapper) {
-                            p.wrapper.appendChild(p.btn);
-                            p.wrapper.style.minHeight = '';
-                        }
-                    }
-                    /* </fs_premium_only> */
-                }
+
             });
         };
 
@@ -416,12 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUIState(false);
             checkStickyState();
             stopMotor();
-            /* <fs_premium_only> */
-            if (config.remember && audio.currentTime > 0) { 
-                try { localStorage.setItem(playerInstance.storageKey, audio.currentTime); } catch(e){} 
-            }
-            /* </fs_premium_only> */
-        };
+            ;
 
         const onAudioPlay = () => { 
             updateUIState(true); 
@@ -438,11 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (timeDisplay && config.timeMode !== 'none') timeDisplay.textContent = "00:00";
 
-            /* <fs_premium_only> */
-            if (config.remember) { 
-                try { localStorage.removeItem(playerInstance.storageKey); } catch(e){} 
-            }
-            /* </fs_premium_only> */
+
             checkStickyState();
         };
 
@@ -460,69 +356,12 @@ document.addEventListener('DOMContentLoaded', () => {
             absTrigger.addEventListener('click', onTriggerClick, { signal });
         }
 
-        /* <fs_premium_only> */
-        /* PRO: Magnetic Physics Engine with LERP */
-        let magnetActive = false;
-        let magnetTargetX = 0, magnetTargetY = 0;
-        let magnetCurrentX = 0, magnetCurrentY = 0;
 
-        const magnetTick = () => {
-            if (wrapper._kh_ap_isDestroyed) return;
-            magnetCurrentX += (magnetTargetX - magnetCurrentX) * 0.15;
-            magnetCurrentY += (magnetTargetY - magnetCurrentY) * 0.15;
-            
-            const isHovered = (magnetTargetX !== 0 || magnetTargetY !== 0);
-            const scale = isHovered ? 1.02 : 1;
-
-            btn.style.transform = `translate(${magnetCurrentX}px, ${magnetCurrentY}px) scale(${scale})`;
-
-            if (!isHovered && Math.abs(magnetCurrentX) < 0.2 && Math.abs(magnetCurrentY) < 0.2) {
-                btn.style.transform = '';
-                magnetActive = false;
-                if (window.kinetichub?.Engine && audio.paused) {
-                    window.kinetichub.Engine.unsubscribe(playerInstance.id + '_magnet');
-                } else if (playerInstance.magnetRafId) {
-                    cancelAnimationFrame(playerInstance.magnetRafId);
-                    playerInstance.magnetRafId = null;
-                }
-            } else if (!window.kinetichub?.Engine) {
-                playerInstance.magnetRafId = requestAnimationFrame(magnetTick);
-            }
-        };
-
-        const onWrapperMouseMove = (e) => {
-            const rect = btn.getBoundingClientRect();
-            const btnCenterX = rect.left + rect.width / 2;
-            const btnCenterY = rect.top + rect.height / 2;
-            
-            const strength = config.isCompact ? 0.3 : 0.1; 
-            magnetTargetX = (e.clientX - btnCenterX) * strength;
-            magnetTargetY = (e.clientY - btnCenterY) * strength;
-
-            if (!magnetActive) {
-                magnetActive = true;
-                if (window.kinetichub?.Engine) window.kinetichub.Engine.subscribe(playerInstance.id + '_magnet', magnetTick);
-                else playerInstance.magnetRafId = requestAnimationFrame(magnetTick);
-            }
-        };
-        const onWrapperMouseLeave = () => { magnetTargetX = 0; magnetTargetY = 0; };
-        const onBtnMouseDown = () => { if(magnetActive) btn.style.transform = `translate(${magnetCurrentX}px, ${magnetCurrentY}px) scale(0.96)`; };
-        const onBtnMouseUp = () => { if(magnetActive) btn.style.transform = `translate(${magnetCurrentX}px, ${magnetCurrentY}px) scale(1.02)`; };
-
-        if (config.magnetic && config.allowVisuals) {
-            wrapper.addEventListener('mousemove', onWrapperMouseMove, { passive: true, signal });
-            wrapper.addEventListener('mouseleave', onWrapperMouseLeave, { passive: true, signal });
-            btn.addEventListener('mousedown', onBtnMouseDown, { passive: true, signal });
-            btn.addEventListener('mouseup', onBtnMouseUp, { passive: true, signal });
-        }
-        /* </fs_premium_only> */
 
         const handleSeek = (e) => {
             if (e.cancelable) e.preventDefault(); 
             e.stopPropagation();
-            /* <fs_premium_only> */
-            if (config.disableMobSeek && window.innerWidth <= 768) return;
-            /* </fs_premium_only> */
+
             if (!isFinite(audio.duration) || audio.duration <= 0) return;
 
             const rect = btn.getBoundingClientRect();
@@ -563,17 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
             seekLayer.addEventListener('keydown', onSeekKeyDown, { signal });
         }
 
-        /* <fs_premium_only> */
-        const dismissBtn = btn.querySelector('.kh-ap-sticky-dismiss');
-        const onDismissClick = (e) => {
-            e.preventDefault(); e.stopPropagation();
-            playerInstance.dismissed = true;
-            checkStickyState();
-        };
-        if (dismissBtn) {
-            dismissBtn.addEventListener('click', onDismissClick, { signal });
-        }
-        /* </fs_premium_only> */
+
 
         const volSlider = btn.querySelector('.kh-ap-vol-slider');
         const volBtn = btn.querySelector('.kh-ap-vol-btn');
@@ -603,18 +432,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Architecture Fix: Keep motor running if sticky and playing
         const observer = new IntersectionObserver((entries) => {
             isIntersecting = entries[0].isIntersecting;
-            /* <fs_premium_only> */
-            if (isIntersecting) {
-                playerInstance.dismissed = false; 
-            }
-            /* </fs_premium_only> */
+
             checkStickyState();
             
             let shouldRunMotor = !audio.paused && isIntersecting;
-            /* <fs_premium_only> */
-            const isSticky = btn.classList.contains('is-floating') || btn.classList.contains('is-sticky-top');
-            shouldRunMotor = !audio.paused && (isIntersecting || isSticky);
-            /* </fs_premium_only> */
+
 
             if (shouldRunMotor) {
                 startMotor();

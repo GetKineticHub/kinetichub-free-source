@@ -10,11 +10,7 @@ import { PanelBody, RangeControl, ToggleControl, TextControl, Button, ColorPalet
 import { useRef, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-/* <fs_premium_only> */
-import { KineticEntranceControls } from '../../components/EntranceControls';
-import { KineticVisibilityControls } from '../../components/VisibilityControls';
-import { KineticShadowControls } from '../../components/ShadowControls';
-/* </fs_premium_only> */
+
 
 import metadata from './block.json';
 
@@ -40,11 +36,7 @@ registerBlockType(metadata.name, {
 			liftEffect, edgeFade, openInNewTab, showFrame, frameBg, frameRadius,
 			align, showProgressRail, progressRailPosition,
 			showInteractionIndicator, highlightActiveCenter, siblingBlur, siblingBlurIntensity,
-			/* <fs_premium_only> */
-			mobileItemHeight, gap, grayscale, idleOpacity, useMaxWidth, logoMaxWidth,
-			containerShadow, shadowStyle, shadowColor, shadowSoftness, frameShadow,
-			/* </fs_premium_only> */
-		} = attributes;
+			 = attributes;
 
 		const containerRef = useRef(null);
 
@@ -68,11 +60,11 @@ registerBlockType(metadata.name, {
 		const handleMediaUpload = (mediaArray) => {
 			const newImgs = mediaArray.map((m) => ({ url: m.url, alt: m.alt, link: '' }));
 			let combined = [...images, ...newImgs];
-			/* <fs_free_only> */
+
 			if (combined.length > KH_MQ_FREE_MAX_ITEMS) {
 				combined = combined.slice(0, KH_MQ_FREE_MAX_ITEMS);
 			}
-			/* </fs_free_only> */
+
 			setAttributes({ images: combined });
 		};
 
@@ -167,13 +159,7 @@ registerBlockType(metadata.name, {
 			highlightActiveCenter ? 'has-active-center-highlight' : '',
 			siblingBlur ? 'has-sibling-blur' : '',
 		];
-		/* <fs_premium_only> */
-		outerClassList.push(
-			grayscale ? 'has-grayscale' : '',
-			idleOpacity ? 'has-idle-opacity' : '',
-			containerShadow ? `has-shadow shadow-${shadowStyle}` : '',
-		);
-		/* </fs_premium_only> */
+
 		const outerClasses = outerClassList.filter(Boolean).join(' ');
 
 		const cssVars = {
@@ -186,13 +172,7 @@ registerBlockType(metadata.name, {
 			'--kh-mq-max-w': 'none',
 			'--kh-mq-blur': `${siblingBlurIntensity}px`,
 		};
-		/* <fs_premium_only> */
-		cssVars['--kh-mq-h-mob'] = mobileItemHeight > 0 ? `${mobileItemHeight}px` : `${itemHeight}px`;
-		cssVars['--kh-mq-gap'] = `${gap}px`;
-		cssVars['--kh-mq-max-w'] = useMaxWidth ? `${logoMaxWidth}px` : 'none';
-		if (containerShadow && shadowColor) cssVars['--kh-mq-shadow-c'] = shadowColor;
-		if (containerShadow && shadowSoftness !== undefined) cssVars['--kh-mq-shadow-blur'] = `${shadowSoftness}px`;
-		/* </fs_premium_only> */
+
 
 		const blockProps = useBlockProps({
 			ref: containerRef,
@@ -203,26 +183,20 @@ registerBlockType(metadata.name, {
 		});
 
 		let previewFrameShadow = 'soft';
-		/* <fs_premium_only> */
-		previewFrameShadow = frameShadow || 'soft';
-		/* </fs_premium_only> */
+
 
 		return (
 			<>
 				<InspectorControls>
     <PanelBody title={__('🖼️ Gallery & Links', 'kinetichub')} initialOpen={true}>
 
-        {/* <fs_free_only> */}
+
         <p style={{ margin: '0 0 15px 0', fontSize: '12px', color: '#64748b' }}>
             {__('Free version is limited to 7 items.', 'kinetichub')}
         </p>
-        {/* </fs_free_only> */}
 
-        {/* <fs_premium_only> */}
-        <p style={{ margin: '0 0 15px 0', fontSize: '12px', color: '#64748b' }}>
-            {__('Manage your marquee images and destination links.', 'kinetichub')}
-        </p>
-        {/* </fs_premium_only> */}
+
+
 
         <MediaUploadCheck fallback={
             <p style={{color: '#ef4444', fontSize: '12px'}}>
@@ -235,7 +209,7 @@ registerBlockType(metadata.name, {
                 allowedTypes={['image']}
                 render={({ open }) => (
                     <>
-                        {/* <fs_free_only> */}
+
                         <Button
                             variant="primary"
                             onClick={open}
@@ -246,17 +220,9 @@ registerBlockType(metadata.name, {
                                 ? __('Maximum 7 items reached', 'kinetichub')
                                 : __('+ Add Images', 'kinetichub')}
                         </Button>
-                        {/* </fs_free_only> */}
 
-                        {/* <fs_premium_only> */}
-                        <Button
-                            variant="primary"
-                            onClick={open}
-                            style={{ width: '100%', justifyContent: 'center', marginBottom: '15px' }}
-                        >
-                            {__('+ Add Images', 'kinetichub')}
-                        </Button>
-                        {/* </fs_premium_only> */}
+
+
                     </>
                 )}
             />
@@ -300,23 +266,13 @@ registerBlockType(metadata.name, {
 					<PanelBody title={__('🎨 Visual Styling', 'kinetichub')} initialOpen={false}>
 						<RangeControl label={__('Logo Height (Desktop)', 'kinetichub')} value={itemHeight} onChange={(v) => setAttributes({ itemHeight: v })} min={30} max={300} />
 
-						{/* <fs_premium_only> */}
-						<RangeControl label={__('Logo Height (Mobile)', 'kinetichub')} value={mobileItemHeight} onChange={(v) => setAttributes({ mobileItemHeight: v })} min={30} max={300} />
-						<ToggleControl label={__('Limit Logo Width', 'kinetichub')} checked={useMaxWidth} onChange={(v) => setAttributes({ useMaxWidth: v })} />
 
-						{useMaxWidth && <RangeControl label={__('Max Width (px)', 'kinetichub')} value={logoMaxWidth} onChange={(v) => setAttributes({ logoMaxWidth: v })} min={50} max={400} />}
 
-						<RangeControl label={__('Space Between (px)', 'kinetichub')} value={gap} onChange={(v) => setAttributes({ gap: v })} min={0} max={200} />
-						<hr />
-						<ToggleControl label={__('Grayscale Effect', 'kinetichub')} checked={grayscale} onChange={(v) => setAttributes({ grayscale: v })} help={__('Images are gray until hovered or centered.', 'kinetichub')} />
-						<ToggleControl label={__('Subtle Opacity (Idle)', 'kinetichub')} checked={idleOpacity} onChange={(v) => setAttributes({ idleOpacity: v })} help={__('Lowers opacity of items until hovered or centered.', 'kinetichub')} />
-						{/* </fs_premium_only> */}
 
-						{/* <fs_free_only> */}
 						<p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic', margin: '10px 0' }}>
-							{__('Mobile height, max width, gap, grayscale, and idle opacity controls are available in the PRO version.', 'kinetichub')}
+							{__('Mobile height, max width, gap, grayscale, and idle opacity controls are not included in this build.', 'kinetichub')}
 						</p>
-						{/* </fs_free_only> */}
+
 
 						<ToggleControl label={__('Edge Fade Effect', 'kinetichub')} checked={edgeFade} onChange={(v) => setAttributes({ edgeFade: v })} />
 					</PanelBody>
@@ -354,37 +310,26 @@ registerBlockType(metadata.name, {
 								<ColorPalette value={frameBg} onChange={(v) => setAttributes({ frameBg: v })} />
 								<RangeControl label={__('Corner Radius', 'kinetichub')} value={frameRadius} onChange={(v) => setAttributes({ frameRadius: v })} min={0} max={50} />
 
-								{/* <fs_premium_only> */}
-								<div style={{ marginTop: '15px' }}>
-									<SelectControl label={__('Shadow Intensity', 'kinetichub')} value={frameShadow} options={[ { label: __('Soft & Subtle', 'kinetichub'), value: 'soft' }, { label: __('Medium', 'kinetichub'), value: 'medium' }, { label: __('Hard Edges', 'kinetichub'), value: 'hard' }, { label: __('Floating', 'kinetichub'), value: 'float' } ]} onChange={(v) => setAttributes({ frameShadow: v })} />
-								</div>
-								{/* </fs_premium_only> */}
 
-								{/* <fs_free_only> */}
+
+
 								<p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic', margin: '10px 0 0 0' }}>
-									{__('Additional frame shadow styles (medium, hard, floating) are available in the PRO version.', 'kinetichub')}
+									{__('Additional frame shadow styles (medium, hard, floating) are not included in this build.', 'kinetichub')}
 								</p>
-								{/* </fs_free_only> */}
+
 							</div>
 						)}
 					</PanelBody>
 
-					{/* <fs_premium_only> */}
-					<PanelBody title={__('📦 Global Shadows', 'kinetichub')} initialOpen={false}>
-						<KineticShadowControls attributes={attributes} setAttributes={setAttributes} />
-					</PanelBody>
 
-					<KineticEntranceControls attributes={attributes} setAttributes={setAttributes} />
-					<KineticVisibilityControls attributes={attributes} setAttributes={setAttributes} />
-					{/* </fs_premium_only> */}
 
-					{/* <fs_free_only> */}
+
 					<PanelBody title={__('📦 More Features', 'kinetichub')} initialOpen={false}>
 						<p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic', margin: '0' }}>
-							{__('Global shadows, entrance animations, and visibility controls are available in the PRO version.', 'kinetichub')}
+							{__('Global shadows, entrance animations, and visibility controls are not included in this build.', 'kinetichub')}
 						</p>
 					</PanelBody>
-					{/* </fs_free_only> */}
+
 				</InspectorControls>
 
 				<div {...blockProps}>

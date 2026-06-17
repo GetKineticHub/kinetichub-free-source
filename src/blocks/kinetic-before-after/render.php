@@ -78,33 +78,7 @@ $kh_ba_before_filter_list = array( 'none' );
 $kh_ba_after_filter_list  = array( 'none', 'grayscale', 'sepia', 'blur', 'invert', 'contrast', 'color' );
 $kh_ba_intro_list         = array( 'slide' );
 
-/* <fs_premium_only> */
-$kh_ba_orientation_list   = array( 'horizontal', 'vertical' );
-$kh_ba_mob_aspect_list    = array( 'inherit', '16/9', '1/1', '4/3', '3/4' );
-$kh_ba_trans_list         = array( 'slide', 'diagonal', 'fade' );
-$kh_ba_handle_list        = array( 'classic', 'minimal', 'text' );
-$kh_ba_pulse_list         = array( 'none', 'glow', 'sonar', 'morph', 'magnetic', 'glass', 'brackets' );
-$kh_ba_before_filter_list = array( 'none', 'grayscale', 'sepia', 'blur', 'invert', 'contrast', 'color' );
-$kh_ba_intro_list         = array( 'slide', 'fade', 'scale', 'blur' );
 
-$kh_ba_orientation      = in_array( $attributes['orientation'] ?? '', $kh_ba_orientation_list, true ) ? $attributes['orientation'] : 'horizontal';
-$kh_ba_mobile_aspect    = in_array( $attributes['mobileAspectRatio'] ?? '', $kh_ba_mob_aspect_list, true ) ? $attributes['mobileAspectRatio'] : 'inherit';
-$kh_ba_transition_style = in_array( $attributes['transitionStyle'] ?? '', $kh_ba_trans_list, true ) ? $attributes['transitionStyle'] : 'slide';
-$kh_ba_handle_style     = in_array( $attributes['handleStyle'] ?? '', $kh_ba_handle_list, true ) ? $attributes['handleStyle'] : 'classic';
-$kh_ba_pulse_effect     = in_array( $attributes['pulseEffect'] ?? '', $kh_ba_pulse_list, true ) ? $attributes['pulseEffect'] : 'none';
-$kh_ba_before_filter    = in_array( $attributes['beforeFilter'] ?? '', $kh_ba_before_filter_list, true ) ? $attributes['beforeFilter'] : 'none';
-
-$kh_ba_reverse_reveal  = ! empty( $attributes['reverseReveal'] );
-$kh_ba_hover_slide     = ! empty( $attributes['hoverSlide'] );
-$kh_ba_magnetic_snap   = isset( $attributes['magneticSnap'] ) ? (bool) $attributes['magneticSnap'] : true;
-$kh_ba_enable_inertia  = isset( $attributes['enableInertia'] ) ? (bool) $attributes['enableInertia'] : true;
-$kh_ba_hide_labels_mob = ! empty( $attributes['hideLabelsMobile'] );
-
-$kh_ba_cursor_badge      = ! empty( $attributes['cursorBadge'] );
-$kh_ba_cursor_badge_text = ! empty( $attributes['cursorBadgeText'] ) ? sanitize_text_field( $attributes['cursorBadgeText'] ) : __( 'Compare', 'kinetichub' );
-$kh_ba_inner_parallax    = ! empty( $attributes['innerParallax'] );
-$kh_ba_hold_to_peek      = ! empty( $attributes['holdToPeek'] );
-/* </fs_premium_only> */
 
 $kh_ba_aspect_ratio  = in_array( $attributes['aspectRatio'] ?? '', $kh_ba_aspect_list, true ) ? $attributes['aspectRatio'] : 'auto';
 $kh_ba_divider_style = in_array( $attributes['dividerStyle'] ?? '', $kh_ba_divider_list, true ) ? $attributes['dividerStyle'] : 'solid';
@@ -127,10 +101,7 @@ $kh_ba_after_overlay_color = kinetichub_ba_validate_color_strict( $attributes['a
 $kh_ba_label_color = '#ffffff';
 $kh_ba_label_bg    = 'rgba(0,0,0,0.5)';
 
-/* <fs_premium_only> */
-$kh_ba_label_color = kinetichub_ba_validate_color_strict( $attributes['labelColor'] ?? '', '#ffffff' );
-$kh_ba_label_bg    = kinetichub_ba_validate_color_strict( $attributes['labelBg'] ?? '', 'rgba(0,0,0,0.5)' );
-/* </fs_premium_only> */
+
 
 $kh_ba_hover_zoom        = ! empty( $attributes['hoverZoom'] );
 $kh_ba_show_labels       = ! empty( $attributes['showLabels'] );
@@ -164,11 +135,7 @@ $kh_ba_css_vars = sprintf(
 if ( 'auto' !== $kh_ba_aspect_ratio ) {
 	$kh_ba_css_vars .= sprintf( ' --kh-ba-aspect: %s;', $kh_ba_aspect_ratio );
 }
-/* <fs_premium_only> */
-if ( 'inherit' !== $kh_ba_mobile_aspect ) {
-	$kh_ba_css_vars .= sprintf( ' --kh-ba-aspect-mobile: %s;', $kh_ba_mobile_aspect );
-}
-/* </fs_premium_only> */
+
 
 $kh_ba_outer_classes = array_filter(
 	array(
@@ -181,10 +148,7 @@ $kh_ba_outer_classes = array_filter(
 		$kh_ba_container_shadow ? 'has-shadow shadow-' . $kh_ba_shadow_style : '',
 		$kh_ba_force_full_width ? 'is-forced-fullwidth' : '',
 		$kh_ba_hide_labels_move ? 'hide-labels-move' : '',
-		/* <fs_premium_only> */
-		$kh_ba_hide_labels_mob ? 'hide-labels-mobile' : '',
-		$kh_ba_cursor_badge ? 'has-cursor-badge' : '',
-		/* </fs_premium_only> */
+
 		$kh_ba_hide_mobile ? 'kh-ba-hide-mobile' : '',
 		$kh_ba_hide_desktop ? 'kh-ba-hide-desktop' : '',
 	)
@@ -217,33 +181,14 @@ if ( 'grayscale' === $kh_ba_after_filter ) {
 }
 
 $kh_ba_layer_style = '';
-/* <fs_premium_only> */
-if ( 'fade' === $kh_ba_transition_style ) {
-	$kh_ba_opacity     = $kh_ba_reverse_reveal ? ( $kh_ba_initial_offset / 100 ) : ( ( 100 - $kh_ba_initial_offset ) / 100 );
-	$kh_ba_layer_style = sprintf( 'opacity: %s; clip-path: none;', $kh_ba_opacity );
-} elseif ( 'diagonal' === $kh_ba_transition_style && $kh_ba_is_horiz ) {
-	$kh_ba_layer_style = $kh_ba_reverse_reveal
-		? sprintf( 'clip-path: polygon(calc(%1$s%% + %2$s%%) 0, 100%% 0, 100%% 100%%, calc(%1$s%% - %2$s%%) 100%%);', $kh_ba_initial_offset, $kh_ba_diagonal_slant )
-		: sprintf( 'clip-path: polygon(0 0, calc(%1$s%% + %2$s%%) 0, calc(%1$s%% - %2$s%%) 100%%, 0 100%%);', $kh_ba_initial_offset, $kh_ba_diagonal_slant );
-} else {
-/* </fs_premium_only> */
+
 	$kh_ba_clip_val = 100 - $kh_ba_initial_offset;
-	/* <fs_premium_only> */
-	if ( $kh_ba_is_horiz ) {
-	/* </fs_premium_only> */
+
 		$kh_ba_layer_style = $kh_ba_reverse_reveal
 			? sprintf( 'clip-path: inset(0 0 0 %s%%);', $kh_ba_initial_offset )
 			: sprintf( 'clip-path: inset(0 %s%% 0 0);', $kh_ba_clip_val );
-	/* <fs_premium_only> */
-	} else {
-		$kh_ba_layer_style = $kh_ba_reverse_reveal
-			? sprintf( 'clip-path: inset(%s%% 0 0 0);', $kh_ba_initial_offset )
-			: sprintf( 'clip-path: inset(0 0 %s%% 0);', $kh_ba_clip_val );
-	}
-	/* </fs_premium_only> */
-/* <fs_premium_only> */
-}
-/* </fs_premium_only> */
+
+
 
 $kh_ba_attrs = array(
 	'class'            => implode( ' ', $kh_ba_outer_classes ),
@@ -256,15 +201,7 @@ $kh_ba_attrs = array(
 	'data-intro-style' => esc_attr( $kh_ba_intro_style ),
 );
 
-/* <fs_premium_only> */
-$kh_ba_attrs['data-parallax'] = $kh_ba_inner_parallax ? 'true' : 'false';
-$kh_ba_attrs['data-peek']     = $kh_ba_hold_to_peek ? 'true' : 'false';
-$kh_ba_attrs['data-slant']    = (string) $kh_ba_diagonal_slant;
-$kh_ba_attrs['data-reverse']  = $kh_ba_reverse_reveal ? 'true' : 'false';
-$kh_ba_attrs['data-hover']    = $kh_ba_hover_slide ? 'true' : 'false';
-$kh_ba_attrs['data-snap']     = $kh_ba_magnetic_snap ? 'true' : 'false';
-$kh_ba_attrs['data-inertia']  = $kh_ba_enable_inertia ? 'true' : 'false';
-/* </fs_premium_only> */
+
 
 $kh_ba_wrapper_attrs = get_block_wrapper_attributes( $kh_ba_attrs );
 
@@ -272,11 +209,7 @@ $kh_ba_inner_classes = 'kh-ba-inner';
 if ( 'auto' !== $kh_ba_aspect_ratio ) {
 	$kh_ba_inner_classes .= ' has-aspect-ratio';
 }
-/* <fs_premium_only> */
-if ( 'inherit' !== $kh_ba_mobile_aspect ) {
-	$kh_ba_inner_classes .= ' has-mobile-aspect';
-}
-/* </fs_premium_only> */
+
 
 $kh_ba_handle_pos    = $kh_ba_is_horiz ? sprintf( 'left: %s%%; top: 0;', $kh_ba_initial_offset ) : sprintf( 'left: 0; top: %s%%;', $kh_ba_initial_offset );
 $kh_ba_svg_transform = $kh_ba_is_horiz ? 'none' : 'rotate(90deg)';
@@ -307,11 +240,7 @@ $kh_ba_after_alt  = ! empty( $kh_ba_after_image['alt'] ) ? sanitize_text_field( 
 			<?php endif; ?>
 		</div>
 
-		<?php /* <fs_premium_only> */ ?>
-		<?php if ( $kh_ba_cursor_badge ) : ?>
-			<div class="kh-ba-cursor-badge" aria-hidden="true"><?php echo esc_html( $kh_ba_cursor_badge_text ); ?></div>
-		<?php endif; ?>
-		<?php /* </fs_premium_only> */ ?>
+
 
 		<div class="kh-ba-handle" style="<?php echo esc_attr( $kh_ba_handle_pos ); ?>">
 			<button
@@ -329,10 +258,7 @@ $kh_ba_after_alt  = ! empty( $kh_ba_after_image['alt'] ) ? sanitize_text_field( 
 						<polyline points="9 18 3 12 9 6"></polyline>
 						<polyline points="15 18 21 12 15 6"></polyline>
 					</svg>
-				<?php /* <fs_premium_only> */ ?>
-				<?php elseif ( 'text' === $kh_ba_handle_style ) : ?>
-					<span class="kh-ba-handle-text"><?php echo esc_html__( 'Drag', 'kinetichub' ); ?></span>
-				<?php /* </fs_premium_only> */ ?>
+
 				<?php endif; ?>
 			</button>
 		</div>

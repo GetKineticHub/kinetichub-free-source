@@ -68,9 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const after = slider.querySelector('.kh-ba-after');
         const handle = slider.querySelector('.kh-ba-handle');
         const circle = slider.querySelector('.kh-ba-circle');
-        /* <fs_premium_only> */
-        const badge = slider.querySelector('.kh-ba-cursor-badge');
-        /* </fs_premium_only> */
+
         
         if (!inner || !before || !handle || !circle) return;
 
@@ -94,21 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let slantDeg = 15;
         let hasParallax = false;
         let isPeekMode = false;
-        /* <fs_premium_only> */
-        isHoverMode = slider.dataset.hover === 'true';
-        isSnapMode = slider.dataset.snap === 'true';
-        isReverse = slider.dataset.reverse === 'true';
-        hasInertia = slider.dataset.inertia === 'true' && !prefersReducedMotion;
-        slantDeg = parseFloat(slider.dataset.slant) || 15;
-        hasParallax = slider.dataset.parallax === 'true';
-        isPeekMode = slider.dataset.peek === 'true';
-        /* </fs_premium_only> */
 
-        /* <fs_premium_only> */
-        if (transition === 'diagonal') {
-            slider.style.setProperty('--kh-ba-slant', `${slantDeg}deg`);
-        }
-        /* </fs_premium_only> */
+
+
 
         let isDragging = false;
         let isIntroPlaying = false;
@@ -140,63 +126,21 @@ document.addEventListener('DOMContentLoaded', () => {
             before.style.transition = 'none';
             handle.style.transition = 'none';
 
-            /* <fs_premium_only> */
-            if (isHoriz) {
-            /* </fs_premium_only> */
+
                 handle.style.left = `${percent}%`;
                 handle.style.top = ''; 
-            /* <fs_premium_only> */
-            } else {
-                handle.style.top = `${percent}%`;
-                handle.style.left = '';
-            }
-            /* </fs_premium_only> */
 
-            /* <fs_premium_only> */
-            if (transition === 'fade') {
-                before.style.opacity = isReverse ? (percent / 100) : ((100 - percent) / 100);
-                before.style.clipPath = 'none';
-            } else if (transition === 'diagonal' && isHoriz) {
-                const rectHeight = activeRect ? activeRect.height : inner.offsetHeight;
-                const rectWidth = activeRect ? activeRect.width : inner.offsetWidth;
-                if (rectWidth === 0) return; 
-                
-                const slantPx = Math.tan(slantDeg * Math.PI / 180) * (rectHeight / 2);
-                const slantPct = (slantPx / rectWidth) * 100;
 
-                before.style.clipPath = isReverse 
-                    ? `polygon(calc(${percent}% + ${slantPct}%) 0, 100% 0, 100% 100%, calc(${percent}% - ${slantPct}%) 100%)`
-                    : `polygon(0 0, calc(${percent}% + ${slantPct}%) 0, calc(${percent}% - ${slantPct}%) 100%, 0 100%)`;
-            } else {
-            /* </fs_premium_only> */
+
                 const clipVal = 100 - percent;
                 if (percent <= 0 && !isReverse) before.style.clipPath = 'inset(0 100% 0 0)';
                 else if (percent >= 100 && !isReverse) before.style.clipPath = 'none';
                 else {
                     before.style.clipPath = isReverse ? `inset(0 0 0 ${percent}%)` : `inset(0 ${clipVal}% 0 0)`;
-                    /* <fs_premium_only> */
-                    if (!isHoriz) {
-                        before.style.clipPath = isReverse ? `inset(${percent}% 0 0 0)` : `inset(0 0 ${clipVal}% 0)`;
-                    }
-                    /* </fs_premium_only> */
-                }
-            /* <fs_premium_only> */
-            }
-            /* </fs_premium_only> */
 
-            /* <fs_premium_only> */
-            if (hasParallax) {
-                const shiftAfter = (percent - 50) * -0.15;
-                const shiftBefore = (percent - 50) * 0.15;
-                const baseScale = 'scale(1.1)';
-                if (afterImg) afterImg.style.transform = isHoriz ? `translate3d(${shiftAfter}%, 0, 0) ${baseScale}` : `translate3d(0, ${shiftAfter}%, 0) ${baseScale}`;
-                if (beforeImg) beforeImg.style.transform = isHoriz ? `translate3d(${shiftBefore}%, 0, 0) ${baseScale}` : `translate3d(0, ${shiftBefore}%, 0) ${baseScale}`;
-            } else {
-                // Reset transform when parallax is disabled to allow CSS hover zoom to work
-                if (afterImg) afterImg.style.transform = '';
-                if (beforeImg) beforeImg.style.transform = '';
-            }
-            /* </fs_premium_only> */
+
+
+
 
             circle.setAttribute('aria-valuenow', Math.round(percent));
         };
@@ -204,27 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const renderLoop = () => {
             if (slider._kh_ba_isDestroyed) return;
 
-            /* <fs_premium_only> */
-            if (hasInertia && !isIntroPlaying) {
-                if (Math.abs(currentPercent - targetPercent) > 0.05) {
-                    const friction = isDragging ? 0.4 : 0.1;
-                    currentPercent = lerp(currentPercent, targetPercent, friction);
-                    renderStyles(currentPercent);
-                    localRafId = requestAnimationFrame(renderLoop);
-                } else {
-                    currentPercent = targetPercent;
-                    renderStyles(currentPercent);
-                    localRafId = null;
-                }
-            } else {
-            /* </fs_premium_only> */
+
                 currentPercent = targetPercent;
                 renderStyles(currentPercent);
                 localRafId = null;
-            /* <fs_premium_only> */
-            }
-            /* </fs_premium_only> */
-        };
+            ;
 
         const updateTarget = (val) => {
             targetPercent = Math.max(0, Math.min(100, val));
@@ -241,15 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return Math.max(0, Math.min(100, p));
         };
 
-        /* <fs_premium_only> */
-        const applySnap = (val) => {
-            if (!isSnapMode) return val;
-            const points = [0, 25, 50, 75, 100];
-            const threshold = isHoverMode ? 3 : 6;
-            for (let p of points) { if (Math.abs(val - p) < threshold) return p; }
-            return val;
-        };
-        /* </fs_premium_only> */
+
 
         const onMove = (e) => {
             if (!isDragging && !isHoverMode) return;
@@ -266,10 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 dragAbortController.abort();
                 dragAbortController = null;
             }
-            /* <fs_premium_only> */
-            if (isSnapMode) updateTarget(applySnap(targetPercent));
-            /* </fs_premium_only> */
-        };
+            ;
 
         const startDrag = (e) => {
             isDragging = true;
@@ -295,101 +212,40 @@ document.addEventListener('DOMContentLoaded', () => {
         circle.addEventListener('touchstart', (e) => { e.stopPropagation(); startDrag(e); }, { passive: false, signal: baseSignal });
         circle.addEventListener('click', (e) => e.stopPropagation(), { signal: baseSignal });
         
-        /* <fs_premium_only> */
-        const startPeek = (e) => {
-            if (!isPeekMode || isDragging || slider.classList.contains('is-moving')) return;
-            isPeeking = true;
-            prePeekPercent = targetPercent;
-            const p = getPercentFromEvent(e);
-            updateTarget(p > 50 ? 0 : 100);
-        };
 
-        const endPeek = () => {
-            if (isPeeking) {
-                isPeeking = false;
-                if (!isDragging) updateTarget(prePeekPercent);
-            }
-        };
-        /* </fs_premium_only> */
 
         inner.addEventListener('mousedown', (e) => {
             if (e.target.closest('.kh-ba-circle') || e.target.closest('.kh-ba-handle')) return;
             if (!activeRect) activeRect = inner.getBoundingClientRect();
             
-            /* <fs_premium_only> */
-            if (isPeekMode) {
-                startPeek(e);
-            } else
-            /* </fs_premium_only> */
+
             if (isClickMode && !isHoverMode) {
                 if (!isDragging && !isIntroPlaying) {
                     let clickTarget = getPercentFromEvent(e);
-                    /* <fs_premium_only> */
-                    clickTarget = applySnap(clickTarget);
-                    /* </fs_premium_only> */
+
                     updateTarget(clickTarget);
                 }
             }
         }, { signal: baseSignal });
 
-        /* <fs_premium_only> */
-        window.addEventListener('mouseup', endPeek, { signal: baseSignal });
-        /* </fs_premium_only> */
+
         
         inner.addEventListener('touchstart', (e) => {
             if (e.target.closest('.kh-ba-circle') || e.target.closest('.kh-ba-handle')) return;
             if (!activeRect) activeRect = inner.getBoundingClientRect();
-            /* <fs_premium_only> */
-            if (isPeekMode) {
-                startPeek(e);
-            } else
-            /* </fs_premium_only> */
+
             if (isClickMode && !isHoverMode) {
                 if (!isDragging && !isIntroPlaying) {
                     let touchTarget = getPercentFromEvent(e);
-                    /* <fs_premium_only> */
-                    touchTarget = applySnap(touchTarget);
-                    /* </fs_premium_only> */
+
                     updateTarget(touchTarget);
                 }
             }
         }, { passive: true, signal: baseSignal });
         
-        /* <fs_premium_only> */
-        window.addEventListener('touchend', endPeek, { signal: baseSignal });
-        /* </fs_premium_only> */
 
-        /* <fs_premium_only> */
-        if (isHoverMode || badge) {
-            inner.addEventListener('mouseenter', () => {
-                activeRect = inner.getBoundingClientRect(); 
-                inner.classList.add('is-hovering');
-                if (isHoverMode && !isPeeking) slider.classList.add('is-moving');
-            }, { passive: true, signal: baseSignal });
-            
-            inner.addEventListener('mousemove', (e) => {
-                if (badge && activeRect) {
-                    const bx = e.clientX - activeRect.left;
-                    const by = e.clientY - activeRect.top;
-                    badge.style.left = `${bx}px`;
-                    badge.style.top = `${by}px`;
-                }
-                if (isHoverMode && !isDragging && !isIntroPlaying && !isPeeking && activeRect) {
-                    updateTarget(applySnap(getPercentFromEvent(e)));
-                }
-            }, { passive: true, signal: baseSignal });
-            
-            inner.addEventListener('mouseleave', () => {
-                inner.classList.remove('is-hovering');
-                if (isHoverMode) {
-                    slider.classList.remove('is-moving');
-                    if (!isDragging && !isIntroPlaying && !isPeeking) {
-                        updateTarget(initialOffset);
-                    }
-                }
-            }, { passive: true, signal: baseSignal });
-        }
-        /* </fs_premium_only> */
+
+
 
         circle.addEventListener('keydown', (e) => {
             const step = 5;
@@ -402,9 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newVal !== targetPercent) {
                 e.preventDefault(); 
                 let newTarget = Math.max(0, Math.min(100, newVal));
-                /* <fs_premium_only> */
-                if (isSnapMode) newTarget = applySnap(newTarget);
-                /* </fs_premium_only> */
+
                 updateTarget(newTarget);
                 
                 slider.classList.add('is-moving');
@@ -434,33 +288,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             }, 500);
                         }, 300);
                     }
-                    /* <fs_premium_only> */
-                    else if (introType === 'fade') {
-                        inner.style.transition = 'opacity 1s cubic-bezier(0.25, 1, 0.5, 1)';
-                        inner.style.opacity = '1';
-                        setTimeout(() => { isIntroPlaying = false; inner.style.transition = ''; }, 1000);
-                    } else if (introType === 'scale') {
-                        inner.style.transition = 'transform 1s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease';
-                        inner.style.transform = 'scale(1)';
-                        inner.style.opacity = '1';
-                        setTimeout(() => { isIntroPlaying = false; inner.style.transition = ''; inner.style.transform = ''; }, 1000);
-                    } else if (introType === 'blur') {
-                        inner.style.transition = 'filter 1s ease, opacity 1s ease';
-                        inner.style.filter = 'blur(0px)';
-                        inner.style.opacity = '1';
-                        setTimeout(() => { isIntroPlaying = false; inner.style.transition = ''; inner.style.filter = ''; }, 1000);
-                    }
-                    /* </fs_premium_only> */
+
                     else {
                         isIntroPlaying = false;
                     }
                 }
             } else {
                 if (isDragging) endDrag();
-                /* <fs_premium_only> */
-                if (isPeeking) endPeek();
-                /* </fs_premium_only> */
-            }
+
         }, { threshold: 0.1 });
         
         localObserver.observe(slider);

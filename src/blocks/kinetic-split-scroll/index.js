@@ -9,20 +9,11 @@ import { useBlockProps, InspectorControls, InnerBlocks, MediaUpload, MediaUpload
 import { PanelBody, RangeControl, ToggleControl, ColorPalette, SelectControl, Button, Placeholder } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-/* <fs_premium_only> */
-import { KineticVisibilityControls } from '../../components/VisibilityControls';
-import { KineticShadowControls } from '../../components/ShadowControls';
-/* </fs_premium_only> */
+
 import { KineticOverlayControls } from '../../components/OverlayControls';
 import { KineticImageFitControls } from '../../components/ImageFitControls';
 
 import metadata from './block.json';
-
-const ALLOWED_BLOCKS = [
-    'core/paragraph', 'core/heading', 'core/list', 'core/image', 'core/button', 
-    'core/buttons', 'core/spacer', 'core/group', 'core/columns', 
-    'kinetichub/magnetic-button', 'kinetichub/audio-player'
-];
 
 const BLOCKS_TEMPLATE = [
     ['core/spacer', { height: '50px' }],
@@ -50,15 +41,14 @@ registerBlockType(metadata.name, {
             mediaItems, enableSmartSwap, imageSize, objectFit, objectPosition,
             indicatorType, accentColor, mediaShape, enableKenBurns,
             overlayTint, overlayOpacity, textEffect, enableSnap, align,
-            pinnedBgColor, containerShadow, shadowStyle, shadowColor, shadowSoftness,
+            pinnedBgColor, containerShadow, shadowStyle, shadowColor, hoverShadowColor,
+            shadowSoftness, mobileShadowSoftness, shadowOpacity, hoverShadowOpacity,
             dotsInteractive, swapTransition, innerParallax, ambientGlow, ambientGlowColor, ambientGlowSpread,
             scrollBgMorphing, bgMorphStart, bgMorphEnd
         } = attributes;
 
         let maxMedia = 3;
-        /* <fs_premium_only> */
-        maxMedia = 50;
-        /* </fs_premium_only> */
+
 
         const onAddMedia = (media) => {
             const newItems = [...mediaItems]; 
@@ -73,6 +63,18 @@ registerBlockType(metadata.name, {
 
         const onRemoveMedia = (index) => {
             setAttributes({ mediaItems: mediaItems.filter((_, i) => i !== index) });
+        };
+
+        const onMoveMedia = (index, direction) => {
+            const targetIndex = index + direction;
+
+            if (targetIndex < 0 || targetIndex >= mediaItems.length) {
+                return;
+            }
+
+            const newItems = [...mediaItems];
+            [newItems[index], newItems[targetIndex]] = [newItems[targetIndex], newItems[index]];
+            setAttributes({ mediaItems: newItems });
         };
 
         const getMediaUrl = (item) => {
@@ -104,44 +106,21 @@ registerBlockType(metadata.name, {
         let editorDotsInteractive = false;
         let editorAmbientGlow = false;
 
-        /* <fs_premium_only> */
-        editorTextEffect = textEffect;
-        editorSwapTrans = swapTransition;
-        editorKenBurns = enableKenBurns;
-        editorBgMorph = scrollBgMorphing;
-        editorShadowClass = containerShadow ? `has-shadow shadow-${shadowStyle}` : '';
-        editorMediaShape = mediaShape;
-        editorParallax = innerParallax;
-        editorDotsInteractive = dotsInteractive;
-        editorAmbientGlow = ambientGlow;
-        /* </fs_premium_only> */
+
 
         // FREE-safe indicator options
         let editorIndicatorOptions = [
             {label: __('Vertical Line', 'kinetichub'), value: 'line'},
             {label: __('None', 'kinetichub'), value: 'none'}
         ];
-        /* <fs_premium_only> */
-        editorIndicatorOptions = [
-            {label: __('Vertical Line', 'kinetichub'), value: 'line'},
-            {label: __('None', 'kinetichub'), value: 'none'},
-            {label: __('Pagination Dots', 'kinetichub'), value: 'dots'},
-            {label: __('Floating Percentage', 'kinetichub'), value: 'percentage'}
-        ];
-        /* </fs_premium_only> */
+
 
         // FREE-safe text effect options
         let editorTextEffectOptions = [
             {label: __('None (Standard)', 'kinetichub'), value: 'none'}, 
             {label: __('Fade Up on Enter', 'kinetichub'), value: 'fade-up'}
         ];
-        /* <fs_premium_only> */
-        editorTextEffectOptions = [
-            {label: __('None (Standard)', 'kinetichub'), value: 'none'}, 
-            {label: __('Fade Up on Enter', 'kinetichub'), value: 'fade-up'},
-            {label: __('Highlight Focus (Dulls others)', 'kinetichub'), value: 'focus'}
-        ];
-        /* </fs_premium_only> */
+
 
         const cssVars = {
             '--kh-ss-pin-w': pinnedWidth, 
@@ -160,14 +139,14 @@ registerBlockType(metadata.name, {
             '--kh-ss-bg-start': bgMorphStart,
             '--kh-ss-bg-end': bgMorphEnd,
             ...(containerShadow && shadowColor && { '--kh-ss-shadow-c': shadowColor }),
-            ...(containerShadow && shadowSoftness !== undefined && { '--kh-ss-shadow-blur': `${shadowSoftness}px` })
+            ...(containerShadow && hoverShadowColor && { '--kh-ss-shadow-c-hov': hoverShadowColor }),
+            ...(containerShadow && shadowSoftness !== undefined && { '--kh-ss-shadow-blur': `${shadowSoftness}px` }),
+            ...(containerShadow && mobileShadowSoftness !== undefined && { '--kh-ss-shadow-blur-mob': `${mobileShadowSoftness}px` }),
+            ...(containerShadow && shadowOpacity !== undefined && { '--kh-ss-shadow-o': shadowOpacity }),
+            ...(containerShadow && hoverShadowOpacity !== undefined && { '--kh-ss-shadow-o-hov': hoverShadowOpacity })
         };
 
-        /* <fs_premium_only> */
-        if (mediaShape === 'floating') {
-            cssVars['--kh-ss-floating-shadow-opacity'] = attributes.floatingCardShadowOpacity ?? 0.2;
-        }
-        /* </fs_premium_only> */
+
 
         const standardClasses = `kh-ss-wrapper ${align ? `align${align}` : ''} ${editorKenBurns ? 'has-ken-burns' : ''} text-fx-${editorTextEffect} ${editorShadowClass} ${enableStickyMobile ? 'has-mobile-sticky' : ''} swap-trans-${editorSwapTrans} ${editorBgMorph ? 'has-bg-morph' : ''}`.replace(/\s+/g, ' ').trim();
 
@@ -213,9 +192,9 @@ registerBlockType(metadata.name, {
                     <PanelBody title={__('🖼️ Pinned Media Gallery', 'kinetichub')} initialOpen={true}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                             <p style={{ margin: 0, fontWeight: 'bold' }}>{__('Gallery Items', 'kinetichub')}</p>
-                            {/* <fs_free_only> */}
+
                             <span style={{ fontSize: '10px', color: '#64748b' }}>{__('Max 3 items', 'kinetichub')}</span>
-                            {/* </fs_free_only> */}
+
                         </div>
                         
                         <div style={{ marginBottom: '15px' }}>
@@ -231,7 +210,32 @@ registerBlockType(metadata.name, {
                                         )}
                                     </div>
                                     <span style={{ flex: 1, fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{__('Media', 'kinetichub')} {index + 1}</span>
-                                    <Button isDestructive isSmall onClick={() => onRemoveMedia(index)} icon="trash" />
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px', flexShrink: 0 }}>
+                                        <Button
+                                            isSmall
+                                            icon="arrow-up-alt2"
+                                            aria-label={__('Move media up', 'kinetichub')}
+                                            title={__('Move media up', 'kinetichub')}
+                                            disabled={index === 0}
+                                            onClick={() => onMoveMedia(index, -1)}
+                                        />
+                                        <Button
+                                            isSmall
+                                            icon="arrow-down-alt2"
+                                            aria-label={__('Move media down', 'kinetichub')}
+                                            title={__('Move media down', 'kinetichub')}
+                                            disabled={index === mediaItems.length - 1}
+                                            onClick={() => onMoveMedia(index, 1)}
+                                        />
+                                        <Button
+                                            isDestructive
+                                            isSmall
+                                            icon="trash"
+                                            aria-label={__('Remove media', 'kinetichub')}
+                                            title={__('Remove media', 'kinetichub')}
+                                            onClick={() => onRemoveMedia(index)}
+                                        />
+                                    </div>
                                 </div>
                             )})}
                         </div>
@@ -264,110 +268,24 @@ registerBlockType(metadata.name, {
                         <ToggleControl label={__('Smart Media Swap (Crossfade)', 'kinetichub')} checked={enableSmartSwap} onChange={(v) => setAttributes({ enableSmartSwap: v })} />
                     </PanelBody>
 
-                    {/* <fs_premium_only> */}
-                    <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
-                        {indicatorType === 'dots' && (
-                            <ToggleControl
-                                label={__('Interactive Navigation (Dots)', 'kinetichub')}
-                                checked={dotsInteractive}
-                                onChange={(v) => setAttributes({ dotsInteractive: v })}
-                                help={__('Allows users to click the pagination dots to automatically smooth-scroll to that section.', 'kinetichub')}
-                            />
-                        )}
-                        <SelectControl
-                            label={__('Smart Swap Transition', 'kinetichub')}
-                            value={swapTransition}
-                            options={[
-                                { label: __('Smooth Fade', 'kinetichub'), value: 'fade' },
-                                { label: __('Vertical Wipe', 'kinetichub'), value: 'wipe' },
-                                { label: __('Circle Reveal', 'kinetichub'), value: 'circle' },
-                                { label: __('Diagonal Cut', 'kinetichub'), value: 'diagonal' }
-                            ]}
-                            onChange={(v) => setAttributes({ swapTransition: v })}
-                        />
-                        <ToggleControl
-                            label={__('Inner Image Parallax', 'kinetichub')}
-                            checked={innerParallax}
-                            onChange={(v) => setAttributes({ innerParallax: v })}
-                        />
-                        <hr/>
-                        <ToggleControl
-                            label={__('Ambient Background Glow', 'kinetichub')}
-                            checked={ambientGlow}
-                            onChange={(v) => setAttributes({ ambientGlow: v })}
-                        />
-                        {ambientGlow && (
-                            <div style={{ padding: '10px', background: '#f8f9fa', borderRadius: '8px', marginTop: '10px' }}>
-                                <p style={{ margin: '0 0 5px 0', fontSize: '12px', fontWeight: 'bold' }}>{__('Glow Color', 'kinetichub')}</p>
-                                <ColorPalette value={ambientGlowColor} onChange={(v) => setAttributes({ ambientGlowColor: v })} enableAlpha={true} />
-                                <RangeControl label={__('Glow Spread (px)', 'kinetichub')} value={ambientGlowSpread} onChange={(v) => setAttributes({ ambientGlowSpread: v })} min={10} max={150} />
-                            </div>
-                        )}
-                        <hr/>
-                        <ToggleControl
-                            label={__('Dynamic Background Morphing', 'kinetichub')}
-                            checked={scrollBgMorphing}
-                            onChange={(v) => setAttributes({ scrollBgMorphing: v })}
-                        />
-                        {scrollBgMorphing && (
-                            <div style={{ padding: '10px', background: '#f8f9fa', borderRadius: '8px', marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                                <div>
-                                    <p style={{ margin: '0 0 5px 0', fontSize: '12px', fontWeight: 'bold' }}>{__('Start Color (0% Scroll)', 'kinetichub')}</p>
-                                    <ColorPalette value={bgMorphStart} onChange={(v) => setAttributes({ bgMorphStart: v })} enableAlpha={true} />
-                                </div>
-                                <div>
-                                    <p style={{ margin: '0 0 5px 0', fontSize: '12px', fontWeight: 'bold' }}>{__('End Color (100% Scroll)', 'kinetichub')}</p>
-                                    <ColorPalette value={bgMorphEnd} onChange={(v) => setAttributes({ bgMorphEnd: v })} enableAlpha={true} />
-                                </div>
-                            </div>
-                        )}
-                    </PanelBody>
-                    {/* </fs_premium_only> */}
-                    {/* <fs_free_only> */}
+
+
                     <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Advanced transitions, parallax, ambient glow, and background morphing are available in the PRO version.', 'kinetichub')}
+                            {__('Advanced transitions, parallax, ambient glow, and background morphing are not included in this build.', 'kinetichub')}
                         </p>
                     </PanelBody>
-                    {/* </fs_free_only> */}
+
 
                     <KineticImageFitControls attributes={attributes} setAttributes={setAttributes} />
 
                     <PanelBody title={__('📐 Pinned Media Design', 'kinetichub')} initialOpen={false}>
-                        {/* <fs_premium_only> */}
-                        <SelectControl 
-                            label={__('Media Shape Mask', 'kinetichub')} 
-                            value={mediaShape} 
-                            options={[
-                                {label: __('Default (Full Fill)', 'kinetichub'), value: 'default'}, 
-                                {label: __('Floating Card (Shadow)', 'kinetichub'), value: 'floating'},
-                                {label: __('Arch Window', 'kinetichub'), value: 'arch'},
-                                {label: __('Tall Pill', 'kinetichub'), value: 'pill'}
-                            ]} 
-                            onChange={(v) => setAttributes({ mediaShape: v })} 
-                        />
-                        {mediaShape === 'floating' && (
-                            <RangeControl
-                                label={__('Floating Card Shadow Opacity', 'kinetichub')}
-                                value={attributes.floatingCardShadowOpacity ?? 0.2}
-                                onChange={(value) => setAttributes({ floatingCardShadowOpacity: value })}
-                                min={0}
-                                max={0.4}
-                                step={0.01}
-                                help={__('Set to 0 to remove the Floating Card shadow.', 'kinetichub')}
-                            />
-                        )}
-                        <ToggleControl 
-                            label={__('Ken Burns Effect (Slow Zoom)', 'kinetichub')} 
-                            checked={enableKenBurns} 
-                            onChange={(v) => setAttributes({ enableKenBurns: v })} 
-                        />
-                        {/* </fs_premium_only> */}
-                        {/* <fs_free_only> */}
+
+
                         <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Media shape masks and Ken Burns effect are available in the PRO version.', 'kinetichub')}
+                            {__('Media shape masks and Ken Burns effect are not included in this build.', 'kinetichub')}
                         </p>
-                        {/* </fs_free_only> */}
+
                         <hr/>
                         <p style={{marginBottom:'5px', fontSize:'12px', fontWeight:'bold'}}>{__('Pinned Area Background', 'kinetichub')}</p>
                         <ColorPalette value={pinnedBgColor} onChange={(v) => setAttributes({ pinnedBgColor: v })} enableAlpha={true} />
@@ -415,28 +333,20 @@ registerBlockType(metadata.name, {
                         />
                     </PanelBody>
 
-                    {/* <fs_premium_only> */}
-                    <PanelBody title={__('📦 Custom Shadows', 'kinetichub')} initialOpen={false}>
-                        <KineticShadowControls attributes={attributes} setAttributes={setAttributes} />
-                    </PanelBody>
 
-                    <KineticVisibilityControls attributes={attributes} setAttributes={setAttributes} />
-                    {/* </fs_premium_only> */}
-                    {/* <fs_free_only> */}
+
                     <PanelBody title={__('📦 Custom Shadows', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Advanced shadow styles are available in the PRO version.', 'kinetichub')}
+                            {__('Advanced shadow styles are not included in this build.', 'kinetichub')}
                         </p>
                     </PanelBody>
-                    {/* </fs_free_only> */}
+
 
                 </InspectorControls>
 
                 <div {...blockProps}>
                     <div className="kh-ss-pinned-col">
-                        {/* <fs_premium_only> */}
-                        {editorAmbientGlow && <div className="kh-ss-ambient-glow" aria-hidden="true"></div>}
-                        {/* </fs_premium_only> */}
+
                         <div className="kh-ss-media-inner">
                             {mediaItems.map((item, index) => {
                                 const url = getMediaUrl(item);
@@ -465,7 +375,7 @@ registerBlockType(metadata.name, {
                         <div style={{ padding: '10px', background: 'rgba(0,0,0,0.05)', borderRadius: '4px', marginBottom: '20px', fontSize: '12px', textAlign: 'center', fontWeight: 'bold' }}>
                             {__('↓ Drop Content Blocks Below ↓', 'kinetichub')}
                         </div>
-                        <InnerBlocks allowedBlocks={ALLOWED_BLOCKS} template={BLOCKS_TEMPLATE} />
+                        <InnerBlocks template={BLOCKS_TEMPLATE} />
                     </div>
                 </div>
             </>

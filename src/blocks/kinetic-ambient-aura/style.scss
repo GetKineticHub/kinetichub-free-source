@@ -37,24 +37,9 @@
     transform: translateX(-50%) translateY(var(--kh-aura-y, -10%)) translateZ(0);
 }
 
-/* <fs_premium_only> */
-/* PRO: Z-index control, Blend modes, Ellipse shapes */
-.kh-ambient-aura .kh-aura-core {
-    height: calc(var(--kh-aura-s, 800px) * var(--kh-aura-ratio, 1));
-    z-index: var(--kh-aura-z, -1);
-    mix-blend-mode: var(--kh-aura-blend, normal);
-    background: radial-gradient(var(--kh-aura-sh, circle) closest-side at center, var(--kh-aura-c) 0%, transparent var(--kh-aura-f, 70%));
-}
-/* </fs_premium_only> */
 
-/* <fs_premium_only> */
-/* PRO: Mobile behaviors */
-@media (max-width: 768px) {
-    .kh-ambient-aura.kh-aura-mobile-hide .kh-aura-core { display: none !important; }
-    .kh-ambient-aura.kh-aura-mobile-reduce .kh-aura-core { opacity: calc(var(--kh-aura-o) * 0.4) !important; }
-    .kh-ambient-aura.kh-aura-mobile-no-blend .kh-aura-core { mix-blend-mode: normal !important; }
-}
-/* </fs_premium_only> */
+
+
 
 .is-editor-canvas .kh-ambient-aura,
 .block-editor-page .kh-ambient-aura,
