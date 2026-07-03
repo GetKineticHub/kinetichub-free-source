@@ -3,7 +3,7 @@ Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.0.10
+Stable tag: 1.0.11
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -156,7 +156,7 @@ This plugin includes compiled JavaScript and CSS generated with npm and WordPres
 
 The human-readable free-version source files used to build the distributed assets are publicly available here:
 
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.10
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.11
 
 The public source branch includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed `build/` directory.
 
@@ -169,7 +169,7 @@ To rebuild the distributed assets from the public source branch:
 1. Clone the public source repository.
 2. Check out the matching source branch:
 
-`wporg-free-source-1.0.10`
+`wporg-free-source-1.0.11`
 
 3. Install build dependencies:
 
@@ -187,6 +187,11 @@ The build process compiles source files from the source repository into a `build
 * npm 9 or later
 
 == Changelog ==
+
+= 1.0.11 =
+* Fixed Hero Mesh overflow when an alignfull Hero Mesh block is placed inside constrained containers such as Kinetic Box or columns, while preserving normal full-width behavior when used directly in the page.
+* Improved Hero Mesh contained rendering by removing unnecessary isolation and keeping Gradient/Blobs motion proportional in smaller containers.
+* Reduced Hero Mesh viewport cold-start margin to improve scroll/interaction smoothness near visibility thresholds.
 
 = 1.0.10 =
 * Fixed a Hero Mesh layout regression where the block could overflow constrained containers such as columns, groups, and demo cards.

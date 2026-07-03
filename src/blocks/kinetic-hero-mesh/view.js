@@ -110,7 +110,7 @@
                         if (hero._kh_hm_StopLoop) hero._kh_hm_StopLoop();
                     }
                 });
-            }, { rootMargin: '200px 0px' });
+            }, { rootMargin: '50px 0px' });
         }
 
         heroes.forEach(hero => {

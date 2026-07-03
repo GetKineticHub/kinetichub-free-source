@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/cursor-reveal",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "title": "Kinetic Cursor Reveal",
   "category": "kinetic-suite",
   "description": "Interactive list with floating media reveals and cursor-following previews.",

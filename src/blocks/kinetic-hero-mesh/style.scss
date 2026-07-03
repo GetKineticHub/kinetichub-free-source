@@ -12,7 +12,6 @@
     max-width: 100% !important;
     min-width: 0 !important;
     position: relative;
-    isolation: isolate;
 
     &:focus { outline: none; }
     &:focus-visible {
@@ -56,6 +55,41 @@
     margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px)) !important;
     margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px)) !important;
     max-width: none !important;
+}
+
+/* ==========================================================================
+   NESTED FIX: Keep alignfull contained when Hero Mesh is placed inside a
+   constrained container (Kinetic Box, Columns) instead of directly in the
+   page root. Root/full-page alignfull above is untouched.
+   .wp-block-group / .wp-block-cover are intentionally excluded: FSE often
+   wraps root/full-page content in these too, which was over-matching direct
+   root-level Hero Mesh and breaking its full-width behavior.
+   ========================================================================== */
+.wp-block-kinetichub-kinetic-box,
+.kh-box-inner-content,
+.wp-block-column,
+.wp-block-columns {
+    .kh-hm-hero-container.alignfull {
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        overflow: hidden !important;
+        position: relative !important;
+
+        .kh-hm-canvas-engine,
+        .kh-hm-overlay,
+        .kh-hm-content-layer,
+        .kh-hm-inner-wrap {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box;
+            left: 0 !important;
+            right: 0 !important;
+        }
+    }
 }
 
 /* ==========================================================================

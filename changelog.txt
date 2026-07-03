@@ -1,10 +1,16 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.10
+Current Version: 1.0.11
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.0.11] - 2026-07-03
+----------------------------------------------------------------------
+- Fixed Hero Mesh overflow when an alignfull Hero Mesh block is placed inside constrained containers such as Kinetic Box or columns, while preserving normal full-width behavior when used directly in the page.
+- Improved Hero Mesh contained rendering by removing unnecessary isolation and keeping Gradient/Blobs motion proportional in smaller containers.
+- Reduced Hero Mesh viewport cold-start margin to improve scroll/interaction smoothness near visibility thresholds.
 ----------------------------------------------------------------------
 ## [1.0.10] - 2026-07-03
 ----------------------------------------------------------------------
