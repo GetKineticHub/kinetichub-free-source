@@ -1,10 +1,16 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.9
+Current Version: 1.0.10
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.0.10] - 2026-07-03
+----------------------------------------------------------------------
+- Fixed a Hero Mesh layout regression where the block could overflow constrained containers such as columns, groups, and demo cards.
+- Softened the Hero Mesh Film Grain Noise effect so it is less visually aggressive by default.
+- Kept full-width Hero Mesh behavior scoped to alignfull layouts.
 ----------------------------------------------------------------------
 ## [1.0.9] - 2026-07-02
 ----------------------------------------------------------------------

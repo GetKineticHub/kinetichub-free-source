@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/magnetic-button",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "title": "Kinetic Magnetic Button",
   "category": "kinetic-suite",
   "description": "High-performance magnetic button with advanced hover physics, glassmorphism, and dynamic scaling.",

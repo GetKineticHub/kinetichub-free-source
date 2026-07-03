@@ -3,7 +3,7 @@ Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -156,7 +156,7 @@ This plugin includes compiled JavaScript and CSS generated with npm and WordPres
 
 The human-readable free-version source files used to build the distributed assets are publicly available here:
 
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.9
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.10
 
 The public source branch includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed `build/` directory.
 
@@ -169,7 +169,7 @@ To rebuild the distributed assets from the public source branch:
 1. Clone the public source repository.
 2. Check out the matching source branch:
 
-`wporg-free-source-1.0.9`
+`wporg-free-source-1.0.10`
 
 3. Install build dependencies:
 
@@ -187,6 +187,11 @@ The build process compiles source files from the source repository into a `build
 * npm 9 or later
 
 == Changelog ==
+
+= 1.0.10 =
+* Fixed a Hero Mesh layout regression where the block could overflow constrained containers such as columns, groups, and demo cards.
+* Softened the Hero Mesh Film Grain Noise effect so it is less visually aggressive by default.
+* Kept full-width Hero Mesh behavior scoped to alignfull layouts.
 
 = 1.0.9 =
 * Fixed Hero Mesh canvas layout behavior to prevent layout shift and ensure block styles enqueue correctly.

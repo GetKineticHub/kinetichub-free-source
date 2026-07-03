@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/video-modal",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "title": "Kinetic Video Modal",
   "category": "kinetic-suite",
   "description": "Enterprise-ready video container with graceful lazy loading, inline playback, and strict URL safelists.",

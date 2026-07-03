@@ -9,7 +9,10 @@
     box-sizing: border-box !important;
     overflow: hidden;
     width: 100% !important;
-    max-width: none !important; 
+    max-width: 100% !important;
+    min-width: 0 !important;
+    position: relative;
+    isolation: isolate;
 
     &:focus { outline: none; }
     &:focus-visible {
@@ -24,12 +27,13 @@
 
     
 
-    .kh-hm-canvas-engine, 
-    .kh-hm-overlay, 
-    .kh-hm-content-layer, 
+    .kh-hm-canvas-engine,
+    .kh-hm-overlay,
+    .kh-hm-content-layer,
     .kh-hm-inner-wrap {
-        max-width: none !important;
         width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
     }
 }
 
@@ -79,6 +83,7 @@
     bottom: 0 !important;
     left: 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
     height: 100% !important;
     margin: 0;
     padding: 0;
@@ -106,9 +111,9 @@
 .kh-hm-inner-wrap {
     position: relative;
     z-index: 11;
-    pointer-events: auto; 
+    pointer-events: auto;
     width: 100% !important;
-    max-width: none !important;
+    max-width: 100% !important;
 }
 
 .kh-hm-hero-container.has-grain::after {
@@ -122,10 +127,11 @@
     pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
     animation: none;
+    opacity: 0.35;
 }
 
 .kh-hm-hero-container.has-grain.is-visible::after {
-    animation: hmGrainShaker 8s steps(10) infinite;
+    animation: hmGrainShaker 16s steps(10) infinite;
 }
 
 @keyframes hmGrainShaker { 

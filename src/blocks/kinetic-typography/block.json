@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/typography",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "title": "Kinetic Typography",
   "category": "kinetic-suite",
   "description": "Professional kinetic typography engine with advanced splitting, 3D perspective, and hardware-accelerated triggers.",
