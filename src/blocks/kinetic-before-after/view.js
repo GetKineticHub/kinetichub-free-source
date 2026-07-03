@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const after = slider.querySelector('.kh-ba-after');
         const handle = slider.querySelector('.kh-ba-handle');
         const circle = slider.querySelector('.kh-ba-circle');
-
+        
         
         if (!inner || !before || !handle || !circle) return;
 
@@ -92,9 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let slantDeg = 15;
         let hasParallax = false;
         let isPeekMode = false;
+        
 
-
-
+        
 
         let isDragging = false;
         let isIntroPlaying = false;
@@ -126,21 +126,22 @@ document.addEventListener('DOMContentLoaded', () => {
             before.style.transition = 'none';
             handle.style.transition = 'none';
 
-
+            
                 handle.style.left = `${percent}%`;
                 handle.style.top = ''; 
+            
 
-
-
+            
                 const clipVal = 100 - percent;
                 if (percent <= 0 && !isReverse) before.style.clipPath = 'inset(0 100% 0 0)';
                 else if (percent >= 100 && !isReverse) before.style.clipPath = 'none';
                 else {
                     before.style.clipPath = isReverse ? `inset(0 0 0 ${percent}%)` : `inset(0 ${clipVal}% 0 0)`;
+                    
+                }
+            
 
-
-
-
+            
 
             circle.setAttribute('aria-valuenow', Math.round(percent));
         };
@@ -148,11 +149,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const renderLoop = () => {
             if (slider._kh_ba_isDestroyed) return;
 
-
+            
                 currentPercent = targetPercent;
                 renderStyles(currentPercent);
                 localRafId = null;
-            ;
+            
+        };
 
         const updateTarget = (val) => {
             targetPercent = Math.max(0, Math.min(100, val));
@@ -169,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return Math.max(0, Math.min(100, p));
         };
 
-
+        
 
         const onMove = (e) => {
             if (!isDragging && !isHoverMode) return;
@@ -186,7 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 dragAbortController.abort();
                 dragAbortController = null;
             }
-            ;
+            
+        };
 
         const startDrag = (e) => {
             isDragging = true;
@@ -212,40 +215,40 @@ document.addEventListener('DOMContentLoaded', () => {
         circle.addEventListener('touchstart', (e) => { e.stopPropagation(); startDrag(e); }, { passive: false, signal: baseSignal });
         circle.addEventListener('click', (e) => e.stopPropagation(), { signal: baseSignal });
         
-
+        
 
         inner.addEventListener('mousedown', (e) => {
             if (e.target.closest('.kh-ba-circle') || e.target.closest('.kh-ba-handle')) return;
             if (!activeRect) activeRect = inner.getBoundingClientRect();
             
-
+            
             if (isClickMode && !isHoverMode) {
                 if (!isDragging && !isIntroPlaying) {
                     let clickTarget = getPercentFromEvent(e);
-
+                    
                     updateTarget(clickTarget);
                 }
             }
         }, { signal: baseSignal });
 
-
+        
         
         inner.addEventListener('touchstart', (e) => {
             if (e.target.closest('.kh-ba-circle') || e.target.closest('.kh-ba-handle')) return;
             if (!activeRect) activeRect = inner.getBoundingClientRect();
-
+            
             if (isClickMode && !isHoverMode) {
                 if (!isDragging && !isIntroPlaying) {
                     let touchTarget = getPercentFromEvent(e);
-
+                    
                     updateTarget(touchTarget);
                 }
             }
         }, { passive: true, signal: baseSignal });
         
+        
 
-
-
+        
 
         circle.addEventListener('keydown', (e) => {
             const step = 5;
@@ -258,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newVal !== targetPercent) {
                 e.preventDefault(); 
                 let newTarget = Math.max(0, Math.min(100, newVal));
-
+                
                 updateTarget(newTarget);
                 
                 slider.classList.add('is-moving');
@@ -288,14 +291,15 @@ document.addEventListener('DOMContentLoaded', () => {
                             }, 500);
                         }, 300);
                     }
-
+                    
                     else {
                         isIntroPlaying = false;
                     }
                 }
             } else {
                 if (isDragging) endDrag();
-
+                
+            }
         }, { threshold: 0.1 });
         
         localObserver.observe(slider);

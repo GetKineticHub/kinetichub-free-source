@@ -1,10 +1,10 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/cursor-reveal",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "title": "Kinetic Cursor Reveal",
   "category": "kinetic-suite",
-  "description": "Interactive list block with floating media reveal behavior.",
+  "description": "Interactive list with floating media reveals and cursor-following previews.",
   "keywords": [
     "cursor reveal",
     "floating media",
@@ -71,6 +71,18 @@
     "hoverFilter": {
       "type": "string",
       "default": "none"
+    },
+    "itemGap": {
+      "type": "number",
+      "default": 50
+    },
+    "showItemBorder": {
+      "type": "boolean",
+      "default": true
+    },
+    "itemBorderColor": {
+      "type": "string",
+      "default": ""
     }
   },
   "supports": {

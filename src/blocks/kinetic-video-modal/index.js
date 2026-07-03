@@ -85,7 +85,8 @@ registerBlockType(metadata.name, {
 			closeButtonAriaLabel,
 			closeOnBackdrop,
 			showCloseButtonOutside,
-			 = attributes;
+			
+		} = attributes;
 
 		let editorHoverZoomLevel = 'none';
 		let editorModalEntrance = 'zoom';
@@ -93,7 +94,7 @@ registerBlockType(metadata.name, {
 		let editorMagneticPull = false;
 		let editorPulseAnimation = false;
 
-
+		
 
 		const blockProps = useBlockProps({
 			className: [
@@ -101,7 +102,7 @@ registerBlockType(metadata.name, {
 				`ratio-${aspectRatio || '16x9'}`,
 				`btn-style-${buttonStyle || 'solid'}`,
 				`zoom-${editorHoverZoomLevel}`,
-
+				
 			]
 				.filter(Boolean)
 				.join(' '),
@@ -188,16 +189,13 @@ registerBlockType(metadata.name, {
 							onChange={(value) => setAttributes({ playbackMode: value })}
 						/>
 
+						
 
-
-
+						
 						<StaticTeaser
-							message={__(
-								'Advanced playback controls such as custom start time, forced loop, and autoplay parameters are available in the separate advanced version.',
-								'kinetichub'
-							)}
+							message={__('Available in KineticHub Pro.', 'kinetichub')}
 						/>
-
+						
 					</PanelBody>
 
 					<PanelBody title={__('🖼️ Cover Image', 'kinetichub')} initialOpen={false}>
@@ -265,16 +263,13 @@ registerBlockType(metadata.name, {
 							onChange={(value) => setAttributes({ aspectRatio: value })}
 						/>
 
+						
 
-
-
+						
 						<StaticTeaser
-							message={__(
-								'Additional cover hover zoom styles are available in the separate advanced version.',
-								'kinetichub'
-							)}
+							message={__('Available in KineticHub Pro.', 'kinetichub')}
 						/>
-
+						
 					</PanelBody>
 
 					<PanelBody title={__('▶️ Play Button Design', 'kinetichub')} initialOpen={false}>
@@ -313,20 +308,17 @@ registerBlockType(metadata.name, {
 							onChange={(value) => setAttributes({ iconColor: value || '#ffffff' })}
 						/>
 
-
+						
 					</PanelBody>
 
 					<PanelBody title={__('⚡ Advanced Interactions', 'kinetichub')} initialOpen={false}>
+						
 
-
-
+						
 						<StaticTeaser
-							message={__(
-								'Magnetic button movement and idle pulse animation are available in the separate advanced version.',
-								'kinetichub'
-							)}
+							message={__('Available in KineticHub Pro.', 'kinetichub')}
 						/>
-
+						
 					</PanelBody>
 
 					{playbackMode === 'modal' && (
@@ -343,16 +335,13 @@ registerBlockType(metadata.name, {
 								onChange={(value) => setAttributes({ backdropStyle: value })}
 							/>
 
+							
 
-
-
+							
 							<StaticTeaser
-								message={__(
-									'Additional modal entrance animations are available in the separate advanced version. The free build uses the default zoom entrance.',
-									'kinetichub'
-								)}
+								message={__('Available in KineticHub Pro.', 'kinetichub')}
 							/>
-
+							
 
 							<ToggleControl
 								label={__('Close on Backdrop Click', 'kinetichub')}
@@ -483,7 +472,7 @@ registerBlockType(metadata.name, {
 								</span>
 							</button>
 
-
+							
 						</div>
 					</div>
 

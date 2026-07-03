@@ -30,7 +30,9 @@ registerBlockType(metadata.name, {
             fontSize, mobileFontSize,
             subtitleColor, subtitleSize, subtitleSpacing,
             mediaWidth, mediaRatio, revealMask, hoverFilter,
-             = attributes;
+            itemGap, showItemBorder, itemBorderColor,
+            
+        } = attributes;
 
         const prevClientIdRef = useRef(clientId);
 
@@ -63,9 +65,12 @@ registerBlockType(metadata.name, {
             '--kh-cr-sub-color': subtitleColor || '#666666',
             '--kh-cr-sub-size': `${subtitleSize}px`,
             '--kh-cr-sub-space': `${subtitleSpacing}px`,
+            '--kh-cr-item-gap': `${itemGap ?? 50}px`,
+            '--kh-cr-item-border-w': (showItemBorder !== false) ? '1px' : '0px',
+            '--kh-cr-item-border-c': itemBorderColor || 'rgba(127,127,127,0.15)',
             color: '#1a1a1a'
         };
-
+        
 
         const blockProps = useBlockProps({
             className: editorClassName,
@@ -80,7 +85,7 @@ registerBlockType(metadata.name, {
         };
 
         let maxItems = 3;
-
+        
 
         const addItem = () => {
             if (items.length >= maxItems) {
@@ -112,7 +117,7 @@ registerBlockType(metadata.name, {
         const previewSubtitleColor = subtitleColor;
         const previewSubtitleSpacing = subtitleSpacing;
         let previewContainerShadow = false;
-
+        
 
         return (
             <>
@@ -123,13 +128,13 @@ registerBlockType(metadata.name, {
                             {__('Add and edit your list items with titles, subtitles, media, and links.', 'kinetichub')}
                         </p>
 
-
+                        
                         {items.length >= 3 && (
                             <div style={{ marginBottom: '15px', padding: '10px 12px', background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '6px', fontSize: '12px', color: '#856404' }}>
-                                {__('FREE version supports up to 3 items. More items not included in this build.', 'kinetichub')}
+                                {__('FREE version supports up to 3 items. More items available in KineticHub Pro.', 'kinetichub')}
                             </div>
                         )}
-
+                        
 
                         {items.map((item, index) => (
                             <div key={index} style={{
@@ -179,7 +184,7 @@ registerBlockType(metadata.name, {
                                                             ) : (
                                                                 <img src={item.mediaUrl} alt="" style={{ width: '100%', borderRadius: '4px', maxHeight: '150px', objectFit: 'cover' }} />
                                                             )}
-                                                            <Button onClick={() => updateItem(index, 'mediaUrl', '')} isDestructive size="small" style={{ position: 'absolute', top: '5px', right: '5px' }}>
+                                                            <Button onClick={() => updateItem(index, 'mediaUrl', '')} isDestructive size="small" style={{ position: 'absolute', top: '5px', right: '5px', background: 'rgba(255,255,255,0.92)', border: '1px solid #cc1818', borderRadius: '4px', boxShadow: '0 1px 4px rgba(0,0,0,0.18)' }}>
                                                                 {__('Remove', 'kinetichub')}
                                                             </Button>
                                                         </div>
@@ -205,13 +210,13 @@ registerBlockType(metadata.name, {
                             </Button>
                         )}
 
-
+                        
                         {!canAddMore && (
                             <p style={{ fontSize: '12px', color: '#6b7280', textAlign: 'center', padding: '10px 0' }}>
-                                {__('Up to 50 items not included in this build.', 'kinetichub')}
+                                {__('Up to 50 items available in KineticHub Pro.', 'kinetichub')}
                             </p>
                         )}
-
+                        
 
                         {items.length > 0 && (
                             <>
@@ -224,10 +229,10 @@ registerBlockType(metadata.name, {
                     <PanelBody title={__('✍️ Text Styling', 'kinetichub')} initialOpen={false}>
                         <RangeControl label={__('Font Size (Desktop)', 'kinetichub')} value={fontSize} onChange={(v) => setAttributes({ fontSize: v })} min={10} max={300} help={__('Base text size on desktop devices', 'kinetichub')} />
                         <RangeControl label={__('Font Size (Mobile)', 'kinetichub')} value={mobileFontSize} onChange={(v) => setAttributes({ mobileFontSize: v })} min={10} max={200} help={__('Text size on mobile devices', 'kinetichub')} />
-
-
-                        <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px' }}>{__('Advanced reveal styles, hover scale, focus dimming, and accent color are not included in this build.', 'kinetichub')}</p>
-
+                        
+                        
+                        <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px' }}>{__('Available in KineticHub Pro.', 'kinetichub')}</p>
+                        
                     </PanelBody>
 
                     <PanelBody title={__('🏷️ Subtitle Styling', 'kinetichub')} initialOpen={false}>
@@ -237,25 +242,55 @@ registerBlockType(metadata.name, {
                         <RangeControl label={__('Letter Spacing', 'kinetichub')} value={subtitleSpacing} onChange={(v) => setAttributes({ subtitleSpacing: v })} min={0} max={50} help={__('Space between letters in subtitle', 'kinetichub')} />
                     </PanelBody>
 
+                    <PanelBody title={__('📐 List Layout', 'kinetichub')} initialOpen={false}>
+                        <RangeControl
+                            label={__('Item Vertical Spacing', 'kinetichub')}
+                            value={itemGap ?? 50}
+                            onChange={(v) => setAttributes({ itemGap: v })}
+                            min={0}
+                            max={100}
+                            step={5}
+                            help={__('Top and bottom padding for each list item.', 'kinetichub')}
+                        />
+                        <ToggleControl
+                            label={__('Show Item Divider', 'kinetichub')}
+                            checked={showItemBorder !== false}
+                            onChange={(v) => setAttributes({ showItemBorder: v })}
+                            help={__('Show bottom border line between list items.', 'kinetichub')}
+                        />
+                        {(showItemBorder !== false) && (
+                            <>
+                                <p style={{ fontWeight: 'bold', marginTop: '12px', marginBottom: '5px' }}>
+                                    {__('Divider Color', 'kinetichub')}
+                                </p>
+                                <ColorPalette
+                                    value={itemBorderColor || undefined}
+                                    onChange={(v) => setAttributes({ itemBorderColor: v || '' })}
+                                    enableAlpha={true}
+                                />
+                            </>
+                        )}
+                    </PanelBody>
+
                     <PanelBody title={__('🎬 Media Settings', 'kinetichub')} initialOpen={false}>
                         <RangeControl label={__('Media Width', 'kinetichub')} value={mediaWidth} onChange={(v) => setAttributes({ mediaWidth: v })} min={100} max={1200} help={__('Width of floating media container', 'kinetichub')} />
                         <SelectControl label={__('Media Aspect Ratio', 'kinetichub')} value={mediaRatio} options={[ { label: __('4:5 Portrait', 'kinetichub'), value: '4/5' }, { label: __('1:1 Square', 'kinetichub'), value: '1/1' }, { label: __('16:9 Landscape', 'kinetichub'), value: '16/9' }, { label: __('21:9 Ultrawide', 'kinetichub'), value: '21/9' } ]} onChange={(v) => setAttributes({ mediaRatio: v })} help={__('Shape of media container', 'kinetichub')} />
                         <SelectControl label={__('Reveal Mask', 'kinetichub')} value={revealMask} options={[ { label: __('Fade', 'kinetichub'), value: 'fade' }, { label: __('Circle Expand', 'kinetichub'), value: 'circle' }, { label: __('Diagonal Wipe', 'kinetichub'), value: 'diagonal' }, { label: __('Curtain', 'kinetichub'), value: 'curtain' } ]} onChange={(v) => setAttributes({ revealMask: v })} help={__('Animation when media appears', 'kinetichub')} />
                         <SelectControl label={__('Hover Filter', 'kinetichub')} value={hoverFilter} options={[ { label: __('None', 'kinetichub'), value: 'none' }, { label: __('Grayscale to Color', 'kinetichub'), value: 'grayscale' } ]} onChange={(v) => setAttributes({ hoverFilter: v })} help={__('Color filter applied on hover', 'kinetichub')} />
-
-
-                        <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px' }}>{__('Container styles, blend modes, layer control, and noise effects are not included in this build.', 'kinetichub')}</p>
-
+                        
+                        
+                        <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px' }}>{__('Available in KineticHub Pro.', 'kinetichub')}</p>
+                        
                     </PanelBody>
 
-
-
+                    
+                    
                     <PanelBody title={__('⚡ Physics Engine', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>{__('Magnetic hover, inner parallax, offset positioning, smoothness, and velocity tilt are not included in this build.', 'kinetichub')}</p>
+                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>{__('Available in KineticHub Pro.', 'kinetichub')}</p>
                     </PanelBody>
+                    
 
-
-
+                    
                 </InspectorControls>
 
                 {/* PREVIEW */}
@@ -276,7 +311,7 @@ registerBlockType(metadata.name, {
                             <p style={{ fontSize: '11px', color: '#856404', margin: 0, lineHeight: '1.5' }}>
                                 💡 <strong>{__('Preview shows basic layout only.', 'kinetichub')}</strong><br />
                                 {__('Hover effects, physics, and animations appear on frontend.', 'kinetichub')}<br />
-                                {__('Edit items using the "List Items" panel on the right →', 'kinetichub')}
+                                {__('If no reveal image is selected, nothing will appear on the frontend.', 'kinetichub')}
                             </p>
                         </div>
                     </div>

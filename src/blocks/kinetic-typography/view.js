@@ -28,7 +28,7 @@
             block._kh_ty_observers = [];
         }
 
-
+        
 
         activeInstances.delete(block);
         block.classList.remove('kh-ty-linked', 'kh-ty-active', 'kh-ty-anim-done');
@@ -39,12 +39,12 @@
         }
     };
 
-
+    
 
     const startEffect = (block) => {
         if (!block || block._kh_ty_isDestroyed) return;
 
-
+        
 
         block.classList.remove('kh-ty-active', 'kh-ty-anim-done');
         void block.offsetWidth;
@@ -71,7 +71,7 @@
         const speed = parseFloat(block.dataset.speed) || 0.6;
         let maxDelay = 0;
 
-
+        
 
         spans.forEach(span => {
             let delayMs = 0;
@@ -87,7 +87,8 @@
             block.dataset.isAnimating = 'false';
             block.classList.add('kh-ty-anim-done');
 
-            , maxDelay + (speed * 1000) + 150);
+            
+        }, maxDelay + (speed * 1000) + 150);
 
         block._kh_ty_timers.push({ type: 'timeout', id: finishId });
     };
@@ -107,10 +108,11 @@
 
                     const triggerAlways = block.dataset.triggerAlways === 'true';
 
-
+                    
 
                     if (isVisible && (meetsThreshold || isHugeBlock || isScrolledPast)) {
-                        if (!block.classList.contains('kh-ty-active'))
+                        if (!block.classList.contains('kh-ty-active')) {
+                            
 
                             startEffect(block);
                             block._kh_ty_hasAnimated = true;
@@ -121,7 +123,8 @@
                         }
                     }
 
-                    );
+                    
+                });
             }, { threshold: thresholds });
         }
 
@@ -150,7 +153,7 @@
             }
         });
 
-
+        
 
         getObserver().observe(block);
     };

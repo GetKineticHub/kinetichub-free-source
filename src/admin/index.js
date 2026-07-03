@@ -1,427 +1,578 @@
 /**
- * kinetichub Suite - Admin Dashboard React App
- * Version: 1.0.0
-  (Strategic Freemium UX & Dynamic Badging)
+ * KineticHub - Admin Dashboard
+ * WordPress.org FREE build
  */
 
 import './admin.scss';
+
 import domReady from '@wordpress/dom-ready';
-import { createRoot, useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
+import { createRoot, useEffect, useMemo, useState } from '@wordpress/element';
 import {
-    TabPanel,
-    PanelBody,
-    PanelRow,
-    Placeholder,
-    Button,
-    ToggleControl,
-    RangeControl,
-    ColorPalette,
-    SelectControl,
-    Notice,
-    Spinner
+	Button,
+	Notice,
+	RangeControl,
+	SelectControl,
+	Spinner,
+	TextControl,
+	ToggleControl,
 } from '@wordpress/components';
-import { starEmpty, layout, cog, shield } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 
-if ( typeof  !== 'undefined' ) {
-    apiFetch.use( apiFetch.createRootURLMiddleware( .restUrl ) );
-    apiFetch.use( apiFetch.createNonceMiddleware( .nonce ) );
+const dashboardData = window.kinetichubDashboardData || {};
+
+if (dashboardData.restUrl) {
+	apiFetch.use(apiFetch.createRootURLMiddleware(dashboardData.restUrl));
 }
 
-const Dashboard = () => {
-    const [ settings, setSettings ] = useState({
-        globalLerp: 0.08,
-        accentColor: '#10b981',
-        enableMobileMotion: true,
-        performanceMode: 'balanced',
-        assetOptimization: true,
-        glassIntensity: 20,
-        activeBlocks: {}
-    });
+if (dashboardData.nonce) {
+	apiFetch.use(apiFetch.createNonceMiddleware(dashboardData.nonce));
+}
 
-    const [ isLoaded, setIsLoaded ] = useState(false);
-    const [ isSaving, setIsSaving ] = useState(false);
-    const [ activeTab, setActiveTab ] = useState('overview');
-    const [ showNotice, setShowNotice ] = useState(false);
-    const [ saveError, setSaveError ] = useState(null);
-
-    const [ webGLSupport, setWebGLSupport ] = useState(false);
-    const [ restApiStatus, setRestApiStatus ] = useState(__('Checking...', 'kinetichub'));
-    const [ restApiOnline, setRestApiOnline ] = useState(false);
-
-    useEffect(() => {
-        try {
-            const canvas = document.createElement('canvas');
-            setWebGLSupport(!!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))));
-        } catch (e) {
-            setWebGLSupport(false);
-        }
-
-        apiFetch({ path: '/kinetichub/v1/settings' }).then((response) => {
-            if (response && Object.keys(response).length > 0) {
-                setSettings(prev => ({
-                    ...prev,
-                    ...response,
-                    activeBlocks: response.activeBlocks || {}
-                }));
-            }
-            setIsLoaded(true);
-            setRestApiStatus(__('Online', 'kinetichub'));
-            setRestApiOnline(true);
-        }).catch(() => {
-            setIsLoaded(true);
-            setRestApiStatus(__('Offline/Error', 'kinetichub'));
-            setRestApiOnline(false);
-        });
-    }, []);
-
-    const saveGlobalSettings = () => {
-        setIsSaving(true);
-        setSaveError(null);
-        apiFetch({
-            path: '/kinetichub/v1/settings',
-            method: 'POST',
-            data: settings,
-        }).then(() => {
-            setIsSaving(false);
-            setSaveError(null);
-            setShowNotice(true);
-            setTimeout(() => setShowNotice(false), 3000);
-        }).catch((err) => {
-            setIsSaving(false);
-            setSaveError(err.message || __('Failed to save settings. Please try again.', 'kinetichub'));
-            console.error('Failed to save settings', err);
-        });
-    };
-
-    const pluginBaseUrl = typeof  !== 'undefined' ? .pluginUrl : '';
-    const isProActive = typeof  !== 'undefined' ? . : false;
-
-    // Complete list of installed Kinetic blocks
-    const blocksList = [
-        { id: 'kinetic-box', name: __('Kinetic Box', 'kinetichub'), icon: 'dashicons-move', image: pluginBaseUrl + 'assets/images/Kinetic-box.jpg' },
-        { id: 'kinetic-typography', name: __('Kinetic Typography', 'kinetichub'), icon: 'dashicons-editor-textcolor', image: pluginBaseUrl + 'assets/images/Kinetic-typo.jpg' },
-        { id: 'kinetic-magnetic-button', name: __('Magnetic Button', 'kinetichub'), icon: 'dashicons-touch', image: pluginBaseUrl + 'assets/images/Kinetic-button.jpg' },
-        { id: 'kinetic-marquee', name: __('Kinetic Marquee', 'kinetichub'), icon: 'dashicons-move', image: pluginBaseUrl + 'assets/images/Kinetic-marquee.jpg' },
-        { id: 'kinetic-scroll-divider', name: __('Scroll Divider', 'kinetichub'), icon: 'dashicons-minus', image: pluginBaseUrl + 'assets/images/Kinetic-divider.jpg' },
-        { id: 'kinetic-video-modal', name: __('Video Modal', 'kinetichub'), icon: 'dashicons-controls-play', image: pluginBaseUrl + 'assets/images/Kinetic-video.jpg' },
-        { id: 'kinetic-hero-mesh', name: __('Liquid Mesh', 'kinetichub'), icon: 'dashicons-admin-site-alt3', image: pluginBaseUrl + 'assets/images/Kinetic-mesh.jpg' },
-        { id: 'kinetic-before-after', name: __('Before/After Slider', 'kinetichub'), icon: 'dashicons-images-alt2', image: pluginBaseUrl + 'assets/images/Kinetic-before.jpg' },
-        { id: 'kinetic-audio-player', name: __('Audio Player', 'kinetichub'), icon: 'dashicons-media-audio', image: pluginBaseUrl + 'assets/images/Kinetic-audio.jpg' },
-        { id: 'kinetic-split-scroll', name: __('Split Scroll', 'kinetichub'), icon: 'dashicons-columns', image: pluginBaseUrl + 'assets/images/Kinetic-split.jpg' },
-        { id: 'kinetic-cursor-reveal', name: __('Cursor Reveal', 'kinetichub'), icon: 'dashicons-cursor', image: pluginBaseUrl + 'assets/images/Kinetic-cursor.jpg' },
-        { id: 'kinetic-ambient-aura', name: __('Ambient Aura', 'kinetichub'), icon: 'dashicons-lightbulb', image: pluginBaseUrl + 'assets/images/Kinetic-aura.jpg' },
-    ];
-
-    const toggleBlock = (blockId, isChecked) => {
-        setSettings(prev => ({
-            ...prev,
-            activeBlocks: {
-                ...prev.activeBlocks,
-                [blockId]: isChecked
-            }
-        }));
-    };
-
-    const activeBlocksCount = blocksList.filter(b => settings.activeBlocks[b.id] !== false).length;
-    const realBlocksTotal = blocksList.length;
-
-    const tabs = [
-        { name: 'overview', title: __('Overview', 'kinetichub'), icon: starEmpty },
-        { name: 'blocks', title: __('My Suite', 'kinetichub'), icon: layout },
-        { name: 'settings', title: __('Global Settings', 'kinetichub'), icon: cog },
-        { name: 'license', title: __('License & System', 'kinetichub'), icon: shield },
-    ];
-
-    if (!isLoaded) {
-        return (
-            <div className="kh-dashboard-wrapper">
-                <div className="kh-loader"><Spinner /></div>
-            </div>
-        );
-    }
-
-    const renderTabContent = ( tab ) => {
-        if ( tab.name === 'overview' ) {
-            return (
-                <div className="kh-content-area">
-                    <div className="kh-settings-grid">
-                        <div className="kh-col">
-                            <PanelBody title={__('🚀 Performance Engine', 'kinetichub')} initialOpen={ true }>
-                                <PanelRow>
-                                    <div>{__('Active Kinetic Modules', 'kinetichub')}</div>
-                                    <div className="kh-badge-status">{activeBlocksCount} / {realBlocksTotal} {__('Loaded', 'kinetichub')}</div>
-                                </PanelRow>
-                                <PanelRow>
-                                    <div>{__('JS Physics Engine', 'kinetichub')}</div>
-                                    <div className="kh-badge-status">v1.0.0 Stable</div>
-                                </PanelRow>
-                                <PanelRow>
-                                    <div>{__('License Status', 'kinetichub')}</div>
-                                    <div className="kh-badge-status" style={{ color: isProActive ? '#10b981' : '#94a3b8' }}>
-                                        {isProActive ? 'advanced Active' : 'License Not Connected'}
-                                    </div>
-                                </PanelRow>
-                            </PanelBody>
-                            <Placeholder icon={ layout } label={__('Welcome to KineticHub', 'kinetichub')} instructions={__('The most advanced motion suite for Gutenberg. Start building with fluid physics today.', 'kinetichub')}>
-                                <Button variant="primary" isLarge href="https://docs.getkinetichub.com" target="_blank">
-                                    {__('View Documentation', 'kinetichub')}
-                                </Button>
-                            </Placeholder>
-                        </div>
-                        <div className="kh-col">
-                            <PanelBody title={__('Quick Status', 'kinetichub')}>
-                                <p style={{fontSize: '13px', color: '#64748b', lineHeight: '1.8'}}>
-                                    <strong>{__('WebGL Physics:', 'kinetichub')}</strong> {webGLSupport ? <span style={{color: '#10b981'}}>{__('Supported', 'kinetichub')}</span> : <span style={{color: '#ef4444'}}>{__('Not Supported', 'kinetichub')}</span>}<br/>
-                                    <strong>{__('Global Motion:', 'kinetichub')}</strong> {settings.enableMobileMotion ? __('Desktop & Mobile', 'kinetichub') : __('Desktop Only', 'kinetichub')}<br/>
-                                    <strong>{__('Engine Mode:', 'kinetichub')}</strong> <span style={{textTransform: 'capitalize'}}>{settings.performanceMode}</span>
-                                </p>
-                            </PanelBody>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        if ( tab.name === 'blocks' ) {
-            return (
-                <div className="kh-content-area">
-                    <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                            <h2 style={{ fontSize: '28px', fontWeight: '900', margin: '0 0 10px 0' }}>{__('Kinetic Suite', 'kinetichub')}</h2>
-                            <p style={{ color: '#64748b', fontSize: '16px' }}>{__('Toggle components on or off to optimize your website\'s performance.', 'kinetichub')}</p>
-                        </div>
-                        <Button
-                            variant="primary"
-                            onClick={saveGlobalSettings}
-                            isBusy={isSaving}
-                            disabled={isSaving}
-                            style={{ height: '45px', padding: '0 30px', borderRadius: '8px', backgroundColor: settings.accentColor }}
-                        >
-                            {__('Save Suite Configuration', 'kinetichub')}
-                        </Button>
-                    </div>
-
-                    {showNotice && <Notice status="success" onRemove={() => setShowNotice(false)}>{__('All changes saved!', 'kinetichub')}</Notice>}
-                    {saveError && <Notice status="error" onRemove={() => setSaveError(null)}>{saveError}</Notice>}
-
-                    {!isProActive && (
-                        <div style={{ background: 'linear-gradient(135deg, #1e293b, #0f172a)', padding: '25px', borderRadius: '12px', marginBottom: '30px', color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
-                            <div style={{ maxWidth: '70%' }}>
-                                <h4 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span className="dashicons dashicons-yes-alt"></span> {__('KineticHub advanced is installed', 'kinetichub')}
-                                </h4>
-                                <p style={{ margin: 0, fontSize: '14px', color: '#cbd5e1', lineHeight: '1.6' }}>
-                                    {__('Your advanced license includes one year of updates and support. Activate your license key to connect this site to your KineticHub account. After the license period ends, your installed advanced blocks remain available, but updates and support require renewal.', 'kinetichub')}
-                                </p>
-                            </div>
-                            <Button variant="primary" onClick={() => setActiveTab('license')} style={{ background: 'linear-gradient(135deg, #10b981, #059669)', border: 'none', padding: '0 25px', height: '45px', borderRadius: '8px', fontWeight: 'bold' }}>
-                                {__('Manage License', 'kinetichub')}
-                            </Button>
-                        </div>
-                    )}
-
-                    <div className="kh-blocks-grid">
-                        {blocksList.map((block) => {
-                            const isActive = settings.activeBlocks[block.id] !== false;
-
-                            return (
-                                <div key={block.id} className="kh-block-card" style={{ transition: 'all 0.3s ease' }}>
-
-                                    <div className="kh-pro-badge" style={{background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff'}}>advanced</div>
-
-                                    <div
-                                        className="kh-card-image"
-                                        style={ block.image ? { backgroundImage: `url('${block.image}')` } : {} }
-                                    >
-                                        { !block.image && <span className={`dashicons ${block.icon}`}></span> }
-                                    </div>
-                                    <div className="kh-card-body" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 25px' }}>
-                                        <div>
-                                            <h4 style={{margin: '0 0 5px 0', fontSize: '16px'}}>{block.name}</h4>
-
-                                            <span style={{fontSize:'12px', color: isActive ? '#10b981' : '#94a3b8', fontWeight: 'bold'}}>{isActive ? __('Active', 'kinetichub') : __('Inactive', 'kinetichub')}</span>
-                                        </div>
-
-                                        <ToggleControl
-                                            checked={isActive}
-                                            onChange={(val) => toggleBlock(block.id, val)}
-                                            __nextHasNoMarginBottom={true}
-                                        />
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            );
-        }
-
-        if ( tab.name === 'settings' ) {
-            return (
-                <div className="kh-content-area">
-                    <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                            <h2 style={{ fontSize: '28px', fontWeight: '900', margin: '0 0 10px 0' }}>{__('Global Settings', 'kinetichub')}</h2>
-                            <p style={{ color: '#64748b', fontSize: '16px' }}>{__('Universal controls for all Kinetic Hub components.', 'kinetichub')}</p>
-                        </div>
-                        <Button
-                            variant="primary"
-                            onClick={saveGlobalSettings}
-                            isBusy={isSaving}
-                            disabled={isSaving}
-                            style={{ height: '45px', padding: '0 30px', borderRadius: '8px', backgroundColor: settings.accentColor }}
-                        >
-                            {__('Save All Changes', 'kinetichub')}
-                        </Button>
-                    </div>
-
-                    {showNotice && <Notice status="success" onRemove={() => setShowNotice(false)}>{__('All changes saved!', 'kinetichub')}</Notice>}
-                    {saveError && <Notice status="error" onRemove={() => setSaveError(null)}>{saveError}</Notice>}
-
-                    <div className="kh-settings-grid">
-                        <div className="kh-col">
-                            <PanelBody title={__('🕹️ Universal Motion Physics', 'kinetichub')} initialOpen={true}>
-                                <RangeControl
-                                    label={__('Global Lerp (Smoothness)', 'kinetichub')}
-                                    help={__('Adjusts the tracking delay for all magnetic and reveal blocks. Lower value = smoother/slower.', 'kinetichub')}
-                                    value={settings.globalLerp}
-                                    onChange={(v) => setSettings({...settings, globalLerp: v})}
-                                    min={0.01} max={0.2} step={0.01}
-                                    __nextHasNoMarginBottom={true}
-                                />
-                                <div style={{ marginTop: '25px' }}>
-                                    <ToggleControl
-                                        label={__('Enable Motion on Mobile', 'kinetichub')}
-                                        help={__('Disabling this improves battery life on devices below 768px width.', 'kinetichub')}
-                                        checked={settings.enableMobileMotion}
-                                        onChange={(v) => setSettings({...settings, enableMobileMotion: v})}
-                                        __nextHasNoMarginBottom={true}
-                                    />
-                                </div>
-                            </PanelBody>
-
-                            <PanelBody title={__('🎨 Global Design System', 'kinetichub')} initialOpen={true}>
-                                <p style={{marginBottom: '10px'}}>{__('Primary Brand Color', 'kinetichub')}</p>
-                                <ColorPalette
-                                    value={settings.accentColor}
-                                    onChange={(v) => setSettings({...settings, accentColor: v || '#10b981'})}
-                                />
-                                <hr style={{margin: '25px 0', border: '0', borderTop: '1px solid #eee'}} />
-                                <RangeControl
-                                    label={__('Glassmorphism Intensity (Blur)', 'kinetichub')}
-                                    value={settings.glassIntensity}
-                                    onChange={(v) => setSettings({...settings, glassIntensity: v})}
-                                    min={0} max={50}
-                                    __nextHasNoMarginBottom={true}
-                                />
-                            </PanelBody>
-                        </div>
-
-                        <div className="kh-col">
-                            <PanelBody title={__('⚡ Performance & Assets', 'kinetichub')} initialOpen={true}>
-                                <SelectControl
-                                    label={__('Engine Rendering Mode', 'kinetichub')}
-                                    value={settings.performanceMode}
-                                    options={[
-                                        { label: __('High Performance (4K/144Hz)', 'kinetichub'), value: 'performance' },
-                                        {label: __('Balanced (60fps Standard)', 'kinetichub'), value: 'balanced'},
-                                        {label: __('Eco Mode (Battery Saver)', 'kinetichub'), value: 'eco'}
-                                    ]}
-                                    onChange={(v) => setSettings({...settings, performanceMode: v})}
-                                    __nextHasNoMarginBottom={true}
-                                />
-                                <div style={{ marginTop: '25px' }}>
-                                    <ToggleControl
-                                        label={__('Load CSS in <head> (Recommended)', 'kinetichub')}
-                                        help={__('Prevents layout shifts (FOUC). Disable to load in footer for strict raw speed.', 'kinetichub')}
-                                        checked={settings.assetOptimization}
-                                        onChange={(v) => setSettings({...settings, assetOptimization: v})}
-                                        __nextHasNoMarginBottom={true}
-                                    />
-                                </div>
-                            </PanelBody>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        if ( tab.name === 'license' ) {
-            return (
-                <div className="kh-content-area">
-                    <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                            <h2 style={{ fontSize: '28px', fontWeight: '900', margin: '0 0 10px 0' }}>{__('License & System', 'kinetichub')}</h2>
-                            <p style={{ color: '#64748b', fontSize: '16px' }}>{__('Manage your Pro license and check server environment health.', 'kinetichub')}</p>
-                        </div>
-                    </div>
-
-                    <div className="kh-settings-grid">
-                        <div className="kh-col">
-                            <PanelBody title={__('🔑 Software License', 'kinetichub')} initialOpen={true}>
-                                <div style={{ padding: '10px 0' }}>
-                                    <h4 style={{ margin: '0 0 10px 0', fontSize: '16px' }}>
-                                        {isProActive ? __('advanced License Active', 'kinetichub') : __('License Not Connected', 'kinetichub')}
-                                    </h4>
-                                    <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '20px', lineHeight: '1.5' }}>
-                                        {__('License activation, subscription management, and billing are securely handled by our unified engine. Click below to access your portal.', 'kinetichub')}
-                                    </p>
-                                    {/* TODO: If a  account/license URL helper becomes available in PHP, localize it to  (e.g. accountUrl/licenseUrl) and use it here instead of the static admin.php link. */}
-                                    <Button variant="primary" href="admin.php?page=kinetichub-account" style={{ height: '40px', padding: '0 20px', borderRadius: '6px', backgroundColor: settings.accentColor }}>
-                                        {isProActive ? __('Manage Account', 'kinetichub') : __('Activate License', 'kinetichub')}
-                                    </Button>
-                                </div>
-                            </PanelBody>
-                        </div>
-                        <div className="kh-col">
-                            <PanelBody title={__('🖥️ Server Diagnostics', 'kinetichub')} initialOpen={true}>
-                                <table style={{width: '100%', textAlign: 'left', fontSize: '13px'}}>
-                                    <tbody>
-                                        <tr>
-                                            <td style={{padding: '12px 0', borderBottom: '1px solid #f1f5f9'}}>{__('REST API', 'kinetichub')}</td>
-                                            <td style={{padding: '12px 0', borderBottom: '1px solid #f1f5f9', color: restApiOnline ? '#10b981' : '#ef4444', fontWeight: 'bold'}}>{restApiStatus}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{padding: '12px 0', borderBottom: '1px solid #f1f5f9'}}>{__('WebGL Engine', 'kinetichub')}</td>
-                                            <td style={{padding: '12px 0', borderBottom: '1px solid #f1f5f9', color: webGLSupport ? '#10b981' : '#ef4444', fontWeight: 'bold'}}>{webGLSupport ? __('Active', 'kinetichub') : __('Missing', 'kinetichub')}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{padding: '12px 0'}}>{__('WP Compatibility', 'kinetichub')}</td>
-                                            <td style={{padding: '12px 0', fontWeight: 'bold', color: '#64748b'}}>{__('Requires 6.2+', 'kinetichub')}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </PanelBody>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-    };
-
-    return (
-        <div className="kh-dashboard-wrapper" style={{ '--kh-accent': settings.accentColor }}>
-            <header className="kh-dashboard-header">
-                <div className="kh-logo">
-                    <span className="dashicons dashicons-superhero" style={{fontSize: '30px', width: '30px', height: '30px'}}></span>
-                    <h1>KineticHub <span>{__('Master Control', 'kinetichub')}</span></h1>
-                </div>
-                <div style={{display:'flex', gap:'10px'}}>
-                    <span style={{opacity:0.6, fontSize:'12px'}}>{__('Suite v', 'kinetichub')}{typeof  !== 'undefined' && .version ? .version : '1.0.0'}</span>
-                </div>
-            </header>
-            <TabPanel key={activeTab} className="kh-main-tabs" activeClass="is-active" tabs={ tabs } initialTabName={ activeTab } onSelect={ ( tabName ) => setActiveTab( tabName ) }>
-                { ( tab ) => renderTabContent( tab ) }
-            </TabPanel>
-        </div>
-    );
+const DEFAULT_SETTINGS = {
+	globalLerp: 0.08,
+	accentColor: '#10b981',
+	enableMobileMotion: true,
+	performanceMode: 'balanced',
+	assetOptimization: true,
+	glassIntensity: 20,
+	activeBlocks: {},
 };
 
-domReady( () => {
-    const rootElement = document.getElementById( 'kinetichub-dashboard-root' );
-    if ( rootElement ) {
-        createRoot( rootElement ).render( <Dashboard /> );
-    }
-} );
+const BLOCKS = [
+	{
+		id: 'kinetic-box',
+		name: __('Kinetic Box', 'kinetichub'),
+		description: __('Animated container block with motion-ready layout controls.', 'kinetichub'),
+		icon: 'dashicons-move',
+		image: 'assets/images/Kinetic-box.jpg',
+	},
+	{
+		id: 'kinetic-typography',
+		name: __('Kinetic Typography', 'kinetichub'),
+		description: __('Animated text block with server-rendered splitting and accessibility fallback.', 'kinetichub'),
+		icon: 'dashicons-editor-textcolor',
+		image: 'assets/images/Kinetic-typo.jpg',
+	},
+	{
+		id: 'kinetic-magnetic-button',
+		name: __('Magnetic Button', 'kinetichub'),
+		description: __('Interactive button block with configurable styling and motion behavior.', 'kinetichub'),
+		icon: 'dashicons-button',
+		image: 'assets/images/Kinetic-button.jpg',
+	},
+	{
+		id: 'kinetic-marquee',
+		name: __('Kinetic Marquee', 'kinetichub'),
+		description: __('Auto-scrolling logo and media marquee block.', 'kinetichub'),
+		icon: 'dashicons-image-flip-horizontal',
+		image: 'assets/images/Kinetic-marquee.jpg',
+	},
+	{
+		id: 'kinetic-scroll-divider',
+		name: __('Scroll Divider', 'kinetichub'),
+		description: __('Animated divider line triggered by viewport scroll.', 'kinetichub'),
+		icon: 'dashicons-minus',
+		image: 'assets/images/Kinetic-divider.jpg',
+	},
+	{
+		id: 'kinetic-video-modal',
+		name: __('Video Modal', 'kinetichub'),
+		description: __('Lazy video modal and inline playback block.', 'kinetichub'),
+		icon: 'dashicons-controls-play',
+		image: 'assets/images/Kinetic-video.jpg',
+	},
+	{
+		id: 'kinetic-hero-mesh',
+		name: __('Hero Mesh', 'kinetichub'),
+		description: __('Generative hero background block with motion-ready content layering.', 'kinetichub'),
+		icon: 'dashicons-admin-site-alt3',
+		image: 'assets/images/Kinetic-mesh.jpg',
+	},
+	{
+		id: 'kinetic-before-after',
+		name: __('Before/After Slider', 'kinetichub'),
+		description: __('Accessible comparison slider for images.', 'kinetichub'),
+		icon: 'dashicons-images-alt2',
+		image: 'assets/images/Kinetic-before.jpg',
+	},
+	{
+		id: 'kinetic-audio-player',
+		name: __('Audio Player', 'kinetichub'),
+		description: __('Custom audio player block for WordPress content.', 'kinetichub'),
+		icon: 'dashicons-media-audio',
+		image: 'assets/images/Kinetic-audio.jpg',
+	},
+	{
+		id: 'kinetic-split-scroll',
+		name: __('Split Scroll', 'kinetichub'),
+		description: __('Split layout with pinned media and scrolling content.', 'kinetichub'),
+		icon: 'dashicons-columns',
+		image: 'assets/images/Kinetic-split.jpg',
+	},
+	{
+		id: 'kinetic-cursor-reveal',
+		name: __('Cursor Reveal', 'kinetichub'),
+		description: __('Interactive media reveal list with pointer-aware behavior.', 'kinetichub'),
+		icon: 'dashicons-visibility',
+		image: 'assets/images/Kinetic-cursor.jpg',
+	},
+	{
+		id: 'kinetic-ambient-aura',
+		name: __('Ambient Aura', 'kinetichub'),
+		description: __('Soft ambient visual background block.', 'kinetichub'),
+		icon: 'dashicons-lightbulb',
+		image: 'assets/images/Kinetic-aura.jpg',
+	},
+];
+
+const TABS = [
+	{
+		id: 'overview',
+		label: __('Overview', 'kinetichub'),
+	},
+	{
+		id: 'blocks',
+		label: __('My Suite', 'kinetichub'),
+	},
+	{
+		id: 'settings',
+		label: __('Global Settings', 'kinetichub'),
+	},
+	{
+		id: 'system',
+		label: __('System Info', 'kinetichub'),
+	},
+];
+
+function normalizeSettings(settings) {
+	const incoming = settings && typeof settings === 'object' ? settings : {};
+	const activeBlocks = { ...DEFAULT_SETTINGS.activeBlocks };
+
+	BLOCKS.forEach((block) => {
+		activeBlocks[block.id] =
+			incoming.activeBlocks && Object.prototype.hasOwnProperty.call(incoming.activeBlocks, block.id)
+				? !!incoming.activeBlocks[block.id]
+				: true;
+	});
+
+	return {
+		...DEFAULT_SETTINGS,
+		...incoming,
+		activeBlocks,
+		globalLerp:
+			typeof incoming.globalLerp === 'number'
+				? Math.max(0.01, Math.min(0.2, incoming.globalLerp))
+				: DEFAULT_SETTINGS.globalLerp,
+		glassIntensity:
+			typeof incoming.glassIntensity === 'number'
+				? Math.max(0, Math.min(50, incoming.glassIntensity))
+				: DEFAULT_SETTINGS.glassIntensity,
+		accentColor:
+			typeof incoming.accentColor === 'string' && /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(incoming.accentColor)
+				? incoming.accentColor
+				: DEFAULT_SETTINGS.accentColor,
+		enableMobileMotion:
+			typeof incoming.enableMobileMotion === 'boolean'
+				? incoming.enableMobileMotion
+				: DEFAULT_SETTINGS.enableMobileMotion,
+		assetOptimization:
+			typeof incoming.assetOptimization === 'boolean'
+				? incoming.assetOptimization
+				: DEFAULT_SETTINGS.assetOptimization,
+		performanceMode:
+			['balanced', 'eco', 'performance'].includes(incoming.performanceMode)
+				? incoming.performanceMode
+				: DEFAULT_SETTINGS.performanceMode,
+	};
+}
+
+function isWebGLAvailable() {
+	try {
+		const canvas = document.createElement('canvas');
+		return !!(
+			window.WebGLRenderingContext &&
+			(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
+		);
+	} catch (error) {
+		return false;
+	}
+}
+
+function Dashboard() {
+	const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+	const [activeTab, setActiveTab] = useState('overview');
+	const [isLoading, setIsLoading] = useState(true);
+	const [isSaving, setIsSaving] = useState(false);
+	const [notice, setNotice] = useState(null);
+	const [restStatus, setRestStatus] = useState(__('Checking...', 'kinetichub'));
+	const [restOnline, setRestOnline] = useState(false);
+	const [webglActive, setWebglActive] = useState(false);
+
+	const pluginUrl = dashboardData.pluginUrl || '';
+
+	useEffect(() => {
+		setWebglActive(isWebGLAvailable());
+
+		apiFetch({ path: '/kinetichub/v1/settings' })
+			.then((response) => {
+				setSettings(normalizeSettings(response));
+				setRestStatus(__('Online', 'kinetichub'));
+				setRestOnline(true);
+				setIsLoading(false);
+			})
+			.catch(() => {
+				setSettings(normalizeSettings(DEFAULT_SETTINGS));
+				setRestStatus(__('Offline or unavailable', 'kinetichub'));
+				setRestOnline(false);
+				setIsLoading(false);
+			});
+	}, []);
+
+	const activeCount = useMemo(() => {
+		return BLOCKS.filter((block) => settings.activeBlocks?.[block.id] !== false).length;
+	}, [settings.activeBlocks]);
+
+	const updateSetting = (key, value) => {
+		setSettings((current) => ({
+			...current,
+			[key]: value,
+		}));
+	};
+
+	const updateActiveBlock = (blockId, value) => {
+		setSettings((current) => ({
+			...current,
+			activeBlocks: {
+				...current.activeBlocks,
+				[blockId]: value,
+			},
+		}));
+	};
+
+	const saveSettings = () => {
+		setIsSaving(true);
+		setNotice(null);
+
+		apiFetch({
+			path: '/kinetichub/v1/settings',
+			method: 'POST',
+			data: settings,
+		})
+			.then((response) => {
+				setSettings(normalizeSettings(response?.settings || settings));
+				setNotice({
+					status: 'success',
+					message: __('Settings saved successfully.', 'kinetichub'),
+				});
+				setIsSaving(false);
+			})
+			.catch((error) => {
+				setNotice({
+					status: 'error',
+					message:
+						error?.message ||
+						__('Settings could not be saved. Please refresh the page and try again.', 'kinetichub'),
+				});
+				setIsSaving(false);
+			});
+	};
+
+	const renderOverview = () => (
+		<div className="kh-dashboard-grid kh-dashboard-grid-3">
+			<div className="kh-stat-card">
+				<span className="kh-stat-label">{__('Included blocks', 'kinetichub')}</span>
+				<strong>{BLOCKS.length}</strong>
+				<p>{__('Motion-ready blocks available in this build.', 'kinetichub')}</p>
+			</div>
+
+			<div className="kh-stat-card">
+				<span className="kh-stat-label">{__('Active blocks', 'kinetichub')}</span>
+				<strong>{activeCount}</strong>
+				<p>{__('Blocks currently enabled for the editor.', 'kinetichub')}</p>
+			</div>
+
+			<div className="kh-stat-card">
+				<span className="kh-stat-label">{__('Motion profile', 'kinetichub')}</span>
+				<strong>{settings.performanceMode}</strong>
+				<p>{__('Global frontend animation profile.', 'kinetichub')}</p>
+			</div>
+
+			<div className="kh-dashboard-panel kh-dashboard-wide">
+				<h2>{__('KineticHub Free Edition', 'kinetichub')}</h2>
+				<p>
+					{__(
+						'Manage the included animated blocks and global motion preferences for your WordPress site.',
+						'kinetichub'
+					)}
+				</p>
+
+				<div className="kh-overview-actions">
+					<Button variant="primary" onClick={() => setActiveTab('blocks')}>
+						{__('Manage Blocks', 'kinetichub')}
+					</Button>
+					<Button variant="secondary" onClick={() => setActiveTab('settings')}>
+						{__('Global Settings', 'kinetichub')}
+					</Button>
+				</div>
+			</div>
+
+			<div className="kh-dashboard-wide" style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: '20px', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', boxShadow: '0 2px 12px rgba(16,185,129,0.07)' }}>
+				<div>
+					<p style={{ margin: '0 0 4px', fontWeight: '700', fontSize: '14px', color: '#a7f3d0', letterSpacing: '-0.01em' }}>
+						{__('KineticHub Pro', 'kinetichub')}
+					</p>
+					<p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.68)', lineHeight: '1.45' }}>
+						{__('Unlock the full animation toolkit for client-ready interactive builds.', 'kinetichub')}
+					</p>
+				</div>
+				<a href="https://getkinetichub.com/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '9px 18px', borderRadius: '8px', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)', color: '#a7f3d0', fontWeight: '700', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
+					{__('Explore Pro', 'kinetichub')}
+				</a>
+			</div>
+		</div>
+	);
+
+	const renderBlocks = () => (
+		<div className="kh-dashboard-panel">
+			<div className="kh-panel-heading">
+				<div>
+					<h2>{__('My Suite', 'kinetichub')}</h2>
+					<p>{__('Enable or disable included blocks for the editor.', 'kinetichub')}</p>
+				</div>
+
+				<Button variant="primary" onClick={saveSettings} isBusy={isSaving} disabled={isSaving}>
+					{isSaving ? __('Saving...', 'kinetichub') : __('Save Changes', 'kinetichub')}
+				</Button>
+			</div>
+
+			<div className="kh-block-grid">
+				{BLOCKS.map((block) => {
+					const enabled = settings.activeBlocks?.[block.id] !== false;
+					const imageUrl = block.image ? `${pluginUrl}${block.image}` : '';
+
+					return (
+						<div className="kh-block-card" key={block.id}>
+							<div className="kh-block-image">
+								{imageUrl ? (
+									<img src={imageUrl} alt="" loading="lazy" />
+								) : (
+									<span className={`dashicons ${block.icon}`} aria-hidden="true" />
+								)}
+							</div>
+
+							<div className="kh-block-content">
+								<div className="kh-block-title-row">
+									<h3>{block.name}</h3>
+									<span className="kh-included-badge">{__('Included', 'kinetichub')}</span>
+								</div>
+
+								<p>{block.description}</p>
+
+								<ToggleControl
+									label={enabled ? __('Enabled', 'kinetichub') : __('Disabled', 'kinetichub')}
+									checked={enabled}
+									onChange={(value) => updateActiveBlock(block.id, value)}
+								/>
+							</div>
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	);
+
+	const renderSettings = () => (
+		<div className="kh-dashboard-panel">
+			<div className="kh-panel-heading">
+				<div>
+					<h2>{__('Global Settings', 'kinetichub')}</h2>
+					<p>{__('Tune shared motion behavior and visual tokens.', 'kinetichub')}</p>
+				</div>
+
+				<Button variant="primary" onClick={saveSettings} isBusy={isSaving} disabled={isSaving}>
+					{isSaving ? __('Saving...', 'kinetichub') : __('Save Settings', 'kinetichub')}
+				</Button>
+			</div>
+
+			<div className="kh-settings-grid">
+				<div className="kh-setting-card">
+					<h3>{__('Motion Engine', 'kinetichub')}</h3>
+
+					<SelectControl
+						label={__('Performance Mode', 'kinetichub')}
+						value={settings.performanceMode}
+						options={[
+							{ label: __('Balanced', 'kinetichub'), value: 'balanced' },
+							{ label: __('Eco', 'kinetichub'), value: 'eco' },
+							{ label: __('Performance', 'kinetichub'), value: 'performance' },
+						]}
+						onChange={(value) => updateSetting('performanceMode', value)}
+					/>
+
+					<RangeControl
+						label={__('Global LERP Amount', 'kinetichub')}
+						value={settings.globalLerp}
+						onChange={(value) => updateSetting('globalLerp', value)}
+						min={0.01}
+						max={0.2}
+						step={0.01}
+						help={__('Lower values feel smoother. Higher values feel faster.', 'kinetichub')}
+					/>
+
+					<ToggleControl
+						label={__('Enable Mobile Motion', 'kinetichub')}
+						checked={!!settings.enableMobileMotion}
+						onChange={(value) => updateSetting('enableMobileMotion', value)}
+					/>
+
+					<ToggleControl
+						label={__('Asset Optimization', 'kinetichub')}
+						checked={!!settings.assetOptimization}
+						onChange={(value) => updateSetting('assetOptimization', value)}
+						help={__('Loads shared frontend styles early for smoother rendering.', 'kinetichub')}
+					/>
+				</div>
+
+				<div className="kh-setting-card">
+					<h3>{__('Visual Tokens', 'kinetichub')}</h3>
+
+					<TextControl
+						label={__('Accent Color', 'kinetichub')}
+						value={settings.accentColor}
+						onChange={(value) => updateSetting('accentColor', value)}
+						help={__('Use a hex color such as #10b981.', 'kinetichub')}
+					/>
+
+					<RangeControl
+						label={__('Glass Blur Intensity', 'kinetichub')}
+						value={settings.glassIntensity}
+						onChange={(value) => updateSetting('glassIntensity', value)}
+						min={0}
+						max={50}
+						step={1}
+					/>
+
+					<div className="kh-color-preview" style={{ backgroundColor: settings.accentColor }}>
+						{__('Accent preview', 'kinetichub')}
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+
+	const renderSystem = () => (
+		<div className="kh-dashboard-panel">
+			<h2>{__('System Info', 'kinetichub')}</h2>
+			<p>{__('Basic environment information for troubleshooting.', 'kinetichub')}</p>
+
+			<table className="kh-system-table">
+				<tbody>
+					<tr>
+						<th>{__('Plugin Version', 'kinetichub')}</th>
+						<td>{dashboardData.version || '1.0.0'}</td>
+					</tr>
+					<tr>
+						<th>{__('REST API', 'kinetichub')}</th>
+						<td className={restOnline ? 'is-good' : 'is-warning'}>{restStatus}</td>
+					</tr>
+					<tr>
+						<th>{__('WebGL Support', 'kinetichub')}</th>
+						<td className={webglActive ? 'is-good' : 'is-warning'}>
+							{webglActive ? __('Available', 'kinetichub') : __('Unavailable', 'kinetichub')}
+						</td>
+					</tr>
+					<tr>
+						<th>{__('WordPress Requirement', 'kinetichub')}</th>
+						<td>{__('Requires WordPress 6.2 or newer.', 'kinetichub')}</td>
+					</tr>
+					<tr>
+						<th>{__('Enabled Blocks', 'kinetichub')}</th>
+						<td>
+							{activeCount} / {BLOCKS.length}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	);
+
+	const renderActiveTab = () => {
+		if ('blocks' === activeTab) {
+			return renderBlocks();
+		}
+
+		if ('settings' === activeTab) {
+			return renderSettings();
+		}
+
+		if ('system' === activeTab) {
+			return renderSystem();
+		}
+
+		return renderOverview();
+	};
+
+	if (isLoading) {
+		return (
+			<div className="kh-dashboard-wrapper">
+				<div className="kh-dashboard-loading">
+					<Spinner />
+					<p>{__('Loading KineticHub dashboard...', 'kinetichub')}</p>
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<div className="kh-dashboard-wrapper" style={{ '--kh-accent': settings.accentColor }}>
+			<header className="kh-dashboard-header">
+				<div>
+					<span className="kh-eyebrow">{__('Animated Blocks for WordPress', 'kinetichub')}</span>
+					<h1>{__('KineticHub', 'kinetichub')}</h1>
+					<p>{__('Configure included blocks and shared motion settings.', 'kinetichub')}</p>
+				</div>
+
+				<div className="kh-header-status">
+					<span className={restOnline ? 'kh-status-dot is-good' : 'kh-status-dot is-warning'} />
+					{restStatus}
+				</div>
+			</header>
+
+			<nav className="kh-dashboard-tabs" aria-label={__('Dashboard sections', 'kinetichub')}>
+				{TABS.map((tab) => (
+					<Button
+						key={tab.id}
+						variant={activeTab === tab.id ? 'primary' : 'secondary'}
+						onClick={() => setActiveTab(tab.id)}
+					>
+						{tab.label}
+					</Button>
+				))}
+			</nav>
+
+			{notice && (
+				<Notice
+					status={notice.status}
+					isDismissible={true}
+					onRemove={() => setNotice(null)}
+					className="kh-dashboard-notice"
+				>
+					{notice.message}
+				</Notice>
+			)}
+
+			<main className="kh-dashboard-main">{renderActiveTab()}</main>
+		</div>
+	);
+}
+
+domReady(() => {
+	const rootElement = document.getElementById('kinetichub-dashboard-root');
+
+	if (!rootElement) {
+		return;
+	}
+
+	createRoot(rootElement).render(<Dashboard />);
+});

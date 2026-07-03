@@ -148,7 +148,7 @@ $kh_ba_outer_classes = array_filter(
 		$kh_ba_container_shadow ? 'has-shadow shadow-' . $kh_ba_shadow_style : '',
 		$kh_ba_force_full_width ? 'is-forced-fullwidth' : '',
 		$kh_ba_hide_labels_move ? 'hide-labels-move' : '',
-
+		
 		$kh_ba_hide_mobile ? 'kh-ba-hide-mobile' : '',
 		$kh_ba_hide_desktop ? 'kh-ba-hide-desktop' : '',
 	)
@@ -183,11 +183,11 @@ if ( 'grayscale' === $kh_ba_after_filter ) {
 $kh_ba_layer_style = '';
 
 	$kh_ba_clip_val = 100 - $kh_ba_initial_offset;
-
+	
 		$kh_ba_layer_style = $kh_ba_reverse_reveal
 			? sprintf( 'clip-path: inset(0 0 0 %s%%);', $kh_ba_initial_offset )
 			: sprintf( 'clip-path: inset(0 %s%% 0 0);', $kh_ba_clip_val );
-
+	
 
 
 $kh_ba_attrs = array(
@@ -240,7 +240,7 @@ $kh_ba_after_alt  = ! empty( $kh_ba_after_image['alt'] ) ? sanitize_text_field( 
 			<?php endif; ?>
 		</div>
 
-
+		
 
 		<div class="kh-ba-handle" style="<?php echo esc_attr( $kh_ba_handle_pos ); ?>">
 			<button
@@ -258,7 +258,7 @@ $kh_ba_after_alt  = ! empty( $kh_ba_after_image['alt'] ) ? sanitize_text_field( 
 						<polyline points="9 18 3 12 9 6"></polyline>
 						<polyline points="15 18 21 12 15 6"></polyline>
 					</svg>
-
+				
 				<?php endif; ?>
 			</button>
 		</div>

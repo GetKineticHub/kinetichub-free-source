@@ -86,7 +86,7 @@ $kinetichub_aa_classes = array_filter(
 	array(
 		'kh-ambient-aura',
 		'kh-aura-pos-' . sanitize_html_class( $kinetichub_aa_position ),
-
+		
 	)
 );
 

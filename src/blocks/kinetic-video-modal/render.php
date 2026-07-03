@@ -144,7 +144,7 @@ $kh_vm_classes = array_filter(
 		'ratio-' . $kh_vm_aspect_ratio,
 		'btn-style-' . $kh_vm_button_style,
 		'zoom-' . $kh_vm_hover_zoom_level,
-
+		
 	)
 );
 
@@ -214,7 +214,7 @@ $kh_vm_data_attrs = array(
 				</span>
 			</button>
 
-
+			
 		</div>
 	</div>
 </div>

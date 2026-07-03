@@ -14,7 +14,7 @@
         abortController: null,
         activeUpdateNode: null,
         viewObserver: null,
-
+        
         mutationObserver: null,
         initTimer: null,
 
@@ -50,7 +50,8 @@
                 }, { rootMargin: '100px' });
             }
 
-            ,
+            
+        },
 
         startTracking() {
             if (this.isTracking) return;
@@ -86,9 +87,11 @@
         },
 
         scanDOM() {
-            document.querySelectorAll('.kh-mb-wrapper:not(.is-inview)').forEach(wrapper =>
+            document.querySelectorAll('.kh-mb-wrapper:not(.is-inview)').forEach(wrapper => {
+                
                     wrapper.classList.add('is-inview');
-                );
+                
+            });
 
             const buttons = document.querySelectorAll('.kh-mb-button:not(.js-ready)');
             if (buttons.length > 0) {
@@ -160,7 +163,8 @@
                     this.viewObserver = null;
                 }
                 
-
+                
+            }
         }
     };
 
@@ -199,9 +203,10 @@
             this.el.classList.add('js-ready');
             this.manager.viewObserver.observe(this.el);
             this.setupListeners();
+            
+        }
 
-
-
+        
 
         setupListeners() {
             const options = { passive: true, signal: this.abortController.signal };

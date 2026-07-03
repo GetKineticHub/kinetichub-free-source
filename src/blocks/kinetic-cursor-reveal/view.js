@@ -24,7 +24,7 @@
             wrapper._kh_cr_animFrameId = null;
         }
 
-
+        
 
         // Pause any active videos before DOM restore
         if (wrapper._kh_cr_floatingBox) {
@@ -74,14 +74,14 @@
             isMouseTracking = true;
         }
 
-
+        
 
         wrappers.forEach(wrapper => {
             wrapper.classList.add('kh-cr-ready');
             wrapper._kh_cr_isDestroyed = false;
             activeInstances.add(wrapper);
             
-
+            
 
             const blockId = wrapper.dataset.blockid;
             const floatingBox = document.querySelector(`.kh-cr-floating-box-${blockId}`);
@@ -104,9 +104,9 @@
             let mediaLayer = 'over';
             let mobileAction = 'tap';
 
+            
 
-
-
+            
 
             if (mediaLayer === 'over') {
                 document.body.appendChild(floatingBox);
@@ -262,7 +262,7 @@
                 item.classList.remove('is-magnetic-active'); 
                 item.dataset.tapped = 'false'; 
                 
-
+                
 
                 floatingBox.style.transform = '';
             };
@@ -278,12 +278,12 @@
                     pos.x += diffX * lerpAmount;
                     pos.y += diffY * lerpAmount;
 
-
+                    
 
                     let targetX = pos.x;
                     let targetY = pos.y;
 
-
+                    
 
                     const finalX = targetX + offsetX;
                     const finalY = targetY + offsetY;
@@ -298,7 +298,7 @@
 
                     floatingBox.style.transform = `translate3d(${clampedX}px, ${clampedY}px, 0) translate(-50%, -50%) rotate(${rotation}deg)`;
 
-
+                    
                     
                     wrapper._kh_cr_animFrameId = requestAnimationFrame(animate);
                 } else {

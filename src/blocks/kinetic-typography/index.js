@@ -13,6 +13,7 @@ import {
     ToggleControl,
     BaseControl,
     Button,
+    Notice,
     __experimentalDivider as Divider
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -52,7 +53,8 @@ registerBlockType(metadata.name, {
             customLineHeightMobile,
             fontSize,
             style,
-             = attributes;
+            
+        } = attributes;
 
         const hasNativeTypo = !!(fontSize || style?.typography?.fontSize || style?.typography?.lineHeight);
         const hasCustomTypo = !!(customFontSize || customFontSizeMobile || customLineHeight || customLineHeightMobile);
@@ -63,7 +65,7 @@ registerBlockType(metadata.name, {
         let editorShowsDirectionControl = true;
         let editorSupportsTriggerControl = true;
 
-
+        
 
         const resetCustomFont = () => {
             const resetAttributes = {
@@ -73,7 +75,7 @@ registerBlockType(metadata.name, {
                 customLineHeightMobile: undefined
             };
 
-
+            
 
             setAttributes(resetAttributes);
         };
@@ -82,7 +84,7 @@ registerBlockType(metadata.name, {
             '--kh-ty-outline-w': `${outlineWidth}px`
         };
 
-
+        
 
         if (hasCustomTypo) {
             if (customFontSize) cssVars['--kh-ty-fs-desk'] = `${customFontSize}px`;
@@ -97,7 +99,7 @@ registerBlockType(metadata.name, {
             hasCustomTypo ? 'kh-ty-has-custom-typo' : (hasNativeTypo ? 'kh-ty-has-native-typo' : ''),
             `kh-ty-anim-${editorAnimationType}`,
             useOutline ? 'kh-ty-has-outline' : '',
-
+            
         ].filter(Boolean).join(' ');
 
         const blockProps = useBlockProps({ className: classes, style: cssVars });
@@ -113,7 +115,7 @@ registerBlockType(metadata.name, {
                                 { label: __('Reveal (Masked)', 'kinetichub'), value: 'reveal' },
                                 { label: __('Blur In', 'kinetichub'), value: 'blur' },
                                 { label: __('Pop In', 'kinetichub'), value: 'pop' },
-
+                                
                             ]}
                             onChange={(value) => setAttributes({ animationType: value })}
                         />
@@ -168,7 +170,7 @@ registerBlockType(metadata.name, {
                                 value={editorTrigger}
                                 options={[
                                     { label: __('On Scroll (Entrance)', 'kinetichub'), value: 'scroll' },
-
+                                    
                                 ]}
                                 onChange={(value) => setAttributes({ trigger: value })}
                             />
@@ -186,24 +188,24 @@ registerBlockType(metadata.name, {
                                     step={0.1}
                                 />
 
-
+                                
                             </>
                         )}
 
-
+                        
                     </PanelBody>
 
+                    
 
-
-
+                    
                     <PanelBody title={__('Additional Visual Effects', 'kinetichub')} initialOpen={false}>
                         <p className="kh-ty-static-note">
-                            {__('Additional visual effects are available in the separate advanced version.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
+                    
 
-
-
+                    
 
                     <PanelBody title={__('📱 Responsive Typography', 'kinetichub')} initialOpen={false}>
                         <div className="kh-ty-custom-font-control">
@@ -213,10 +215,10 @@ registerBlockType(metadata.name, {
                                 <RangeControl label={__('Desktop Line Height', 'kinetichub')} value={customLineHeight || 0} onChange={(value) => setAttributes({ customLineHeight: value })} min={0.8} max={3} step={0.1} />
                                 <RangeControl label={__('Mobile Line Height', 'kinetichub')} value={customLineHeightMobile || 0} onChange={(value) => setAttributes({ customLineHeightMobile: value })} min={0.8} max={3} step={0.1} />
 
-
+                                
 
                                 {(hasCustomTypo
-
+                                    
                                 ) && (
                                     <Button variant="link" className="is-destructive" onClick={resetCustomFont}>
                                         {__('Reset responsive sizes', 'kinetichub')}
@@ -227,7 +229,7 @@ registerBlockType(metadata.name, {
                     </PanelBody>
 
                     <PanelBody title={__('🎨 Visual Styles', 'kinetichub')} initialOpen={false}>
-
+                        
 
                         <ToggleControl label={__('Enable Outline Mode', 'kinetichub')} checked={useOutline} onChange={(value) => setAttributes({ useOutline: value })} />
 
@@ -235,7 +237,7 @@ registerBlockType(metadata.name, {
                             <RangeControl label={__('Stroke Width (px)', 'kinetichub')} value={outlineWidth} onChange={(value) => setAttributes({ outlineWidth: value })} min={1} max={10} />
                         )}
 
-
+                        
                     </PanelBody>
 
                     <PanelBody title={__('⚙️ Content & Mechanics', 'kinetichub')} initialOpen={false}>
@@ -264,12 +266,18 @@ registerBlockType(metadata.name, {
                             onChange={(value) => setAttributes({ tagName: value })}
                         />
 
+                        {['h1', 'h2', 'h3'].includes(tagName) && (
+                            <Notice status="warning" isDismissible={false} style={{ marginBottom: '12px' }}>
+                                {__('For SEO-critical headings, avoid per-letter animation. Use this effect for hero or decorative text.', 'kinetichub')}
+                            </Notice>
+                        )}
+
                         <ToggleControl label={__('Reverse Animation Order', 'kinetichub')} checked={reverseOrder} onChange={(value) => setAttributes({ reverseOrder: value })} />
 
-
+                        
                     </PanelBody>
 
-
+                    
                 </InspectorControls>
 
                 <div {...blockProps}>
@@ -281,7 +289,7 @@ registerBlockType(metadata.name, {
                     )}
 
                     <div className="kh-ty-text-wrapper">
-
+                        
 
                         <RichText
                             tagName={tagName}

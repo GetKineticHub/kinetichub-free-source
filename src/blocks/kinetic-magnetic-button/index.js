@@ -13,7 +13,9 @@ import {
     ColorPalette,
     SelectControl,
     TabPanel,
-    TextControl
+    TextControl,
+    Notice,
+    Button
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
@@ -166,6 +168,78 @@ const renderIcon = (type) => {
     }
 };
 
+// --- Editor-only contrast helpers (do not affect saved markup) ---
+const CONTRAST_MIN_RATIO = 4.5;
+
+// Normalizes #RGB / #RRGGBB and simple rgb()/rgba() strings to {r,g,b,a}.
+// Returns null for anything we can't safely reason about (CSS vars,
+// transparent, gradients, empty strings, unsupported formats).
+const kbNormalizeColorForContrast = (value) => {
+    if (typeof value !== 'string') {
+        return null;
+    }
+
+    const color = value.trim();
+
+    if (color === '') {
+        return null;
+    }
+
+    const hexMatch = color.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (hexMatch) {
+        let hex = hexMatch[1];
+        if (hex.length === 3) {
+            hex = hex.split('').map((ch) => ch + ch).join('');
+        }
+        return {
+            r: parseInt(hex.slice(0, 2), 16),
+            g: parseInt(hex.slice(2, 4), 16),
+            b: parseInt(hex.slice(4, 6), 16),
+            a: 1
+        };
+    }
+
+    const rgbMatch = color.match(/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(0|1|0?\.\d+)\s*)?\)$/i);
+    if (rgbMatch) {
+        return {
+            r: Math.min(255, parseInt(rgbMatch[1], 10)),
+            g: Math.min(255, parseInt(rgbMatch[2], 10)),
+            b: Math.min(255, parseInt(rgbMatch[3], 10)),
+            a: rgbMatch[4] !== undefined ? parseFloat(rgbMatch[4]) : 1
+        };
+    }
+
+    // var(--...), transparent, gradients, named colors, etc. are unsupported.
+    return null;
+};
+
+const kbRelativeLuminance = ({ r, g, b }) => {
+    const channel = (raw) => {
+        const srgb = raw / 255;
+        return srgb <= 0.03928 ? srgb / 12.92 : Math.pow((srgb + 0.055) / 1.055, 2.4);
+    };
+
+    return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+};
+
+// Returns a contrast ratio (1-21) or null when either color is not a
+// concrete, fully opaque color we can safely evaluate.
+const kbGetContrastRatio = (colorA, colorB) => {
+    const a = kbNormalizeColorForContrast(colorA);
+    const b = kbNormalizeColorForContrast(colorB);
+
+    if (!a || !b || a.a < 1 || b.a < 1) {
+        return null;
+    }
+
+    const luminanceA = kbRelativeLuminance(a);
+    const luminanceB = kbRelativeLuminance(b);
+    const lighter = Math.max(luminanceA, luminanceB);
+    const darker = Math.min(luminanceA, luminanceB);
+
+    return (lighter + 0.05) / (darker + 0.05);
+};
+
 registerBlockType(metadata.name, {
     icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -239,6 +313,13 @@ registerBlockType(metadata.name, {
         const activeTextHover = textHoverColor || (isOutline ? (textColor || '#ffffff') : activeText);
         const activeBorderHoverColor = borderHoverColor || activeBorderColor;
 
+        // Editor-only contrast warning. null ratio (CSS var/transparent/gradient/
+        // unsupported) never triggers a warning; only concrete, opaque colors do.
+        const normalContrastRatio = kbGetContrastRatio(activeBg, activeText);
+        const hoverContrastRatio = kbGetContrastRatio(activeBgHover, activeTextHover);
+        const hasLowNormalContrast = normalContrastRatio !== null && normalContrastRatio < CONTRAST_MIN_RATIO;
+        const hasLowHoverContrast = hoverContrastRatio !== null && hoverContrastRatio < CONTRAST_MIN_RATIO;
+
         const shadowBase = enableShadow && !isOutline
             ? `${shadowX}px ${shadowY}px ${shadowBlur}px ${shadowSpread}px ${shadowColor || 'rgba(0,0,0,0.1)'}`
             : 'none';
@@ -277,6 +358,8 @@ registerBlockType(metadata.name, {
             right: 'flex-end'
         };
 
+        const effectiveHoverScale = hoverEffect === 'lift-up' ? false : hoverScale;
+
         const wrapperProps = useBlockProps({
             className: 'kh-mb-wrapper',
             style: { justifyContent: alignmentMap[align] || 'center' }
@@ -287,7 +370,7 @@ registerBlockType(metadata.name, {
             glassmorphism && !isOutline ? 'is-glass' : '',
             enablePulse ? 'is-pulsing' : '',
             showIconNormal ? 'icon-always-visible' : '',
-
+            
         ].filter(Boolean).join(' ');
 
         const renderStatus = () => {
@@ -326,6 +409,49 @@ registerBlockType(metadata.name, {
                             onChange={(value) => setAttributes({ isOutline: value })}
                             help={__('Automatically converts the button to an outline style using the background color as the border.', 'kinetichub')}
                         />
+
+                        {hasLowNormalContrast && (
+                            <Notice status="warning" isDismissible={false}>
+                                {__('Low contrast: normal button text may be hard to read. Aim for at least 4.5:1.', 'kinetichub')}
+                            </Notice>
+                        )}
+
+                        {hasLowHoverContrast && (
+                            <Notice status="warning" isDismissible={false}>
+                                {__('Low contrast: hover button text may be hard to read. Aim for at least 4.5:1.', 'kinetichub')}
+                            </Notice>
+                        )}
+
+                        {!isOutline && (
+                            <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+                                <p style={{ marginBottom: '5px', fontWeight: 'bold', fontSize: '12px' }}>
+                                    {__('Accessible Presets', 'kinetichub')}
+                                </p>
+                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                    <Button
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={() => setAttributes({ bgColor: '#047857', textColor: '#ffffff' })}
+                                    >
+                                        {__('Green / White', 'kinetichub')}
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={() => setAttributes({ bgColor: '#111827', textColor: '#ffffff' })}
+                                    >
+                                        {__('Dark / White', 'kinetichub')}
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={() => setAttributes({ bgColor: '#ffffff', textColor: '#111827' })}
+                                    >
+                                        {__('White / Dark', 'kinetichub')}
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
 
                         <TabPanel
                             className="kh-mb-tabs"
@@ -380,19 +506,21 @@ registerBlockType(metadata.name, {
 
                                             <hr />
 
-
+                                            
                                             <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginTop: '10px' }}>
-                                                {__('This free build includes the core hover effect. Additional hover styles are not included in this build.', 'kinetichub')}
+                                                {__('This free build includes the core hover effect. Additional hover styles are reserved for the commercial edition.', 'kinetichub')}
                                             </p>
+                                            
 
+                                            
 
-
-
-                                            <ToggleControl
-                                                label={__('Scale Up on Hover', 'kinetichub')}
-                                                checked={hoverScale}
-                                                onChange={(value) => setAttributes({ hoverScale: value })}
-                                            />
+                                            {hoverEffect !== 'lift-up' && (
+                                                <ToggleControl
+                                                    label={__('Scale Up on Hover', 'kinetichub')}
+                                                    checked={hoverScale}
+                                                    onChange={(value) => setAttributes({ hoverScale: value })}
+                                                />
+                                            )}
                                         </>
                                     )}
                                 </div>
@@ -605,9 +733,9 @@ registerBlockType(metadata.name, {
                         <KineticBorderControls attributes={attributes} setAttributes={setAttributes} />
                     )}
 
+                    
 
-
-
+                    
                 </InspectorControls>
 
                 <div {...wrapperProps}>
@@ -618,7 +746,7 @@ registerBlockType(metadata.name, {
                         data-strength={magneticStrength}
                         data-range={magneticRange}
                         data-parallax={textSeparation ? 'true' : 'false'}
-                        data-scale={hoverScale ? 'true' : 'false'}
+                        data-scale={effectiveHoverScale ? 'true' : 'false'}
                     >
                         <span className="kh-mb-hitbox" aria-hidden="true" />
                         <span className="kh-mb-button-fx" aria-hidden="true" />

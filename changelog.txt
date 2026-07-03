@@ -1,10 +1,31 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.7
+Current Version: 1.0.9
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.0.9] - 2026-07-02
+----------------------------------------------------------------------
+- Fixed Hero Mesh canvas layout behavior to prevent layout shift and ensure block styles enqueue correctly.
+- Added block asset metadata validation to prevent stale block asset versions and missing file references.
+- Improved Typography accessibility by preserving readable screen-reader text without unsupported ARIA attributes.
+- Fixed editor iframe stylesheet loading for global KineticHub variables and animation styles.
+- Improved Split Scroll pagination dot touch targets and keyboard focus behavior.
+- Added Magnetic Button editor warnings for low-contrast color choices and optional accessible color presets.
+----------------------------------------------------------------------
+## [1.0.8] - 2026-06-26
+----------------------------------------------------------------------
+- Fixed Typography wrapping in narrow containers when using split text animations.
+- Improved Typography spacing between split words and ampersand characters.
+- Improved Typography SEO notice spacing in the editor.
+- Restored Cursor Reveal mask animation behavior.
+- Added list layout controls to Cursor Reveal.
+- Fixed Magnetic Button hover scale conflicts with Float, Lift Up, and Scale Up effects.
+- Fixed Kinetic Box grayscale-to-color hover transition behavior.
+- Normalized upgrade messaging across block controls.
+- Added a lightweight KineticHub Pro dashboard banner for the free plugin.
 ----------------------------------------------------------------------
 ## [1.0.7] - 2026-06-16
 ----------------------------------------------------------------------

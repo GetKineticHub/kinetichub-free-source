@@ -147,7 +147,7 @@ $kh_mq_outer_classes = array_filter(
         $kh_mq_show_indicator ? 'has-interaction-indicator' : '',
         $kh_mq_highlight_active ? 'has-active-center-highlight' : '',
         $kh_mq_sibling_blur ? 'has-sibling-blur' : '',
-
+        
     )
 );
 

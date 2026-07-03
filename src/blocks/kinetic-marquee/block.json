@@ -1,10 +1,10 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/marquee",
-  "version": "1.0.2",
+  "version": "1.0.9",
   "title": "Kinetic Marquee",
   "category": "kinetic-suite",
-  "description": "Animated logo and image marquee block for scrolling visual rows.",
+  "description": "Infinite scrolling marquee optimized for logos and images with hardware-accelerated physics.",
   "keywords": [
     "marquee",
     "scrolling text",

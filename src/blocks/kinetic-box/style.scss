@@ -91,7 +91,7 @@ body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
         box-shadow: 0 0 40px 10px var(--kh-box-hover-shadow) !important; 
     }
     
-
+    
 
     .kh-box-inner-content {
         position: relative;
@@ -138,7 +138,7 @@ body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
     
     
     
-    &.kh-box-grayscale { filter: grayscale(100%); transition: filter 0.4s ease; }
+    &.kh-box-grayscale { filter: grayscale(100%); }
     &.kh-box-grayscale:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
     &.kh-box-grayscale.is-physics-active { filter: grayscale(0%); }
     
@@ -153,9 +153,10 @@ body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
     &.kh-box-z-top:not([data-tilt="true"]):not([data-magnetic="true"]):hover,
     &.kh-box-z-top.is-physics-active { z-index: 999 !important; }
 
+    
 
-
-
+    
+}
 
 
 
@@ -178,7 +179,7 @@ body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
     /* Neutralize Stretched Link in Editor so text is selectable */
     .kh-box-stretched-link { display: none !important; pointer-events: none !important; }
 
-
+    
 
     transform-style: flat !important; perspective: none !important; transform: none !important;
     .kh-box-inner-content { transform-style: flat !important; transform: none !important; }

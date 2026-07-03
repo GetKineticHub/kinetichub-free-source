@@ -22,7 +22,7 @@
         &.has-parallax { background-attachment: scroll !important; }
     }
 
-
+    
 
     .kh-hm-canvas-engine, 
     .kh-hm-overlay, 
@@ -75,14 +75,18 @@
 .kh-hm-canvas-engine {
     position: absolute !important;
     top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
+    margin: 0;
+    padding: 0;
     object-fit: cover;
     z-index: 1;
     display: block;
-    pointer-events: none; 
-    transform: translateZ(0); 
+    pointer-events: none;
+    transform: translateZ(0);
     will-change: transform;
 }
 

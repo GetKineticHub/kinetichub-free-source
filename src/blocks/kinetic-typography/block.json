@@ -1,10 +1,10 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/typography",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "title": "Kinetic Typography",
   "category": "kinetic-suite",
-  "description": "Animated typography block with text splitting, reveal effects, and responsive type controls.",
+  "description": "Professional kinetic typography engine with advanced splitting, 3D perspective, and hardware-accelerated triggers.",
   "keywords": [
     "animated text",
     "headline",
@@ -106,7 +106,8 @@
       "style": true
     },
     "html": false,
-    "align": true
+    "align": true,
+    "anchor": true
   },
   "textdomain": "kinetichub",
   "editorScript": "file:./index.js",

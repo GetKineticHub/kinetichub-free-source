@@ -8,9 +8,9 @@
 
     const VIEWPORT_OBSERVER_MARGIN = '100px 0px';
     const FADE_UP_MARGIN = '0px 0px -10% 0px';
-
+    
     const INIT_DELAY_MS = 150;
-
+    
 
     let isMobile = window.matchMedia('(max-width: 768px)').matches;
     let viewportHeight = window.innerHeight;
@@ -65,7 +65,7 @@
         const mediaInner = wrapper.querySelector('.kh-ss-media-inner');
         const mediaLayers = wrapper.querySelectorAll('.kh-ss-media-layer');
         const progressFill = wrapper.querySelector('.kh-ss-progress-fill');
-
+        
         
         const textNodes = Array.from(scrollCol.children);
         const enableStickyMobile = wrapper.dataset.stickyMobile === 'true';
@@ -248,7 +248,7 @@
         const stickyOffset = parseInt(wrapper.dataset.offset) || 0;
         
         // Smart Addons State Extraction
-
+        
 
         // FIX: Dynamic Geometry Recalculation (No Stale Cache when content loads late)
         const resizeObserver = new ResizeObserver(() => {
@@ -265,7 +265,7 @@
         resizeObserver.observe(wrapper);
         wrapper._kh_ss_observers.push(resizeObserver);
 
-
+        
 
         // --- Fade-Up Entrance Observer (FREE feature) ---
         if (textEffect === 'fade-up' && !prefersReducedMotion) {
@@ -283,11 +283,11 @@
             wrapper._kh_ss_observers.push(fadeObserver); 
         }
 
-
+        
 
         let isEngineRunning = false;
         let lastActiveIndex = -1; 
-
+        
         let lastScrollY = -1; // FIX: CPU Drain tracking
 
         // Technical Note: 60FPS RAF Engine operating STRICTLY on memory-cached geometrics
@@ -320,11 +320,11 @@
             let rawProgress = scrollDistance > 0 ? (0 - scrollStart) / scrollDistance : 1;
             const progress = Math.max(0, Math.min(1, rawProgress));
 
-
+            
 
             if (progressFill) progressFill.style.transform = `scaleY(${progress})`;
             
-
+            
 
             if (mediaCount > 1 && enableSmartSwap && !prefersReducedMotion) {
                 let activeIndex = Math.floor(progress * mediaCount);
@@ -336,7 +336,7 @@
                         else layer.classList.remove('is-active');
                     });
                     
-
+                    
                     lastActiveIndex = activeIndex;
                 }
             }

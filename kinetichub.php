@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: KineticHub - Animated Gutenberg Blocks
+ * Plugin Name: KineticHub - Animated Blocks
  * Plugin URI: https://getkinetichub.com
  * Description: Animated Gutenberg blocks for WordPress with motion, media, typography, sliders, marquees, and interactive visual effects.
- * Version: 1.0.7
+ * Version: 1.0.9
  * Author: kinetichub
  * Text Domain: kinetichub
  * Domain Path: /languages
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'kinetichub_PATH', plugin_dir_path( __FILE__ ) );
 define( 'kinetichub_URL', plugin_dir_url( __FILE__ ) );
-define( 'kinetichub_VERSION', '1.0.7' );
+define( 'kinetichub_VERSION', '1.0.9' );
 
 class kinetichub_Suite {
 	private static $instance = null;
@@ -39,9 +39,9 @@ class kinetichub_Suite {
 		add_action( 'admin_menu', array( $this, 'register_dashboard_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_global_tokens' ), 5 );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_global_tokens' ), 5 );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_global_tokens' ), 5 );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_editor_canvas_assets' ), 6 );
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
 
@@ -222,14 +222,23 @@ class kinetichub_Suite {
 	}
 
 	public function enqueue_editor_assets() {
-		if ( file_exists( kinetichub_PATH . 'assets/css/global-animations.css' ) ) {
-			wp_enqueue_style(
-				'kinetichub-global-animations-editor',
-				kinetichub_URL . 'assets/css/global-animations.css',
-				array(),
-				kinetichub_VERSION
-			);
+		// Canvas/iframe CSS is loaded via enqueue_editor_canvas_assets() on enqueue_block_assets instead.
+	}
+
+	/**
+	 * Loads global-animations.css inside the block editor canvas iframe.
+	 *
+	 * enqueue_block_assets fires on both frontend and editor. On the frontend,
+	 * global animation CSS is already handled by register_frontend_assets() /
+	 * enqueue_frontend_css(), so this bails out early there to avoid loading
+	 * the stylesheet twice.
+	 */
+	public function enqueue_editor_canvas_assets() {
+		if ( ! is_admin() ) {
+			return;
 		}
+
+		$this->enqueue_frontend_css();
 	}
 
 	public function register_dashboard_menu() {

@@ -101,7 +101,7 @@ $kh_hm_classes = array_filter(
 		'align' . $kh_hm_align,
 		$kh_hm_parallax_effect ? 'has-parallax' : '',
 		$kh_hm_enable_grain ? 'has-grain' : '',
-
+		
 	)
 );
 
@@ -161,6 +161,8 @@ $kh_hm_layer_style = sprintf(
 
 $kh_hm_inner_wrap_style = 'width: 100%; pointer-events: auto; display: flex; flex-direction: column;';
 
+$kh_hm_canvas_style = 'position: absolute; inset: 0; width: 100%; height: 100%; display: block; margin: 0; padding: 0; z-index: 1; pointer-events: none;';
+
 $kh_hm_wrapper_attrs = get_block_wrapper_attributes(
 	array(
 		'class'               => implode( ' ', $kh_hm_classes ),
@@ -173,14 +175,14 @@ $kh_hm_wrapper_attrs = get_block_wrapper_attributes(
 		'data-plexus-speed'   => (string) $kh_hm_plexus_speed,
 		'data-plexus-width'   => (string) $kh_hm_plexus_line_width,
 		'data-plexus-int'     => $kh_hm_plexus_interact,
-
+		
 	)
 );
 ?>
 
 <div <?php echo $kh_hm_wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped by get_block_wrapper_attributes. ?>>
 	<?php if ( 'classic' !== $kh_hm_bg_mode ) : ?>
-		<canvas class="kh-hm-canvas-engine" aria-hidden="true"></canvas>
+		<canvas class="kh-hm-canvas-engine" aria-hidden="true" style="<?php echo esc_attr( $kh_hm_canvas_style ); ?>"></canvas>
 	<?php endif; ?>
 
 	<div class="kh-hm-overlay" style="<?php echo esc_attr( $kh_hm_overlay_style ); ?>"></div>

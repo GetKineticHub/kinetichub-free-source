@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-
+    
 
     const activeInstances = new Set();
     let globalEntranceObserver = null;
@@ -40,7 +40,7 @@
         }
     };
 
-
+    
 
     const initEntrance = (box) => {
         if (box.classList.contains('kh-box-ready')) return;
@@ -49,13 +49,14 @@
         activeInstances.add(box);
 
         let hasEntrance = false;
-
+        
 
         if (!hasEntrance) {
             box.style.opacity = 1;
         }
 
-        ;
+        
+    };
 
     const run = () => {
         const boxes = document.querySelectorAll('.kh-box-wrapper:not(.kh-box-ready)');

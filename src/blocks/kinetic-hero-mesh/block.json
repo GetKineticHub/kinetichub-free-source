@@ -1,11 +1,11 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/hero-mesh",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "title": "Kinetic Hero Mesh",
   "category": "kinetic-suite",
   "icon": "cover-image",
-  "description": "Generative hero container with Plexus and Classic visual modes.",
+  "description": "Premium Generative Layout Container featuring Plexus, Liquid, Gradient, Lens, and Aurora engines.",
   "keywords": [
     "hero section",
     "mesh",
@@ -118,7 +118,7 @@
   "textdomain": "kinetichub",
   "editorScript": "file:./index.js",
   "viewScript": "file:./view.js",
-  "style": "file:./style.scss",
-  "editorStyle": "file:./style.scss",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
   "render": "file:./render.php"
 }

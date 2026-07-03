@@ -439,7 +439,8 @@
         // ========================================
         // MAGNETIC ANIMATION WITH PROPER CLEANUP
         // ========================================
-        ;
+        
+    };
 
     /**
      * Initialize all video modal blocks on page

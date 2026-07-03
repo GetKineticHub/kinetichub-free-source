@@ -224,9 +224,11 @@
 @media (max-width: 480px) {
     .kh-ap-button:not([data-compact="true"]) { padding-left: 15px !important; padding-right: 15px !important; gap: 10px; }
     .kh-ap-seek-layer { transform: scale(1.2); } 
+    
+}
 
-
-@media (prefers-reduced-motion: reduce)
+@media (prefers-reduced-motion: reduce) {
+    
     .kh-ap-bar {
         animation: none !important;
         transform: scaleY(0.2) !important;

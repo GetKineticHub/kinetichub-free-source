@@ -146,9 +146,14 @@
             if (canvas) {
                 canvas.style.position = 'absolute';
                 canvas.style.top = '0';
+                canvas.style.right = '0';
+                canvas.style.bottom = '0';
                 canvas.style.left = '0';
                 canvas.style.width = '100%';
                 canvas.style.height = '100%';
+                canvas.style.margin = '0';
+                canvas.style.padding = '0';
+                canvas.style.display = 'block';
                 canvas.style.pointerEvents = 'none';
             }
 
@@ -275,9 +280,9 @@
                 startEngine();
             }
             
-
-
-
+            
+            
+            
 
             // Classic mode: no render loop but still needs viewport observation for is-visible class (grain animation)
             if (mode === 'classic' && !hero._kh_hm_IsDestroyed) {

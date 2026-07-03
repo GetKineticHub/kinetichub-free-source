@@ -6,7 +6,7 @@
 import './style.scss';
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, RangeControl, SelectControl, ColorPalette from '@wordpress/components';
+import { PanelBody, RangeControl, SelectControl, ColorPalette } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import metadata from './block.json';
 
@@ -18,9 +18,10 @@ registerBlockType(metadata.name, {
         const { attributes, setAttributes } = props;
         const { 
             color, opacity, spread, falloff, shape, positionType, 
-            offsetX, offsetY = attributes;
+            offsetX, offsetY
+        } = attributes;
 
-
+        
 
         let currentShape = 'circle';
         let cssShape = 'circle';
@@ -28,10 +29,10 @@ registerBlockType(metadata.name, {
         let editorZIndex = -1;
         let editorBlendMode = 'normal';
 
-
+        
 
         let shapeLabel = __('Shape', 'kinetichub');
-
+        
 
         const blockProps = useBlockProps({
             className: `kh-ambient-aura kh-aura-pos-${positionType}`,
@@ -68,7 +69,7 @@ registerBlockType(metadata.name, {
                             help={__('Circle or stretched oval form.', 'kinetichub')}
                             options={[
                                 {label: __('Circle', 'kinetichub'), value: 'circle'},
-
+                                
                             ]} 
                             onChange={(v) => setAttributes({ shape: v })} 
                         />
@@ -122,16 +123,16 @@ registerBlockType(metadata.name, {
                             help={__('Negative moves it above the block.', 'kinetichub')}
                         />
                         
-
+                        
                     </PanelBody>
                     
                     <PanelBody title={__('⚙️ Advanced & Performance', 'kinetichub')} initialOpen={false}>
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', margin: '10px 0 0' }}>
-                            {__('Additional shape, blend, mobile, and layering options are available in KineticHub Pro, distributed separately from WordPress.org.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                     </PanelBody>
                 </InspectorControls>
 

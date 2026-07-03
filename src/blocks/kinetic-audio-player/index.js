@@ -75,13 +75,13 @@ registerBlockType(metadata.name, {
         };
 
         let editorGlowClass = '';
-
+        
 
         let editorWaveformStyle = 'default';
-
+        
 
         let showEditorTools = !isCompact && enableVolume;
-
+        
 
         return (
             <>
@@ -146,12 +146,12 @@ registerBlockType(metadata.name, {
                         
                         
 
-
+                        
                         <hr/>
                         <p style={{ fontSize: '12px', opacity: 0.6, marginTop: '4px' }}>
-                            {__('Additional sticky and floating options are available in KineticHub Pro, distributed separately from WordPress.org.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                         
                         {!isCompact && <SelectControl label={__('Time Display Mode', 'kinetichub')} value={timeDisplayMode} options={[{label: 'Hidden', value: 'none'}, {label: 'Elapsed Time', value: 'elapsed'}, {label: 'Remaining Time', value: 'remaining'}, {label: 'Total Duration', value: 'total'}]} onChange={(v) => setAttributes({ timeDisplayMode: v })} help={__('Shows current, remaining, or total.', 'kinetichub')} />}
                     </PanelBody>
@@ -182,31 +182,31 @@ registerBlockType(metadata.name, {
                         <ToggleControl label={__('Show Animated Waveform', 'kinetichub')} checked={showWaveform} onChange={(v) => setAttributes({ showWaveform: v })} help={__('Animated bars synced to audio.', 'kinetichub')} />
                         {showWaveform && (
                             <>
-
+                                
                             </>
                         )}
                         
                         <ToggleControl label={__('Enable Interactive Seekbar', 'kinetichub')} checked={enableSeekbar} onChange={(v) => setAttributes({ enableSeekbar: v })} help={__('Click to jump to any position.', 'kinetichub')} />
                         {enableSeekbar && (
                             <>
-
+                                
                             </>
                         )}
 
-
+                        
                         
                         {!isCompact && (
                             <>
                                 <ToggleControl label={__('Show Volume Control', 'kinetichub')} checked={enableVolume} onChange={(v) => setAttributes({ enableVolume: v })} help={__('Volume button and slider.', 'kinetichub')} />
-
+                                
                             </>
                         )}
 
-
+                        
                         <p style={{ fontSize: '12px', opacity: 0.6, marginTop: '10px' }}>
-                            {__('Additional options are available in KineticHub Pro, distributed separately from WordPress.org.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                     </PanelBody>
 
                     <PanelBody title={__('📦 Shadow & Depth', 'kinetichub')} initialOpen={false}>
@@ -259,7 +259,7 @@ registerBlockType(metadata.name, {
                                         <input type="range" className="kh-ap-vol-slider" min="0" max="100" defaultValue="100" readOnly />
                                     </div>
                                 )}
-
+                                
                             </div>
                         )}
                     </div>

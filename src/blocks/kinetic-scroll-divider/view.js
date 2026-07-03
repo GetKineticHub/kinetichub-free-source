@@ -67,7 +67,7 @@
                 return;
             }
 
-
+            
                 const offsetVal = block.style.getPropertyValue('--kh-div-offset') || '0%';
                 const rootMargin = `0px 0px ${offsetVal} 0px`;
 
@@ -81,7 +81,8 @@
                 }, { rootMargin, threshold: 0 });
 
                 observer.observe(block);
-            );
+            
+        });
     };
 
     // Safeload execution

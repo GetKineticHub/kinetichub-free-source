@@ -126,7 +126,7 @@ $kh_ty_lines       = is_array( $kh_ty_lines ) ? $kh_ty_lines : array( $kh_ty_raw
 $kh_ty_total_items = 0;
 
 foreach ( $kh_ty_lines as $kh_ty_line ) {
-	$kh_ty_clean_line = wp_strip_all_tags( $kh_ty_line );
+	$kh_ty_clean_line = wp_specialchars_decode( wp_strip_all_tags( $kh_ty_line ), ENT_QUOTES );
 	$kh_ty_words      = preg_split( '/\s+/u', $kh_ty_clean_line, -1, PREG_SPLIT_NO_EMPTY );
 	$kh_ty_words      = is_array( $kh_ty_words ) ? $kh_ty_words : array();
 
@@ -212,7 +212,7 @@ $kh_ty_html_spans        = '';
 $kh_ty_global_item_count = 0;
 
 foreach ( $kh_ty_lines as $kh_ty_line_index => $kh_ty_line ) {
-	$kh_ty_clean_line = wp_strip_all_tags( $kh_ty_line );
+	$kh_ty_clean_line = wp_specialchars_decode( wp_strip_all_tags( $kh_ty_line ), ENT_QUOTES );
 	$kh_ty_words      = preg_split( '/\s+/u', $kh_ty_clean_line, -1, PREG_SPLIT_NO_EMPTY );
 	$kh_ty_words      = is_array( $kh_ty_words ) ? $kh_ty_words : array();
 
@@ -226,7 +226,7 @@ foreach ( $kh_ty_lines as $kh_ty_line_index => $kh_ty_line ) {
 		if ( 'words' === $kh_ty_split_type ) {
 			$kh_ty_delay_index = $kh_ty_is_reverse ? ( $kh_ty_total_items - 1 - $kh_ty_global_item_count ) : $kh_ty_global_item_count;
 
-
+			
 
 			$kh_ty_html_spans .= sprintf(
 				'<span class="kh-ty-item" data-delay="%1$s" aria-hidden="true">%2$s</span>',
@@ -242,7 +242,7 @@ foreach ( $kh_ty_lines as $kh_ty_line_index => $kh_ty_line ) {
 			foreach ( $kh_ty_chars as $kh_ty_char ) {
 				$kh_ty_delay_index = $kh_ty_is_reverse ? ( $kh_ty_total_items - 1 - $kh_ty_global_item_count ) : $kh_ty_global_item_count;
 
-
+				
 
 				$kh_ty_html_spans .= sprintf(
 					'<span class="kh-ty-item" data-delay="%1$s" aria-hidden="true">%2$s</span>',
@@ -257,7 +257,7 @@ foreach ( $kh_ty_lines as $kh_ty_line_index => $kh_ty_line ) {
 		$kh_ty_html_spans .= '</span>';
 
 		if ( $kh_ty_word_index < count( $kh_ty_words ) - 1 ) {
-			$kh_ty_html_spans .= '<span class="kh-ty-space" aria-hidden="true">&nbsp;</span>';
+			$kh_ty_html_spans .= '<span class="kh-ty-space" aria-hidden="true"> </span>';
 		}
 	}
 
@@ -281,6 +281,7 @@ $kh_ty_inner_allowed_html = array(
 $kh_ty_allowed_output = array(
 	'div' => array(
 		'class'          => true,
+		'id'             => true,
 		'style'          => true,
 		'data-trigger'   => true,
 		'data-speed'     => true,
@@ -311,15 +312,15 @@ ob_start();
 ?>
 <div <?php echo wp_kses_data( $kh_ty_wrapper_attrs ); ?>>
 	<div class="kh-ty-text-wrapper">
-
+		
 
 		<<?php echo esc_html( $kh_ty_tag_name ); ?> class="kh-ty-text-content">
-			<span class="screen-reader-text"><?php echo esc_html( $kh_ty_clean_text ); ?></span>
-			<?php echo wp_kses( $kh_ty_html_spans, $kh_ty_inner_allowed_html ); ?>
+			<span class="screen-reader-text kh-ty-screen-reader-text"><?php echo esc_html( $kh_ty_clean_text ); ?></span>
+			<span class="kh-ty-visual-text" aria-hidden="true"><?php echo wp_kses( $kh_ty_html_spans, $kh_ty_inner_allowed_html ); ?></span>
 		</<?php echo esc_html( $kh_ty_tag_name ); ?>>
 	</div>
 
-
+	
 </div>
 <?php
 

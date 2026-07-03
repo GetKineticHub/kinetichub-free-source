@@ -17,9 +17,10 @@
         border-radius: 12px;
     }
 
+    
 
-
-
+    
+}
 
 .wp-block-post-content.has-global-padding > .kh-mq-marquee-container.alignfull {
     margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px));
@@ -152,7 +153,8 @@
     border: 1px solid rgba(0,0,0,0.03);
 
     &.shadow-soft { box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
-
+    
+}
 
 
 

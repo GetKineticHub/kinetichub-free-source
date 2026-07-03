@@ -197,6 +197,9 @@ $kh_ss_indicator_class = 'kh-ss-indicator-wrap pos-' . sanitize_html_class( $kh_
 if ( 'percentage' === $kh_ss_indicator_type ) {
     $kh_ss_indicator_class .= ' has-percentage';
 }
+if ( 'dots' === $kh_ss_indicator_type ) {
+    $kh_ss_indicator_class .= ' has-dots';
+}
 
 $kh_ss_allowed_media_tags = array(
     'img'   => array( 'src' => true, 'alt' => true, 'loading' => true, 'decoding' => true ),
@@ -206,7 +209,7 @@ $kh_ss_allowed_media_tags = array(
 
 <div <?php echo $kh_ss_wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
     <div class="kh-ss-pinned-col">
-
+        
 
         <div class="kh-ss-media-inner">
             <?php foreach ( $kh_ss_media_items as $kh_ss_index => $kh_ss_item ) : ?>
@@ -235,7 +238,7 @@ $kh_ss_allowed_media_tags = array(
                 <?php if ( 'line' === $kh_ss_indicator_type ) : ?>
                     <div class="kh-ss-progress-line" aria-hidden="true"><div class="kh-ss-progress-fill"></div></div>
                 <?php endif; ?>
-
+                
             </div>
         <?php endif; ?>
     </div>

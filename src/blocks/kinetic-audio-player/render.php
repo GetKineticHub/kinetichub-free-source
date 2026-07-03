@@ -167,7 +167,7 @@ $kh_ap_show_tools = ! $kh_ap_is_compact && $kh_ap_enable_volume;
 		data-preload="<?php echo esc_attr( $kh_ap_preload_strategy ); ?>"
 		data-timemode="<?php echo esc_attr( $kh_ap_time_display_mode ); ?>"
 		data-compact="<?php echo esc_attr( $kh_ap_is_compact ? 'true' : 'false' ); ?>"
-
+		
 	>
 		<?php if ( $kh_ap_enable_seekbar ) : ?>
 			<div
@@ -193,7 +193,7 @@ $kh_ap_show_tools = ! $kh_ap_is_compact && $kh_ap_enable_volume;
 			</svg>
 		<?php endif; ?>
 
-
+		
 
 		<span class="kh-ap-play-pause-trigger">
 			<button class="kh-ap-absolute-trigger" aria-label="<?php echo esc_attr__( 'Play or Pause Audio', 'kinetichub' ); ?>"></button>
@@ -240,7 +240,7 @@ $kh_ap_show_tools = ! $kh_ap_is_compact && $kh_ap_enable_volume;
 					</div>
 				<?php endif; ?>
 
-
+				
 			</div>
 		<?php endif; ?>
 	</div>

@@ -48,7 +48,7 @@ registerBlockType(metadata.name, {
         } = attributes;
 
         let maxMedia = 3;
-
+        
 
         const onAddMedia = (media) => {
             const newItems = [...mediaItems]; 
@@ -106,21 +106,21 @@ registerBlockType(metadata.name, {
         let editorDotsInteractive = false;
         let editorAmbientGlow = false;
 
-
+        
 
         // FREE-safe indicator options
         let editorIndicatorOptions = [
             {label: __('Vertical Line', 'kinetichub'), value: 'line'},
             {label: __('None', 'kinetichub'), value: 'none'}
         ];
-
+        
 
         // FREE-safe text effect options
         let editorTextEffectOptions = [
             {label: __('None (Standard)', 'kinetichub'), value: 'none'}, 
             {label: __('Fade Up on Enter', 'kinetichub'), value: 'fade-up'}
         ];
-
+        
 
         const cssVars = {
             '--kh-ss-pin-w': pinnedWidth, 
@@ -146,7 +146,7 @@ registerBlockType(metadata.name, {
             ...(containerShadow && hoverShadowOpacity !== undefined && { '--kh-ss-shadow-o-hov': hoverShadowOpacity })
         };
 
-
+        
 
         const standardClasses = `kh-ss-wrapper ${align ? `align${align}` : ''} ${editorKenBurns ? 'has-ken-burns' : ''} text-fx-${editorTextEffect} ${editorShadowClass} ${enableStickyMobile ? 'has-mobile-sticky' : ''} swap-trans-${editorSwapTrans} ${editorBgMorph ? 'has-bg-morph' : ''}`.replace(/\s+/g, ' ').trim();
 
@@ -192,9 +192,9 @@ registerBlockType(metadata.name, {
                     <PanelBody title={__('🖼️ Pinned Media Gallery', 'kinetichub')} initialOpen={true}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                             <p style={{ margin: 0, fontWeight: 'bold' }}>{__('Gallery Items', 'kinetichub')}</p>
-
+                            
                             <span style={{ fontSize: '10px', color: '#64748b' }}>{__('Max 3 items', 'kinetichub')}</span>
-
+                            
                         </div>
                         
                         <div style={{ marginBottom: '15px' }}>
@@ -268,24 +268,24 @@ registerBlockType(metadata.name, {
                         <ToggleControl label={__('Smart Media Swap (Crossfade)', 'kinetichub')} checked={enableSmartSwap} onChange={(v) => setAttributes({ enableSmartSwap: v })} />
                     </PanelBody>
 
-
-
+                    
+                    
                     <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Advanced transitions, parallax, ambient glow, and background morphing are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
-
+                    
 
                     <KineticImageFitControls attributes={attributes} setAttributes={setAttributes} />
 
                     <PanelBody title={__('📐 Pinned Media Design', 'kinetichub')} initialOpen={false}>
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Media shape masks and Ken Burns effect are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                         <hr/>
                         <p style={{marginBottom:'5px', fontSize:'12px', fontWeight:'bold'}}>{__('Pinned Area Background', 'kinetichub')}</p>
                         <ColorPalette value={pinnedBgColor} onChange={(v) => setAttributes({ pinnedBgColor: v })} enableAlpha={true} />
@@ -333,20 +333,20 @@ registerBlockType(metadata.name, {
                         />
                     </PanelBody>
 
-
-
+                    
+                    
                     <PanelBody title={__('📦 Custom Shadows', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Advanced shadow styles are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
-
+                    
 
                 </InspectorControls>
 
                 <div {...blockProps}>
                     <div className="kh-ss-pinned-col">
-
+                        
                         <div className="kh-ss-media-inner">
                             {mediaItems.map((item, index) => {
                                 const url = getMediaUrl(item);
@@ -363,9 +363,21 @@ registerBlockType(metadata.name, {
                         </div>
 
                         {indicatorType !== 'none' && (
-                            <div className={`kh-ss-indicator-wrap pos-${pinnedSide} ${indicatorType === 'percentage' ? 'has-percentage' : ''}`}>
+                            <div className={`kh-ss-indicator-wrap pos-${pinnedSide} ${indicatorType === 'percentage' ? 'has-percentage' : ''} ${indicatorType === 'dots' ? 'has-dots' : ''}`}>
                                 {indicatorType === 'line' && <div className="kh-ss-progress-line" aria-hidden="true"><div className="kh-ss-progress-fill"></div></div>}
-                                {indicatorType === 'dots' && mediaItems.map((_, i) => <button key={i} className={`kh-ss-dot ${i===0?'is-active':''}`} data-dot-index={i}></button>)}
+                                {indicatorType === 'dots' && mediaItems.map((_, i) => {
+                                    const dotLabel = `${__('Go to section', 'kinetichub')} ${i + 1}`;
+                                    return (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            className={`kh-ss-dot ${i===0?'is-active':''}`}
+                                            data-dot-index={i}
+                                            aria-label={dotLabel}
+                                            title={dotLabel}
+                                        ></button>
+                                    );
+                                })}
                                 {indicatorType === 'percentage' && <div className="kh-ss-percentage">0%</div>}
                             </div>
                         )}

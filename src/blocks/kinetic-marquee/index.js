@@ -36,7 +36,8 @@ registerBlockType(metadata.name, {
 			liftEffect, edgeFade, openInNewTab, showFrame, frameBg, frameRadius,
 			align, showProgressRail, progressRailPosition,
 			showInteractionIndicator, highlightActiveCenter, siblingBlur, siblingBlurIntensity,
-			 = attributes;
+			
+		} = attributes;
 
 		const containerRef = useRef(null);
 
@@ -60,11 +61,11 @@ registerBlockType(metadata.name, {
 		const handleMediaUpload = (mediaArray) => {
 			const newImgs = mediaArray.map((m) => ({ url: m.url, alt: m.alt, link: '' }));
 			let combined = [...images, ...newImgs];
-
+			
 			if (combined.length > KH_MQ_FREE_MAX_ITEMS) {
 				combined = combined.slice(0, KH_MQ_FREE_MAX_ITEMS);
 			}
-
+			
 			setAttributes({ images: combined });
 		};
 
@@ -159,7 +160,7 @@ registerBlockType(metadata.name, {
 			highlightActiveCenter ? 'has-active-center-highlight' : '',
 			siblingBlur ? 'has-sibling-blur' : '',
 		];
-
+		
 		const outerClasses = outerClassList.filter(Boolean).join(' ');
 
 		const cssVars = {
@@ -172,7 +173,7 @@ registerBlockType(metadata.name, {
 			'--kh-mq-max-w': 'none',
 			'--kh-mq-blur': `${siblingBlurIntensity}px`,
 		};
-
+		
 
 		const blockProps = useBlockProps({
 			ref: containerRef,
@@ -183,20 +184,20 @@ registerBlockType(metadata.name, {
 		});
 
 		let previewFrameShadow = 'soft';
-
+		
 
 		return (
 			<>
 				<InspectorControls>
     <PanelBody title={__('🖼️ Gallery & Links', 'kinetichub')} initialOpen={true}>
 
-
+        
         <p style={{ margin: '0 0 15px 0', fontSize: '12px', color: '#64748b' }}>
             {__('Free version is limited to 7 items.', 'kinetichub')}
         </p>
+        
 
-
-
+        
 
         <MediaUploadCheck fallback={
             <p style={{color: '#ef4444', fontSize: '12px'}}>
@@ -209,7 +210,7 @@ registerBlockType(metadata.name, {
                 allowedTypes={['image']}
                 render={({ open }) => (
                     <>
-
+                        
                         <Button
                             variant="primary"
                             onClick={open}
@@ -220,9 +221,9 @@ registerBlockType(metadata.name, {
                                 ? __('Maximum 7 items reached', 'kinetichub')
                                 : __('+ Add Images', 'kinetichub')}
                         </Button>
+                        
 
-
-
+                        
                     </>
                 )}
             />
@@ -266,13 +267,13 @@ registerBlockType(metadata.name, {
 					<PanelBody title={__('🎨 Visual Styling', 'kinetichub')} initialOpen={false}>
 						<RangeControl label={__('Logo Height (Desktop)', 'kinetichub')} value={itemHeight} onChange={(v) => setAttributes({ itemHeight: v })} min={30} max={300} />
 
+						
 
-
-
+						
 						<p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic', margin: '10px 0' }}>
-							{__('Mobile height, max width, gap, grayscale, and idle opacity controls are not included in this build.', 'kinetichub')}
+							{__('Available in KineticHub Pro.', 'kinetichub')}
 						</p>
-
+						
 
 						<ToggleControl label={__('Edge Fade Effect', 'kinetichub')} checked={edgeFade} onChange={(v) => setAttributes({ edgeFade: v })} />
 					</PanelBody>
@@ -310,26 +311,26 @@ registerBlockType(metadata.name, {
 								<ColorPalette value={frameBg} onChange={(v) => setAttributes({ frameBg: v })} />
 								<RangeControl label={__('Corner Radius', 'kinetichub')} value={frameRadius} onChange={(v) => setAttributes({ frameRadius: v })} min={0} max={50} />
 
+								
 
-
-
+								
 								<p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic', margin: '10px 0 0 0' }}>
-									{__('Additional frame shadow styles (medium, hard, floating) are not included in this build.', 'kinetichub')}
+									{__('Available in KineticHub Pro.', 'kinetichub')}
 								</p>
-
+								
 							</div>
 						)}
 					</PanelBody>
 
+					
 
-
-
+					
 					<PanelBody title={__('📦 More Features', 'kinetichub')} initialOpen={false}>
 						<p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic', margin: '0' }}>
-							{__('Global shadows, entrance animations, and visibility controls are not included in this build.', 'kinetichub')}
+							{__('Available in KineticHub Pro.', 'kinetichub')}
 						</p>
 					</PanelBody>
-
+					
 				</InspectorControls>
 
 				<div {...blockProps}>

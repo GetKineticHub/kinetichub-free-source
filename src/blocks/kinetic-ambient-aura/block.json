@@ -1,10 +1,10 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/ambient-aura",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "title": "Kinetic Ambient Aura",
   "category": "kinetic-suite",
-  "description": "Decorative animated background aura block for Gutenberg layouts.",
+  "description": "Static decorative ambient glow effect rendered server-side.",
   "keywords": [
     "glow",
     "aura",

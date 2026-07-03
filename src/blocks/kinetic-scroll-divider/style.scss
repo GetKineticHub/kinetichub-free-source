@@ -20,7 +20,9 @@
     &.vis-mobile { @media (min-width: 769px) { display: none !important; } }
 
     /* Mobile Behavior Rules */
-    @media (max-width: 768px)
+    @media (max-width: 768px) {
+        
+    }
 
     /* Alignment System */
     &.align-left { justify-content: flex-start; }
@@ -28,9 +30,10 @@
     &.align-right { justify-content: flex-end; }
     
     /* Timing Curves */
-
+    
     &.curve-soft { --kh-div-ease: cubic-bezier(0.165, 0.84, 0.44, 1); }
-
+    
+}
 
 /* kinetichub: NATIVE WP FULL-WIDTH FIX */
 .wp-block-post-content.has-global-padding > .kh-scroll-divider-container.alignfull {
@@ -81,11 +84,12 @@
 /* Dynamic Glow Options */
 .kh-scroll-divider-container.has-glow {
     &.glow-mode-same { --kh-glow-c: var(--kh-div-c); }
-
+    
 
     /* Glow renders on track to avoid clipping by line overflow */
     &.glow-low .kh-divider-track { filter: drop-shadow(0 0 6px var(--kh-glow-c)) drop-shadow(0 0 2px var(--kh-glow-c)); }
-
+    
+}
 
 /* Animation Origin States */
 .kh-scroll-divider-container.anim-draw-right .kh-divider-line { transform-origin: left center; transform: scaleX(0); }
@@ -126,3 +130,6 @@
 @media (prefers-reduced-motion: reduce) {
     .kh-scroll-divider-container .kh-divider-line { transition: none !important; }
 }
+
+
+

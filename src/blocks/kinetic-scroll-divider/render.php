@@ -77,7 +77,7 @@ $block      = $block ?? null;
     $kh_sd_easing_mode         = 'smooth';
     $kh_sd_glow_intensity_safe = 'low';
 
-
+    
 
     /* --- Build CSS custom properties --- */
     $kh_sd_css_vars = sprintf(
@@ -89,7 +89,7 @@ $block      = $block ?? null;
         $kh_sd_width_percent
     );
 
-
+    
 
     /* --- Build outer class list --- */
     $kh_sd_outer_classes = array_filter(

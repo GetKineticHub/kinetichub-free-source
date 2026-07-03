@@ -1,9 +1,9 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/audio-player",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "title": "Kinetic Audio Player",
-  "description": "Responsive audio player block with playback controls and waveform display.",
+  "description": "Ultra-optimized Gutenberg audio player with waveform, seek controls, and accessible playback UI.",
   "category": "kinetic-suite",
   "keywords": [
     "audio player",

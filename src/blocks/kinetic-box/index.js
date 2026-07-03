@@ -44,12 +44,13 @@ registerBlockType(metadata.name, {
 
         const applyPreset = (type) => {
             const baseReset = { preset: 'custom', animationType: 'lift', hoverIntensity: 20, shadowSoftness: 20, shadowOpacity: 0.1, hoverShadowOpacity: 0.2, hoverBgColor: '', hoverBorderColor: '', hoverTextColor: '' };
-
+            
             const presets = {
                 reset: { ...baseReset },
                 soft_elevate: { ...baseReset, preset: 'soft_elevate', hoverIntensity: 15, shadowSoftness: 40, shadowOpacity: 0.05, hoverShadowOpacity: 0.15 },
                 minimal_scale: { ...baseReset, preset: 'minimal_scale', animationType: 'scale', hoverIntensity: 5, shadowSoftness: 10 },
-                ;
+                
+            };
             if(presets[type]) {
                 setAttributes(presets[type]);
             }
@@ -59,7 +60,7 @@ registerBlockType(metadata.name, {
             { label: __('Custom', 'kinetichub'), value: 'custom' }, 
             { label: __('Soft Elevate', 'kinetichub'), value: 'soft_elevate' }, 
             { label: __('Minimal Scale', 'kinetichub'), value: 'minimal_scale' }, 
-
+            
         ];
 
         const animOptions = [
@@ -67,7 +68,7 @@ registerBlockType(metadata.name, {
             {label: __('Lift (Z-Axis)', 'kinetichub'), value: 'lift'},
             {label: __('Scale (Grow)', 'kinetichub'), value: 'scale'},
             {label: __('Tilt (CSS)', 'kinetichub'), value: 'tilt'},
-
+            
         ];
 
         const hasCustomBg = (hoverBgColor && hoverBgColor.length > 1);
@@ -82,7 +83,7 @@ registerBlockType(metadata.name, {
         const mappedEngineSpeed = (0.6 + ((safeSpeedRaw - 0.1) / 1.9) * 1.4).toFixed(2);
 
         let isPhysicsActive = false;
-
+        
 
         let marginL = '0'; let marginR = '0'; let alignSelf = 'center';
         if (boxAlign === 'center') { marginL = 'auto'; marginR = 'auto'; alignSelf = 'center'; }
@@ -115,7 +116,7 @@ registerBlockType(metadata.name, {
             '--kh-box-text-align': hAlign
         };
 
-
+        
 
         const classes = [
             'kh-box-wrapper', 'kh-box-editor-preview', 'is-editor-canvas',
@@ -130,11 +131,11 @@ registerBlockType(metadata.name, {
             bringToFront ? 'kh-box-z-top' : '',
             hideOnMobile ? 'kh-box-hide-mobile' : '',
             hideOnDesktop ? 'kh-box-hide-desktop' : '',
-
+            
         ].filter(Boolean).join(' ');
 
         let editorDataAttrs = {};
-
+        
 
         const blockProps = useBlockProps({ className: classes, style: cssVars, ...editorDataAttrs });
 
@@ -234,25 +235,25 @@ registerBlockType(metadata.name, {
                         )}
                     </PanelBody>
 
-
-
+                    
+                    
                     <PanelBody title={__('🧠 Kinetic Physics', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>
-                            {__('3D Mouse Tilt, Magnetic Hover, and Inner Parallax Layers are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
+                    
 
-
-
-
+                    
+                    
                     <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>
-                            {__('Spotlight Glow, Film Grain, Idle Levitation, and Crisp Edge are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
+                    
 
-
-
+                    
 
                     <PanelBody title={__('⚙️ Detailed Config', 'kinetichub')} initialOpen={false}>
                         <TabPanel className="kh-tab-panel" tabs={[
@@ -280,8 +281,8 @@ registerBlockType(metadata.name, {
                                                     
                                                     {animationType !== 'none' && animationType !== 'trace' && animationType !== 'shine' && (
                                                         <>
-                                                            <RangeControl label={__('Effect Intensity (Desktop)', 'kinetichub')} value={hoverIntensity} onChange={(v) => setAttributes({ hoverIntensity: v })} min={0} max={50} />
-                                                            <RangeControl label={__('Effect Intensity (Mobile)', 'kinetichub')} value={mobileIntensity} onChange={(v) => setAttributes({ mobileIntensity: v })} min={0} max={40} />
+                                                            <RangeControl label={__('Effect Intensity (Desktop)', 'kinetichub')} value={hoverIntensity} onChange={(v) => setAttributes({ hoverIntensity: v })} min={0} max={30} />
+                                                            <RangeControl label={__('Effect Intensity (Mobile)', 'kinetichub')} value={mobileIntensity} onChange={(v) => setAttributes({ mobileIntensity: v })} min={0} max={30} />
                                                         </>
                                                     )}
                                                 </>
@@ -306,7 +307,7 @@ registerBlockType(metadata.name, {
                                             <ColorPalette value={shadowColor} onChange={(v) => setAttributes({ shadowColor: v })} enableAlpha={true} />
                                             <RangeControl label={__('Shadow Opacity', 'kinetichub')} value={shadowOpacity} onChange={(v) => setAttributes({ shadowOpacity: v })} min={0} max={1} step={0.05} />
                                             <RangeControl label={__('Blur / Softness (Desktop)', 'kinetichub')} value={shadowSoftness} onChange={(v) => setAttributes({ shadowSoftness: v })} min={0} max={100} />
-
+                                            
                                             <hr style={{margin: '20px 0'}} />
                                             <p style={{ fontWeight: 'bold', fontSize: '13px', marginBottom: '5px' }}>{__('Hover Shadow Color', 'kinetichub')}</p>
                                             <ColorPalette value={hoverShadowColor} onChange={(v) => setAttributes({ hoverShadowColor: v })} enableAlpha={true} />
@@ -326,7 +327,7 @@ registerBlockType(metadata.name, {
                                                 <ColorPalette value={hoverBorderColor} onChange={(v)=>setAttributes({hoverBorderColor:v})} enableAlpha={true} />
                                             </div>
                                             
-
+                                            
                                         </>
                                     )}
                                 </div>
@@ -344,14 +345,14 @@ registerBlockType(metadata.name, {
                         <ToggleControl label={__('Outer Glow Effect', 'kinetichub')} checked={hasGlow} onChange={(v)=>setAttributes({hasGlow:v})} />
                         <ToggleControl label={__('Grayscale to Color', 'kinetichub')} checked={isGrayscale} onChange={(v)=>setAttributes({isGrayscale:v})} />
                         
-
+                        
                     </PanelBody>
                     
                     <KineticVisibilityControls attributes={attributes} setAttributes={setAttributes} />
                 </InspectorControls>
 
                 <div {...blockProps}>
-
+                    
                     
                     <div className="kh-box-inner-content">
                         <InnerBlocks />
@@ -361,7 +362,7 @@ registerBlockType(metadata.name, {
                         KB {minHeight > 0 && `| ${minHeight}px`} {boxWidth > 0 && `| W: ${boxWidth}%`}
                     </div>
 
-
+                    
                 </div>
             </>
         );

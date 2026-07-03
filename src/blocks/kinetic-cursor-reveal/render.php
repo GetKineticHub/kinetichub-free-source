@@ -98,6 +98,10 @@ $kh_cr_sub_space   = max( 0, min( 50, (int) ( $attributes['subtitleSpacing'] ?? 
 $kh_cr_media_width = max( 100, min( 1200, (int) ( $attributes['mediaWidth'] ?? 350 ) ) );
 $kh_cr_sub_color   = kinetichub_cr_validate_color_strict( $attributes['subtitleColor'] ?? '', '#666666' );
 
+$kh_cr_item_gap          = max( 0, min( 150, (int) ( $attributes['itemGap'] ?? 50 ) ) );
+$kh_cr_show_item_border  = isset( $attributes['showItemBorder'] ) ? (bool) $attributes['showItemBorder'] : true;
+$kh_cr_item_border_color = kinetichub_cr_validate_color_strict( $attributes['itemBorderColor'] ?? '', 'rgba(127,127,127,0.15)' );
+
 
 
 if ( empty( $kh_cr_items ) ) {
@@ -145,6 +149,13 @@ $kh_cr_wrapper_style_vars = sprintf(
     $kh_cr_sub_color,
     $kh_cr_sub_size,
     $kh_cr_sub_space
+);
+
+$kh_cr_wrapper_style_vars .= sprintf(
+    ' --kh-cr-item-gap: %1$dpx; --kh-cr-item-border-w: %2$s; --kh-cr-item-border-c: %3$s;',
+    $kh_cr_item_gap,
+    $kh_cr_show_item_border ? '1px' : '0px',
+    $kh_cr_item_border_color
 );
 
 
@@ -225,7 +236,7 @@ $kh_cr_box_classes = array(
                     <span class="kh-cr-subtitle"><?php echo wp_kses_post( $kh_cr_item['subtitle'] ); ?></span>
                 <?php endif; ?>
 
-
+                
             </div>
         <?php endforeach; ?>
     </div>
@@ -234,7 +245,7 @@ $kh_cr_box_classes = array(
         <div class="kh-cr-media-layer kh-cr-layer-1"></div>
         <div class="kh-cr-media-layer kh-cr-layer-2"></div>
 
-
+        
 
         <div class="kh-cr-close-btn">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

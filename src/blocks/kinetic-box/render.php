@@ -66,8 +66,8 @@ $kh_box_inner_content = $content ?? '';
     $kh_box_transition_speed_str = number_format( $kh_box_mapped_engine_speed, 2, '.', '' );
 
     $kh_box_zoom_intensity         = max( 1.0, min( 2.0, (float) ( $attributes['zoomIntensity'] ?? 1.08 ) ) );
-    $kh_box_hover_intensity        = max( 0, min( 100, (float) ( $attributes['hoverIntensity'] ?? 20 ) ) );
-    $kh_box_mobile_intensity       = max( 0, min( 100, (float) ( $attributes['mobileIntensity'] ?? 0 ) ) );
+    $kh_box_hover_intensity        = max( 0, min( 30, (float) ( $attributes['hoverIntensity'] ?? 20 ) ) );
+    $kh_box_mobile_intensity       = max( 0, min( 30, (float) ( $attributes['mobileIntensity'] ?? 0 ) ) );
     $kh_box_rotation               = max( -45, min( 45, (float) ( $attributes['rotation'] ?? 0 ) ) );
     $kh_box_shadow_softness        = max( 0, min( 200, (float) ( $attributes['shadowSoftness'] ?? 20 ) ) );
     $kh_box_mobile_shadow_softness = max( 0, min( 200, (float) ( $attributes['mobileShadowSoftness'] ?? 10 ) ) );
@@ -125,9 +125,9 @@ $kh_box_inner_content = $content ?? '';
     $kh_box_crisp_edge         = false;
     $kh_box_edge_color         = 'rgba(255, 255, 255, 0.3)';
 
+    
 
-
-
+    
 
     $kh_box_flex_h_align = 'left' === $kh_box_h_align ? 'flex-start' : ( 'right' === $kh_box_h_align ? 'flex-end' : 'center' );
     $kh_box_flex_v_align = 'top' === $kh_box_v_align ? 'flex-start' : ( 'bottom' === $kh_box_v_align ? 'flex-end' : 'center' );
@@ -180,7 +180,7 @@ $kh_box_inner_content = $content ?? '';
         '--kh-box-text-align'   => $kh_box_h_align,
     );
 
-
+    
 
     $kh_box_style_string = '';
     foreach ( $kh_box_css_vars as $kh_box_key => $kh_box_val ) {
@@ -205,7 +205,7 @@ $kh_box_inner_content = $content ?? '';
         )
     );
 
-
+    
 
     $kh_box_attrs = array(
         'class'          => implode( ' ', $kh_box_classes ),
@@ -214,13 +214,13 @@ $kh_box_inner_content = $content ?? '';
         'aria-label'     => ( ! empty( $kh_box_url ) && $kh_box_stretched_link && ! empty( $kh_box_link_label ) ) ? $kh_box_link_label : __( 'Interactive Content Box', 'kinetichub' ),
     );
 
-
+    
 
     $kh_box_wrapper_attrs = get_block_wrapper_attributes( $kh_box_attrs );
     ?>
 
     <div <?php echo $kh_box_wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-
+        
 
         <div class="kh-box-inner-content">
             <?php

@@ -38,7 +38,7 @@ registerBlockType(metadata.name, {
         let editorMaxWidthPx = 0;
         let editorTriggerOffset = 0;
 
-
+        
 
         const cssVars = {
             '--kh-div-c': lineColor || '#10b981',
@@ -48,7 +48,7 @@ registerBlockType(metadata.name, {
             '--kh-div-dur': `${duration}s`,
         };
 
-
+        
 
         const editorClasses = [
             'kh-scroll-divider-container',
@@ -79,13 +79,13 @@ registerBlockType(metadata.name, {
                 <InspectorControls>
                     <PanelBody title={__('🎨 Styling & Geometry', 'kinetichub')} initialOpen={true}>
                         
+                        
 
-
-
+                        
                         <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginBottom: '10px' }}>
-                            {__('Gradient colors are a advanced feature, not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
 
                         {editorLineType !== 'gradient' && (
                             <div style={{ marginBottom: '15px' }}>
@@ -101,12 +101,12 @@ registerBlockType(metadata.name, {
                         <RangeControl label={__('Thickness (px)', 'kinetichub')} value={thickness} onChange={(v) => setAttributes({ thickness: v })} min={1} max={20} />
                         <RangeControl label={__('Width (%)', 'kinetichub')} value={widthPercent} onChange={(v) => setAttributes({ widthPercent: v })} min={10} max={100} />
                         
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic' }}>
-                            {__('Max Width Restriction is a advanced feature, not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
 
                         <SelectControl 
                             label={__('Vertical Spacing', 'kinetichub')} 
@@ -124,12 +124,12 @@ registerBlockType(metadata.name, {
                     </PanelBody>
 
                     <PanelBody title={__('🎬 Scroll Animation', 'kinetichub')} initialOpen={false}>
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginBottom: '10px' }}>
-                            {__('Scrubbing Engine Mode is a advanced feature, not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
 
                         <SelectControl label={__('Draw Animation', 'kinetichub')} value={animStyle} options={[{ label: __('Draw from Center', 'kinetichub'), value: 'draw-center' }, { label: __('Draw from Left', 'kinetichub'), value: 'draw-left' }, { label: __('Draw from Right', 'kinetichub'), value: 'draw-right' }, { label: __('Fade In', 'kinetichub'), value: 'fade-in' }]} onChange={(v) => setAttributes({ animStyle: v })} />
                         
@@ -137,25 +137,25 @@ registerBlockType(metadata.name, {
                             <RangeControl label={__('Animation Duration (s)', 'kinetichub')} value={duration} onChange={(v) => setAttributes({ duration: v })} min={0.2} max={4} step={0.1} />
                         )}
                         
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic' }}>
-                            {__('Advanced Easing, Opacity Curve, and Trigger Offset are advanced features, not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                     </PanelBody>
 
                     <PanelBody title={__('✨ Glow Effects', 'kinetichub')} initialOpen={false}>
                         <ToggleControl label={__('Enable Neon Glow', 'kinetichub')} checked={glowEffect} onChange={(v) => setAttributes({ glowEffect: v })} />
                         {glowEffect && (
                             <>
-
-
+                                
+                                
                                 <SelectControl label={__('Glow Intensity', 'kinetichub')} value={'low'} options={[{ label: __('Low', 'kinetichub'), value: 'low' }]} onChange={() => setAttributes({ glowIntensity: 'low' })} />
                                 <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic' }}>
-                                    {__('Medium/High intensity and advanced glow color modes are advanced features, not included in this build.', 'kinetichub')}
+                                    {__('Available in KineticHub Pro.', 'kinetichub')}
                                 </p>
-
+                                
                             </>
                         )}
                     </PanelBody>
@@ -172,12 +172,12 @@ registerBlockType(metadata.name, {
                             onChange={(v) => setAttributes({ visibility: v })} 
                         />
 
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginTop: '10px' }}>
-                            {__('Mobile Behavior, Static on Mobile, and Reduced Motion Behavior are advanced features, not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                     </PanelBody>
                 </InspectorControls>
 

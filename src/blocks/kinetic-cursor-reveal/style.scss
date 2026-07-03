@@ -9,7 +9,8 @@
     isolation: isolate; 
     box-sizing: border-box;
 
-
+    
+}
 
 .kh-cr-wrapper.has-shadow {
     background-color: transparent;
@@ -18,14 +19,15 @@
     
     @media (max-width: 768px) { padding: 25px; }
 
-
+    
+}
 
 
 
 .kh-cr-list { display: flex; flex-direction: column; width: 100%; text-align: inherit; }
 
-.kh-cr-item { 
-    position: relative; padding: 50px 0; border-bottom: 1px solid rgba(127,127,127,0.15); 
+.kh-cr-item {
+    position: relative; padding: var(--kh-cr-item-gap, 50px) 0; border-bottom: var(--kh-cr-item-border-w, 1px) solid var(--kh-cr-item-border-c, rgba(127,127,127,0.15));
     cursor: pointer; z-index: 10; transition: opacity 0.5s ease, filter 0.5s ease;
     text-align: inherit;
     -webkit-user-select: none;
@@ -116,6 +118,14 @@
 
 /* --- REVEAL MASKS --- */
 .kh-cr-floating-box.mask-fade { clip-path: inset(0 0 0 0); }
+.kh-cr-floating-box.mask-circle { clip-path: circle(0.1% at 50% 50%); }
+.kh-cr-floating-box.mask-circle.is-active { clip-path: circle(100% at 50% 50%); }
+
+.kh-cr-floating-box.mask-diagonal { clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); }
+.kh-cr-floating-box.mask-diagonal.is-active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+
+.kh-cr-floating-box.mask-curtain { clip-path: inset(100% 0 0 0); }
+.kh-cr-floating-box.mask-curtain.is-active { clip-path: inset(0 0 0 0); }
 
 
 
@@ -126,6 +136,7 @@
     &.bg-protection::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%); z-index: 5; pointer-events: none; border-radius: inherit;}
     
     
+}
 
 .kh-cr-close-btn {
     position: absolute; top: -15px; right: -15px;
@@ -170,3 +181,6 @@
     .kh-cr-floating-box { display: none !important; }
     .kh-cr-title-wrapper { transition: none !important; transform: none !important; }
     .kh-cr-title { transform: none !important; transition: color 0.3s ease !important; }
+    
+    
+}

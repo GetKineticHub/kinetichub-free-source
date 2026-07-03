@@ -30,7 +30,7 @@ registerBlockType(metadata.name, {
         const { attributes, setAttributes, isSelected } = props;
         const { 
             beforeImage, afterImage, initialOffset, aspectRatio,
-
+            
             hoverZoom,
             dividerStyle, handleColor, handleIconColor, showLabels, beforeLabel, afterLabel,
             containerShadow, shadowStyle, forceFullWidth,
@@ -39,12 +39,12 @@ registerBlockType(metadata.name, {
         } = attributes;
 
         let isHoriz = true;
-
+        
 
         const safeOffset = Math.max(0, Math.min(100, initialOffset));
 
         let activeBeforeFilter = 'none';
-
+        
 
         let activeAfterFilter = 'none';
         if (afterFilter.includes('grayscale')) activeAfterFilter = 'grayscale(100%)';
@@ -54,7 +54,7 @@ registerBlockType(metadata.name, {
         else if (afterFilter.includes('contrast')) activeAfterFilter = 'contrast(150%)';
 
         let activeOverlayOpacity = 0;
-
+        
         const activeAfterOverlayOpacity = afterFilter === 'color' ? Math.max(0, Math.min(1, afterOverlayOpacity)) : 0;
 
         const dynamicStyles = useMemo(() => ({
@@ -63,21 +63,22 @@ registerBlockType(metadata.name, {
             '--kh-ba-label-c': '#ffffff',
             '--kh-ba-label-bg': 'rgba(0,0,0,0.5)',
             '--kh-ba-overlay-c': '#000000',
-
+            
             '--kh-ba-overlay-o': activeOverlayOpacity,
             '--kh-ba-a-overlay-c': afterOverlayColor,
             '--kh-ba-a-overlay-o': activeAfterOverlayOpacity,
             ...(aspectRatio !== 'auto' && { '--kh-ba-aspect': aspectRatio }),
-            ), [handleColor, handleIconColor,
-
+            
+        }), [handleColor, handleIconColor,
+            
             activeOverlayOpacity, afterOverlayColor, activeAfterOverlayOpacity, aspectRatio]);
 
         let innerClasses = `kh-ba-inner ${aspectRatio !== 'auto' ? 'has-aspect-ratio' : ''}`;
-
+        
 
         const shadowClass = containerShadow ? `has-shadow shadow-${shadowStyle}` : '';
         let blockClassName = `kh-ba-container kh-ba-preview kh-ba-horizontal ${shadowClass} kh-ba-trans-slide kh-ba-handle-classic kh-ba-divider-${dividerStyle} ${hoverZoom ? 'has-hover-zoom' : ''} ${forceFullWidth ? 'is-forced-fullwidth' : ''}`;
-
+        
         const blockProps = useBlockProps({
             className: blockClassName,
             style: dynamicStyles
@@ -86,16 +87,16 @@ registerBlockType(metadata.name, {
         let layerStyle = {};
         const clipVal = 100 - safeOffset;
         layerStyle.clipPath = `inset(0 ${clipVal}% 0 0)`;
-
+        
 
         let editorPulseEffect = 'none';
-
+        
 
         return (
             <>
                 <InspectorControls>
                     <PanelBody title={__('🖼️ Images & Filters', 'kinetichub')} initialOpen={true}>
-
+                        
                         <p><strong>{__('Before Image', 'kinetichub')}</strong></p>
                         {!beforeImage?.url ? (
                             <MediaPlaceholder accept="image/*" onSelect={(m) => setAttributes({beforeImage: {url: m.url, alt: m.alt}})} allowedTypes={['image']} />
@@ -131,12 +132,12 @@ registerBlockType(metadata.name, {
 
                         <hr style={{margin: '20px 0'}} />
 
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                            {__('Before image filter: None (original). Additional filters not included in this build.', 'kinetichub')}
+                            {__('Before image filter: None (original). Additional filters available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
 
                         <SelectControl 
                             label={__('After Image Filter', 'kinetichub')} 
@@ -178,52 +179,52 @@ registerBlockType(metadata.name, {
                         )}
                     </PanelBody>
 
-
-
+                    
+                    
                     <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic' }}>
-                            {__('Inner parallax, hold-to-peek, and cursor badge are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
-
+                    
 
                     <PanelBody title={__('🚀 Engine & Transitions', 'kinetichub')} initialOpen={false}>
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginBottom: '10px' }}>
-                            {__('Transition styles (diagonal, fade), vertical orientation, and reverse reveal are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                         <RangeControl label={__('Start Position (%)', 'kinetichub')} value={initialOffset} onChange={(v) => setAttributes({ initialOffset: v })} min={0} max={100} help={__('Initial slider position. 50% = equal split.', 'kinetichub')} />
                         <ToggleControl 
                             label={__('Enable Hover Zoom', 'kinetichub')} 
                             checked={hoverZoom} 
                             onChange={(v) => setAttributes({ hoverZoom: v })}
                             help={__('Images zoom slightly on hover.', 'kinetichub')}
-
+                            
                         />
                         <hr/>
                         <ToggleControl label={__('Auto-Play Intro Animation', 'kinetichub')} checked={autoPlayIntro} onChange={(v) => setAttributes({ autoPlayIntro: v })} help={__('Dramatic reveal when block first appears.', 'kinetichub')} />
                         
+                        
 
-
-
+                        
                         <ToggleControl 
                             label={__('Click to Move', 'kinetichub')} 
                             checked={clickToMove} 
                             onChange={(v) => setAttributes({ clickToMove: v })}
                             help={__('Click anywhere to jump slider to that position.', 'kinetichub')}
                         />
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                            {__('Hover-to-slide, inertia, and magnetic snap are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                     </PanelBody>
 
                     <PanelBody title={__('🎛️ Handle & Pulse', 'kinetichub')} initialOpen={false}>
-
+                        
                         <SelectControl 
                             label={__('Divider Line Style', 'kinetichub')} 
                             value={dividerStyle} 
@@ -235,12 +236,12 @@ registerBlockType(metadata.name, {
                             onChange={(v) => setAttributes({ dividerStyle: v })}
                             help={__('Style of the vertical/horizontal divider line. Solid = simple and clean, Neon = glowing accent, Gradient = subtle fade effect.', 'kinetichub')}
                         />
-
-
+                        
+                        
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                            {__('Handle styles and pulse effects are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
-
+                        
                         <p style={{fontWeight:'bold', marginTop:'10px', marginBottom:'5px'}}>{__('Handle Background Color', 'kinetichub')}</p>
                         <p style={{fontSize:'12px', color:'#757575', marginBottom:'8px'}}>{__('Background color of the slider handle circle. Choose high contrast for visibility against your images.', 'kinetichub')}</p>
                         <ColorPalette value={handleColor} enableAlpha={true} onChange={(v) => setAttributes({ handleColor: v })} />
@@ -250,14 +251,14 @@ registerBlockType(metadata.name, {
                         <ColorPalette value={handleIconColor} enableAlpha={true} onChange={(v) => setAttributes({ handleIconColor: v })} />
                     </PanelBody>
 
-
-
+                    
+                    
                     <PanelBody title={__('📱 Mobile Settings', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic' }}>
-                            {__('Mobile aspect ratio and hide-labels-on-mobile are not included in this build.', 'kinetichub')}
+                            {__('Available in KineticHub Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
-
+                    
 
                     <PanelBody title={__('🏷️ Labels & Styling', 'kinetichub')} initialOpen={false}>
                         <ToggleControl 
@@ -287,12 +288,12 @@ registerBlockType(metadata.name, {
                                     help={__('Before/After labels fade out when slider is moving. Reduces visual clutter during interaction.', 'kinetichub')}
                                 />
                                 
-
-
+                                
+                                
                                 <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                                    {__('Label color customization is not included in this build.', 'kinetichub')}
+                                    {__('Available in KineticHub Pro.', 'kinetichub')}
                                 </p>
-
+                                
                             </>
                         )}
                         <hr/>
@@ -326,10 +327,10 @@ registerBlockType(metadata.name, {
                             </div>
                             <div className="kh-ba-handle" style={{ left: isHoriz ? `${safeOffset}%` : '0', top: isHoriz ? '0' : `${safeOffset}%` }}>
                                 <button className={`kh-ba-circle pulse-${editorPulseEffect}`}>
-
-
+                                    
+                                    
                                     <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="9 18 3 12 9 6"></polyline><polyline points="15 18 21 12 15 6"></polyline></svg>
-
+                                    
                                 </button>
                             </div>
                         </div>

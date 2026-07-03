@@ -38,7 +38,7 @@ export const KineticLinkControls = ({ attributes, setAttributes }) => {
                         help={__('e.g., nofollow, noopener', 'kinetichub')}
                     />
 
-
+                    
                 </>
             )}
         </PanelBody>

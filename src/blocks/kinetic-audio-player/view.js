@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 cancelAnimationFrame(playerInstance.rafId);
             }
 
-
+            
 
             window.khApPlayers = window.khApPlayers.filter(p => p.id !== playerInstance.id);
             if (window.khApActiveAudioElement === playerInstance.audio) {
@@ -99,10 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const { signal: globalSignal } = globalAbortController;
 
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden)  else
+                if (document.hidden) {
+                    
+                } else {
+                    
+                }
             }, { signal: globalSignal });
 
-
+            
 
             isGlobalTrackerActive = true;
         }
@@ -152,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const initPlayer = (btn) => {
         btn.classList.remove('kh-ap-editor-preview');
-
+        
         
         const wrapper = btn.closest('.kh-ap-wrapper');
         const audioSrc = btn.dataset.audio;
@@ -180,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allowVisuals: !prefersReducedMotion
         };
 
-
+        
 
         const playerInstance = { 
             id: blockId, 
@@ -192,11 +196,12 @@ document.addEventListener('DOMContentLoaded', () => {
             rafId: null,
             observer: null
         };
-
+        
         window.khApPlayers.push(playerInstance);
         instances.set(wrapper, playerInstance);
 
-        if (!config.allowVisuals)
+        if (!config.allowVisuals) {
+            
             const visualizer = btn.querySelector('.kh-ap-visualizer');
             if (visualizer) visualizer.style.display = 'none';
         }
@@ -211,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         audio.addEventListener('error', onAudioError, { signal });
 
-
+        
 
         // Architecture Fix: Instant time display initialization
         audio.addEventListener('loadedmetadata', () => {
@@ -239,16 +244,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let initialLoadDelay = true; 
         setTimeout(() => { initialLoadDelay = false; }, 800);
 
-        /* advanced: Sticky/Floating Engine */
+        /* PRO: Sticky/Floating Engine */
         let checkStickyState = () => {};
-
+        
         playerInstance.checkStickyState = checkStickyState;
 
         const stopAllOtherPlayers = () => {
             window.khApPlayers.forEach(p => {
                 if (p.audio !== audio) {
                     if (!p.audio.paused) p.audio.pause();
-
+                    
+                }
             });
         };
 
@@ -321,7 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUIState(false);
             checkStickyState();
             stopMotor();
-            ;
+            
+        };
 
         const onAudioPlay = () => { 
             updateUIState(true); 
@@ -338,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (timeDisplay && config.timeMode !== 'none') timeDisplay.textContent = "00:00";
 
-
+            
             checkStickyState();
         };
 
@@ -356,12 +363,12 @@ document.addEventListener('DOMContentLoaded', () => {
             absTrigger.addEventListener('click', onTriggerClick, { signal });
         }
 
-
+        
 
         const handleSeek = (e) => {
             if (e.cancelable) e.preventDefault(); 
             e.stopPropagation();
-
+            
             if (!isFinite(audio.duration) || audio.duration <= 0) return;
 
             const rect = btn.getBoundingClientRect();
@@ -402,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
             seekLayer.addEventListener('keydown', onSeekKeyDown, { signal });
         }
 
-
+        
 
         const volSlider = btn.querySelector('.kh-ap-vol-slider');
         const volBtn = btn.querySelector('.kh-ap-vol-btn');
@@ -432,11 +439,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Architecture Fix: Keep motor running if sticky and playing
         const observer = new IntersectionObserver((entries) => {
             isIntersecting = entries[0].isIntersecting;
-
+            
             checkStickyState();
             
             let shouldRunMotor = !audio.paused && isIntersecting;
-
+            
 
             if (shouldRunMotor) {
                 startMotor();

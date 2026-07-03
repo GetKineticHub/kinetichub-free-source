@@ -185,13 +185,13 @@ $kh_mb_hide_desktop   = false;
 
     $kh_mb_wrapper_classes = array( 'kh-mb-wrapper' );
 
-
+    
 
     $kh_mb_wrapper_classes = array_filter( $kh_mb_wrapper_classes );
 
     $kh_mb_wrapper_style = 'justify-content: ' . $kh_mb_justify_content_map[ $kh_mb_align ] . ';';
 
-
+    
 
     $kh_mb_wrapper_attrs = get_block_wrapper_attributes(
         array(
@@ -207,7 +207,7 @@ $kh_mb_hide_desktop   = false;
         $kh_mb_show_icon_normal ? 'icon-always-visible' : '',
     );
 
-
+    
 
     $kh_mb_btn_classes = array_filter( $kh_mb_btn_classes );
 
@@ -239,7 +239,7 @@ $kh_mb_hide_desktop   = false;
     // is registered elsewhere and not a duplicate of the viewScript handle.
     $kh_mb_needs_engine = $kh_mb_hover_scale || $kh_mb_text_separation;
 
-
+    
 
     if ( $kh_mb_needs_engine ) {
         wp_enqueue_script( 'kinetichub-core-engine' );

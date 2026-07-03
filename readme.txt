@@ -1,9 +1,9 @@
-=== KineticHub - Animated Gutenberg Blocks ===
+=== KineticHub - Animated Blocks ===
 Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.0.7
+Stable tag: 1.0.9
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -154,26 +154,22 @@ https://getkinetichub.com
 
 This plugin includes compiled JavaScript and CSS generated with npm and WordPress build tools.
 
-The human-readable source files used to build the distributed assets are included directly in this plugin package in the following directory:
+The human-readable free-version source files used to build the distributed assets are publicly available here:
 
-`source/`
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.9
 
-The source directory includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed `build/` directory.
-
-The same human-readable free-version source is also publicly available here:
-
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.7
+The public source branch includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed `build/` directory.
 
 = Build Instructions =
 
 The plugin uses the standard WordPress block build pipeline based on `@wordpress/scripts`.
 
-To rebuild the distributed assets from the included source files:
+To rebuild the distributed assets from the public source branch:
 
-1. Open a terminal.
-2. Go to the included source directory:
+1. Clone the public source repository.
+2. Check out the matching source branch:
 
-`cd source`
+`wporg-free-source-1.0.9`
 
 3. Install build dependencies:
 
@@ -183,7 +179,7 @@ To rebuild the distributed assets from the included source files:
 
 `npm run build`
 
-The build process compiles source files from the `source/src` directory into a `build` directory using the included webpack configuration.
+The build process compiles source files from the source repository into a `build` directory using the included webpack configuration.
 
 = Build Requirements =
 
@@ -191,6 +187,25 @@ The build process compiles source files from the `source/src` directory into a `
 * npm 9 or later
 
 == Changelog ==
+
+= 1.0.9 =
+* Fixed Hero Mesh canvas layout behavior to prevent layout shift and ensure block styles enqueue correctly.
+* Added block asset metadata validation to prevent stale block asset versions and missing file references.
+* Improved Typography accessibility by preserving readable screen-reader text without unsupported ARIA attributes.
+* Fixed editor iframe stylesheet loading for global KineticHub variables and animation styles.
+* Improved Split Scroll pagination dot touch targets and keyboard focus behavior.
+* Added Magnetic Button editor warnings for low-contrast color choices and optional accessible color presets.
+
+= 1.0.8 =
+* Fixed Typography wrapping in narrow containers when using split text animations.
+* Improved Typography spacing between split words and ampersand characters.
+* Improved Typography SEO notice spacing in the editor.
+* Restored Cursor Reveal mask animation behavior.
+* Added list layout controls to Cursor Reveal.
+* Fixed Magnetic Button hover scale conflicts with Float, Lift Up, and Scale Up effects.
+* Fixed Kinetic Box grayscale-to-color hover transition behavior.
+* Normalized upgrade messaging across block controls.
+* Added a lightweight KineticHub Pro dashboard banner for the free plugin.
 
 = 1.0.7 =
 * Fixed Magnetic Button SVG icon scaling and added left, center, and right alignment.
@@ -228,3 +243,4 @@ The build process compiles source files from the `source/src` directory into a `
 * Added reduced-motion handling for motion-heavy effects.
 * Added KineticHub dashboard for global settings and block management.
 * Added source files and build instructions for WordPress.org distribution.
+

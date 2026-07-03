@@ -70,23 +70,25 @@ registerBlockType(metadata.name, {
         const {
             bgMode, heroHeightDesktop, heroHeightMobile, contentAlign, mediaUrl,
             objectFit, objectPosition, overlayOpacity, overlayColor, blendMode,
-
+            
             plexusColor, plexusDensity, plexusDistance, plexusSpeed, plexusInteraction, plexusLineWidth,
             align, parallaxEffect, enableGrain
         } = attributes;
 
         const modesWithImage = [
             'classic',
-
+            
         ];
         const isPlaceholder = !mediaUrl && modesWithImage.includes(bgMode);
 
         const hasNativeBg = attributes.backgroundColor || (attributes.style && attributes.style.color && attributes.style.color.background);
         let baseEditorColor = '';
-        if (!hasNativeBg)
-
+        if (!hasNativeBg) {
+            
+            
             baseEditorColor = '#0f172a';
-
+            
+        }
 
         let finalEditorBackground = baseEditorColor; 
         if (modesWithImage.includes(bgMode) && mediaUrl) {
@@ -108,7 +110,8 @@ registerBlockType(metadata.name, {
             'data-plexus-speed': plexusSpeed || 1.0,
             'data-plexus-width': plexusLineWidth || 1.0,
             'data-plexus-int': plexusInteraction || 'repel',
-            );
+            
+        });
 
         const innerBlocksProps = useInnerBlocksProps(
             { 
@@ -127,7 +130,7 @@ registerBlockType(metadata.name, {
                             options={[
                                 { label: __('Neural Network (Plexus)', 'kinetichub'), value: 'plexus' },
                                 { label: __('Classic Static', 'kinetichub'), value: 'classic' },
-
+                                
                             ]}
                             onChange={(v) => setAttributes({ bgMode: v })}
                         />
@@ -193,7 +196,7 @@ registerBlockType(metadata.name, {
 
                     </PanelBody>
 
-
+                    
 
                     {bgMode === 'plexus' && (
                         <PanelBody title={__('🌌 Plexus Settings', 'kinetichub')} initialOpen={true}>
@@ -211,15 +214,15 @@ registerBlockType(metadata.name, {
                         </PanelBody>
                     )}
 
+                    
 
-
-
+                    
                     <PanelBody title={__('🚀 More Engines', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontSize: '13px', color: '#64748b', lineHeight: '1.5' }}>
                             {__('Gradient Mesh, Liquid Displacement, Refractive Lens, and Aurora Silk engines are available in Kinetic Hero Mesh Pro.', 'kinetichub')}
                         </p>
                     </PanelBody>
-
+                    
 
                     <PanelBody title={__('✨ Composition (Overlay)', 'kinetichub')} initialOpen={false}>
                         <SelectControl 
@@ -239,7 +242,7 @@ registerBlockType(metadata.name, {
                         />
                     </PanelBody>
 
-
+                    
                 </InspectorControls>
 
                 <div {...blockProps}>

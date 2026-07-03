@@ -1,10 +1,10 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/scroll-divider",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "title": "Kinetic Scroll Divider",
   "category": "kinetic-suite",
-  "description": "Animated scroll divider block with line, glow, and viewport reveal controls.",
+  "description": "Server-rendered animated divider with strict validation and graceful degradation.",
   "keywords": [
     "divider",
     "separator",

@@ -1,9 +1,9 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/before-after",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "title": "Kinetic Before/After",
-  "description": "Before and after image comparison block with responsive slider controls.",
+  "description": "Interactive image comparison slider with CSS-based masking and hardware-accelerated transitions.",
   "category": "kinetic-suite",
   "keywords": [
     "before after",
