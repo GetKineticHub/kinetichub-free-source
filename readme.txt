@@ -3,7 +3,7 @@ Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.0.11
+Stable tag: 1.0.12
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -187,6 +187,9 @@ The build process compiles source files from the source repository into a `build
 * npm 9 or later
 
 == Changelog ==
+
+= 1.0.12 =
+* Fixed a remaining Hero Mesh alignfull horizontal overflow that could add a small horizontal scrollbar on some Windows browsers, while preserving full-width behavior at the page root and contained behavior inside Kinetic Box and columns.
 
 = 1.0.11 =
 * Fixed Hero Mesh overflow when an alignfull Hero Mesh block is placed inside constrained containers such as Kinetic Box or columns, while preserving normal full-width behavior when used directly in the page.

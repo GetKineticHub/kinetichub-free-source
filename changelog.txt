@@ -1,10 +1,14 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.11
+Current Version: 1.0.12
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.0.12] - 2026-07-07
+----------------------------------------------------------------------
+- Fixed a remaining Hero Mesh alignfull horizontal overflow that could add a small horizontal scrollbar on some Windows browsers, while preserving full-width behavior at the page root and contained behavior inside Kinetic Box and columns.
 ----------------------------------------------------------------------
 ## [1.0.11] - 2026-07-03
 ----------------------------------------------------------------------
