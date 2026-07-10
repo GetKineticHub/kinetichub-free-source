@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/marquee",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "title": "Kinetic Marquee",
   "category": "kinetic-suite",
   "description": "Infinite scrolling marquee optimized for logos and images with hardware-accelerated physics.",

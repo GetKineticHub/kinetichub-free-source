@@ -3,7 +3,7 @@
  * Plugin Name: KineticHub - Animated Blocks
  * Plugin URI: https://getkinetichub.com
  * Description: Animated Gutenberg blocks for WordPress with motion, media, typography, sliders, marquees, and interactive visual effects.
- * Version: 1.0.12
+ * Version: 1.0.13
  * Author: kinetichub
  * Text Domain: kinetichub
  * Domain Path: /languages
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'kinetichub_PATH', plugin_dir_path( __FILE__ ) );
 define( 'kinetichub_URL', plugin_dir_url( __FILE__ ) );
-define( 'kinetichub_VERSION', '1.0.12' );
+define( 'kinetichub_VERSION', '1.0.13' );
 
 class kinetichub_Suite {
 	private static $instance = null;

@@ -1,5 +1,5 @@
 Block Name: Kinetic Hero Mesh
-Version: 1.0.0
+Version: 1.0.13
 
 ### Added
 - Initial release of Kinetic Hero Mesh.
@@ -33,6 +33,8 @@ Version: 1.0.0
 - Improved classic background visibility and viewport-based animation state handling.
 
 ### Fixed
+- Fixed: full-width Hero Mesh produced a horizontal scrollbar on themes defining root padding when placed outside a padded container.
+- Fixed: the grain animation and Classic background mode did not fully respect the operating system's reduced-motion preference.
 - Fixed canvas transform accumulation during resize events.
 - Fixed animation observer cleanup when no hero sections remain active.
 - Fixed mobile canvas density behavior for smoother rendering.

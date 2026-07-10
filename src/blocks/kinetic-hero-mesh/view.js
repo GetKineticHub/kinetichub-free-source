@@ -119,9 +119,11 @@
             const canvas = hero.querySelector('.kh-hm-canvas-engine');
             const mode = hero.dataset.mode;
 
-            if (prefersReducedMotion && mode !== 'classic') {
+            if (prefersReducedMotion) {
+                // Static frame fallback for every mode, including classic: skip viewport
+                // observation entirely so the grain animation trigger (is-visible) never fires.
                 if (canvas) canvas.style.display = 'none';
-                return; 
+                return;
             }
 
             hero._kh_hm_abortController = new AbortController();

@@ -1,5 +1,9 @@
 === Kinetic Typography ===
 
+= 1.0.13 =
+* Fixed: full-width Kinetic Typography could overflow or misalign on themes defining root padding when placed outside a padded container; migrated to the same padding-aware full-width technique used by Hero Mesh.
+* Fixed: the hover-triggered Plexus background effect could accumulate duplicate window resize listeners on repeated hover.
+
 = 1.0.0 =
 * Initial release of the Kinetic Typography block.
 * Added animated text rendering using server-side text splitting.

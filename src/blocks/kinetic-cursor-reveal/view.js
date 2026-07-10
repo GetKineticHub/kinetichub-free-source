@@ -288,13 +288,17 @@
                     const finalX = targetX + offsetX;
                     const finalY = targetY + offsetY;
 
-                    // Viewport clamp
+                    // Viewport clamp (use clientWidth/clientHeight + scroll offset, not
+                    // scrollWidth/scrollHeight, which grows to include any overflow the
+                    // box itself is causing and stops clamping anything useful)
                     const boxW = floatingBox.offsetWidth || 350;
                     const boxH = floatingBox.offsetHeight || 400;
-                    const maxX = (document.documentElement.scrollWidth) - (boxW / 2);
-                    const maxY = (document.documentElement.scrollHeight) - (boxH / 2);
-                    const clampedX = Math.max(boxW / 2, Math.min(finalX, maxX));
-                    const clampedY = Math.max(boxH / 2, Math.min(finalY, maxY));
+                    const minX = window.scrollX + (boxW / 2);
+                    const maxX = window.scrollX + document.documentElement.clientWidth - (boxW / 2);
+                    const minY = window.scrollY + (boxH / 2);
+                    const maxY = window.scrollY + document.documentElement.clientHeight - (boxH / 2);
+                    const clampedX = Math.max(minX, Math.min(finalX, maxX));
+                    const clampedY = Math.max(minY, Math.min(finalY, maxY));
 
                     floatingBox.style.transform = `translate3d(${clampedX}px, ${clampedY}px, 0) translate(-50%, -50%) rotate(${rotation}deg)`;
 

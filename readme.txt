@@ -3,7 +3,7 @@ Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.0.12
+Stable tag: 1.0.13
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -156,7 +156,7 @@ This plugin includes compiled JavaScript and CSS generated with npm and WordPres
 
 The human-readable free-version source files used to build the distributed assets are publicly available here:
 
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.11
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.13
 
 The public source branch includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed `build/` directory.
 
@@ -169,7 +169,7 @@ To rebuild the distributed assets from the public source branch:
 1. Clone the public source repository.
 2. Check out the matching source branch:
 
-`wporg-free-source-1.0.11`
+`wporg-free-source-1.0.13`
 
 3. Install build dependencies:
 
@@ -187,6 +187,14 @@ The build process compiles source files from the source repository into a `build
 * npm 9 or later
 
 == Changelog ==
+
+= 1.0.13 =
+* Fixed: full-width Hero Mesh produced a horizontal scrollbar on themes defining root padding when placed outside a padded container.
+* Fixed: full-width Kinetic Typography could overflow or misalign on themes defining root padding when placed outside a padded container; migrated to the same padding-aware full-width technique used by Hero Mesh.
+* Fixed: Cursor Reveal's Wide and Full width alignment options had no visible effect due to missing CSS.
+* Fixed: the floating hover preview could extend past the viewport edge and cause a horizontal scrollbar on full-width layouts.
+* Fixed: Kinetic Typography's hover-triggered Plexus background effect could accumulate duplicate window resize listeners on repeated hover.
+* Fixed: Hero Mesh's grain animation and Classic background mode did not fully respect the operating system's reduced-motion preference.
 
 = 1.0.12 =
 * Fixed a remaining Hero Mesh alignfull horizontal overflow that could add a small horizontal scrollbar on some Windows browsers, while preserving full-width behavior at the page root and contained behavior inside Kinetic Box and columns.

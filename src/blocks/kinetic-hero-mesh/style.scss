@@ -13,12 +13,6 @@
     min-width: 0 !important;
     position: relative;
 
-    &:focus { outline: none; }
-    &:focus-visible {
-        outline: 2px dashed var(--kh-accent, #10b981);
-        outline-offset: -4px; 
-    }
-
     @media (max-width: 768px) {
         min-height: var(--kh-hm-h-mob, 100vh) !important;
         &.has-parallax { background-attachment: scroll !important; }
@@ -38,18 +32,26 @@
 
 /* ==========================================================================
    ADDED FIX: Fix for full-width breakout (Strict Theme Support)
+   Plain fallback only. Do not compensate for --wp--style--root--padding
+   here: that inherited custom property was defaulting to a non-zero value
+   in ungated contexts (no .has-global-padding ancestor), pushing this
+   selector wider than 100% and causing a horizontal scrollbar.
+   The gated rule below owns the padding-compensated case.
+   NOTE: only .has-global-padding is a reliable gate. A .wp-site-blocks >
+   variant was tried and removed: core only adds .has-global-padding where
+   root padding is actually applied (including onto .wp-site-blocks itself
+   on themes that enable root-padding-aware alignments), so gating on
+   .wp-site-blocks directly compensated padding that wasn't really there
+   on themes that merely define the padding vars without applying them.
    ========================================================================== */
 .kh-hm-hero-container.alignfull {
-    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px)) !important;
+    width: 100% !important;
     max-width: none !important;
-    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px)) !important;
-    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px)) !important;
-    box-sizing: border-box !important;
-    overflow-x: hidden !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 /* WP Global Padding Support */
-.wp-site-blocks > .kh-hm-hero-container.alignfull,
 .has-global-padding > .kh-hm-hero-container.alignfull {
     width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px)) !important;
     margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px)) !important;
@@ -168,13 +170,19 @@
     animation: hmGrainShaker 16s steps(10) infinite;
 }
 
-@keyframes hmGrainShaker { 
-    0%, 100% { transform: translate(0, 0); } 
-    10% { transform: translate(-5%, -10%); } 
-    30% { transform: translate(3%, -15%); } 
-    50% { transform: translate(12%, 9%); } 
-    70% { transform: translate(9%, 4%); } 
-    90% { transform: translate(-1%, 7%); } 
+@keyframes hmGrainShaker {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -10%); }
+    30% { transform: translate(3%, -15%); }
+    50% { transform: translate(12%, 9%); }
+    70% { transform: translate(9%, 4%); }
+    90% { transform: translate(-1%, 7%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kh-hm-hero-container.has-grain.is-visible::after {
+        animation: none !important;
+    }
 }
 
 .block-editor-page .kh-hm-resizable-wrap .components-resizable-box__handle::after {

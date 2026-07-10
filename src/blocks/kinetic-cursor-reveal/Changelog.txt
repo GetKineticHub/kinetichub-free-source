@@ -1,5 +1,11 @@
 Block Name: Kinetic Cursor Reveal
-Version: 1.0.7
+Version: 1.0.13
+
+### 1.0.13
+
+### Fixed
+- Fixed: Wide and Full width alignment options had no visible effect due to missing CSS.
+- Fixed: the floating hover preview could extend past the viewport edge and cause a horizontal scrollbar on full-width layouts.
 
 ### 1.0.7
 

@@ -1,5 +1,5 @@
 Block Name: Kinetic Scroll Divider
-Version: 1.0.0
+Version: 1.0.13
 
 ### Added
 - Initial release of Kinetic Scroll Divider.
@@ -18,6 +18,7 @@ Version: 1.0.0
 - Added decorative accessibility handling with aria-hidden output.
 
 ### Improved
+- Improved code cleanliness by removing an unused legacy CSS selector with no runtime effect (no script ever applies the class it targeted).
 - Improved server-side validation for divider settings.
 - Improved numeric value clamping for animation and layout controls.
 - Improved color validation for supported CSS color formats.

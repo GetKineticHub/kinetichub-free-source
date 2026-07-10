@@ -1,5 +1,5 @@
 Block Name: Kinetic Split Scroll
-Version: 1.0.0
+Version: 1.0.13
 
 ### Added
 - Initial release of Kinetic Split Scroll.
@@ -25,6 +25,7 @@ Version: 1.0.0
 - Added support for modern mobile viewport sizing.
 
 ### Improved
+- Improved code cleanliness by removing an inert `max-width: 100vw` rule that had no effect alongside `width: 100%`.
 - Improved scroll tracking for pinned media layouts.
 - Improved media swap timing during scroll interactions.
 - Improved layout stability on mobile browsers.

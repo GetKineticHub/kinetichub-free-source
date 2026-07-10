@@ -12,6 +12,33 @@
     
 }
 
+/* ==========================================================================
+   ALIGNFULL / ALIGNWIDE: block.json declares align support for wide/full,
+   but no CSS backed it. Same gated technique as Hero Mesh/Typography: plain
+   fallback for ungated contexts, a padding-compensated variant when a
+   .has-global-padding ancestor is present (the only reliable padding gate;
+   see Hero Mesh style.scss for why .wp-site-blocks was not used).
+   ========================================================================== */
+.kh-cr-wrapper.alignfull {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.has-global-padding > .kh-cr-wrapper.alignfull {
+    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px)) !important;
+    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px)) !important;
+    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px)) !important;
+    max-width: none !important;
+}
+
+.kh-cr-wrapper.alignwide {
+    max-width: var(--wp--style--global--wide-size, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .kh-cr-wrapper.has-shadow {
     background-color: transparent;
     border-radius: 24px;

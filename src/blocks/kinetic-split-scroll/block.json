@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/split-scroll",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "title": "Kinetic Split Scroll",
   "category": "kinetic-suite",
   "description": "Split-screen layout with sticky scrolling media, synchronized text, and hardware-accelerated physics.",

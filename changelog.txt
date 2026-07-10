@@ -1,10 +1,19 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.12
+Current Version: 1.0.13
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.0.13] - 2026-07-10
+----------------------------------------------------------------------
+- Fixed: full-width Hero Mesh produced a horizontal scrollbar on themes defining root padding when placed outside a padded container.
+- Fixed: full-width Kinetic Typography could overflow or misalign on themes defining root padding when placed outside a padded container; migrated to the same padding-aware full-width technique used by Hero Mesh.
+- Fixed: Cursor Reveal's Wide and Full width alignment options had no visible effect due to missing CSS.
+- Fixed: the floating hover preview could extend past the viewport edge and cause a horizontal scrollbar on full-width layouts.
+- Fixed: Kinetic Typography's hover-triggered Plexus background effect could accumulate duplicate window resize listeners on repeated hover.
+- Fixed: Hero Mesh's grain animation and Classic background mode did not fully respect the operating system's reduced-motion preference.
 ----------------------------------------------------------------------
 ## [1.0.12] - 2026-07-07
 ----------------------------------------------------------------------
