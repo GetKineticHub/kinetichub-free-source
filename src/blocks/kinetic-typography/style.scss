@@ -103,6 +103,10 @@
         will-change: transform, opacity, filter;
     }
 
+    &.kh-ty-anim-done span[aria-hidden="true"] {
+        will-change: auto;
+    }
+
     .kh-ty-space[aria-hidden="true"] {
         display: inline-block;
         width: 0.25em;

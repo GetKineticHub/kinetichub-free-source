@@ -3,7 +3,7 @@ Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 1.0.13
+Stable tag: 1.0.14
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -156,7 +156,7 @@ This plugin includes compiled JavaScript and CSS generated with npm and WordPres
 
 The human-readable free-version source files used to build the distributed assets are publicly available here:
 
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.13
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.14
 
 The public source branch includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed `build/` directory.
 
@@ -169,7 +169,7 @@ To rebuild the distributed assets from the public source branch:
 1. Clone the public source repository.
 2. Check out the matching source branch:
 
-`wporg-free-source-1.0.13`
+`wporg-free-source-1.0.14`
 
 3. Install build dependencies:
 
@@ -187,6 +187,17 @@ The build process compiles source files from the source repository into a `build
 * npm 9 or later
 
 == Changelog ==
+
+= 1.0.14 =
+* Improved Kinetic Box compatibility with nested fixed-position content by removing an unnecessary persistent 3D rendering context.
+* Fixed Hero Mesh so valid markup from nested blocks, including SVG and canvas content, is preserved correctly.
+* Fixed the Magnetic Button extended hover area intercepting clicks on the Gutenberg block appender.
+* Improved Cursor Reveal viewport clamping so floating previews remain within the visible page area.
+* Improved Scroll Divider and Magnetic Button lifecycle handling when blocks are dynamically removed and reinserted.
+* Improved Kinetic Typography cleanup after entry animations complete.
+* Improved block inserter descriptions so they accurately describe the features available in KineticHub Free.
+* Added a usage-gated, permanently dismissible WordPress.org review request after the plugin has been used for a while.
+* Improved uninstall cleanup so KineticHub-owned settings are removed correctly.
 
 = 1.0.13 =
 * Fixed: full-width Hero Mesh produced a horizontal scrollbar on themes defining root padding when placed outside a padded container.

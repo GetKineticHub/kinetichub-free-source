@@ -12,8 +12,8 @@ $attributes = $attributes ?? array();
 $content    = $content ?? '';
 $block      = $block ?? null;
 
-// Sanitize InnerBlocks content through wp_kses_post() before output.
-$kh_hm_inner_content = wp_kses_post( $content );
+// Preserve rendered InnerBlocks content. Re-sanitizing here strips valid nested block markup such as canvas, svg, and data attributes.
+$kh_hm_inner_content = $content ?? '';
 
 if ( ! function_exists( 'kinetichub_hm_validate_color_strict' ) ) {
 	/**
@@ -189,7 +189,10 @@ $kh_hm_wrapper_attrs = get_block_wrapper_attributes(
 
 	<div class="kh-hm-content-layer" style="<?php echo esc_attr( $kh_hm_layer_style ); ?>">
 		<div class="kh-hm-inner-wrap" style="<?php echo esc_attr( $kh_hm_inner_wrap_style ); ?>">
-			<?php echo $kh_hm_inner_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- InnerBlocks content is filtered through wp_kses_post() above. ?>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- InnerBlocks content is rendered by WordPress and child block render callbacks; re-sanitizing strips valid nested block markup.
+			echo $kh_hm_inner_content;
+			?>
 		</div>
 	</div>
 </div>

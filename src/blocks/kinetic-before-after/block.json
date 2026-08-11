@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/before-after",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "title": "Kinetic Before/After",
   "description": "Interactive image comparison slider with CSS-based masking and hardware-accelerated transitions.",
   "category": "kinetic-suite",

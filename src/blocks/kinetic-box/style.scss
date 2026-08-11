@@ -30,9 +30,6 @@ body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
     min-height: var(--kh-box-min-h, auto);
     width: 100%;
 
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    
     transition: 
         transform var(--kh-box-speed, 0.4s) var(--kh-box-bezier),
         box-shadow var(--kh-box-speed, 0.4s) var(--kh-box-bezier),

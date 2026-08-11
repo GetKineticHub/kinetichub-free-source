@@ -22,11 +22,15 @@
             block._kh_sd_abort = null;
         }
 
-        // Disconnect all observers when no instances remain
-        if (activeInstances.size === 0 && domObserver) {
-            domObserver.disconnect();
-            domObserver = null;
+        if (block._kh_sd_observer) {
+            block._kh_sd_observer.disconnect();
+            block._kh_sd_observer = null;
         }
+
+        // The shared DOM observer stays attached for the lifetime of the page. It used
+        // to disconnect once the last divider was removed, but it is only created once
+        // at startup, so a later AJAX insertion was never detected: initAll never ran
+        // and the new divider stayed at its opacity:0 start state.
     };
 
     const initAll = () => {
@@ -76,10 +80,22 @@
                         if (entry.isIntersecting) {
                             entry.target.classList.add('is-animated');
                             obs.unobserve(entry.target);
+
+                            // One block per observer, so nothing is left to watch once it
+                            // has revealed. Drop the stored reference too, so cleanupBlock
+                            // never disconnects an observer that is already finished.
+                            obs.disconnect();
+                            if (entry.target._kh_sd_observer === obs) {
+                                entry.target._kh_sd_observer = null;
+                            }
                         }
                     });
                 }, { rootMargin, threshold: 0 });
 
+                // Keep the reference reachable: a block removed before it ever reveals
+                // would otherwise leave an observer that no cleanup path can stop, and a
+                // re-inserted node would gain a second one.
+                block._kh_sd_observer = observer;
                 observer.observe(block);
             
         });

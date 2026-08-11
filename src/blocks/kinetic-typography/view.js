@@ -111,6 +111,8 @@
                     
 
                     if (isVisible && (meetsThreshold || isHugeBlock || isScrolledPast)) {
+                        
+
                         if (!block.classList.contains('kh-ty-active')) {
                             
 
@@ -118,7 +120,11 @@
                             block._kh_ty_hasAnimated = true;
                         }
 
-                        if (!triggerAlways) {
+                        let shouldUnobserve = !triggerAlways;
+
+                        
+
+                        if (shouldUnobserve) {
                             globalObserver.unobserve(block);
                         }
                     }

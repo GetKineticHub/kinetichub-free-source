@@ -149,21 +149,11 @@
                 this.instances.delete(node);
             }
             
-            // CRITICAL: Cleanup all observers when no instances remain
+            // Release document-level tracking when no instances remain.
+            // Shared observers stay alive for the page lifetime so buttons
+            // injected later (AJAX) are still detected and initialised.
             if (this.instances.size === 0) {
                 this.stopTracking();
-                
-                if (this.mutationObserver) {
-                    this.mutationObserver.disconnect();
-                    this.mutationObserver = null;
-                }
-                
-                if (this.viewObserver) {
-                    this.viewObserver.disconnect();
-                    this.viewObserver = null;
-                }
-                
-                
             }
         }
     };
@@ -174,6 +164,7 @@
             this.el = element;
             this.manager = manager;
             this.contentWrap = this.el.querySelector('.kh-mb-content-wrap');
+            this.wrapper = this.el.closest('.kh-mb-wrapper');
             this.abortController = new AbortController();
             
             this.config = {
@@ -378,6 +369,8 @@
                 this.manager.viewObserver.unobserve(this.el);
             }
 
+            
+
             if (this.manager.activeUpdateNode === this.el) {
                 this.manager.activeUpdateNode = null;
             }
@@ -388,6 +381,8 @@
                 delete this.stretchScope._kh_mb_stretched;
                 this.stretchScope.style.cursor = '';
             }
+
+            this.wrapper = null;
         }
     }
 

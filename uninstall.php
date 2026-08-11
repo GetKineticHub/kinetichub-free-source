@@ -21,11 +21,17 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 delete_option( 'kinetichub_version' );
 delete_option( 'kinetichub_settings' );
+delete_option( 'kinetichub_global_settings' );
 delete_option( 'kinetichub_admin_notice_dismissed' );
+delete_option( 'kinetichub_review_first_seen' );
+delete_option( 'kinetichub_review_block_used' );
 
 delete_site_option( 'kinetichub_version' );
 delete_site_option( 'kinetichub_settings' );
+delete_site_option( 'kinetichub_global_settings' );
 delete_site_option( 'kinetichub_admin_notice_dismissed' );
+delete_site_option( 'kinetichub_review_first_seen' );
+delete_site_option( 'kinetichub_review_block_used' );
 
 global $wpdb;
 

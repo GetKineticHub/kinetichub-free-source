@@ -1,10 +1,10 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/kinetic-box",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "title": "Kinetic Box",
   "category": "kinetic-suite",
-  "description": "Structured master container featuring 3D tilt physics, magnetic hover, and strict input validation.",
+  "description": "Structured container block with motion-ready layout and hover interaction controls.",
   "keywords": [
     "box",
     "container",

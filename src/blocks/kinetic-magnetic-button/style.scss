@@ -327,6 +327,16 @@
     z-index: 1;
 }
 
+/* Editor only: the hitbox exists to enlarge the frontend hover/click target and
+   view.js never queries it, so it has no job in the canvas. Its 15px overhang
+   reaches into the gap between blocks and swallowed clicks on the Gutenberg
+   block appender. Frontend geometry, z-index and pointer behaviour are untouched. */
+.is-editor-canvas .kh-mb-hitbox,
+.block-editor-page .kh-mb-hitbox,
+.block-editor-block-list__block[data-type="kinetichub/magnetic-button"] .kh-mb-hitbox {
+    pointer-events: none;
+}
+
 /* ==========================================================================
    8. Responsive & Accessibility
    ========================================================================== */

@@ -1,10 +1,10 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/typography",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "title": "Kinetic Typography",
   "category": "kinetic-suite",
-  "description": "Professional kinetic typography engine with advanced splitting, 3D perspective, and hardware-accelerated triggers.",
+  "description": "Animated headline block with character splitting and scroll-triggered text effects.",
   "keywords": [
     "animated text",
     "headline",

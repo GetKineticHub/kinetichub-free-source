@@ -280,8 +280,18 @@
 
                     
 
-                    let targetX = pos.x;
-                    let targetY = pos.y;
+                    const targetX = pos.x;
+                    const targetY = pos.y;
+
+                    // Page coordinate of the box's containing-block origin. 'over' moves the
+                    // box to document.body, so its containing block is the initial one and the
+                    // origin is the document origin. 'under' leaves it an absolute child of the
+                    // relatively positioned wrapper, so the origin is the wrapper's PADDING box
+                    // (clientLeft/clientTop add the border widths that getBoundingClientRect,
+                    // which reports the border box, includes). Everything below stays in page
+                    // space for both modes; the origin is subtracted only at the transform write.
+                    let originX = 0;
+                    let originY = 0;
 
                     
 
@@ -293,14 +303,41 @@
                     // box itself is causing and stops clamping anything useful)
                     const boxW = floatingBox.offsetWidth || 350;
                     const boxH = floatingBox.offsetHeight || 400;
-                    const minX = window.scrollX + (boxW / 2);
-                    const maxX = window.scrollX + document.documentElement.clientWidth - (boxW / 2);
-                    const minY = window.scrollY + (boxH / 2);
-                    const maxY = window.scrollY + document.documentElement.clientHeight - (boxH / 2);
-                    const clampedX = Math.max(minX, Math.min(finalX, maxX));
-                    const clampedY = Math.max(minY, Math.min(finalY, maxY));
 
-                    floatingBox.style.transform = `translate3d(${clampedX}px, ${clampedY}px, 0) translate(-50%, -50%) rotate(${rotation}deg)`;
+                    // rotate() is the last function in the transform below, so it spins the
+                    // box around its own centre and the painted axis-aligned box is larger
+                    // than the layout box. Clamping the layout half-extents let about half
+                    // of that extra envelope past the viewport edge and grew scrollWidth.
+                    // Derive the envelope from the layout size and the angle we are about to
+                    // write, so the clamp never has to read back a transformed rect.
+                    const rotationRad = rotation * Math.PI / 180;
+                    const absCos = Math.abs(Math.cos(rotationRad));
+                    const absSin = Math.abs(Math.sin(rotationRad));
+                    const halfW = ((boxW * absCos) + (boxH * absSin)) / 2;
+                    const halfH = ((boxW * absSin) + (boxH * absCos)) / 2;
+
+                    const viewW = document.documentElement.clientWidth;
+                    const viewH = document.documentElement.clientHeight;
+                    const minX = window.scrollX + halfW;
+                    const maxX = window.scrollX + viewW - halfW;
+                    const minY = window.scrollY + halfH;
+                    const maxY = window.scrollY + viewH - halfH;
+
+                    // Envelope wider/taller than the viewport: centre it rather than let the
+                    // bounds invert and pin the box hard against one edge.
+                    const clampedX = minX > maxX
+                        ? window.scrollX + (viewW / 2)
+                        : Math.max(minX, Math.min(finalX, maxX));
+                    const clampedY = minY > maxY
+                        ? window.scrollY + (viewH / 2)
+                        : Math.max(minY, Math.min(finalY, maxY));
+
+                    // Page space -> containing-block space. originX/originY are 0 for 'over',
+                    // so this is arithmetically unchanged there.
+                    const transformX = clampedX - originX;
+                    const transformY = clampedY - originY;
+
+                    floatingBox.style.transform = `translate3d(${transformX}px, ${transformY}px, 0) translate(-50%, -50%) rotate(${rotation}deg)`;
 
                     
                     

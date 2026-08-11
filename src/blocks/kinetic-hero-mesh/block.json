@@ -1,11 +1,11 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/hero-mesh",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "title": "Kinetic Hero Mesh",
   "category": "kinetic-suite",
   "icon": "cover-image",
-  "description": "Premium Generative Layout Container featuring Plexus, Liquid, Gradient, Lens, and Aurora engines.",
+  "description": "Full-width hero section with an animated generative canvas background and layered content.",
   "keywords": [
     "hero section",
     "mesh",

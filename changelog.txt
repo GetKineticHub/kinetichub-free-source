@@ -1,10 +1,22 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.13
+Current Version: 1.0.14
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.0.14] - 2026-08-11
+----------------------------------------------------------------------
+- Improved Kinetic Box compatibility with nested fixed-position content by removing an unnecessary persistent 3D rendering context.
+- Fixed Hero Mesh so valid markup from nested blocks, including SVG and canvas content, is preserved correctly.
+- Fixed the Magnetic Button extended hover area intercepting clicks on the Gutenberg block appender.
+- Improved Cursor Reveal viewport clamping so floating previews remain within the visible page area.
+- Improved Scroll Divider and Magnetic Button lifecycle handling when blocks are dynamically removed and reinserted.
+- Improved Kinetic Typography cleanup after entry animations complete.
+- Improved block inserter descriptions so they accurately describe the features available in KineticHub Free.
+- Added a usage-gated, permanently dismissible WordPress.org review request after the plugin has been used for a while.
+- Improved uninstall cleanup so KineticHub-owned settings are removed correctly.
 ----------------------------------------------------------------------
 ## [1.0.13] - 2026-07-10
 ----------------------------------------------------------------------
