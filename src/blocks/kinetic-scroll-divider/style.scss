@@ -29,9 +29,6 @@
     &.align-center { justify-content: center; }
     &.align-right { justify-content: flex-end; }
     
-    /* Timing Curves */
-    
-    &.curve-soft { --kh-div-ease: cubic-bezier(0.165, 0.84, 0.44, 1); }
     
 }
 
@@ -66,19 +63,27 @@
 .kh-divider-line {
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
     border-radius: inherit;
     border-top-width: var(--kh-div-h, 2px);
     border-top-color: var(--kh-div-c, #10b981);
     
     opacity: 0;
-    transition: transform var(--kh-div-dur, 1.2s) var(--kh-div-ease, ease),
-                opacity calc(var(--kh-div-dur) * 0.5) ease;
+    /* One property per control. The transform fallback is the curve that curve-soft
+     * used to supply, so FREE and PRO-with-smooth draw exactly as before. */
+    transition: transform var(--kh-div-dur, 1.2s) var(--kh-div-ease, cubic-bezier(0.165, 0.84, 0.44, 1)),
+                opacity calc(var(--kh-div-dur) * 0.5) var(--kh-div-opacity-ease, ease);
 }
 
 /* Border Styles */
 .kh-scroll-divider-container.style-solid .kh-divider-line { border-top-style: solid; background: var(--kh-div-c); border-top-width: 0; }
 .kh-scroll-divider-container.style-dashed .kh-divider-line { border-top-style: dashed; }
-.kh-scroll-divider-container.style-dotted .kh-divider-line { border-top-style: dotted; }
+.kh-scroll-divider-container.style-dotted .kh-divider-line {
+    border-top-width: 0;
+    background-image: radial-gradient(circle, var(--kh-div-c, #10b981) calc(var(--kh-div-h, 2px) / 2 - 0.5px), transparent calc(var(--kh-div-h, 2px) / 2));
+    background-size: calc(var(--kh-div-h, 2px) * 2) var(--kh-div-h, 2px);
+    background-repeat: space no-repeat;
+}
 
 /* Dynamic Glow Options */
 .kh-scroll-divider-container.has-glow {

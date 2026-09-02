@@ -17,19 +17,57 @@
 
     
 
-    &.kh-ty-has-custom-typo {
-        font-size: var(--kh-ty-fs-desk);
-        line-height: var(--kh-ty-lh-desk);
-
-        .kh-ty-text-content {
-            font-size: var(--kh-ty-fs-desk) !important;
-            line-height: var(--kh-ty-lh-desk) !important;
-        }
-    }
-
+    /*
+     * Custom typography owns one PROPERTY at one BREAKPOINT.
+     *
+     * These two rules were one `.kh-ty-has-custom-typo` block declaring
+     * font-size AND line-height together, and the aggregate class is set as
+     * soon as ANY of the four controls has a value. Set a custom size only and
+     * the block still declared `line-height: var(--kh-ty-lh-desk)` with nothing
+     * behind the variable: invalid at computed-value time, so line-height
+     * resolved to unset and the theme lost a property the author never touched.
+     * Splitting the rule keeps each declaration out of the cascade until its
+     * own value exists, and the untouched property is left alone.
+     *
+     * `.kh-ty-has-custom-typo` is still emitted by both renderers as a state
+     * marker for content saved before this split, but it no longer carries a
+     * declaration of its own -- that is the whole defect.
+     *
+     * Neither rule is media-scoped, so both also cover <=768px. That is what
+     * makes a desktop custom value fall through to mobile on its own, with no
+     * `var()` fallback chain and no mobile rule.
+     *
+     * ORDER IS THE CONTRACT. The native marker is emitted independently of
+     * the custom one, so both can apply at once: native font-size with a
+     * custom line-height, and so on. Every `.kh-ty-text-content` rule here
+     * carries `!important` at the same specificity, so nothing but source
+     * order decides the winner. The native `inherit` baseline forwards the
+     * wrapper's WordPress typography to the inner heading and must come
+     * FIRST; the desktop custom rules override only the property they own;
+     * the mobile rules are later still and override only inside <=768px. An
+     * untouched property falls through to the baseline and keeps its native
+     * value. Moving the native rule below the custom ones puts `inherit`
+     * last and clobbers the custom desktop value -- do not reorder.
+     */
     &.kh-ty-has-native-typo .kh-ty-text-content {
         font-size: inherit !important;
         line-height: inherit !important;
+    }
+
+    &.kh-ty-has-custom-font-size {
+        font-size: var(--kh-ty-fs-desk);
+
+        .kh-ty-text-content {
+            font-size: var(--kh-ty-fs-desk) !important;
+        }
+    }
+
+    &.kh-ty-has-custom-line-height {
+        line-height: var(--kh-ty-lh-desk);
+
+        .kh-ty-text-content {
+            line-height: var(--kh-ty-lh-desk) !important;
+        }
     }
 
     &:focus {
@@ -79,6 +117,7 @@
         position: absolute;
         width: 1px;
         word-wrap: normal !important;
+        user-select: none;
     }
 
     .kh-ty-word {
@@ -106,14 +145,7 @@
     &.kh-ty-anim-done span[aria-hidden="true"] {
         will-change: auto;
     }
-
-    .kh-ty-space[aria-hidden="true"] {
-        display: inline-block;
-        width: 0.25em;
-        white-space: normal;
-    }
-
-    .kh-ty-visual-text[aria-hidden="true"] {
+.kh-ty-visual-text[aria-hidden="true"] {
         display: inline;
         white-space: normal;
     }
@@ -133,13 +165,6 @@
     padding: 20px;
     text-align: center;
     color: #666;
-}
-
-.kh-ty-editor-notice-wrap {
-    position: relative;
-    width: 100%;
-    z-index: 99;
-    margin-top: 15px;
 }
 
 .kh-ty-control-box {
@@ -173,13 +198,30 @@
 }
 
 @media (max-width: 768px) {
-    .kh-ty-master-typography.kh-ty-has-custom-typo {
-        font-size: var(--kh-ty-fs-mob, var(--kh-ty-fs-desk));
-        line-height: var(--kh-ty-lh-mob, var(--kh-ty-lh-desk));
+    /*
+     * Mobile overrides, one per property, emitted only when a mobile value was
+     * actually set. Same specificity as the desktop rules above and later in
+     * the file, so they win here and nowhere else.
+     *
+     * The `var(--kh-ty-fs-mob, var(--kh-ty-fs-desk))` fallback these replace
+     * could not express the mobile-only case: the aggregate class emitted the
+     * DESKTOP rule too, against a variable that did not exist. Falling back to
+     * a desktop custom value is now the plain cascade -- the unscoped desktop
+     * rule already applies at this width, and this rule is simply absent.
+     */
+    .kh-ty-master-typography.kh-ty-has-custom-font-size-mobile {
+        font-size: var(--kh-ty-fs-mob);
 
         .kh-ty-text-content {
-            font-size: var(--kh-ty-fs-mob, var(--kh-ty-fs-desk)) !important;
-            line-height: var(--kh-ty-lh-mob, var(--kh-ty-lh-desk)) !important;
+            font-size: var(--kh-ty-fs-mob) !important;
+        }
+    }
+
+    .kh-ty-master-typography.kh-ty-has-custom-line-height-mobile {
+        line-height: var(--kh-ty-lh-mob);
+
+        .kh-ty-text-content {
+            line-height: var(--kh-ty-lh-mob) !important;
         }
     }
 
@@ -338,4 +380,23 @@ body:not(.block-editor-page) .has-global-padding > .kh-ty-master-typography.alig
         filter: none !important;
         transition: none !important;
     }
+
+    /*
+     * Effects that have to stop moving WITHOUT losing what they draw, which is
+     * why they are not in the blanket rule above: that one also zeroes
+     * transform, filter and opacity. Applied here it would decentre the aurora
+     * glow and the highlight bar (both positioned with a translate) and strip
+     * the aurora's blur, degrading the design instead of stilling it. Only the
+     * motion is taken away; the painted result is left as it is.
+     *
+     * Hover Glitch animates .kh-ty-text-content on :hover, which no selector
+     * above reaches -- it is the heading element itself, not one of the
+     * aria-hidden glyph spans. !important is what beats the (0,3,0) hover rule.
+     */
+    .kh-ty-master-typography .kh-ty-text-content {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    
 }

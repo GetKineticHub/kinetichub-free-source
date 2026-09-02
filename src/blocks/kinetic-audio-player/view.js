@@ -146,9 +146,24 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(ajaxTimer);
             ajaxTimer = setTimeout(() => {
                 document.querySelectorAll('.kh-ap-button').forEach(btn => {
-                    if (!btn.closest('.kh-ap-wrapper').classList.contains('kh-ready')) {
-                        initPlayer(btn);
-                    }
+                    const wrapper = btn.closest('.kh-ap-wrapper');
+
+                    // A button with no wrapper ancestor is a legitimate lifecycle state, not
+                    // an error: the PRO sticky/floating engine appends the button straight to
+                    // document.body, which this observer sees as an added node and rescans.
+                    // The old code called .classList on the null closest() result and threw,
+                    // aborting the whole forEach and any valid candidate after it. Such a
+                    // button already owns a live playerInstance, so skipping it is also the
+                    // correct outcome - re-initialising would strip its sticky classes and
+                    // build a second Audio, listener set and instance for the same player.
+                    if (!wrapper) return;
+
+                    // Already initialised (including a sticky button just returned to its
+                    // wrapper): cleanupBlock is what clears kh-ready, so a genuinely
+                    // destroyed-and-reinserted block still re-initialises below.
+                    if (wrapper.classList.contains('kh-ready')) return;
+
+                    initPlayer(btn);
                 });
             }, 150);
         }
@@ -174,8 +189,18 @@ document.addEventListener('DOMContentLoaded', () => {
         audio.src = audioSrc;
 
         const generateId = () => window.crypto && crypto.randomUUID ? crypto.randomUUID().split('-')[0] : Math.random().toString(36).substr(2, 9);
-        const blockIdMatch = wrapper.className.match(/kh-ap-([a-zA-Z0-9\-]+)/);
-        const blockId = blockIdMatch ? blockIdMatch[0] : `kh-ap-${generateId()}`;
+        /*
+         * render.php already publishes the unique id as data-block-id, so read that first.
+         * The old class regex scanned "kh-ap-wrapper kh-ap-<uid>" left to right and always
+         * matched kh-ap-wrapper, so every player on the page resolved to the same identity:
+         * Engine subscribe/unsubscribe keys, the PRO magnet key and the PRO Remember
+         * Position localStorage key all collided across instances. The class fallback is
+         * kept for markup rendered before this fix, but it now skips the kh-ap-wrapper
+         * token explicitly. Value format is unchanged: the full "kh-ap-<uid>" string.
+         */
+        const datasetBlockId = (wrapper.dataset.blockId || '').trim();
+        const classBlockId = (wrapper.className.match(/\bkh-ap-(?!wrapper\b)[a-zA-Z0-9_-]+/) || [])[0];
+        const blockId = datasetBlockId || classBlockId || `kh-ap-${generateId()}`;
         
         let config = {
             timeMode: btn.dataset.timemode,
@@ -301,23 +326,47 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        const startMotor = () => {
-            if (window.kinetichub && window.kinetichub.Engine) {
-                window.kinetichub.Engine.subscribe(playerInstance.id, updateVisuals);
-            } else {
-                const loop = () => {
-                    if (wrapper._kh_ap_isDestroyed) return;
-                    updateVisuals();
-                    if (!audio.paused) playerInstance.rafId = requestAnimationFrame(loop);
-                };
-                loop();
+        /*
+         * Progress fill/ring, the time read-out and the seek slider's ARIA state are
+         * functional playback feedback, not decorative motion, so this loop has to keep
+         * running under prefers-reduced-motion. It used to go through
+         * window.kinetichub.Engine, whose subscribe() is a deliberate no-op while complex
+         * motion is disabled (reduced motion, or Enable Mobile Motion off on a touch
+         * device). The callback was simply never registered and the local fallback below
+         * was only reachable when the Engine object was absent entirely, so the progress
+         * bar, the clock and aria-valuenow froze for the whole track.
+         *
+         * A block-local rAF costs nothing here: playback is exclusive - stopAllOtherPlayers
+         * pauses every other instance on play - so at most one of these loops ever runs.
+         * The PRO magnet loop further down deliberately stays on the Engine: that motion IS
+         * decorative and must remain suppressed under reduced motion.
+         */
+        const motorTick = () => {
+            if (wrapper._kh_ap_isDestroyed) {
+                playerInstance.rafId = null;
+                return;
             }
+
+            updateVisuals();
+
+            if (audio.paused) {
+                playerInstance.rafId = null;
+                return;
+            }
+
+            playerInstance.rafId = requestAnimationFrame(motorTick);
+        };
+
+        const startMotor = () => {
+            // rafId is the single source of truth for "a motor is already running", so
+            // repeat calls (play + checkStickyState + the IntersectionObserver all reach
+            // here) cannot stack a second loop.
+            if (playerInstance.rafId || wrapper._kh_ap_isDestroyed) return;
+            motorTick();
         };
 
         const stopMotor = () => {
-            if (window.kinetichub && window.kinetichub.Engine) {
-                window.kinetichub.Engine.unsubscribe(playerInstance.id);
-            } else if (playerInstance.rafId) {
+            if (playerInstance.rafId) {
                 cancelAnimationFrame(playerInstance.rafId);
                 playerInstance.rafId = null;
             }
@@ -338,7 +387,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const onAudioEnded = () => {
             updateUIState(false);
-            audio.currentTime = 0; 
+            // Explicit cancellation: 'ended' does not reliably fire 'pause', and the final
+            // zeroed values are written by hand just below - the motor must not tick again
+            // afterwards and overwrite them.
+            stopMotor();
+            audio.currentTime = 0;
             
             if (!config.isCompact && progressFill) progressFill.style.transform = 'scaleX(0)';
             else if (config.isCompact && circleFill) circleFill.style.strokeDashoffset = 2 * Math.PI * 48;

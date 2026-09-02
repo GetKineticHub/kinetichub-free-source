@@ -110,9 +110,13 @@ $kh_ty_text_align_mob      = '';
 
 
 
-$kh_ty_clean_text = wp_strip_all_tags( $kh_ty_raw_content );
+/*
+ * The auto-downgrade to word splitting is a guard on how much markup this
+ * template emits, so it measures the raw stripped text and nothing else.
+ */
+$kh_ty_stripped_text = wp_strip_all_tags( $kh_ty_raw_content );
 
-if ( mb_strlen( $kh_ty_clean_text ) > 500 && 'chars' === $kh_ty_split_type ) {
+if ( mb_strlen( $kh_ty_stripped_text ) > 500 && 'chars' === $kh_ty_split_type ) {
 	$kh_ty_split_type = 'words';
 }
 
@@ -121,14 +125,37 @@ $kh_ty_native_font_size_custom = ! empty( $attributes['style']['typography']['fo
 $kh_ty_native_line_height      = ! empty( $attributes['style']['typography']['lineHeight'] ) ? (string) $attributes['style']['typography']['lineHeight'] : null;
 $kh_ty_has_native_typo         = ! empty( $kh_ty_native_font_size_preset ) || ! empty( $kh_ty_native_font_size_custom ) || ! empty( $kh_ty_native_line_height );
 
-$kh_ty_lines       = preg_split( '/<br\s*\/?>/i', $kh_ty_raw_content );
-$kh_ty_lines       = is_array( $kh_ty_lines ) ? $kh_ty_lines : array( $kh_ty_raw_content );
-$kh_ty_total_items = 0;
+$kh_ty_lines = preg_split( '/<br\s*\/?>/i', $kh_ty_raw_content );
+$kh_ty_lines = is_array( $kh_ty_lines ) ? $kh_ty_lines : array( $kh_ty_raw_content );
 
-foreach ( $kh_ty_lines as $kh_ty_line ) {
+/*
+ * One semantic pass over the content, reused by the item count, the visual
+ * spans and the screen-reader text, so the three can never disagree.
+ *
+ * Splitting on <br> first is what makes the accessible text correct. Handing
+ * the whole string to wp_strip_all_tags() instead deletes the break outright
+ * and welds the words either side of it together ("Alpha<br>Beta" read out as
+ * "AlphaBeta"); the break is a real word boundary, so it has to become one.
+ * All three written forms -- <br>, <br/> and <br /> -- match the pattern.
+ *
+ * Decoding runs once, here, and is not optional either: the stored content
+ * holds entities, so "&amp;" without this step reaches esc_html() still
+ * encoded and is escaped a second time into a literal "&amp;" on screen.
+ * Every consumer below takes the decoded words and escapes them itself.
+ */
+$kh_ty_line_to_words = static function ( $kh_ty_line ) {
 	$kh_ty_clean_line = wp_specialchars_decode( wp_strip_all_tags( $kh_ty_line ), ENT_QUOTES );
 	$kh_ty_words      = preg_split( '/\s+/u', $kh_ty_clean_line, -1, PREG_SPLIT_NO_EMPTY );
-	$kh_ty_words      = is_array( $kh_ty_words ) ? $kh_ty_words : array();
+
+	return is_array( $kh_ty_words ) ? $kh_ty_words : array();
+};
+
+$kh_ty_lines_words = array_map( $kh_ty_line_to_words, $kh_ty_lines );
+$kh_ty_all_words   = array();
+$kh_ty_total_items = 0;
+
+foreach ( $kh_ty_lines_words as $kh_ty_words ) {
+	$kh_ty_all_words = array_merge( $kh_ty_all_words, $kh_ty_words );
 
 	if ( 'words' === $kh_ty_split_type ) {
 		$kh_ty_total_items += count( $kh_ty_words );
@@ -140,6 +167,14 @@ foreach ( $kh_ty_lines as $kh_ty_line ) {
 		}
 	}
 }
+
+/*
+ * The accessible text is the same words the eye gets, in the same order, joined
+ * by the separator the visual markup uses between them -- a space between words
+ * and across a <br>. Nothing is read out twice: the visual spans are all
+ * aria-hidden, this span is the only thing exposed.
+ */
+$kh_ty_clean_text = implode( ' ', $kh_ty_all_words );
 
 $kh_ty_max_delay_seconds = ( $kh_ty_total_items > 0 ) ? ( $kh_ty_total_items - 1 ) * $kh_ty_stagger : 0;
 
@@ -179,11 +214,46 @@ foreach ( $kh_ty_css_vars as $kh_ty_key => $kh_ty_val ) {
 
 $kh_ty_has_custom_typo = ! empty( $kh_ty_custom_font_size ) || ! empty( $kh_ty_custom_font_size_mobile ) || ! empty( $kh_ty_custom_line_height ) || ! empty( $kh_ty_custom_line_height_mob );
 
+/*
+ * Custom typography owns one PROPERTY at one BREAKPOINT, never both of either.
+ *
+ * The aggregate class below used to carry the CSS for font-size and
+ * line-height together, so setting a custom size alone also declared
+ * line-height against a custom property that was never defined -- the
+ * declaration is invalid at computed-value time, resolves to unset, and the
+ * theme's line-height is lost to a control the author never touched. One flag
+ * per property per breakpoint keeps each declaration out of the stylesheet
+ * until the value behind it actually exists; the untouched property simply has
+ * no rule and stays exactly where it was.
+ *
+ * The breakpoint split matters for the same reason: the desktop rule is not
+ * media-scoped, so a mobile-only value must not emit it.
+ *
+ * Mobile falling back to a desktop CUSTOM value needs no rule of its own --
+ * the unscoped desktop declaration already applies at every width, and the
+ * mobile rule (equal specificity, later in the file) only overrides it when a
+ * mobile value was set.
+ *
+ * The native marker is INDEPENDENT of the custom one. WordPress typography is
+ * applied to the wrapper, and `.kh-ty-text-content` is an h1/h2/... with its
+ * own theme typography, so the native rule is what forwards a native value to
+ * the inner element at all. Emitting it only when no custom control was
+ * touched meant one custom property silently dropped the native value on the
+ * OTHER property. Both markers are emitted on their own condition; the
+ * stylesheet orders the native baseline before the custom overrides.
+ *
+ * Must stay identical to the editor's own class list.
+ */
 $kh_ty_classes = array(
 	'kh-ty-master-typography',
 	'kh-ty-safe-render',
 	'kh-ty-ready',
-	$kh_ty_has_custom_typo ? 'kh-ty-has-custom-typo' : ( $kh_ty_has_native_typo ? 'kh-ty-has-native-typo' : '' ),
+	$kh_ty_has_native_typo ? 'kh-ty-has-native-typo' : '',
+	$kh_ty_has_custom_typo ? 'kh-ty-has-custom-typo' : '',
+	! empty( $kh_ty_custom_font_size ) ? 'kh-ty-has-custom-font-size' : '',
+	! empty( $kh_ty_custom_font_size_mobile ) ? 'kh-ty-has-custom-font-size-mobile' : '',
+	! empty( $kh_ty_custom_line_height ) ? 'kh-ty-has-custom-line-height' : '',
+	! empty( $kh_ty_custom_line_height_mob ) ? 'kh-ty-has-custom-line-height-mobile' : '',
 	"kh-ty-anim-{$kh_ty_animation_type}",
 	"kh-ty-trig-{$kh_ty_trigger}",
 	"kh-ty-split-{$kh_ty_split_type}",
@@ -211,11 +281,7 @@ $kh_ty_wrapper_attrs     = get_block_wrapper_attributes( $kh_ty_data_attrs );
 $kh_ty_html_spans        = '';
 $kh_ty_global_item_count = 0;
 
-foreach ( $kh_ty_lines as $kh_ty_line_index => $kh_ty_line ) {
-	$kh_ty_clean_line = wp_specialchars_decode( wp_strip_all_tags( $kh_ty_line ), ENT_QUOTES );
-	$kh_ty_words      = preg_split( '/\s+/u', $kh_ty_clean_line, -1, PREG_SPLIT_NO_EMPTY );
-	$kh_ty_words      = is_array( $kh_ty_words ) ? $kh_ty_words : array();
-
+foreach ( $kh_ty_lines_words as $kh_ty_line_index => $kh_ty_words ) {
 	foreach ( $kh_ty_words as $kh_ty_word_index => $kh_ty_word ) {
 		if ( '' === $kh_ty_word ) {
 			continue;
@@ -257,11 +323,11 @@ foreach ( $kh_ty_lines as $kh_ty_line_index => $kh_ty_line ) {
 		$kh_ty_html_spans .= '</span>';
 
 		if ( $kh_ty_word_index < count( $kh_ty_words ) - 1 ) {
-			$kh_ty_html_spans .= '<span class="kh-ty-space" aria-hidden="true"> </span>';
+			$kh_ty_html_spans .= '&#32;';
 		}
 	}
 
-	if ( $kh_ty_line_index < count( $kh_ty_lines ) - 1 ) {
+	if ( $kh_ty_line_index < count( $kh_ty_lines_words ) - 1 ) {
 		$kh_ty_html_spans .= '<br aria-hidden="true">';
 	}
 }

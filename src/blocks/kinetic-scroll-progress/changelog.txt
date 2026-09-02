@@ -1,0 +1,63 @@
+Block Name: Kinetic Scroll Progress
+Version: 1.0.3
+
+### Added
+
+- Initial block skeleton for Kinetic Scroll Progress.
+- Added whole-page scroll progress tracking on the frontend.
+- Added a shared frontend runtime so several indicators on one page share a single scroll listener and a single scheduled frame.
+- Added cached page geometry that refreshes on viewport resize, orientation change, late media, web font loading, and content size changes.
+- Added support for indicators inserted or removed dynamically after page load.
+- Added correct starting progress for restored scroll positions, anchor links, and back/forward navigation.
+- Added smoothing behavior for none, subtle, and smooth.
+- Added automatic spacing for the WordPress toolbar on top-positioned indicators.
+- Added automatic milestones discovered from the headings in the page content.
+- Added reached, current, and upcoming milestone states that follow the reader in both scroll directions.
+- Added milestone markers positioned so the progress fill reaches a marker as that section becomes current.
+- Added even milestone sampling when a page has more headings than the configured maximum, always keeping the first and last.
+- Added milestone mirroring for reversed indicator direction.
+- Added milestone refresh when content expands or collapses, when sections are inserted or removed, and when headings are hidden or shown per device.
+- Added working mobile label modes for show, current only, and hide.
+- Added separate desktop label modes for show all, major headings only, current only, and hide.
+- Added Major Headings Only, which keeps H2 labels visible while H3 milestones remain as markers with full state.
+- Added a staggered horizontal label layout that alternates labels above and below the bar, moving the bar inward automatically so both rows stay on screen.
+- Added top-level heading alternation, so a staggered journey using Major Headings Only alternates the labels that are actually visible.
+- Added separate desktop and mobile heading levels, so a phone can track only the top-level sections of a page that shows both levels on a wide screen.
+- Added separate desktop and mobile maximum milestones, defaulting to twelve on desktop and six on mobile.
+- Added Major Headings Only to the mobile label modes.
+- Added immediate milestone re-selection when the screen crosses the mobile breakpoint, reusing the headings already found rather than reading the page again.
+- Added guidance in the editor for dense horizontal journeys.
+- Added Milestone Label Background with None, Box, Rounded, and Pill, for pages where content behind the labels makes them hard to read.
+- Added a Label Background color, set alongside the existing milestone colors.
+- Added fixed, balanced label padding so a background never needs a spacing setting.
+- Added automatic extra room for the staggered layout when a label background is in use, so the outward row still fits on screen.
+- Added label backgrounds that follow every existing label mode, hiding or fading with the label itself.
+- Added Sync Background with Progress, drawing upcoming labels on the track color and reached labels on the progress color.
+- Added automatic use of the manual Label Background color whenever Sync is off, with the saved color kept when Sync is on.
+- Added a server-rendered scroll progress and milestone journey indicator structure.
+- Added horizontal bar and vertical rail presentations.
+- Added screen position options for top, bottom, left, and right.
+- Added thickness control with a separate mobile thickness value.
+- Added indicator length control with a separate mobile length value.
+- Added distance-from-edge control with a separate mobile value.
+- Added automatic device safe-area spacing for fixed placement.
+- Added layer (z-index) control with a conservative default.
+- Added track and progress color controls.
+- Added track and progress opacity controls.
+- Added border radius control.
+- Added direction control for normal and reversed fill.
+- Added smoothing option for none, subtle, and smooth.
+- Added automatic milestone options for heading levels, maximum count, labels, and marker style.
+- Added Dot and Tick milestone marker styles.
+- Added milestone reached and not-reached color controls.
+- Added mobile label strategy for show, current only, and hide, defaulting to current only.
+- Added device visibility options for hiding on mobile or desktop.
+- Added support for common CSS color formats including HEX, RGB, RGBA, HSL, HSLA, and CSS variables.
+- Added a static editor preview so the configuration is readable while editing.
+- Added decorative accessibility handling with aria-hidden output.
+- Added reduced motion baseline handling.
+
+### Fixed
+- Fixed milestone markers sitting off the centre of a vertical rail on themes that add spacing or indentation to ordered lists in page content.
+- Fixed the same drift in the editor preview, where themes apply the same list styles through their editor stylesheet.
+- Isolated the internal milestone list from theme ordered-list margin, padding and list-style, so its geometry is owned by the block in both left-to-right and right-to-left layouts.

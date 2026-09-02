@@ -13,6 +13,13 @@ import { __ } from '@wordpress/i18n';
 import { KineticOverlayControls } from '../../components/OverlayControls';
 import { KineticImageFitControls } from '../../components/ImageFitControls';
 
+import { KineticEditorNotice } from '../../components/EditorNotice';
+
+import { InspectorHelp, labelWithHelp } from '../../components/InspectorUX';
+
+import { ProNote } from '../../components/InspectorUX';
+
+
 import metadata from './block.json';
 
 const BLOCKS_TEMPLATE = [
@@ -35,7 +42,7 @@ registerBlockType(metadata.name, {
     ),
 
     edit: (props) => {
-        const { attributes, setAttributes } = props;
+        const { attributes, setAttributes, isSelected } = props;
         const { 
             pinnedSide, columnRatio, stickyOffset, stackOnMobile, enableStickyMobile,
             mediaItems, enableSmartSwap, imageSize, objectFit, objectPosition,
@@ -256,7 +263,7 @@ registerBlockType(metadata.name, {
                         </MediaUploadCheck>
                         <hr/>
                         <SelectControl 
-                            label={__('Image Resolution', 'kinetichub')} 
+                            label={labelWithHelp(__('Image Resolution', 'kinetichub'), __('Which registered size WordPress serves for each gallery image. The pinned media fills half the viewport, so Large is usually enough; Full sends the original file and is the slowest to load.', 'kinetichub'))}
                             value={imageSize} 
                             options={[
                                 {label: __('Full (Highest Quality)', 'kinetichub'), value: 'full'}, 
@@ -265,15 +272,15 @@ registerBlockType(metadata.name, {
                             ]} 
                             onChange={(v) => setAttributes({ imageSize: v })} 
                         />
-                        <ToggleControl label={__('Smart Media Swap (Crossfade)', 'kinetichub')} checked={enableSmartSwap} onChange={(v) => setAttributes({ enableSmartSwap: v })} />
+                        <ToggleControl label={labelWithHelp(__('Smart Media Swap (Crossfade)', 'kinetichub'), __('The pinned media changes as the reader passes through the text column, one gallery item per section. With a single item there is nothing to swap to and the media simply stays put.', 'kinetichub'))} checked={enableSmartSwap} onChange={(v) => setAttributes({ enableSmartSwap: v })} />
                     </PanelBody>
 
                     
                     
                     <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('Extra motion and atmosphere for the pinned column: wipe, circle and diagonal swap transitions in place of the crossfade, an inner parallax on the image, an ambient glow behind it, and a section background that morphs from one colour to another as the reader scrolls.', 'kinetichub')}
+                        />
                     </PanelBody>
                     
 
@@ -282,12 +289,18 @@ registerBlockType(metadata.name, {
                     <PanelBody title={__('📐 Pinned Media Design', 'kinetichub')} initialOpen={false}>
                         
                         
-                        <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('The pinned media can be cut to a shape rather than filling the column - a floating card with its own shadow, an arch window or a tall pill - and given a slow Ken Burns zoom while the reader is stopped on it.', 'kinetichub')}
+                        />
                         
                         <hr/>
-                        <p style={{marginBottom:'5px', fontSize:'12px', fontWeight:'bold'}}>{__('Pinned Area Background', 'kinetichub')}</p>
+                        <p style={{ marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
+                            {__('Pinned Area Background', 'kinetichub')}
+                            <InspectorHelp
+                                label={__('Pinned Area Background', 'kinetichub')}
+                                text={__('Colour behind the pinned media. It shows wherever the media does not cover the column - around a shaped mask, or in the gaps left when Image Fit is set to Contain.', 'kinetichub')}
+                            />
+                        </p>
                         <ColorPalette value={pinnedBgColor} onChange={(v) => setAttributes({ pinnedBgColor: v })} enableAlpha={true} />
                     </PanelBody>
 
@@ -295,24 +308,35 @@ registerBlockType(metadata.name, {
 
                     <PanelBody title={__('📜 Scroll Effects', 'kinetichub')} initialOpen={false}>
                         <SelectControl 
-                            label={__('Text Column Effect', 'kinetichub')} 
+                            label={labelWithHelp(__('Text Column Effect', 'kinetichub'), __('How the blocks in the scrolling column arrive. None leaves them static; Fade Up brings each one in as it enters the viewport.', 'kinetichub'))}
                             value={editorTextEffect} 
                             options={editorTextEffectOptions} 
                             onChange={(v) => setAttributes({ textEffect: v })} 
                         />
-                        <ToggleControl label={__('Magnetic Snap to Content', 'kinetichub')} checked={enableSnap} onChange={(v) => setAttributes({ enableSnap: v })} />
+                        <ToggleControl label={labelWithHelp(__('Magnetic Snap to Content', 'kinetichub'), __('Uses browser scroll snapping to settle the page on whichever text block is nearest, instead of stopping anywhere. It is switched off below 768px, where the layout is stacked.', 'kinetichub'))} checked={enableSnap} onChange={(v) => setAttributes({ enableSnap: v })} />
                     </PanelBody>
 
                     <PanelBody title={__('📍 Progress Indicator', 'kinetichub')} initialOpen={false}>
                         <SelectControl 
-                            label={__('Indicator Style', 'kinetichub')} 
+                            label={labelWithHelp(__('Indicator Style', 'kinetichub'), __('The scroll-progress marker beside the pinned media. Vertical Line fills as the reader moves through the section; None hides it. The indicator is hidden on screens 768px and under whatever this is set to.', 'kinetichub'))}
                             value={indicatorType} 
                             options={editorIndicatorOptions} 
                             onChange={(v) => setAttributes({ indicatorType: v })} 
                         />
+                        
+                        <ProNote
+                            text={__('Two more ways to show progress: pagination dots, one per gallery item, and a floating percentage readout. The dots can also be made clickable, so a reader can jump straight to a section.', 'kinetichub')}
+                        />
+                        
                         {indicatorType !== 'none' && (
                             <>
-                                <p style={{marginBottom:'5px', fontSize:'12px', fontWeight:'bold'}}>{__('Accent Color', 'kinetichub')}</p>
+                                <p style={{ marginBottom: '5px', fontSize: '12px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
+                                    {__('Accent Color', 'kinetichub')}
+                                    <InspectorHelp
+                                        label={__('Accent Color', 'kinetichub')}
+                                        text={__('Colour of the progress indicator itself. Left empty it follows the theme accent KineticHub is using.', 'kinetichub')}
+                                    />
+                                </p>
                                 <ColorPalette value={accentColor} onChange={(v) => setAttributes({ accentColor: v })} enableAlpha={true} />
                             </>
                         )}
@@ -320,14 +344,14 @@ registerBlockType(metadata.name, {
 
                     <PanelBody title={__('📐 Layout Settings', 'kinetichub')} initialOpen={false}>
                         <SelectControl label={__('Pinned Side', 'kinetichub')} value={pinnedSide} options={[{label: __('Left', 'kinetichub'), value: 'left'}, {label: __('Right', 'kinetichub'), value: 'right'}]} onChange={(v) => setAttributes({ pinnedSide: v })} />
-                        <SelectControl label={__('Column Ratio', 'kinetichub')} value={columnRatio} options={[{label: '50/50', value: '50/50'}, {label: '40/60', value: '40/60'}, {label: '60/40', value: '60/40'}]} onChange={(v) => setAttributes({ columnRatio: v })} />
-                        <SelectControl label={__('Mobile Stacking', 'kinetichub')} value={stackOnMobile} options={[{label: __('Media on Top', 'kinetichub'), value: 'media-first'}, {label: __('Text on Top', 'kinetichub'), value: 'text-first'}]} onChange={(v) => setAttributes({ stackOnMobile: v })} />
+                        <SelectControl label={labelWithHelp(__('Column Ratio', 'kinetichub'), __('Widths of the two columns as left/right - always in that order, whichever side is pinned. 60/40 gives the left column the larger share.', 'kinetichub'))} value={columnRatio} options={[{label: '50/50', value: '50/50'}, {label: '40/60', value: '40/60'}, {label: '60/40', value: '60/40'}]} onChange={(v) => setAttributes({ columnRatio: v })} />
+                        <SelectControl label={labelWithHelp(__('Mobile Stacking', 'kinetichub'), __('Which column comes first once the two stack, at 768px and below. It has no effect on the side-by-side desktop layout.', 'kinetichub'))} value={stackOnMobile} options={[{label: __('Media on Top', 'kinetichub'), value: 'media-first'}, {label: __('Text on Top', 'kinetichub'), value: 'text-first'}]} onChange={(v) => setAttributes({ stackOnMobile: v })} />
                         
-                        <RangeControl label={__('Sticky Top Offset (px)', 'kinetichub')} value={stickyOffset} onChange={(v) => setAttributes({ stickyOffset: v })} min={0} max={200} />
+                        <RangeControl label={labelWithHelp(__('Sticky Top Offset (px)', 'kinetichub'), __('How far below the top of the viewport the pinned column comes to rest. Raise it to clear a fixed header that would otherwise cover the media.', 'kinetichub'))} value={stickyOffset} onChange={(v) => setAttributes({ stickyOffset: v })} min={0} max={200} />
                         
                         <hr/>
                         <ToggleControl 
-                            label={__('Enable Sticky Media on Mobile', 'kinetichub')} 
+                            label={labelWithHelp(__('Enable Sticky Media on Mobile', 'kinetichub'), __('Keeps the media pinned once the columns stack at 768px and below. Left off, the media scrolls away with the rest of the page, which suits short text.', 'kinetichub'))}
                             checked={enableStickyMobile} 
                             onChange={(v) => setAttributes({ enableStickyMobile: v })} 
                         />
@@ -336,9 +360,9 @@ registerBlockType(metadata.name, {
                     
                     
                     <PanelBody title={__('📦 Custom Shadows', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('Container shadows with their own colour, softness and opacity - including separate hover and mobile values - plus per-device visibility, so the whole block can be shown on desktop and hidden on phones.', 'kinetichub')}
+                        />
                     </PanelBody>
                     
 
@@ -380,6 +404,27 @@ registerBlockType(metadata.name, {
                                 })}
                                 {indicatorType === 'percentage' && <div className="kh-ss-percentage">0%</div>}
                             </div>
+                        )}
+
+                        {/*
+                          * The pinning, the crossfade between gallery items and the
+                          * parallax are all driven by page scroll, and none of it runs
+                          * in Gutenberg -- the editor shows the first media layer,
+                          * standing still.
+                          *
+                          * Anchored inside the pinned column, which the editor
+                          * stylesheet gives position: relative and a real 600px
+                          * height, so the toast has a containing block with genuine
+                          * height instead of the zero-height line an empty wrapper
+                          * would give it. The indicator sits at top: 50%, so the
+                          * bottom corner it settles into is clear of it.
+                          *
+                          * isPlaceholder is already false by the time this renders --
+                          * that state returns earlier -- and is named anyway so the
+                          * condition still reads correctly if that return ever moves.
+                          */}
+                        {isSelected && !isPlaceholder && (
+                            <KineticEditorNotice message={__('Scroll-driven transitions and media motion run on the live frontend.', 'kinetichub')} />
                         )}
                     </div>
 

@@ -1,0 +1,903 @@
+/**
+ * Kinetic Scroll Progress - Styling Engine
+ * Version: 1.0.0
+ * (Transform-driven fill, no permanent will-change, mobile-first offsets)
+ */
+
+/* ==========================================================================
+   Frontend shell
+   The wrapper is the fixed viewport element. It never clips: the track clips
+   its own fill, and the milestone list is a sibling so markers/labels may sit
+   outside the rail.
+   ========================================================================== */
+
+.kh-sp-wrapper {
+    position: fixed;
+    /* Fallback kept in step with the block.json / render.php default of 90. */
+    z-index: var(--kh-sp-z, 90);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    pointer-events: none;
+
+    /* Resolved per breakpoint below so the media query can win. */
+    --kh-sp-size: var(--kh-sp-size-desk, 4px);
+    --kh-sp-length: var(--kh-sp-length-desk, 100%);
+    --kh-sp-offset: var(--kh-sp-offset-desk, 0px);
+
+    /*
+     * Extra distance the bar moves inward so a staggered layout has room for a
+     * label row on the far side of it. Zero unless the staggered layout turns
+     * it on, and folded into the position calculations below rather than
+     * replacing them, so it composes with the configured edge offset, the
+     * device safe area and the WordPress toolbar automatically.
+     */
+    --kh-sp-stagger-inset: 0px;
+
+    /*
+     * How far the site header currently occupies the top of the screen, written
+     * by the runtime and zero until it does.
+     *
+     * Already normalised: it carries only the part of the header BELOW the
+     * WordPress toolbar, because the admin-bar rules further down add that
+     * toolbar separately. Handing raw viewport geometry to CSS here would count
+     * the toolbar twice.
+     *
+     * Combined with the author's own distance using max(), never addition. The
+     * setting means "how far from the edge", so clearing a header and honouring
+     * a manual distance are the same request answered by whichever is larger --
+     * and an author who already dialled in a distance to clear their header by
+     * hand keeps the exact position they had.
+     *
+     * Consumed ONLY by the desktop layer further down. Every placement rule that
+     * a phone can reach is free of it, which is what keeps mobile geometry
+     * identical to the release before this feature existed.
+     */
+    --kh-sp-header-inset: 0px;
+
+    /*
+     * How softly the fill follows the scroll position. Consumed by the fill
+     * transition below, so smoothing stays on the compositor and the runtime
+     * never interpolates in JavaScript.
+     */
+    &.smooth-none { --kh-sp-smooth: 0s; }
+    &.smooth-subtle { --kh-sp-smooth: 0.12s; }
+    &.smooth-smooth { --kh-sp-smooth: 0.3s; }
+
+    /* Horizontal bar --------------------------------------------------- */
+    &.pres-horizontal {
+        left: 0;
+        right: 0;
+        width: var(--kh-sp-length);
+        height: var(--kh-sp-size);
+        margin-inline: auto;
+
+        &.pos-top {
+            top: calc(
+                var(--kh-sp-offset) + env(safe-area-inset-top, 0px) +
+                    var(--kh-sp-stagger-inset)
+            );
+        }
+
+        &.pos-bottom {
+            bottom: calc(
+                var(--kh-sp-offset) + env(safe-area-inset-bottom, 0px) +
+                    var(--kh-sp-stagger-inset)
+            );
+        }
+    }
+
+    /* Vertical rail ---------------------------------------------------- */
+    &.pres-vertical {
+        top: 0;
+        bottom: 0;
+        height: var(--kh-sp-length);
+        width: var(--kh-sp-size);
+        margin-block: auto;
+
+        &.pos-left {
+            left: calc(var(--kh-sp-offset) + env(safe-area-inset-left, 0px));
+        }
+
+        &.pos-right {
+            right: calc(var(--kh-sp-offset) + env(safe-area-inset-right, 0px));
+        }
+    }
+}
+
+/* ==========================================================================
+   WordPress admin bar
+   The frontend toolbar is fixed at z-index 99999, so a top-edge indicator sits
+   underneath it for logged-in users. Core publishes its own height variable and
+   switches that variable between 32px and 46px itself, so nothing is hardcoded
+   here. Below 601px core drops the toolbar to position:absolute and it scrolls
+   away, so no offset applies there.
+   ========================================================================== */
+
+@media screen and (min-width: 601px) {
+    body.admin-bar .kh-sp-wrapper.pres-horizontal.pos-top {
+        top: calc(
+            var(--kh-sp-offset) + env(safe-area-inset-top, 0px) +
+                var(--wp-admin--admin-bar--height, 0px) +
+                var(--kh-sp-stagger-inset)
+        );
+    }
+
+    body.admin-bar .kh-sp-wrapper.pres-vertical {
+        top: var(--wp-admin--admin-bar--height, 0px);
+    }
+}
+
+/* ==========================================================================
+   Header awareness — desktop only, and additive by layer
+
+   A mobile header is short, is usually a logo and a menu button rather than a
+   full navigation row, and sits where the indicator is least in the way. Pushing
+   the bar below it moved it into the content instead of out of it, so below 769px
+   the clearance is not applied at all.
+
+   Expressed by ADDING a desktop layer rather than by neutralising the value on
+   mobile. An earlier attempt did the latter -- base rules carried the clearance
+   at every width and a max-width block reset the variable to zero underneath
+   them -- and mobile fixed positioning regressed: the placement rules a phone
+   reaches had been rewritten, so any failure to resolve the new value took the
+   property with it, and a fixed box with no usable offset falls back to its static
+   position and rides the document instead of the viewport.
+
+   Keeping every mobile-reachable declaration byte-identical to the release that
+   worked removes that entire class of risk. A phone never evaluates these rules,
+   so there is nothing here that can fail on one.
+
+   Scoped to .header-aware, which the server emits only for a desktop top-edge
+   placement with the setting on. That both raises specificity over the base
+   declarations and keeps every other indicator out of the calculation.
+
+   Segmented needs no rule of its own: a segmented top bar already carries
+   .pres-horizontal from the canonical orientation model, so it is matched here.
+   ========================================================================== */
+@media (min-width: 769px) {
+    .kh-sp-wrapper.header-aware.pres-horizontal.pos-top {
+        top: calc(
+            max(var(--kh-sp-header-inset, 0px), var(--kh-sp-offset)) +
+                env(safe-area-inset-top, 0px) + var(--kh-sp-stagger-inset)
+        );
+    }
+
+    
+
+    body.admin-bar .kh-sp-wrapper.header-aware.pres-horizontal.pos-top {
+        top: calc(
+            max(var(--kh-sp-header-inset, 0px), var(--kh-sp-offset)) +
+                env(safe-area-inset-top, 0px) +
+                var(--wp-admin--admin-bar--height, 0px) +
+                var(--kh-sp-stagger-inset)
+        );
+    }
+
+    
+}
+
+/* ==========================================================================
+   First paint for a header-aware indicator
+
+   The header's height is a browser fact, so the served markup cannot know it
+   and would paint at the top edge for one frame before dropping below the
+   header. Withholding that first paint costs nothing real: the runtime adds
+   .is-placed in the same synchronous pass that measures, and an indicator
+   whose script never runs is frozen at 0% and conveys nothing anyway.
+
+   Scoped to .header-aware, so every other indicator -- bottom, side, Off, or
+   simply not top-edge -- paints immediately exactly as before.
+
+   visibility rather than display: the box is position:fixed and out of flow,
+   so nothing here can shift layout or contribute to CLS either way, and
+   visibility keeps the element measurable.
+
+   .is-placed is added after the FIRST resolution attempt, not after a header
+   is found. A page with no header must reveal at its existing position; the
+   indicator is never left permanently hidden by a detector that came up empty.
+   ========================================================================== */
+.kh-sp-wrapper.header-aware:not(.is-placed) {
+    visibility: hidden;
+}
+
+
+
+/* ==========================================================================
+   Track and fill
+   Shared by the frontend wrapper and the editor preview shell.
+   ========================================================================== */
+
+/*
+ * Explicit stacking contract, lowest to highest:
+ *   0  track (and its tint)
+ *   1  fill
+ *   2  milestone list -> 1 marker, 2 label
+ *
+ * These were previously all z-index:auto and relied on document order, which
+ * holds only for as long as nothing in between gains a stacking context. Small
+ * declared values make the intent survive later additions.
+ */
+.kh-sp-track {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--kh-sp-radius, 4px);
+}
+
+/*
+ * The track tint lives on a pseudo-element so track opacity never bleeds into
+ * the fill that sits above it.
+ */
+.kh-sp-track::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--kh-sp-track-c, #111827);
+    opacity: var(--kh-sp-track-o, 0.2);
+    pointer-events: none;
+}
+
+.kh-sp-fill {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    border-radius: inherit;
+    background-color: var(--kh-sp-fill-c, #10b981);
+    opacity: var(--kh-sp-fill-o, 1);
+    pointer-events: none;
+
+    /*
+     * Progress is rendered as a compositor-only transform. The runtime writes a
+     * single unitless 0-1 value; the fallback keeps the fill empty until it does.
+     */
+    transform: scaleX(var(--kh-sp-progress, 0));
+    transform-origin: left center;
+
+    /*
+     * Smoothing. Linear, because the value being followed is a position rather
+     * than a gesture, and easing a position reads as lag. A zero duration makes
+     * this an inert declaration rather than a special case.
+     */
+    transition: transform var(--kh-sp-smooth, 0s) linear;
+}
+
+.pres-horizontal,
+.kh-sp-preview-horizontal {
+    .kh-sp-fill {
+        transform: scaleX(var(--kh-sp-progress, 0));
+        transform-origin: left center;
+    }
+
+    &.dir-reverse .kh-sp-fill,
+    &.is-reversed .kh-sp-fill {
+        transform-origin: right center;
+    }
+}
+
+.pres-vertical,
+.kh-sp-preview-vertical {
+    .kh-sp-fill {
+        transform: scaleY(var(--kh-sp-progress, 0));
+        transform-origin: top center;
+    }
+
+    &.dir-reverse .kh-sp-fill,
+    &.is-reversed .kh-sp-fill {
+        transform-origin: bottom center;
+    }
+}
+
+/* ==========================================================================
+   Milestones
+   Markers are positioned from a per-item normalized value the runtime writes.
+   The list is inert until milestone states land.
+   ========================================================================== */
+
+.kh-sp-milestones {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
+
+    /*
+     * How far the marker reaches from the rail's centre line. The label is
+     * pushed clear of whichever is wider, the rail or the marker, so the gap
+     * stays honest at any thickness.
+     */
+    --kh-sp-ms-reach: 5px;
+}
+
+/*
+ * Theme isolation for the internal list.
+ *
+ * The milestone list is a real <ol>, so ordinary theme content rules reach it:
+ * `.single-content ol { padding-left: 2em }`, `.entry-content ol`,
+ * `.wp-block-post-content ol` and friends all sit at specificity 0-1-1 and
+ * out-specify a bare `.kh-sp-milestones` reset at 0-1-0. The list then keeps
+ * the theme's inline padding and grows wider than the rail.
+ *
+ * On a vertical rail that is not cosmetic. The list is the offset parent of
+ * every milestone, so a padded list makes `left: 50%` resolve against the
+ * theme's box instead of the rail, and each marker settles off the rail's
+ * centre line. The geometry was always right; the containing box was wrong.
+ *
+ * Scoping the reset to the two roots the plugin owns and naming the element
+ * takes it to 0-2-1, a full class clear of that whole family, with no
+ * !important and no duplicated-class trick. Both roots are listed because the
+ * frontend renders the list inside .kh-sp-wrapper while the editor preview
+ * renders it inside .kh-sp-preview, and themes ship the same ol rules into
+ * editor styles.
+ *
+ * `margin` and `padding` are reset whole rather than per side: themes set the
+ * inline start side through padding-left, padding-inline-start or, in RTL,
+ * padding-right, and the shorthand covers every spelling in both directions
+ * without introducing direction-specific geometry of our own.
+ */
+.kh-sp-wrapper ol.kh-sp-milestones,
+.kh-sp-preview ol.kh-sp-milestones {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.marker-tick .kh-sp-milestones {
+    --kh-sp-ms-reach: 7px;
+}
+
+/*
+ * A milestone is a zero-size anchor pinned to its normalized position, not a
+ * box containing the marker and the label.
+ *
+ * It used to be a flex column/row centred with translate(-50%, -50%), which
+ * centred the marker AND label as a group: turning labels on grew the box and
+ * pushed the marker off the rail entirely -- above the viewport on a top bar,
+ * and onto the rail on a vertical one. Anchoring the two independently means
+ * the marker sits on its position whatever the label does.
+ */
+.kh-sp-milestone {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.kh-sp-ms-marker {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    display: block;
+    background-color: var(--kh-sp-ms-inactive, #9ca3af);
+    transform: translate(-50%, -50%);
+}
+
+.kh-sp-ms-label {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    max-width: 14ch;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--kh-sp-ms-inactive, #9ca3af);
+}
+
+/* Marker shapes ------------------------------------------------------- */
+.marker-dot .kh-sp-ms-marker {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.marker-tick .kh-sp-ms-marker {
+    border-radius: 1px;
+}
+
+/* A tick crosses the rail, so its long axis is perpendicular to it. */
+.pres-horizontal.marker-tick,
+.kh-sp-preview-horizontal.marker-tick {
+    .kh-sp-ms-marker {
+        width: 2px;
+        height: 14px;
+    }
+}
+
+.pres-vertical.marker-tick,
+.kh-sp-preview-vertical.marker-tick {
+    .kh-sp-ms-marker {
+        width: 14px;
+        height: 2px;
+    }
+}
+
+/* Placement ----------------------------------------------------------- */
+.pres-horizontal,
+.kh-sp-preview-horizontal {
+    .kh-sp-milestone {
+        top: 50%;
+        left: calc(var(--kh-sp-ms-pos, 0) * 100%);
+    }
+
+    /* Top rail: label below it. */
+    .kh-sp-ms-label {
+        left: 0;
+        top: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+        transform: translateX(-50%);
+    }
+
+    /* Bottom rail: label above it. Governed by position, never by direction. */
+    &.pos-bottom .kh-sp-ms-label {
+        top: auto;
+        bottom: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+    }
+}
+
+.pres-vertical,
+.kh-sp-preview-vertical {
+    .kh-sp-milestone {
+        left: 50%;
+        top: calc(var(--kh-sp-ms-pos, 0) * 100%);
+    }
+
+    /* Left rail: label to its right. */
+    .kh-sp-ms-label {
+        top: 0;
+        left: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 10px);
+        transform: translateY(-50%);
+    }
+
+    /* Right rail: label to its left. Governed by position, never by direction. */
+    &.pos-right .kh-sp-ms-label {
+        left: auto;
+        right: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 10px);
+    }
+}
+
+/*
+ * Reverse direction. The runtime stays direction-agnostic and always writes the
+ * page-order position; mirroring it here keeps markers travelling with the fill
+ * at zero runtime cost.
+ */
+.pres-horizontal.dir-reverse .kh-sp-milestone,
+.kh-sp-preview-horizontal.is-reversed .kh-sp-milestone {
+    left: calc((1 - var(--kh-sp-ms-pos, 0)) * 100%);
+}
+
+.pres-vertical.dir-reverse .kh-sp-milestone,
+.kh-sp-preview-vertical.is-reversed .kh-sp-milestone {
+    top: calc((1 - var(--kh-sp-ms-pos, 0)) * 100%);
+}
+
+/* Base states --------------------------------------------------------- */
+.kh-sp-milestone.is-completed,
+.kh-sp-milestone.is-current {
+    .kh-sp-ms-marker {
+        background-color: var(--kh-sp-ms-active, #10b981);
+    }
+
+    .kh-sp-ms-label {
+        color: var(--kh-sp-ms-active, #10b981);
+    }
+}
+
+/*
+ * The current milestone must read differently from an already-completed one.
+ * Scale and opacity only: changing the label's font weight would alter its
+ * width and make the centred label twitch as the reader moves.
+ */
+.kh-sp-ms-marker,
+.kh-sp-ms-label {
+    transition: transform 0.18s ease, opacity 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+/*
+ * The centring translate has to be restated: transform is a single property,
+ * so a bare scale() here would drop it and shift the marker off its position.
+ */
+.kh-sp-milestone.is-current .kh-sp-ms-marker {
+    transform: translate(-50%, -50%) scale(1.4);
+}
+
+.kh-sp-milestone.is-upcoming .kh-sp-ms-label {
+    opacity: 0.7;
+}
+
+/* Labels off entirely. */
+.labels-off .kh-sp-ms-label {
+    display: none;
+}
+
+/* ==========================================================================
+   Label background
+
+   An optional plate behind the label text, for pages whose content makes a bare
+   label hard to read. Entirely opt-in: the server emits no class and no custom
+   property for "none", so nothing below is reachable at the default and an
+   existing indicator renders exactly as it did before.
+
+   Deliberately scoped to the three active styles rather than declared on
+   .kh-sp-ms-label with a zero default. A blanket padding/box-sizing rule would
+   apply to every indicator ever published to change nothing, and would put this
+   feature in the cascade of blocks that never asked for it.
+
+   Only the label is touched. The milestone stays a zero-size anchor and the
+   marker keeps its own position, so nothing here can move a milestone -- which
+   is why no transform or margin compensation is needed anywhere.
+   ========================================================================== */
+
+.labels-bg-box,
+.labels-bg-rounded,
+.labels-bg-pill {
+    /*
+     * The vertical growth the plate adds: 4px above the text plus 4px below.
+     * Published here on the wrapper rather than measured, so the staggered
+     * layout can add the same number to its inset instead of hardcoding a
+     * second one that could drift out of step with the padding.
+     */
+    --kh-sp-label-pad-block-extra: 8px;
+
+    .kh-sp-ms-label {
+        /*
+         * Explicit, because a theme's global `* { box-sizing: border-box }`
+         * would otherwise turn max-width:14ch into "14ch minus the padding" and
+         * start truncating labels two characters early. Padding stays purely
+         * additive and the text keeps the width it has always had.
+         */
+        box-sizing: content-box;
+        padding: 4px 8px;
+        background-color: var(--kh-sp-ms-label-bg, #111827);
+    }
+}
+
+.labels-bg-box .kh-sp-ms-label {
+    border-radius: 0;
+}
+
+.labels-bg-rounded .kh-sp-ms-label {
+    border-radius: 6px;
+}
+
+/* Clamped by the browser to half the height, so this is a true pill at any size. */
+.labels-bg-pill .kh-sp-ms-label {
+    border-radius: 999px;
+}
+
+/*
+ * Sync with the bar.
+ *
+ * The plate takes its colour from the indicator instead of a separate setting:
+ * a label not yet reached sits on the track colour, a reached one on the
+ * progress colour, so the journey reads as one object rather than two colour
+ * schemes that have to be kept in step by hand.
+ *
+ * The bar's own variables are reused directly. Both are emitted unconditionally
+ * by the server, so there is nothing extra to serialise and the plate cannot
+ * drift out of step with the bar it follows.
+ *
+ * Only background-color is set. Shape, padding and the label's own text colour
+ * all stay exactly where the rules above put them, so the chosen Box, Rounded or
+ * Pill is independent of whether the colour is synced.
+ *
+ * Track and progress OPACITY are deliberately not reproduced: opacity on the
+ * label element would fade its text along with its plate, and compositing the
+ * colour instead would be a much larger change than this is worth.
+ *
+ * These land at 0-3-0 against the 0-2-0 shape rule, so the override is decided
+ * on specificity and needs no !important. Every milestone always carries one of
+ * the three state classes -- the runtime creates them as is-upcoming -- so there
+ * is no state in which a label falls through to the manual colour.
+ */
+.labels-bg-sync .kh-sp-milestone.is-upcoming .kh-sp-ms-label {
+    background-color: var(--kh-sp-track-c, #111827);
+}
+
+.labels-bg-sync .kh-sp-milestone.is-current .kh-sp-ms-label,
+.labels-bg-sync .kh-sp-milestone.is-completed .kh-sp-ms-label {
+    background-color: var(--kh-sp-fill-c, #10b981);
+}
+
+/* ==========================================================================
+   Responsive
+   Mobile values are resolved here rather than inline so this media query can
+   override the desktop resolution.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .kh-sp-wrapper {
+        --kh-sp-size: var(--kh-sp-size-mob, 3px);
+        --kh-sp-length: var(--kh-sp-length-mob, 100%);
+        --kh-sp-offset: var(--kh-sp-offset-mob, 0px);
+    }
+
+    .kh-sp-wrapper.hide-mobile {
+        display: none !important;
+    }
+
+    /*
+     * Narrow screens carry four label modes.
+     *
+     * show    - nothing to do; the base rules already display every label.
+     * major   - only top-level headings keep a label. Sub-headings keep their
+     *           marker and every state; only the text is dropped. Same rule
+     *           shape as the desktop mode, reusing the same static classes.
+     * hide    - removed outright, markers only.
+     * current - every label stays in the layout and only the active one is
+     *           painted, so the rail never resizes as the reader moves and the
+     *           text remains available to assistive technology.
+     */
+    .kh-sp-wrapper.labels-mob-major .kh-sp-milestone.is-minor .kh-sp-ms-label {
+        display: none;
+    }
+
+    .kh-sp-wrapper.labels-mob-hide .kh-sp-ms-label {
+        display: none;
+    }
+
+    .kh-sp-wrapper.labels-mob-current .kh-sp-milestone .kh-sp-ms-label {
+        opacity: 0;
+    }
+
+    .kh-sp-wrapper.labels-mob-current .kh-sp-milestone.is-current .kh-sp-ms-label {
+        opacity: 1;
+    }
+
+    /*
+     * Readable at arm's length. 10px was legible on a desktop monitor and not
+     * on a phone, which is the only place these rules apply.
+     */
+    .kh-sp-wrapper .kh-sp-ms-label {
+        max-width: 13ch;
+        font-size: 12px;
+        line-height: 1.25;
+    }
+
+    /* Slightly smaller markers, still clearly proud of a 3px mobile rail. */
+    .kh-sp-wrapper .kh-sp-milestones {
+        --kh-sp-ms-reach: 4px;
+    }
+
+    .kh-sp-wrapper.marker-tick .kh-sp-milestones {
+        --kh-sp-ms-reach: 6px;
+    }
+
+    .kh-sp-wrapper.marker-dot .kh-sp-ms-marker {
+        width: 8px;
+        height: 8px;
+    }
+
+    .kh-sp-wrapper.pres-horizontal.marker-tick .kh-sp-ms-marker {
+        width: 2px;
+        height: 12px;
+    }
+
+    .kh-sp-wrapper.pres-vertical.marker-tick .kh-sp-ms-marker {
+        width: 12px;
+        height: 2px;
+    }
+}
+
+@media (min-width: 769px) {
+    .kh-sp-wrapper.hide-desktop {
+        display: none !important;
+    }
+
+    /* ----------------------------------------------------------------------
+     * Desktop label modes
+     *
+     * Scoped to this media query only, so the mobile modes below 769px can
+     * never be reached by these selectors and win cleanly on their own.
+     * Deliberately not prefixed with .kh-sp-wrapper: the editor preview shares
+     * the same mode classes and should show the same result.
+     *
+     * show  - no rule needed, the base styles already paint every label.
+     * major - only top-level headings keep a label. Sub-headings keep their
+     *         marker and every state; only the text is dropped.
+     * ------------------------------------------------------------------- */
+    .labels-desk-major .kh-sp-milestone.is-minor .kh-sp-ms-label {
+        display: none;
+    }
+
+    /*
+     * Current only. One rule rather than a pair, so it cannot tie on
+     * specificity with the upcoming-label rule above and depend on order.
+     * Opacity, never display: every label keeps its box and the rail never
+     * reflows as the reader moves.
+     */
+    .labels-desk-current .kh-sp-milestone:not(.is-current) .kh-sp-ms-label {
+        opacity: 0;
+    }
+
+    .labels-desk-hide .kh-sp-ms-label {
+        display: none;
+    }
+
+    /* ----------------------------------------------------------------------
+     * Staggered horizontal labels — true two-sided timeline
+     *
+     * Labels alternate above and below the bar rather than sitting in two rows
+     * on one side, which reads as a timeline instead of as one crowded column.
+     *
+     * The bar itself is pushed inward by --kh-sp-stagger-inset so the outward
+     * row has somewhere to go. Both rows therefore stay inside the viewport.
+     *
+     * 32px is derived, not arbitrary: the outward label's far edge sits at
+     * max(size/2, reach) + 9px gap + ~14px line box below the anchor, which is
+     * ~28px at the widest marker. 32px clears that with a few pixels to spare
+     * at every supported thickness.
+     *
+     * Alternation is a static class or DOM parity — no measurement, no runtime.
+     * Only labels move; markers stay on their normalized positions.
+     * ------------------------------------------------------------------- */
+    /*
+     * A label background makes the outward row taller by exactly the padding it
+     * adds, and 32px was already only a few pixels clear of the row's far edge.
+     * Adding the published growth back keeps the same headroom instead of
+     * letting the outward label clip at the viewport edge.
+     *
+     * The fallback is what makes this inert by default: with no background the
+     * variable is undefined, the term resolves to 0px, and the inset is exactly
+     * the 32px it has always been.
+     */
+    .pres-horizontal.labels-layout-staggered.labels-desk-show,
+    .pres-horizontal.labels-layout-staggered.labels-desk-major,
+    .kh-sp-preview-horizontal.labels-layout-staggered.labels-desk-show,
+    .kh-sp-preview-horizontal.labels-layout-staggered.labels-desk-major {
+        --kh-sp-stagger-inset: calc(32px + var(--kh-sp-label-pad-block-extra, 0px));
+    }
+
+    /*
+     * Show All alternates by milestone order, so plain DOM parity is enough.
+     * Top bar: odd above, even below. Bottom bar: the mirror of that.
+     */
+    .pres-horizontal.labels-layout-staggered.labels-desk-show,
+    .kh-sp-preview-horizontal.labels-layout-staggered.labels-desk-show {
+        .kh-sp-milestone:nth-child(odd) .kh-sp-ms-label {
+            top: auto;
+            bottom: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+        }
+
+        .kh-sp-milestone:nth-child(even) .kh-sp-ms-label {
+            top: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+            bottom: auto;
+        }
+
+        &.pos-bottom .kh-sp-milestone:nth-child(odd) .kh-sp-ms-label {
+            top: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+            bottom: auto;
+        }
+
+        &.pos-bottom .kh-sp-milestone:nth-child(even) .kh-sp-ms-label {
+            top: auto;
+            bottom: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+        }
+    }
+
+    /*
+     * Major Headings Only alternates by H2 sequence instead, using the static
+     * classes the runtime assigns at build time. DOM parity would be wrong
+     * here: the hidden sub-heading labels sit between the visible ones and
+     * would make the alternation follow indices nobody can see.
+     */
+    .pres-horizontal.labels-layout-staggered.labels-desk-major,
+    .kh-sp-preview-horizontal.labels-layout-staggered.labels-desk-major {
+        .kh-sp-milestone.is-major-odd .kh-sp-ms-label {
+            top: auto;
+            bottom: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+        }
+
+        .kh-sp-milestone.is-major-even .kh-sp-ms-label {
+            top: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+            bottom: auto;
+        }
+
+        &.pos-bottom .kh-sp-milestone.is-major-odd .kh-sp-ms-label {
+            top: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+            bottom: auto;
+        }
+
+        &.pos-bottom .kh-sp-milestone.is-major-even .kh-sp-ms-label {
+            top: auto;
+            bottom: calc(max(var(--kh-sp-size, 4px) / 2, var(--kh-sp-ms-reach)) + 9px);
+        }
+    }
+}
+
+/* ==========================================================================
+   Reduced motion
+   The indicator still reports progress (it mirrors user-initiated scrolling),
+   but nothing here may animate on its own.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    /*
+     * Covers the fill smoothing and every milestone state transition in one
+     * pass. Progress and milestone states still update; they simply arrive
+     * without interpolation.
+     */
+    .kh-sp-wrapper,
+    .kh-sp-wrapper *,
+    .kh-sp-preview,
+    .kh-sp-preview * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ==========================================================================
+   Editor preview
+   A separate, flow-positioned shell that reuses the same inner element classes.
+   Keeping it off .kh-sp-wrapper avoids fighting the fixed positioning rules.
+   ========================================================================== */
+
+.kh-sp-editor-shell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Tall enough for a label row on both sides of a staggered horizontal bar. */
+    min-height: 128px;
+    padding: 24px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    box-sizing: border-box;
+}
+
+.kh-sp-preview {
+    position: relative;
+    box-sizing: border-box;
+
+    /*
+     * Mirrors the frontend resolution so shared inner rules read one name. The
+     * preview intentionally resolves the desktop values only; it is a
+     * configuration preview, not a device preview.
+     */
+    --kh-sp-size: var(--kh-sp-size-desk, 4px);
+    --kh-sp-length: var(--kh-sp-length-desk, 100%);
+
+    &.kh-sp-preview-horizontal {
+        width: var(--kh-sp-length);
+        height: var(--kh-sp-size);
+        margin-inline: auto;
+    }
+
+    &.kh-sp-preview-vertical {
+        width: var(--kh-sp-size);
+        height: 160px;
+        margin-inline: auto;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+.kh-sp-inspector-note {
+    margin: -4px 0 16px;
+    font-size: 12px;
+    font-style: italic;
+    color: #64748b;
+}
+
+.kh-sp-editor-hint {
+    margin: 8px 0 0;
+    font-size: 11px;
+    font-style: italic;
+    color: #64748b;
+    text-align: center;
+}
+
+
+
+
+
+

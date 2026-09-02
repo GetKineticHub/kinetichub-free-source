@@ -35,7 +35,13 @@ if ( ! function_exists( 'kinetichub_ss_render_media_tag' ) ) {
         $kh_ss_safe_url = esc_url( $url );
         $kh_ss_safe_alt = esc_attr( $alt );
         if ( preg_match( '/\.(mp4|webm)$/i', $url ) ) {
-            return sprintf( '<video src="%1$s" autoplay loop muted playsinline aria-hidden="true"></video>', $kh_ss_safe_url );
+            /*
+             * No autoplay attribute by design. Markup having been parsed is not proof
+             * that a working pause control exists, so playback is started by view.js
+             * only once this instance has proven its control. Without JS, or with the
+             * control missing, the video stays static instead of moving uncontrollably.
+             */
+            return sprintf( '<video src="%1$s" loop muted playsinline aria-hidden="true"></video>', $kh_ss_safe_url );
         }
         return sprintf( '<img src="%1$s" alt="%2$s" loading="%3$s" decoding="async" />', $kh_ss_safe_url, $kh_ss_safe_alt, esc_attr( $loading ) );
     }
@@ -147,6 +153,25 @@ $kh_ss_scroll_width = ( 'left' === $kh_ss_pinned_side ) ? $kh_ss_right_width : $
 $kh_ss_media_items = array_slice( $kh_ss_media_items, 0, $kh_ss_max_items );
 $kh_ss_media_items = array_map( static function ( $item ) { return is_array( $item ) ? $item : (array) $item; }, $kh_ss_media_items );
 
+/*
+ * A motion control is emitted only for an instance that can actually produce
+ * automatic continuous motion. Video presence is decided by the renderer's own
+ * definition - the same extension test kinetichub_ss_render_media_tag() applies -
+ * so the markup and the control can never disagree about what is a video.
+ */
+$kh_ss_has_video = false;
+
+foreach ( $kh_ss_media_items as $kh_ss_probe_item ) {
+    if ( preg_match( '/\.(mp4|webm)$/i', kinetichub_ss_get_media_url( $kh_ss_probe_item, $kh_ss_image_size ) ) ) {
+        $kh_ss_has_video = true;
+        break;
+    }
+}
+
+$kh_ss_has_motion_control = $kh_ss_has_video;
+
+
+
 $kh_ss_css_vars = sprintf(
     '--kh-ss-pin-w: %1$s; --kh-ss-scroll-w: %2$s; --kh-ss-offset: %3$dpx; --kh-ss-fit: %4$s; --kh-ss-pos: %5$s; --kh-ss-tint: %6$s; --kh-ss-tint-op: %7$s; --kh-ss-accent: %8$s; --kh-ss-dir: %9$s; --kh-ss-mob-dir: %10$s; --kh-ss-pin-bg: %11$s;',
     $kh_ss_pinned_width,
@@ -173,6 +198,7 @@ $kh_ss_classes = array_filter(
         'swap-trans-' . $kh_ss_swap_transition,
         $kh_ss_enable_snap ? 'has-scroll-snap' : '',
         $kh_ss_enable_sticky_mob ? 'has-mobile-sticky' : '',
+        $kh_ss_has_motion_control ? 'kh-ss-has-motion-control' : '',
     )
 );
 
@@ -203,11 +229,35 @@ if ( 'dots' === $kh_ss_indicator_type ) {
 
 $kh_ss_allowed_media_tags = array(
     'img'   => array( 'src' => true, 'alt' => true, 'loading' => true, 'decoding' => true ),
-    'video' => array( 'src' => true, 'autoplay' => true, 'loop' => true, 'muted' => true, 'playsinline' => true, 'aria-hidden' => true ),
+    'video' => array( 'src' => true, 'loop' => true, 'muted' => true, 'playsinline' => true, 'aria-hidden' => true ),
 );
 ?>
 
 <div <?php echo $kh_ss_wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+    <?php if ( $kh_ss_has_motion_control ) : ?>
+        <?php
+        /*
+         * One control per instance, placed as a direct child of the wrapper rather
+         * than inside .kh-ss-pinned-col - non-sticky mobile hides that column and the
+         * sole control has to stay reachable there too. Both labels are rendered here
+         * so the runtime swaps between translated strings.
+         */
+        ?>
+        <div class="kh-ss-motion-control pos-<?php echo esc_attr( sanitize_html_class( $kh_ss_pinned_side ) ); ?>">
+            <button
+                type="button"
+                class="kh-ss-motion-toggle"
+                aria-pressed="false"
+                aria-label="<?php echo esc_attr__( 'Pause section motion', 'kinetichub' ); ?>"
+                data-label-pause="<?php echo esc_attr__( 'Pause section motion', 'kinetichub' ); ?>"
+                data-label-resume="<?php echo esc_attr__( 'Resume section motion', 'kinetichub' ); ?>"
+            >
+                <svg class="kh-ss-motion-glyph kh-ss-motion-glyph-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>
+                <svg class="kh-ss-motion-glyph kh-ss-motion-glyph-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.53.85l10-6.5a1 1 0 0 0 0-1.7l-10-6.5A1 1 0 0 0 8 5.5Z"></path></svg>
+            </button>
+        </div>
+    <?php endif; ?>
+
     <div class="kh-ss-pinned-col">
         
 

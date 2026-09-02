@@ -1,0 +1,164 @@
+{
+  "apiVersion": 3,
+  "name": "kinetichub/scroll-progress",
+  "version": "1.1.0",
+  "title": "Kinetic Scroll Progress",
+  "category": "kinetic-suite",
+  "icon": "chart-bar",
+  "description": "Lightweight scroll progress indicator with an optional milestone journey built automatically from the page headings.",
+  "keywords": [
+    "scroll",
+    "progress",
+    "indicator",
+    "milestones",
+    "journey",
+    "kinetic"
+  ],
+  "attributes": {
+    "presentation": {
+      "type": "string",
+      "default": "horizontal"
+    },
+    "position": {
+      "type": "string",
+      "default": "top"
+    },
+    "thickness": {
+      "type": "number",
+      "default": 4
+    },
+    "thicknessMobile": {
+      "type": "number",
+      "default": 3
+    },
+    "lengthPercent": {
+      "type": "number",
+      "default": 100
+    },
+    "lengthPercentMobile": {
+      "type": "number",
+      "default": 100
+    },
+    "edgeOffset": {
+      "type": "number",
+      "default": 0
+    },
+    "edgeOffsetMobile": {
+      "type": "number",
+      "default": 0
+    },
+    "zIndex": {
+      "type": "number",
+      "default": 90
+    },
+    "headerOffset": {
+      "type": "string",
+      "default": "auto"
+    },
+    "trackColor": {
+      "type": "string",
+      "default": "#111827"
+    },
+    "trackOpacity": {
+      "type": "number",
+      "default": 0.2
+    },
+    "progressColor": {
+      "type": "string",
+      "default": "#10b981"
+    },
+    "progressOpacity": {
+      "type": "number",
+      "default": 1
+    },
+    "borderRadius": {
+      "type": "number",
+      "default": 4
+    },
+    "direction": {
+      "type": "string",
+      "default": "normal"
+    },
+    "smoothing": {
+      "type": "string",
+      "default": "subtle"
+    },
+    "enableMilestones": {
+      "type": "boolean",
+      "default": false
+    },
+    "headingLevels": {
+      "type": "string",
+      "default": "h2"
+    },
+    "maxMilestones": {
+      "type": "number",
+      "default": 12
+    },
+    "headingLevelsMobile": {
+      "type": "string",
+      "default": "h2"
+    },
+    "maxMilestonesMobile": {
+      "type": "number",
+      "default": 6
+    },
+    "showLabels": {
+      "type": "boolean",
+      "default": true
+    },
+    "labelsDesktop": {
+      "type": "string",
+      "default": "show"
+    },
+    "labelsMobile": {
+      "type": "string",
+      "default": "current"
+    },
+    "horizontalLabelLayout": {
+      "type": "string",
+      "default": "standard"
+    },
+    "markerStyle": {
+      "type": "string",
+      "default": "dot"
+    },
+    "labelBackground": {
+      "type": "string",
+      "default": "none"
+    },
+    "labelBackgroundColor": {
+      "type": "string",
+      "default": "#111827"
+    },
+    "syncLabelBackgroundWithProgress": {
+      "type": "boolean",
+      "default": false
+    },
+    "activeColor": {
+      "type": "string",
+      "default": "#10b981"
+    },
+    "inactiveColor": {
+      "type": "string",
+      "default": "#9ca3af"
+    },
+    "hideOnMobile": {
+      "type": "boolean",
+      "default": false
+    },
+    "hideOnDesktop": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "align": false
+  },
+  "textdomain": "kinetichub",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "style": "file:./index.css",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

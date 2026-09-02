@@ -60,6 +60,7 @@ $kh_cr_max_items        = 3;
 
 $kh_cr_media_ratio      = '4/5';
 $kh_cr_mobile_action    = 'tap';
+$kh_cr_stack_autoplay   = false;
 $kh_cr_reveal_mask      = 'fade';
 $kh_cr_hover_filter     = 'none';
 $kh_cr_shadow_style     = 'soft';
@@ -137,18 +138,38 @@ if ( empty( $kh_cr_valid_items ) ) {
     return;
 }
 
-$kh_cr_scale_factor = $kh_cr_font_size > 0 ? number_format( ( $kh_cr_font_size + 5 ) / $kh_cr_font_size, 3, '.', '' ) : '1';
+/*
+ * Hover growth is carried as a pixel DELTA, not as one shared multiplier, so the title
+ * grows by the same number of pixels on both breakpoints. Desktop 40 -> 50 is +10, so
+ * mobile 30 -> 40 is +10 as well, instead of the desktop ratio landing on 37.5px.
+ * FREE has no Hover Scale Size control, so its delta is the product default.
+ */
+$kh_cr_hover_delta = 10;
 
+
+/*
+ * Clamp both targets to the control's own 10px floor. Hover Scale Size may legitimately
+ * sit below the base font (the help text says so), which makes the delta negative; the
+ * floor stops a large negative delta collapsing the mobile title to a zero or negative
+ * scale. PRO desktop is unaffected: font_size + (hover_font - font_size) == hover_font,
+ * and hover_font is already clamped to >= 10 above.
+ */
+$kh_cr_hover_target  = max( 10, $kh_cr_font_size + $kh_cr_hover_delta );
+$kh_cr_mobile_target = max( 10, $kh_cr_mobile_font + $kh_cr_hover_delta );
+
+$kh_cr_scale_factor = $kh_cr_font_size > 0 ? number_format( $kh_cr_hover_target / $kh_cr_font_size, 3, '.', '' ) : '1';
+$kh_cr_scale_mob    = $kh_cr_mobile_font > 0 ? number_format( $kh_cr_mobile_target / $kh_cr_mobile_font, 3, '.', '' ) : '1';
 
 $kh_cr_wrapper_style_vars = sprintf(
-    '--kh-cr-font-size: %1$dpx; --kh-cr-font-mob: %2$dpx; --kh-cr-scale: %3$s; --kh-cr-accent: %4$s; --kh-cr-sub-color: %5$s; --kh-cr-sub-size: %6$dpx; --kh-cr-sub-space: %7$dpx;',
+    '--kh-cr-font-size: %1$dpx; --kh-cr-font-mob: %2$dpx; --kh-cr-scale: %3$s; --kh-cr-scale-mob: %8$s; --kh-cr-accent: %4$s; --kh-cr-sub-color: %5$s; --kh-cr-sub-size: %6$dpx; --kh-cr-sub-space: %7$dpx;',
     $kh_cr_font_size,
     $kh_cr_mobile_font,
     $kh_cr_scale_factor,
     $kh_cr_accent_color,
     $kh_cr_sub_color,
     $kh_cr_sub_size,
-    $kh_cr_sub_space
+    $kh_cr_sub_space,
+    $kh_cr_scale_mob
 );
 
 $kh_cr_wrapper_style_vars .= sprintf(
@@ -236,7 +257,31 @@ $kh_cr_box_classes = array(
                     <span class="kh-cr-subtitle"><?php echo wp_kses_post( $kh_cr_item['subtitle'] ); ?></span>
                 <?php endif; ?>
 
-                
+                <?php
+                /*
+                 * Static per-item media. CSS keeps it display:none by default, so this
+                 * is inert during normal motion in both editions and is never exposed
+                 * to assistive technology alongside the floating reveal box.
+                 *
+                 * It is rendered unconditionally because two separate CSS rules need
+                 * it: the PRO 'always' mobile layout (unchanged), and the
+                 * reduced-motion fallback - which must work in FREE too. The floating
+                 * box is display:none under reduced motion, and PHP used to omit this
+                 * markup for every mobileBehavior except 'always', so a reduced-motion
+                 * visitor was left with titles and no media at all.
+                 */
+                ?>
+                <div class="kh-cr-mobile-stack-media">
+                    <?php if ( preg_match( '/\.(mp4|webm|mov|ogg)(\?|$)/i', $kh_cr_item['mediaUrl'] ) ) : ?>
+                        <?php if ( $kh_cr_stack_autoplay ) : ?>
+                            <video src="<?php echo esc_url( $kh_cr_item['mediaUrl'] ); ?>" autoplay loop muted playsinline></video>
+                        <?php else : ?>
+                            <video src="<?php echo esc_url( $kh_cr_item['mediaUrl'] ); ?>" controls muted playsinline preload="none"></video>
+                        <?php endif; ?>
+                    <?php else : ?>
+                        <img src="<?php echo esc_url( $kh_cr_item['mediaUrl'] ); ?>" alt="<?php echo esc_attr( $kh_cr_safe_alt ); ?>" loading="lazy" />
+                    <?php endif; ?>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>

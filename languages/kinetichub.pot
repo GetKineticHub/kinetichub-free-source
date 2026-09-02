@@ -1,0 +1,4316 @@
+# Copyright (C) 2026 kinetichub
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: KineticHub 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kinetichub\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-01T21:07:27+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: kinetichub\n"
+
+#. Plugin Name of the plugin
+#: kinetichub.php
+msgid "KineticHub - Animated Blocks"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: kinetichub.php
+msgid "https://getkinetichub.com"
+msgstr ""
+
+#. Description of the plugin
+#: kinetichub.php
+msgid "Animated Gutenberg blocks for WordPress with motion, media, typography, sliders, marquees, and interactive visual effects."
+msgstr ""
+
+#. Author of the plugin
+#: kinetichub.php
+#: kinetichub.php:251
+#: kinetichub.php:252
+msgid "kinetichub"
+msgstr ""
+
+#: includes/class-kinetichub-review-notice.php:307
+msgid "Enjoying KineticHub?"
+msgstr ""
+
+#: includes/class-kinetichub-review-notice.php:310
+msgid "Hi, I'm Sorin, the developer behind KineticHub. If you're enjoying the blocks, a short WordPress.org review really helps others discover the plugin. If something isn't working, let me know and I'll take a look."
+msgstr ""
+
+#: includes/class-kinetichub-review-notice.php:322
+msgid "Leave a review"
+msgstr ""
+
+#: includes/class-kinetichub-review-notice.php:328
+msgid "Something isn't working"
+msgstr ""
+
+#: includes/class-kinetichub-review-notice.php:332
+msgid "Dismiss"
+msgstr ""
+
+#: includes/class-kinetichub-review-notice.php:349
+msgid "You are not allowed to do that."
+msgstr ""
+
+#: kinetichub.php:150
+msgid "Kinetic Suite"
+msgstr ""
+
+#: kinetichub.php:320
+msgid "Invalid or missing nonce."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/render.php:154
+msgid "Audio Player Widget"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/render.php:187
+msgid "Seek audio track"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/render.php:210
+msgid "Play or Pause Audio"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/render.php:212
+msgid "Audio Cover"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/render.php:244
+msgid "Mute/Unmute"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/render.php:250
+msgid "Volume Control"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/render.php:40
+msgid "Kinetic Before/After: Please select both images in the block settings."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/render.php:65
+msgid "Compare"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/render.php:108
+#: src/blocks/kinetic-before-after/render.php:217
+msgid "Before"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/render.php:109
+#: src/blocks/kinetic-before-after/render.php:218
+msgid "After"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/render.php:248
+msgid "Image Comparison Slider"
+msgstr ""
+
+#: src/blocks/kinetic-box/render.php:238
+msgid "Interactive Content Box"
+msgstr ""
+
+#: src/blocks/kinetic-box/render.php:260
+msgid "Box Content Link"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/render.php:207
+msgid "Interactive Portfolio List"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/render.php:60
+msgid "Marquee item link"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/render.php:258
+msgid "Marquee Gallery"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/render.php:299
+msgid "Pause marquee motion"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/render.php:307
+msgid "RUNNING"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/render.php:308
+msgid "PAUSED"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/render.php:309
+msgid "SLOW"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/render.php:218
+msgid "Scrollable Media Section"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/render.php:251
+#: src/blocks/kinetic-split-scroll/render.php:252
+msgid "Pause section motion"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/render.php:253
+msgid "Resume section motion"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/render.php:267
+msgid "Media element"
+msgstr ""
+
+#: src/admin/index.js:46
+msgid "Kinetic Box"
+msgstr ""
+
+#: src/admin/index.js:47
+msgid "Animated container block with motion-ready layout controls."
+msgstr ""
+
+#: src/admin/index.js:53
+msgid "Kinetic Typography"
+msgstr ""
+
+#: src/admin/index.js:54
+msgid "Animated text block with server-rendered splitting and accessibility fallback."
+msgstr ""
+
+#: src/admin/index.js:60
+msgid "Magnetic Button"
+msgstr ""
+
+#: src/admin/index.js:61
+msgid "Interactive button block with configurable styling and motion behavior."
+msgstr ""
+
+#: src/admin/index.js:67
+#: src/blocks/kinetic-marquee/index.js:424
+msgid "Kinetic Marquee"
+msgstr ""
+
+#: src/admin/index.js:68
+msgid "Auto-scrolling logo and media marquee block."
+msgstr ""
+
+#: src/admin/index.js:74
+msgid "Scroll Divider"
+msgstr ""
+
+#: src/admin/index.js:75
+msgid "Animated divider line triggered by viewport scroll."
+msgstr ""
+
+#: src/admin/index.js:81
+msgid "Scroll Progress"
+msgstr ""
+
+#: src/admin/index.js:82
+msgid "Scroll progress indicator with an optional milestone journey built from page headings."
+msgstr ""
+
+#: src/admin/index.js:88
+msgid "Video Modal"
+msgstr ""
+
+#: src/admin/index.js:89
+msgid "Lazy video modal and inline playback block."
+msgstr ""
+
+#: src/admin/index.js:95
+msgid "Hero Mesh"
+msgstr ""
+
+#: src/admin/index.js:96
+msgid "Generative hero background block with motion-ready content layering."
+msgstr ""
+
+#: src/admin/index.js:102
+msgid "Before/After Slider"
+msgstr ""
+
+#: src/admin/index.js:103
+msgid "Accessible comparison slider for images."
+msgstr ""
+
+#: src/admin/index.js:109
+msgid "Audio Player"
+msgstr ""
+
+#: src/admin/index.js:110
+msgid "Custom audio player block for WordPress content."
+msgstr ""
+
+#: src/admin/index.js:116
+msgid "Split Scroll"
+msgstr ""
+
+#: src/admin/index.js:117
+msgid "Split layout with pinned media and scrolling content."
+msgstr ""
+
+#: src/admin/index.js:123
+msgid "Cursor Reveal"
+msgstr ""
+
+#: src/admin/index.js:124
+msgid "Interactive media reveal list with pointer-aware behavior."
+msgstr ""
+
+#: src/admin/index.js:130
+msgid "Ambient Aura"
+msgstr ""
+
+#: src/admin/index.js:131
+msgid "Soft ambient visual background block."
+msgstr ""
+
+#: src/admin/index.js:140
+msgid "Overview"
+msgstr ""
+
+#: src/admin/index.js:145
+#: src/admin/index.js:370
+msgid "My Suite"
+msgstr ""
+
+#: src/admin/index.js:150
+#: src/admin/index.js:337
+#: src/admin/index.js:419
+msgid "Global Settings"
+msgstr ""
+
+#: src/admin/index.js:155
+#: src/admin/index.js:495
+msgid "System Info"
+msgstr ""
+
+#: src/admin/index.js:220
+msgid "Checking..."
+msgstr ""
+
+#: src/admin/index.js:232
+msgid "Online"
+msgstr ""
+
+#: src/admin/index.js:238
+msgid "Offline or unavailable"
+msgstr ""
+
+#: src/admin/index.js:288
+msgid "Settings saved successfully."
+msgstr ""
+
+#: src/admin/index.js:297
+msgid "Settings could not be saved. Please refresh the page and try again."
+msgstr ""
+
+#: src/admin/index.js:306
+msgid "Included blocks"
+msgstr ""
+
+#: src/admin/index.js:308
+msgid "Motion-ready blocks available in this build."
+msgstr ""
+
+#: src/admin/index.js:312
+msgid "Active blocks"
+msgstr ""
+
+#: src/admin/index.js:314
+msgid "Blocks currently enabled for the editor."
+msgstr ""
+
+#: src/admin/index.js:318
+msgid "Motion profile"
+msgstr ""
+
+#: src/admin/index.js:320
+msgid "Global frontend animation profile."
+msgstr ""
+
+#: src/admin/index.js:324
+msgid "KineticHub Free Edition"
+msgstr ""
+
+#: src/admin/index.js:326
+msgid "Manage the included animated blocks and global motion preferences for your WordPress site."
+msgstr ""
+
+#: src/admin/index.js:334
+msgid "Manage Blocks"
+msgstr ""
+
+#: src/admin/index.js:345
+msgid "Documentation"
+msgstr ""
+
+#: src/admin/index.js:353
+msgid "KineticHub Pro"
+msgstr ""
+
+#: src/admin/index.js:356
+msgid "Unlock the full animation toolkit for client-ready interactive builds."
+msgstr ""
+
+#: src/admin/index.js:360
+msgid "Explore Pro"
+msgstr ""
+
+#: src/admin/index.js:371
+msgid "Enable or disable included blocks for the editor."
+msgstr ""
+
+#: src/admin/index.js:375
+#: src/admin/index.js:424
+msgid "Saving..."
+msgstr ""
+
+#: src/admin/index.js:375
+msgid "Save Changes"
+msgstr ""
+
+#: src/admin/index.js:397
+msgid "Included"
+msgstr ""
+
+#: src/admin/index.js:403
+msgid "Enabled"
+msgstr ""
+
+#: src/admin/index.js:403
+msgid "Disabled"
+msgstr ""
+
+#: src/admin/index.js:420
+msgid "Tune shared motion behavior and visual tokens."
+msgstr ""
+
+#: src/admin/index.js:424
+msgid "Save Settings"
+msgstr ""
+
+#: src/admin/index.js:430
+msgid "Motion Engine"
+msgstr ""
+
+#: src/admin/index.js:433
+msgid "Performance Mode"
+msgstr ""
+
+#: src/admin/index.js:436
+msgid "Balanced"
+msgstr ""
+
+#: src/admin/index.js:437
+msgid "Eco"
+msgstr ""
+
+#: src/admin/index.js:438
+msgid "Performance"
+msgstr ""
+
+#: src/admin/index.js:444
+msgid "Global LERP Amount"
+msgstr ""
+
+#: src/admin/index.js:450
+msgid "Lower values feel smoother. Higher values feel faster."
+msgstr ""
+
+#: src/admin/index.js:454
+msgid "Enable Mobile Motion"
+msgstr ""
+
+#: src/admin/index.js:460
+msgid "Asset Optimization"
+msgstr ""
+
+#: src/admin/index.js:463
+msgid "Loads shared frontend styles early for smoother rendering."
+msgstr ""
+
+#: src/admin/index.js:468
+msgid "Visual Tokens"
+msgstr ""
+
+#: src/admin/index.js:471
+#: src/blocks/kinetic-audio-player/index.js:171
+#: src/blocks/kinetic-split-scroll/index.js:334
+#: src/blocks/kinetic-split-scroll/index.js:336
+msgid "Accent Color"
+msgstr ""
+
+#: src/admin/index.js:474
+msgid "Use a hex color such as #10b981."
+msgstr ""
+
+#: src/admin/index.js:486
+msgid "Accent preview"
+msgstr ""
+
+#: src/admin/index.js:496
+msgid "Basic environment information for troubleshooting."
+msgstr ""
+
+#: src/admin/index.js:501
+msgid "Plugin Version"
+msgstr ""
+
+#: src/admin/index.js:505
+msgid "REST API"
+msgstr ""
+
+#: src/admin/index.js:509
+msgid "WebGL Support"
+msgstr ""
+
+#: src/admin/index.js:511
+msgid "Available"
+msgstr ""
+
+#: src/admin/index.js:511
+msgid "Unavailable"
+msgstr ""
+
+#: src/admin/index.js:515
+msgid "WordPress Requirement"
+msgstr ""
+
+#: src/admin/index.js:516
+msgid "Requires WordPress 6.2 or newer."
+msgstr ""
+
+#: src/admin/index.js:519
+msgid "Enabled Blocks"
+msgstr ""
+
+#: src/admin/index.js:550
+msgid "Loading KineticHub dashboard..."
+msgstr ""
+
+#: src/admin/index.js:560
+msgid "Animated Blocks for WordPress"
+msgstr ""
+
+#: src/admin/index.js:561
+msgid "KineticHub"
+msgstr ""
+
+#: src/admin/index.js:562
+msgid "Configure included blocks and shared motion settings."
+msgstr ""
+
+#: src/admin/index.js:571
+msgid "Dashboard sections"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:71
+msgid "💡 Aura Appearance"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:73
+msgid "The glow is not drawn in the editor; the aura renders on the live frontend."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:75
+msgid "Glow Color"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:89
+msgid "Elliptical aura shapes, and optical blend modes — Screen, Overlay and Color Dodge — for how the glow mixes with the content beneath it."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:95
+msgid "Intensity (Opacity)"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:95
+msgid "Higher values make the glow more visible."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:101
+msgid "Spread Radius (px)"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:101
+msgid "How far the glow reaches out from its center."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:107
+msgid "Softness Falloff (%)"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:107
+msgid "Higher values fade the edge out more gradually."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:114
+msgid "📍 Positioning & Layout"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:116
+msgid "Behavior"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:116
+msgid "Fixed pins the glow to the screen, so it holds its place while the page scrolls past it. Absolute anchors it to the spot this block sits in, so it scrolls away with the content around it."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:119
+msgid "Fixed (Global Page Glow)"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:120
+msgid "Absolute (Container/Hero Only)"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:125
+msgid "Position X (%)"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:125
+msgid "Horizontal center of the glow."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:131
+msgid "Position Y (%)"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:131
+msgid "Vertical center of the glow. Negative values move it above the block."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:143
+msgid "Layer (z-index) control, so the aura can sit in front of your content as well as behind it, plus mobile handling — dim, hide or keep the glow on small screens."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/index.js:154
+msgid "Aura:"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:93
+msgid "🎧 Audio Source & Media"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:100
+msgid "Audio Source"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:101
+msgid "Upload an audio file or pick one from the library."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:111
+msgid "Audio URL"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:113
+msgid "Remove Audio"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:121
+msgid "Change Cover Image"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:121
+msgid "Add Cover Image"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:127
+msgid "Remove Image"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:133
+msgid "Preload Strategy"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:133
+msgid "How much of the file the browser fetches before anyone presses play. Metadata Only reads just the duration and keeps the page light. Auto downloads the whole track up front. None waits until play is pressed."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:136
+#: src/blocks/kinetic-video-modal/index.js:400
+msgid "Metadata Only (Recommended)"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:137
+msgid "Auto (Load full file)"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:138
+msgid "None (Do not load)"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:145
+msgid "⚙️ Layout & Sticky Behavior"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:146
+msgid "Player Style"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:146
+msgid "Standard is a horizontal bar carrying the cover, title, artist and controls. Compact is a circular button showing the cover and play control only — it has no title, time display or volume slider."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:146
+msgid "Standard (Extended)"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:146
+msgid "Compact (Circle)"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:147
+msgid "Circle Size (px)"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:147
+msgid "Diameter of the circular player."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:148
+msgid "Block Alignment"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:148
+msgid "Where the player sits inside the width it is given."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:148
+#: src/blocks/kinetic-hero-mesh/index.js:190
+#: src/blocks/kinetic-magnetic-button/index.js:616
+#: src/blocks/kinetic-scroll-divider/index.js:122
+#: src/blocks/kinetic-scroll-progress/index.js:334
+#: src/blocks/kinetic-split-scroll/index.js:346
+#: src/components/ImageFitControls.js:35
+msgid "Left"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:148
+#: src/blocks/kinetic-hero-mesh/index.js:187
+#: src/blocks/kinetic-hero-mesh/index.js:208
+#: src/blocks/kinetic-scroll-divider/index.js:122
+#: src/components/ImageFitControls.js:32
+msgid "Center"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:148
+#: src/blocks/kinetic-hero-mesh/index.js:191
+#: src/blocks/kinetic-magnetic-button/index.js:615
+#: src/blocks/kinetic-marquee/index.js:353
+#: src/blocks/kinetic-scroll-divider/index.js:122
+#: src/blocks/kinetic-scroll-progress/index.js:335
+#: src/blocks/kinetic-split-scroll/index.js:346
+#: src/components/ImageFitControls.js:36
+msgid "Right"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:159
+msgid "Sticky playback, so the player detaches and stays on screen once it scrolls away — pinned to the top or floating in a corner, on the side and in the shape you choose, with a close button for the listener."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:163
+msgid "Time Display Mode"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:163
+msgid "Which figure the player prints beside the controls: time played so far, time left, or the full length of the track."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:163
+msgid "Hidden"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:163
+msgid "Elapsed Time"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:163
+msgid "Remaining Time"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:163
+msgid "Total Duration"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:166
+msgid "🎨 Colors & Styling"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:167
+msgid "Player Background"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:169
+msgid "Text & Icon Color"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:173
+msgid "Progress Background"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:178
+#: src/components/BorderControls.js:22
+msgid "Border Radius"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:178
+msgid "Rounds the corners of the player. 50 gives a fully rounded bar."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:180
+msgid "Inner V-Padding"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:180
+msgid "Space above and below the contents, inside the player."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:181
+msgid "Inner H-Padding"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:181
+msgid "Space to the left and right of the contents, inside the player."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:187
+msgid "🧠 Engine & Advanced"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:197
+msgid "Motion and light on the player itself — a magnetic tilt toward the cursor, three glow styles that breathe while the track plays, and square or rounded shapes for the waveform bars."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:202
+msgid "Show Animated Waveform"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:202
+msgid "Four decorative bars beside the controls. They rise and fall on a fixed loop while the track is playing and rest flat when it is paused. The motion is illustrative — it does not read the audio, so it will not match what is actually being heard."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:209
+msgid "Enable Interactive Seekbar"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:209
+msgid "Lets the listener click or drag along the progress track to jump to any point. Switched off, the progress track still fills as the audio plays but cannot be moved."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:220
+msgid "Show Volume Control"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:220
+msgid "Adds a speaker button and slider to the player. Not available on the compact circular layout."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:231
+msgid "Listening behaviour — resume the track where the listener left off, stop it when they switch browser tabs, offer the file as a download, and keep the progress track read-only on touch screens."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:236
+msgid "📦 Shadow & Depth"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:260
+#: src/blocks/kinetic-hero-mesh/index.js:177
+msgid "Cover"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:268
+msgid "Song Title"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:269
+msgid "Artist Name"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/index.js:307
+msgid "Audio playback and motion effects run on the live frontend."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:109
+msgid "🖼️ Images & Filters"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:111
+msgid "Before Image"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:117
+#: src/blocks/kinetic-before-after/index.js:126
+#: src/blocks/kinetic-cursor-reveal/index.js:187
+#: src/blocks/kinetic-video-modal/index.js:241
+msgid "Remove"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:120
+msgid "After Image"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:131
+msgid "Image Ratio (Crop)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:131
+msgid "Auto leaves each image at its own proportions, so two images that were not shot alike will not line up. Any fixed ratio crops both into the same box, which guarantees they do."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:134
+msgid "Auto (Original)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:135
+msgid "16:9 (Widescreen)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:136
+#: src/blocks/kinetic-video-modal/index.js:272
+msgid "1:1 (Square)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:137
+msgid "4:3 (Standard)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:138
+msgid "3:4 (Portrait)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:148
+msgid "The before image can carry its own treatment: grayscale, sepia, blur, invert or high contrast, plus a colour wash with adjustable opacity - all applied to that side alone."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:153
+msgid "After Image Filter"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:153
+msgid "Applies to the after image only. Leave it at None when the before filter is already carrying the contrast between the two."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:156
+msgid "Color Overlay"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:157
+msgid "Grayscale"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:158
+msgid "Sepia"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:159
+#: src/blocks/kinetic-magnetic-button/index.js:745
+msgid "Blur"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:160
+msgid "Invert Colors"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:161
+msgid "High Contrast"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:162
+#: src/blocks/kinetic-box/index.js:71
+#: src/blocks/kinetic-cursor-reveal/index.js:278
+#: src/blocks/kinetic-hero-mesh/index.js:224
+#: src/blocks/kinetic-scroll-progress/index.js:695
+#: src/blocks/kinetic-split-scroll/index.js:121
+#: src/blocks/kinetic-video-modal/index.js:401
+#: src/components/EntranceControls.js:18
+#: src/components/MotionControls.js:33
+#: src/components/PulseControls.js:20
+msgid "None"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:169
+#: src/blocks/kinetic-marquee/index.js:347
+msgid "Blur Intensity (px)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:169
+msgid "Blur radius in pixels, applied to the after image only - the way to build a sharp-against-soft focus comparison."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:180
+msgid "Opacity"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:180
+msgid "How strongly the colour covers the after image. 0 leaves it untouched, 1 replaces it with solid colour."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:191
+#: src/blocks/kinetic-box/index.js:266
+#: src/blocks/kinetic-scroll-progress/index.js:774
+#: src/blocks/kinetic-split-scroll/index.js:280
+msgid "✨ Smart Addons"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:193
+msgid "Depth and guidance for the comparison itself: an inner parallax that shifts both images against the divider, a hold-to-peek mode that springs back on release, and a badge that follows the cursor to invite the first drag."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:198
+msgid "🚀 Engine & Transitions"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:202
+msgid "The reveal itself opens up: a vertical split, an angled diagonal cut, a fade with no edge, and the option to reverse which image is uncovered. Interaction gains hover-to-slide, inertia that lets the divider glide on after release, snapping to the quarter points, and four styles for the intro animation."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:205
+msgid "Start Position (%)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:205
+msgid "Where the divider rests before anyone touches it. 0 shows the after image alone, 100 shows the before image alone."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:207
+msgid "Enable Hover Zoom"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:207
+msgid "Both images scale up slightly while the pointer is over the block."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:213
+msgid "Auto-Play Intro Animation"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:213
+msgid "Plays a one-off reveal the first time the block scrolls into view, then hands control back to the visitor. It is skipped for anyone who asks for reduced motion."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:219
+msgid "Click to Move"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:219
+msgid "A click anywhere on the image jumps the divider to that point, so the comparison works without a drag."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:226
+msgid "🎛️ Handle & Pulse"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:229
+msgid "Divider Line Style"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:229
+msgid "The line between the two images, not the handle sitting on it. Solid is a plain rule, Neon adds a glow around it, and Gradient fades the line out towards its ends."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:232
+msgid "Solid Line"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:233
+msgid "Neon Glow"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:234
+msgid "Faded Gradient"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:241
+msgid "The handle can take other shapes - a minimal dot, or a text handle in place of the arrows - and carry a looping attention effect: a soft glow, a sonar ripple, fluid morphing, magnetic focus, glassmorphism or target brackets."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:245
+#: src/blocks/kinetic-before-after/index.js:247
+msgid "Handle Background Color"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:248
+msgid "Fill of the circle the visitor drags. It has to stay visible against both images - a handle that disappears into a bright sky is a comparison nobody finds."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:254
+#: src/blocks/kinetic-before-after/index.js:256
+msgid "Icon / Text Color"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:257
+msgid "Colour of the arrows or text inside the handle. This one needs to contrast with the handle fill above it, not with the images."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:265
+msgid "📱 Mobile Settings"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:267
+msgid "Phones can be treated separately: a taller crop just for screens 768px and under, and the option to drop the Before and After captions where they would sit over the images."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:272
+msgid "🏷️ Labels & Styling"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:274
+#: src/blocks/kinetic-scroll-progress/index.js:634
+msgid "Show Labels"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:274
+msgid "Puts a caption on each side of the divider so the visitor knows which image they are looking at."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:281
+msgid "Before Label"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:281
+msgid "Caption for the before side. \"Old\", \"Original\" and \"Then\" all work as well as the default."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:286
+msgid "After Label"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:286
+msgid "Caption for the after side. \"New\", \"Improved\" and \"Now\" all work as well as the default."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:291
+msgid "Hide Labels While Moving"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:291
+msgid "The captions fade out while the divider is being dragged and come back when it stops, so nothing sits over the images mid-comparison."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:299
+msgid "The captions can be styled rather than left at white on translucent black - text colour and label background are both open, alpha included."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:306
+msgid "Force True Full Width (Nuclear)"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:309
+msgid "Forces the block to span the entire browser width, breaking out of content container. Use with caution - may conflict with theme layouts."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:313
+msgid "📦 Global Shadows"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:351
+msgid "Kinetic Before/After"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:351
+msgid "Upload or select your Before and After images using the sidebar controls on the right."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:352
+msgid "Hint: For best results, use images with similar dimensions or use the Aspect Ratio setting."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/index.js:358
+msgid "Slider dragging and kinetic motion run on the live frontend."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:64
+msgid "Custom"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:65
+msgid "Soft Elevate"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:66
+msgid "Minimal Scale"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:72
+msgid "Lift (Z-Axis)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:73
+msgid "Scale (Grow)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:74
+msgid "Tilt (CSS)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:163
+msgid "⚡ Quick Presets"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:165
+msgid "Style Preset"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:165
+msgid "Applies a matched set of interaction, shadow and hover-colour values to the panels below, overwriting whatever is already set there. Anything you change afterwards is kept, so the name shown here is a starting point rather than a live description. Reset Block returns the same settings to their defaults."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:170
+msgid "Reset Block"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:174
+msgid "Three further presets configure the box in a single step: Frosted Glass for a blurred translucent panel, Tech Trace for a border that draws itself on hover, and Kinetic 3D for a pointer-driven tilt with parallax inner content."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:179
+msgid "📐 Layout & Size"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:181
+msgid "Box Width (%)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:181
+msgid "Width of the box as a percentage of the space it sits in. 0 lets it fill that space. Any value above 0 is enforced over the theme layout, including over a full-width alignment."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:187
+msgid "Mobile Width (%)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:187
+msgid "Optional width override at 768px and under. 0 keeps the desktop Box Width; any value above 0 sets a separate mobile width, using the same alignment as the desktop box."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:193
+msgid "Minimum Height (px)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:193
+msgid "A floor for the height of the box: it still grows past this to fit its content. Useful for keeping boxes level across a row of columns whose text runs to different lengths. 0 removes the floor."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:200
+#: src/components/LinkControls.js:18
+msgid "🔗 Link Settings"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:202
+#: src/components/LinkControls.js:20
+msgid "Target URL"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:206
+msgid "Leave empty for no link."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:213
+msgid "Make Entire Box Clickable"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:216
+msgid "Stretches link over the whole box. Inner buttons stay clickable."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:219
+#: src/components/LinkControls.js:29
+msgid "Open in New Tab"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:224
+msgid "Accessible Label (aria-label)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:227
+msgid "e.g. View our Services"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:228
+msgid "Describes the link for screen readers. Recommended."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:232
+msgid "Link Rel (SEO)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:235
+msgid "noopener noreferrer (auto)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:236
+msgid "Optional. Leave empty to use defaults."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:244
+msgid "Stretched link is enabled but no URL is set. Add a URL above."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:250
+msgid "URL is set but the box is not clickable. Enable \"Make Entire Box Clickable\" above to activate the link."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:257
+msgid "🧠 Kinetic Physics"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:259
+msgid "Pointer-driven motion for the whole box: a 3D tilt that tracks the cursor across its surface, a magnetic hover that lets the box follow the cursor, and inner parallax layers that move the content against the tilt for depth."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:268
+msgid "Atmosphere layers over the box: a spotlight glow that follows the cursor, cinematic film grain with its own opacity, an idle levitation that keeps the box breathing while nobody is interacting with it, and a crisp inner 3D edge in a colour of your choosing."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:275
+msgid "⚙️ Detailed Config"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:277
+msgid "Interact"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:278
+msgid "Depth"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:279
+msgid "Paint"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:287
+msgid "Physics Engine Active"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:288
+msgid "Standard CSS animations (Lift, Scale) and Hover Intensities are safely hidden because 3D Tilt or Magnetic Hover is currently driving this box."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:293
+#: src/components/MotionControls.js:24
+msgid "Hover Interaction Type"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:293
+msgid "What the box does while the pointer is over it. Lift raises it, Scale grows it slightly, Tilt rotates it on both axes. Effect Intensity below drives whichever one is chosen."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:301
+#: src/components/MotionControls.js:41
+msgid "Effect Intensity (Desktop)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:301
+msgid "A single strength figure whose meaning follows the interaction type: for Lift it is the travel in pixels, for Scale and Tilt it is scaled down into a small growth or a few degrees of rotation. 0 leaves the box still."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:302
+#: src/components/MotionControls.js:50
+msgid "Effect Intensity (Mobile)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:302
+msgid "Replaces the desktop figure at 768px and under, for the same hover interaction."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:308
+#: src/components/MotionControls.js:68
+msgid "Transition Speed (s)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:308
+msgid "How long the box takes to settle into its hover state and back. The slider is remapped before it reaches the CSS so that very short values cannot fight the pointer: the bottom of the range runs at 0.6s and the top at 2s, rising evenly in between."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:313
+msgid "Three more hover types here - Trace, which draws the border on, plus Shine and Sink - along with bouncy and snappy easing curves, a rotation angle to add to Lift and Scale, a hover text colour in the Paint tab and a separate shadow softness for phones in the Depth tab. The box can also animate in the first time it scrolls into view."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:318
+msgid "Bring to Front on Hover"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:321
+msgid "Forces the box to pop out over adjacent layout elements on hover."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:328
+msgid "Base Shadow Color"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:330
+msgid "Shadow Opacity"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:331
+#: src/components/ShadowControls.js:52
+msgid "Blur / Softness (Desktop)"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:331
+msgid "Blur radius of the shadow in pixels. The same figure is used for the resting shadow and the hover shadow, which differ only in colour, opacity and how far they are cast."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:335
+#: src/blocks/kinetic-box/index.js:337
+msgid "Hover Shadow Color"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:338
+msgid "Colour of the shadow while the pointer is over the box. Outer Glow Effect, in Advanced Visuals, also draws its halo in this colour."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:342
+#: src/components/ShadowControls.js:79
+msgid "Hover Shadow Opacity"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:348
+msgid "Hover Background Color"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:353
+msgid "Hover Border Color"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:366
+msgid "✨ Advanced Visuals"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:367
+msgid "Zoom Inner Content"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:367
+msgid "Scales images on hover. It reaches only the direct children of the box, so an image sitting inside a nested group or column is not affected."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:370
+msgid "Zoom Intensity"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:373
+msgid "Outer Glow Effect"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:373
+msgid "Replaces the hover shadow with a wide coloured halo around the box, drawn in the Hover Shadow Color from the Depth tab. The softness and opacity set there do not apply to the halo."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:374
+#: src/blocks/kinetic-cursor-reveal/index.js:278
+msgid "Grayscale to Color"
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:374
+msgid "The box and everything in it sit desaturated at rest and return to full colour on hover."
+msgstr ""
+
+#: src/blocks/kinetic-box/index.js:379
+msgid "Glassmorphism as well: the background of the box becomes a translucent white layer over a backdrop blur, with the opacity of the layer and the strength of the blur both adjustable."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:133
+msgid "📝 List Items"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:135
+msgid "Add and edit your list items with titles, subtitles, media, and links."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:153
+msgid "Move up"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:156
+msgid "Move down"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:159
+msgid "Delete item"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:165
+msgid "Title"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:165
+msgid "Enter title..."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:165
+msgid "Main text shown for this item"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:166
+msgid "Subtitle (Optional)"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:166
+msgid "Enter subtitle..."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:166
+msgid "Small text below title"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:170
+msgid "Media (Image/Video)"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:192
+msgid "Upload Media"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:199
+msgid "Image or video that appears on hover"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:202
+msgid "Link URL (Optional)"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:202
+msgid "Where clicking this item should navigate"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:208
+msgid "+ Add New Item"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:215
+msgid "Three items is the cap here. Fifty are available, which is what a full portfolio or services index needs."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:223
+msgid "Open Links in New Tab"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:223
+msgid "Applies to all items with links"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:228
+msgid "✍️ Text Styling"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:229
+msgid "Font Size (Desktop)"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:229
+msgid "Resting size of the item titles in pixels, used above 768px. This block is usually set far larger than body copy - the list is the headline."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:230
+msgid "Font Size (Mobile)"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:230
+msgid "Title size in pixels at 768px and below, where the desktop size would usually break the line."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:234
+msgid "The titles themselves can react: outline-to-solid, blur-into-focus and lift reveals, a hover size the text grows to, dimming of every other row, and an accent colour for the active one."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:239
+msgid "🏷️ Subtitle Styling"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:240
+msgid "Subtitle Color"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:242
+msgid "Subtitle Size"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:242
+msgid "Size of the small line under each title, in pixels. It is rendered in uppercase, which reads smaller than the same value in sentence case."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:243
+msgid "Letter Spacing"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:243
+msgid "Extra space between the subtitle letters, in pixels. A little tracking is what makes small uppercase text legible."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:246
+msgid "📐 List Layout"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:248
+msgid "Item Vertical Spacing"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:248
+msgid "Padding above and below each row, in pixels. It sets how much of the page the list occupies and how far the pointer travels between items."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:256
+msgid "Show Item Divider"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:256
+msgid "Draws a hairline under every row. With generous spacing the list often reads better without it."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:263
+msgid "Divider Color"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:274
+msgid "🎬 Media Settings"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:275
+msgid "Media Width"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:275
+msgid "Width of the floating preview in pixels, between 100 and 1200. Height is not set directly - it follows from this width and the aspect ratio below."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:276
+msgid "Media Aspect Ratio"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:276
+msgid "Shape of the floating preview. Height comes from the width above at this ratio, so a tall ratio on a wide preview makes a large picture."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:276
+msgid "4:5 Portrait"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:276
+msgid "1:1 Square"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:276
+msgid "16:9 Landscape"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:276
+msgid "21:9 Ultrawide"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:277
+msgid "Reveal Mask"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:277
+msgid "How the preview arrives once a row is hovered: a plain fade, a circle opening out, a diagonal wipe, or a curtain."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:277
+msgid "Fade"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:277
+msgid "Circle Expand"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:277
+msgid "Diagonal Wipe"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:277
+msgid "Curtain"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:278
+msgid "Hover Filter"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:278
+msgid "Grayscale to Color starts the preview desaturated and brings the colour up as it settles. None shows it as uploaded."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:282
+msgid "The floating preview can be styled and layered: glass, vignette, polaroid and glow treatments, optical blend modes that let the titles read through the image, a choice of painting it over or under the list, and a film-grain overlay."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:289
+msgid "⚡ Physics Engine"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:291
+msgid "How the preview follows the cursor becomes adjustable: the smoothing that makes it trail and glide, X and Y offsets from the pointer, a velocity tilt as it swings, a magnetic pull on the hovered title, and parallax inside the frame."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:331
+msgid "If no reveal image is selected, nothing will appear on the frontend."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/index.js:335
+msgid "Hover effects, physics, and animations appear on frontend."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:33
+msgid "Design the Future"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:51
+msgid "Hardware-accelerated generative layout containers built for extreme performance."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:66
+msgid "Explore Now"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:133
+msgid "🏗️ Canvas Settings"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:135
+msgid "Generative Engine Mode"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:135
+msgid "Plexus draws a live canvas of drifting nodes that join up with lines whenever they come close enough. Classic Static draws no canvas at all — the background is just your image or colour, which is the lightest option on slower devices."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:137
+msgid "Neural Network (Plexus)"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:138
+msgid "Classic Static"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:150
+msgid "Four more canvas engines: Gradient Mesh, animated blobs in three colours of your own; Aurora Silk, drifting fields of coloured light; and two WebGL engines that work on an image you upload — Liquid Displacement ripples it under the cursor, Refractive Lens refracts it through a crystal pattern."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:156
+msgid "Source Image"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:163
+msgid "Change Image"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:163
+msgid "Set Image"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:174
+msgid "Image Fit"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:174
+msgid "Cover fills the hero and crops whatever does not fit. Contain shows the whole image and leaves the background colour around it. Fill stretches the image to the hero, so its proportions change."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:178
+msgid "Contain"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:179
+msgid "Fill"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:184
+msgid "Image Position"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:184
+msgid "Which part of the image stays in view when Cover crops it, and where the image sits when Contain leaves space around it. Fill ignores this."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:188
+#: src/blocks/kinetic-hero-mesh/index.js:208
+#: src/blocks/kinetic-scroll-progress/index.js:330
+#: src/components/ImageFitControls.js:33
+msgid "Top"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:189
+#: src/blocks/kinetic-hero-mesh/index.js:208
+#: src/blocks/kinetic-marquee/index.js:353
+#: src/blocks/kinetic-scroll-progress/index.js:331
+#: src/components/ImageFitControls.js:34
+msgid "Bottom"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:196
+msgid "Enable Parallax Effect"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:196
+msgid "Pins the background image in place so the hero content scrolls over it. Applies to Classic Static only, and falls back to normal scrolling at 768px and below, where fixed backgrounds are unreliable."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:204
+msgid "Desktop Height (vh)"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:204
+msgid "A minimum height, as a percentage of the browser window: 100 is one full screen. Content taller than this pushes the hero further down."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:205
+msgid "Mobile Height (vh)"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:205
+msgid "The same minimum height, used at 768px and below."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:207
+msgid "Vertical Alignment"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:217
+msgid "🌌 Plexus Settings"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:218
+msgid "Node Density"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:218
+msgid "How many nodes drift across the canvas. Capped at 40 on screens 768px and below, whatever you set here."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:219
+msgid "Movement Speed"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:219
+msgid "How fast the nodes drift. It scales their starting velocity, so higher values also scatter them apart sooner."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:220
+msgid "Connection Distance"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:220
+msgid "In pixels. Two nodes are joined by a line once they are closer than this, and the line fades as they drift apart. Large values mean many more lines to draw each frame."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:221
+msgid "Line Width"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:221
+msgid "Thickness of the connecting lines, in pixels."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:223
+msgid "Cursor Interaction"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:223
+msgid "Repel pushes nodes away from the pointer within about 150px and Attract pulls them in from about 200px. Constellation leaves the nodes alone and instead draws lines from the pointer to the ones near it. None ignores the pointer, and is the cheapest."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:224
+msgid "Repel (Push)"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:224
+msgid "Attract (Pull)"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:224
+msgid "Constellation (Lines)"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:227
+msgid "Network Color"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:234
+msgid "✨ Composition (Overlay)"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:236
+msgid "Overlay Blend Mode"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:236
+msgid "How the tint mixes with the background beneath it. Normal simply lays the colour on top; the others combine the two and cost more to render."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:237
+#: src/blocks/kinetic-magnetic-button/index.js:462
+#: src/blocks/kinetic-scroll-divider/index.js:117
+msgid "Normal"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:237
+msgid "Multiply"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:237
+msgid "Overlay"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:237
+msgid "Screen"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:237
+msgid "Color Dodge"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:237
+msgid "Difference"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:241
+#: src/blocks/kinetic-hero-mesh/index.js:243
+msgid "Overlay Tint Color"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:244
+msgid "The colour laid over the background, behind your content. It stays invisible until Opacity Level is above 0."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:248
+msgid "Opacity Level"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:248
+msgid "How strongly the tint covers the background. Raising it is the usual way to keep text readable over a busy image or a moving canvas."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:251
+msgid "Enable Film Grain Noise"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:251
+msgid "Lays a fine noise texture over the whole hero. The texture drifts slowly while the hero is on screen, and holds still for visitors who ask for reduced motion."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:260
+msgid "Per-device visibility, for hiding the whole hero at 768px and below or on desktop only — useful when a lighter block takes its place on small screens."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:294
+msgid "Upload Source Image"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:294
+msgid "Required for this engine mode."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/index.js:326
+msgid "Generative mesh effects and animation render on the live frontend."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:408
+msgid "Colors & Styling"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:410
+msgid "Outline Mode (Transparent)"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:410
+msgid "Empties the fill and draws the button as an outline: the background colour becomes both the border and the label colour, and a border width of 0 is raised to 2px. Text colour, glassmorphism, the shadow panel and the border panel are hidden while it is on, because none of them apply."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:417
+msgid "Low contrast: normal button text may be hard to read. Aim for at least 4.5:1."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:423
+msgid "Low contrast: hover button text may be hard to read. Aim for at least 4.5:1."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:430
+msgid "Accessible Presets"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:438
+msgid "Green / White"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:445
+msgid "Dark / White"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:452
+msgid "White / Dark"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:463
+msgid "Hover"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:471
+#: src/blocks/kinetic-magnetic-button/index.js:473
+msgid "Primary Brand Color"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:471
+#: src/blocks/kinetic-magnetic-button/index.js:473
+msgid "Background Color"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:474
+msgid "One colour drives several parts of the button. In normal mode it fills it; in Outline Mode it becomes the border and the label instead. It is also the colour of the pulse ring, in either mode."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:482
+msgid "Text Color"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:486
+msgid "Glassmorphism (Blur BG)"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:486
+msgid "Drops the solid fill and blurs whatever sits behind the button by 12px instead. The hover background override is not painted while this is on, so plan the hover state around the text and border colours."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:494
+msgid "Pulse Animation"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:494
+msgid "A ring that expands out of the button every two seconds to draw the eye, in the background colour. It is drawn as a box shadow, so it replaces the configured shadow for as long as it runs, and it stops while the pointer is over the button. Visitors who ask for reduced motion never see it."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:504
+#: src/blocks/kinetic-magnetic-button/index.js:506
+msgid "Hover Background Override"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:507
+msgid "Left empty, an outline button fills with its brand colour on hover and a solid button keeps its normal fill. The colour is painted by an overlay layer inside the button, which glassmorphism turns transparent, so the two do not combine."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:513
+msgid "Hover Text Override"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:521
+msgid "Ten further hover treatments in place of the plain colour fade - a glass shine, four directional sweeps, a float, a tactile press, a sonar ripple, a glitch and an inner outline reveal - plus a neon glow that pulses around the button and a ghost mode that hollows the label out on hover."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:529
+msgid "Scale Up on Hover"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:529
+msgid "Grows the button to 105% while the pointer is over it, and on keyboard focus as well. A press always dips it to 93%, whether this is on or not."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:541
+msgid "Dimensions & Sizing"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:544
+msgid "Font Size (Custom Override)"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:547
+msgid "Desktop Size"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:547
+msgid "Label size in pixels. 0 hands the size back to the theme."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:554
+msgid "Mobile Size"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:554
+msgid "Label size in pixels at 768px and under. 0 keeps the desktop size on small screens."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:563
+msgid "Top/Bottom Padding"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:571
+msgid "Left/Right Padding"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:580
+msgid "Per-device visibility for the button as well: show it on desktop and hide it at 768px and under, or the other way round, without keeping a second copy of the block."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:585
+msgid "Icons & Content"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:588
+msgid "Enable Icon"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:596
+msgid "Icon Type"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:599
+msgid "Arrow Standard"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:600
+msgid "Chevron Elegant"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:601
+msgid "Play Video"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:602
+msgid "Plus Symbol"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:603
+msgid "Download"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:604
+msgid "External Link"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:605
+msgid "Shopping Cart"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:606
+msgid "Checkmark"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:612
+msgid "Position"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:622
+msgid "Always Visible"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:622
+msgid "By default the icon is hidden and slides into view only while the pointer is over the button. Turn this on to keep it in place at all times."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:630
+msgid "Icon Size (Desktop)"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:638
+msgid "Icon Size (Mobile)"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:638
+msgid "Applies at 768px and under, replacing the desktop icon size there."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:648
+msgid "Show Status Indicator"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:656
+msgid "Indicator Type"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:659
+msgid "Static Dot"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:660
+msgid "Live Radar Ring"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:661
+msgid "AI Sparkles"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:662
+msgid "Notification Badge"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:670
+msgid "Badge Text"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:675
+msgid "Badge Background Color"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:680
+msgid "Badge Text Color"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:687
+msgid "Primary Accent Color"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:697
+msgid "Physics Engine"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:700
+msgid "Magnetic Pull"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:700
+msgid "How much of the pointer offset the button copies while the pointer is over it: at 0.3 it moves three tenths of the way towards the cursor. Travel is capped at 30px in each direction whatever the value, so raising it makes the button reach that limit sooner rather than travel further."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:709
+msgid "Detection Range"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:709
+msgid "How far the pull reaches in pixels, measured from the centre of the button and added to half its width. Past that distance the button settles back to rest. It does not attract the pointer from across the page: the pull only runs once the pointer is over the button."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:717
+msgid "3D Text Parallax"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:717
+msgid "The label and icon drift as well, at roughly a third of the travel of the button itself, so the face reads as floating above the surface rather than painted on it."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:724
+msgid "Motion on arrival as well: the button can fade, slide up or zoom in the first time it scrolls into view, with a delay of up to two seconds so a row of buttons can land one after another."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:731
+msgid "Box Shadow / Glow"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:733
+msgid "Enable Shadow"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:733
+msgid "Draws the drop shadow beneath the button from the colour and blur below. The panel is only offered while Outline Mode is off, and the pulse animation replaces the shadow for as long as it is running."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:741
+msgid "Shadow Color"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:790
+msgid "Discover More"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/index.js:818
+msgid "Magnetic interaction and motion effects run on the live frontend."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:213
+msgid "🖼️ Gallery & Links"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:216
+msgid "Add images, put them in the order you want, and give each one an optional destination link."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:221
+#: src/blocks/kinetic-marquee/index.js:429
+msgid "You do not have permission to upload media."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:238
+msgid "Maximum 7 items reached"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:239
+msgid "+ Add Images"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:256
+msgid "An unlimited gallery, for a full logo wall or client list running in a single marquee."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:260
+msgid "Open links in New Tab"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:260
+msgid "Applies to every item that has a destination link. Items with no link stay unclickable either way."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:282
+msgid "Image description"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:283
+msgid "What a screen reader announces for this logo. It comes from the Media Library when you add the image — edit it here for different wording. Leave it blank only for a purely decorative logo. Items with a link should have one, so the link has a clear name."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:285
+msgid "Acme Corp"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:291
+msgid "Destination Link"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:300
+msgid "This item has a link but no image description. The frontend will fall back to the destination address for its accessible name."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:309
+msgid "⚙️ Movement & Engine"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:310
+msgid "Auto Motion"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:310
+msgid "Automatically move the marquee. A Pause/Resume control is shown while motion is enabled."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:312
+msgid "Base Speed (s)"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:312
+msgid "Seconds for one full pass of the track — lower is faster. It is a base rather than an exact time: the track scales with how many items are in the gallery, so adding images lengthens the pass at the same apparent speed."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:313
+msgid "Reverse Direction"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:313
+msgid "Runs the track left to right instead of right to left."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:315
+msgid "Pause on Hover / Tap"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:315
+msgid "Stops the track completely while the pointer is over it, so a visitor can read a logo. Turning this on switches Slow Down on Hover off — only one of the two can apply."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:316
+msgid "Slow Down on Hover"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:316
+msgid "Drops the track to a third of its speed while the pointer is over it, rather than stopping it dead. Turning this on switches Pause on Hover off — only one of the two can apply."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:319
+msgid "🎨 Visual Styling"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:320
+msgid "Logo Height (Desktop)"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:320
+msgid "Sets the height every item is scaled to, in pixels. Widths follow from each image, so logos of different proportions still line up along one row."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:328
+msgid "Finer control over the row — a separate item height for phones, a width cap so one wide logo cannot dominate, adjustable spacing between items, and grayscale or faded treatments that clear as an item is hovered."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:332
+msgid "Edge Fade Effect"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:332
+msgid "Fades the track out at its left and right edges, so items appear to drift in and out rather than being cut off at a hard line."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:335
+msgid "✨ Interaction & Focus"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:336
+msgid "Hover Lift Effect"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:336
+msgid "Raises the item under the pointer slightly above the row."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:339
+msgid "Sibling Focus Blur"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:339
+msgid "Blurs every other item while one is hovered, to single it out."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:343
+msgid "Warning: Using Sibling Blur without \"Pause on Hover\" makes it very difficult for users to track moving logos. Consider enabling Pause on Hover."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:347
+msgid "How strongly the other items are blurred."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:350
+msgid "Segmented Progress Rail"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:350
+msgid "A small bar with one segment per image you added, lighting up whichever is currently at the focus point. The repeated copies the loop is built from are not counted."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:353
+msgid "Rail Position"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:353
+msgid "Which edge of the marquee the segment bar sits against."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:356
+msgid "Pause / Slow State Indicator"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:356
+msgid "Prints a small RUNNING, PAUSED or SLOW badge on the marquee, so a visitor can see that their hover changed something. Only useful alongside Pause on Hover or Slow Down on Hover."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:357
+msgid "Active Center Highlight"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:357
+msgid "Enlarges whichever item is passing through the middle of the marquee, so the row has a focus point even when nobody is hovering it."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:360
+msgid "🖼️ Card Frames"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:361
+msgid "Enable Card Frame"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:361
+msgid "Puts each item on its own background card, which helps when the logos have mismatched backgrounds of their own."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:364
+msgid "Frame Background"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:366
+msgid "Corner Radius"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:366
+msgid "Rounds the corners of each card."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:375
+msgid "Four shadow depths for the cards, from a barely-there edge to a fully floating card."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:388
+msgid "Three more panels for the marquee as a whole — drop shadows behind it, an entrance animation as it scrolls into view, and per-device visibility for hiding it on phones or tablets."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:426
+msgid "Add images from the right sidebar or click the button below to start building your infinite scrolling gallery."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/index.js:436
+msgid "Select Images"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:84
+msgid "🎨 Styling & Geometry"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:90
+msgid "Line Color"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:98
+msgid "Line Opacity"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:99
+#: src/blocks/kinetic-scroll-progress/index.js:467
+msgid "Thickness (px)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:100
+#: src/blocks/kinetic-scroll-progress/index.js:483
+msgid "Width (%)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:108
+msgid "Gradient line colors, and a maximum width in pixels that stops the divider growing past a set size on wide screens."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:113
+msgid "Vertical Spacing"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:113
+msgid "A quick preset. For precise control use the native Padding option in the block sidebar — it overrides this preset."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:116
+msgid "Tight"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:118
+msgid "Spacious"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:122
+msgid "Alignment"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:123
+#: src/components/BorderControls.js:37
+msgid "Border Style"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:123
+#: src/components/BorderControls.js:40
+msgid "Solid"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:123
+#: src/components/BorderControls.js:41
+msgid "Dashed"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:123
+#: src/components/BorderControls.js:42
+msgid "Dotted"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:126
+msgid "🎬 Scroll Animation"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:129
+msgid "Draw Animation"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:129
+msgid "The editor shows the finished line; the draw itself plays on the live frontend."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:129
+msgid "Draw from Center"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:129
+msgid "Draw from Left"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:129
+msgid "Draw from Right"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:129
+#: src/components/EntranceControls.js:19
+msgid "Fade In"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:132
+msgid "Animation Duration (s)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:141
+msgid "Scroll-tethered scrubbing that ties the draw to the scrollbar, easing and opacity curves, and a trigger offset that moves where the animation starts."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:146
+msgid "✨ Glow Effects"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:147
+msgid "Enable Neon Glow"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:156
+msgid "Medium and High glow intensity, plus glow color modes — a white tint, or a soft mix with the line color."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:163
+msgid "📱 Visibility & Mobile"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:165
+msgid "Device Visibility"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:168
+msgid "All Devices"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:169
+msgid "Desktop Only"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:170
+msgid "Mobile Only"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/index.js:180
+msgid "Mobile handling for the divider — thinner, shorter or hidden on small screens — a static mobile version with no draw animation, and control over what visitors who prefer reduced motion see."
+msgstr ""
+
+#. translators: %s: name of the setting the help describes.
+#: src/blocks/kinetic-scroll-progress/index.js:52
+#: src/components/InspectorUX.js:55
+#, js-format
+msgid "About %s"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:205
+#: src/components/InspectorUX.js:314
+msgid "PRO"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:245
+msgid "Detail"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:246
+msgid "Section"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:306
+msgid "Horizontal Bar"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:307
+msgid "Vertical Rail"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:413
+msgid "📊 Progress"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:415
+msgid "Presentation"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:424
+msgid "Floating Ring and Segmented Progress presentations, plus a separate presentation for mobile."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:429
+msgid "Screen Position"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:436
+msgid "Direction"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:439
+msgid "Left to Right"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:439
+msgid "Top to Bottom"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:440
+msgid "Right to Left"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:440
+msgid "Bottom to Top"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:445
+msgid "Smoothing"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:445
+msgid "How softly the indicator follows the scroll position."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:448
+msgid "None (Exact)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:449
+msgid "Subtle"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:450
+msgid "Smooth"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:458
+msgid "Progress Source — measure a parent section or a custom CSS selector instead of the whole page."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:464
+msgid "📐 Size & Position"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:474
+msgid "Thickness on Mobile (px)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:474
+msgid "Applied at 768px and below, where a thinner indicator covers less content."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:483
+msgid "Height (%)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:490
+msgid "Width on Mobile (%)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:490
+msgid "Height on Mobile (%)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:495
+msgid "Applied at 768px and below. The canvas preview always shows the desktop value."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:500
+msgid "Clear Site Header"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:500
+msgid "Keeps a top-edge indicator below the site header and follows it as it scrolls away. Distance from Edge still applies as the minimum clearance."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:506
+msgid "Distance from Edge (px)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:506
+msgid "Push the indicator away from its screen edge, for example to clear a sticky header."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:513
+msgid "Distance from Edge on Mobile (px)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:513
+msgid "Mobile headers are usually a different height. Device safe areas are added automatically."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:520
+msgid "Layer (z-index)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:520
+msgid "Lower this if the indicator covers a header or banner."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:528
+msgid "🎨 Colors & Shape"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:530
+msgid "Indicator Colors"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:536
+msgid "Track"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:541
+msgid "Progress"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:546
+msgid "Track Opacity"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:554
+msgid "Progress Opacity"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:563
+msgid "Border Radius (px)"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:573
+msgid "🚩 Milestones"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:576
+msgid "Enable Milestones"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:576
+msgid "Marks points along the indicator using the headings found in the page content."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:587
+msgid "Manual Milestones — build the journey yourself instead of following the page headings."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:592
+msgid "Heading Levels — Desktop"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:595
+#: src/blocks/kinetic-scroll-progress/index.js:611
+msgid "H2 only"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:596
+#: src/blocks/kinetic-scroll-progress/index.js:612
+msgid "H2 and H3"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:601
+msgid "Maximum Milestones — Desktop"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:601
+msgid "Caps how many markers are shown. When a page has more headings than this, markers are spread evenly across it and the first and last heading are always kept."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:608
+msgid "Heading Levels — Mobile"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:608
+msgid "Applied at 768px and below. Use fewer heading levels or a lower maximum on mobile to keep the journey compact."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:617
+msgid "Maximum Milestones — Mobile"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:617
+msgid "Applied at 768px and below, where fewer markers stay readable. Sampling works the same way, keeping the first and last heading."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:625
+msgid "Marker Style"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:628
+msgid "Dot"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:629
+msgid "Tick"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:643
+msgid "Labels on Desktop"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:643
+msgid "For dense horizontal journeys, try Major Headings Only, Current Only, Staggered Labels, or reduce Maximum Milestones."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:646
+#: src/blocks/kinetic-scroll-progress/index.js:676
+msgid "Show all"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:647
+#: src/blocks/kinetic-scroll-progress/index.js:677
+msgid "Major headings only"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:648
+#: src/blocks/kinetic-scroll-progress/index.js:678
+msgid "Current only"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:649
+#: src/blocks/kinetic-scroll-progress/index.js:679
+msgid "Hide"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:656
+#: src/blocks/kinetic-scroll-progress/index.js:686
+msgid "H2 labels remain visible while H3 milestones stay as markers."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:662
+msgid "Horizontal Label Layout"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:662
+msgid "Staggered alternates labels above and below the bar and nudges the bar inward to make room, so neighbouring labels never sit side by side."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:665
+msgid "Standard"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:666
+msgid "Staggered"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:673
+msgid "Labels on Mobile"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:673
+msgid "Narrow screens rarely fit every label. Current only is the default: it keeps one label readable without changing the layout."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:692
+msgid "Milestone Label Background"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:692
+msgid "Draws a plate behind the label text, for pages where the content underneath makes labels hard to read."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:696
+msgid "Box"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:697
+msgid "Rounded"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:698
+msgid "Pill"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:705
+msgid "Sync Background with Progress"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:705
+msgid "Use the track color for upcoming labels and the progress color for reached labels."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:714
+msgid "Backgrounds follow your Track and Progress colors. Check both contrast with your milestone text colors."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:715
+msgid "Pick a background that contrasts with your milestone text colors so the labels stay readable."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:726
+msgid "Milestone Navigation — let visitors select a milestone to jump to its section."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:731
+msgid "Milestone Colors"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:737
+msgid "Reached"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:742
+msgid "Not reached"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:753
+msgid "Label Background"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:776
+msgid "Progress Glow, Active Label Emphasis, Current Milestone Pulse, Completed Milestone Style, Dual Ring, and Ring Center Content."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/index.js:812
+msgid "Preview only — the indicator is fixed to the screen edge and tracks scrolling on the frontend."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:120
+msgid "Vertical Line"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:127
+msgid "None (Standard)"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:128
+msgid "Fade Up on Enter"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:178
+msgid "Kinetic Split Scroll"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:179
+msgid "Select or upload images/videos to initialize the split-screen layout."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:187
+msgid "Set Media Gallery"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:199
+msgid "🖼️ Pinned Media Gallery"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:201
+msgid "Gallery Items"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:203
+msgid "Max 3 items"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:216
+msgid "Thumbnail"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:219
+msgid "Media"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:224
+#: src/blocks/kinetic-split-scroll/index.js:225
+msgid "Move media up"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:232
+#: src/blocks/kinetic-split-scroll/index.js:233
+msgid "Move media down"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:241
+#: src/blocks/kinetic-split-scroll/index.js:242
+msgid "Remove media"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:259
+msgid "Gallery Full"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:259
+msgid "+ Add Media"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:266
+msgid "Image Resolution"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:266
+msgid "Which registered size WordPress serves for each gallery image. The pinned media fills half the viewport, so Large is usually enough; Full sends the original file and is the slowest to load."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:269
+msgid "Full (Highest Quality)"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:270
+msgid "Large (Optimized)"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:271
+msgid "Medium (Faster)"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:275
+msgid "Smart Media Swap (Crossfade)"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:275
+msgid "The pinned media changes as the reader passes through the text column, one gallery item per section. With a single item there is nothing to swap to and the media simply stays put."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:282
+msgid "Extra motion and atmosphere for the pinned column: wipe, circle and diagonal swap transitions in place of the crossfade, an inner parallax on the image, an ambient glow behind it, and a section background that morphs from one colour to another as the reader scrolls."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:289
+msgid "📐 Pinned Media Design"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:293
+msgid "The pinned media can be cut to a shape rather than filling the column - a floating card with its own shadow, an arch window or a tall pill - and given a slow Ken Burns zoom while the reader is stopped on it."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:298
+#: src/blocks/kinetic-split-scroll/index.js:300
+msgid "Pinned Area Background"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:301
+msgid "Colour behind the pinned media. It shows wherever the media does not cover the column - around a shaped mask, or in the gaps left when Image Fit is set to Contain."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:309
+msgid "📜 Scroll Effects"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:311
+msgid "Text Column Effect"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:311
+msgid "How the blocks in the scrolling column arrive. None leaves them static; Fade Up brings each one in as it enters the viewport."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:316
+msgid "Magnetic Snap to Content"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:316
+msgid "Uses browser scroll snapping to settle the page on whichever text block is nearest, instead of stopping anywhere. It is switched off below 768px, where the layout is stacked."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:319
+msgid "📍 Progress Indicator"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:321
+msgid "Indicator Style"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:321
+msgid "The scroll-progress marker beside the pinned media. Vertical Line fills as the reader moves through the section; None hides it. The indicator is hidden on screens 768px and under whatever this is set to."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:328
+msgid "Two more ways to show progress: pagination dots, one per gallery item, and a floating percentage readout. The dots can also be made clickable, so a reader can jump straight to a section."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:337
+msgid "Colour of the progress indicator itself. Left empty it follows the theme accent KineticHub is using."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:345
+msgid "📐 Layout Settings"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:346
+msgid "Pinned Side"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:347
+msgid "Column Ratio"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:347
+msgid "Widths of the two columns as left/right - always in that order, whichever side is pinned. 60/40 gives the left column the larger share."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:348
+msgid "Mobile Stacking"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:348
+msgid "Which column comes first once the two stack, at 768px and below. It has no effect on the side-by-side desktop layout."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:348
+msgid "Media on Top"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:348
+msgid "Text on Top"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:350
+msgid "Sticky Top Offset (px)"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:350
+msgid "How far below the top of the viewport the pinned column comes to rest. Raise it to clear a fixed header that would otherwise cover the media."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:354
+msgid "Enable Sticky Media on Mobile"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:354
+msgid "Keeps the media pinned once the columns stack at 768px and below. Left off, the media scrolls away with the rest of the page, which suits short text."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:362
+msgid "📦 Custom Shadows"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:364
+msgid "Container shadows with their own colour, softness and opacity - including separate hover and mobile values - plus per-device visibility, so the whole block can be shown on desktop and hidden on phones."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:382
+msgid "Image"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:393
+msgid "Go to section"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:427
+msgid "Scroll-driven transitions and media motion run on the live frontend."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/index.js:433
+msgid "↓ Drop Content Blocks Below ↓"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:141
+msgid "⚙️ Animation Main Settings"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:143
+msgid "Animation Style"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:143
+msgid "Reveal slides each piece out from behind a mask, Blur In brings it in out of focus, and Pop In scales it up. Whether a piece is a letter or a whole word is set by Split Strategy, under Content & Mechanics."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:146
+msgid "Reveal (Masked)"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:147
+msgid "Blur In"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:148
+msgid "Pop In"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:158
+msgid "Seven more animation styles: Bounce Drop, 3D Flip, Skew Shift, Matrix Scramble, Cyber Node Focus, a Continuous Pulse that keeps breathing after it arrives, and a Plexus Network that draws a canvas of connected nodes over the letters."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:164
+msgid "Movement Direction"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:164
+msgid "Which way each piece travels as it arrives."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:167
+msgid "Move Upwards"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:168
+msgid "Move Downwards"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:169
+msgid "From Left"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:170
+msgid "From Right"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:177
+msgid "Duration / Speed (s)"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:177
+msgid "How long one piece takes to finish, in seconds. This is per piece — the whole line takes longer, because each piece starts after the last by the stagger delay."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:186
+msgid "Stagger Delay (s)"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:186
+msgid "Seconds between one piece starting and the next. At 0 the whole line moves as one; on long text a large value can take many seconds to finish."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:195
+#: src/components/MotionControls.js:77
+msgid "Easing Mode"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:195
+msgid "The acceleration curve. Smooth eases in and out, Bouncy overshoots and settles back, Snappy starts fast and decelerates hard."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:198
+#: src/components/MotionControls.js:80
+msgid "Smooth (Default)"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:199
+msgid "Bouncy"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:200
+msgid "Snappy"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:207
+msgid "Activation Trigger"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:207
+msgid "When the animation runs. On Scroll plays it once the block reaches the Viewport Trigger Point below."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:210
+msgid "On Scroll (Entrance)"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:220
+msgid "Viewport Trigger Point"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:220
+msgid "How much of the block must be on screen before it starts. 0.2 = starts when 20% visible. 0.8 = starts when almost fully visible."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:241
+msgid "Start on hover instead of on scroll, replay when the cursor leaves, and repeat every time the text scrolls back into view — plus randomised per-letter timing and an infinite loop."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:250
+msgid "📱 Responsive Typography"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:252
+msgid "Use the reset button below to revert to native theme sizes."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:253
+msgid "Desktop Font Size (px)"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:254
+msgid "Mobile Font Size (px)"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:255
+msgid "Desktop Line Height"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:256
+msgid "Mobile Line Height"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:264
+msgid "Reset responsive sizes"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:271
+msgid "🎨 Visual Styles"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:276
+msgid "Text gradients at any angle, a neon glow in a colour you pick, optical blend modes that let the text react to whatever sits behind it, an adjustable 3D perspective for the 3D styles, and a mobile-only alignment override."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:281
+msgid "Enable Outline Mode"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:281
+msgid "Draws the letters as an outline with a transparent fill, using the current text colour."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:284
+msgid "Stroke Width (px)"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:295
+msgid "A Visual Addons panel as well: a highlight sweep drawn behind the text once it lands, an aurora backlight glowing behind the block, infinite levitation, a hover glitch, and a mirrored floor reflection."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:300
+msgid "⚙️ Content & Mechanics"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:302
+msgid "Split Strategy"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:302
+msgid "Whether each letter or each whole word animates as one piece. Characters give a finer effect but create far more elements — text longer than 500 characters is split by word regardless."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:305
+msgid "Characters"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:306
+msgid "Words"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:326
+msgid "Text is long. The frontend renderer may use word-based splitting for better performance."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:331
+msgid "HTML Heading Tag"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:338
+msgid "Paragraph"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:346
+msgid "For SEO-critical headings, avoid per-letter animation. Use this effect for hero or decorative text."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:350
+msgid "Reverse Animation Order"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:350
+msgid "Starts the stagger from the last piece and works backwards."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:361
+msgid "Kinetic Typography Block"
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:362
+msgid "Enter text below to start."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:373
+msgid "Type your animated headline..."
+msgstr ""
+
+#: src/blocks/kinetic-typography/index.js:396
+msgid "Text animations and generative effects run on the live frontend."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:158
+msgid "📺 Video Source"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:160
+msgid "Video URL"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:163
+msgid "Supports YouTube, Vimeo, and direct MP4/WebM/OGG video URLs."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:171
+msgid "Playback Mode"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:172
+msgid "Fullscreen Modal darkens the page and opens the video in a dialog above it, which the visitor closes to return. Inline keeps the video in the block: it takes the place of the cover image at the same size and aspect ratio, and there is nothing to close."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:176
+msgid "Open in Fullscreen Modal"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:177
+msgid "Play Inline (Replaces Image)"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:188
+msgid "Inline playback has no dialog, so the Modal Settings panel does not apply and is hidden. The Accessibility fields for the dialog and its close button are unused in this mode."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:189
+msgid "The Modal Settings panel below controls the backdrop and how the dialog is closed."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:201
+msgid "Control over how the clip runs — start it automatically, loop it, open it muted, and skip a set number of seconds into it every time."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:207
+msgid "🖼️ Cover Image"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:210
+msgid "Auto-Extract Cover (YouTube)"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:211
+msgid "Uses the highest-resolution thumbnail YouTube publishes for the video, when no custom cover has been uploaded below. A custom cover always wins."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:219
+msgid "Custom Cover Image"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:231
+msgid "Replace Image"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:232
+msgid "Upload Cover"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:252
+msgid "Dark Overlay Opacity"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:253
+msgid "Darkens the cover image so the play button stays readable over it. 0 leaves the image untouched."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:264
+msgid "Aspect Ratio"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:265
+msgid "Shape of the cover area in the page. Pick the ratio the clip was filmed in, or the cover will be cropped to fit."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:269
+msgid "16:9 (Standard Video)"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:270
+msgid "4:3 (Classic)"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:271
+msgid "21:9 (Cinematic)"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:284
+msgid "A slow zoom on the cover image while the pointer rests over it, subtle or drawn out."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:290
+msgid "▶️ Play Button Design"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:293
+msgid "Button Style"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:294
+msgid "Solid fills the circle with the background colour. Frosted Glass is translucent and blurs the cover behind it. Minimal Outline draws the ring only, with nothing inside."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:298
+msgid "Solid Color"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:299
+msgid "Frosted Glass"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:300
+msgid "Minimal Outline"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:306
+msgid "Button Size (px)"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:314
+msgid "Button Background"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:322
+msgid "Play Icon Color"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:332
+msgid "⚡ Advanced Interactions"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:340
+msgid "Extra life on the play button — a magnetic pull toward the cursor, a slow idle pulse, and a short caption badge such as \"Watch Trailer\"."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:346
+msgid "🪟 Modal Settings"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:349
+msgid "Backdrop Style"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:350
+msgid "What the page behind the dialog looks like while the video is open. Glassmorphism blurs the page through a tint; Solid covers it flatly."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:354
+msgid "Dark Glassmorphism"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:355
+msgid "Light Glassmorphism"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:356
+msgid "Solid Dark"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:357
+msgid "Solid Light"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:368
+msgid "A choice of entrance for the dialog — slide up, 3D flip or a plain fade, in place of the standard zoom."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:374
+msgid "Close on Backdrop Click"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:375
+msgid "Lets a click anywhere outside the video close the dialog. The close button and the Escape key work either way."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:383
+msgid "Show Close Button Outside"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:384
+msgid "Places the close button just outside the corner of the video instead of over the picture."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:392
+msgid "♿ Accessibility & Preload"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:395
+msgid "Local Video Preload"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:396
+msgid "How much of a self-hosted file the browser fetches before anyone presses play. Metadata Only keeps the page light. YouTube and Vimeo ignore this — they load nothing until the video is opened."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:402
+msgid "Auto"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:414
+msgid "Dialog Aria Label"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:417
+msgid "Names the video dialog for screen readers. Say which video it is, not what it is — \"Product tour video\", not \"Video dialog\"."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:421
+msgid "Play Button Aria"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:424
+msgid "The play button shows an icon and no text, so this is all a screen reader has to go on. Name the clip — \"Play the 2 minute product tour\"."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:428
+msgid "Close Button Aria"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:431
+msgid "Names the button that dismisses the dialog. \"Close video\" is usually right. Leave it in the language of the page."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:449
+msgid "Please enter a Video URL in the settings panel to activate the player."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/index.js:535
+msgid "Video modal playback and motion effects run on the live frontend."
+msgstr ""
+
+#: src/components/BorderControls.js:20
+msgid "🔲 Border & Shape"
+msgstr ""
+
+#: src/components/BorderControls.js:28
+msgid "Border Width"
+msgstr ""
+
+#: src/components/BorderControls.js:47
+msgid "Border Colors"
+msgstr ""
+
+#: src/components/BorderControls.js:52
+msgid "Normal Border"
+msgstr ""
+
+#: src/components/BorderControls.js:57
+msgid "Hover Border"
+msgstr ""
+
+#: src/components/EditorNotice.js:11
+msgid "Animations & generative effects are active on the frontend only."
+msgstr ""
+
+#: src/components/EditorNotice.js:59
+msgid "Editor notification"
+msgstr ""
+
+#: src/components/EntranceControls.js:13
+msgid "🚀 Entrance Engine"
+msgstr ""
+
+#: src/components/EntranceControls.js:15
+msgid "Entrance Animation"
+msgstr ""
+
+#: src/components/EntranceControls.js:20
+msgid "Slide Up"
+msgstr ""
+
+#: src/components/EntranceControls.js:21
+msgid "Zoom In"
+msgstr ""
+
+#: src/components/EntranceControls.js:26
+msgid "Animation Delay (s)"
+msgstr ""
+
+#: src/components/EntranceControls.js:30
+msgid "Delays the entrance animation on page load."
+msgstr ""
+
+#: src/components/ImageFitControls.js:9
+msgid "⚙️ Image Fit Settings"
+msgstr ""
+
+#: src/components/ImageFitControls.js:18
+msgid "Image Fit (Object Fit)"
+msgstr ""
+
+#: src/components/ImageFitControls.js:21
+msgid "Cover (Fills area, crops edges)"
+msgstr ""
+
+#: src/components/ImageFitControls.js:22
+msgid "Contain (Shows whole image)"
+msgstr ""
+
+#: src/components/ImageFitControls.js:23
+msgid "Fill (Stretches image)"
+msgstr ""
+
+#: src/components/ImageFitControls.js:29
+msgid "Focal Point"
+msgstr ""
+
+#: src/components/KineticDesignPanel.js:10
+msgid "🎨 Design & Layout"
+msgstr ""
+
+#: src/components/LinkControls.js:23
+msgid "Enter https://..."
+msgstr ""
+
+#: src/components/LinkControls.js:35
+msgid "Rel (SEO)"
+msgstr ""
+
+#: src/components/LinkControls.js:38
+msgid "e.g., nofollow, noopener"
+msgstr ""
+
+#: src/components/MotionControls.js:27
+msgid "Lift"
+msgstr ""
+
+#: src/components/MotionControls.js:28
+msgid "Scale"
+msgstr ""
+
+#: src/components/MotionControls.js:29
+msgid "Tilt 3D"
+msgstr ""
+
+#: src/components/MotionControls.js:30
+msgid "Trace (Border)"
+msgstr ""
+
+#: src/components/MotionControls.js:31
+msgid "Shine"
+msgstr ""
+
+#: src/components/MotionControls.js:32
+msgid "Sink (Click effect)"
+msgstr ""
+
+#: src/components/MotionControls.js:59
+msgid "Rotation Angle"
+msgstr ""
+
+#: src/components/MotionControls.js:81
+msgid "Bouncy (Elastic)"
+msgstr ""
+
+#: src/components/MotionControls.js:82
+msgid "Snappy (Fast)"
+msgstr ""
+
+#: src/components/MotionControls.js:90
+msgid "Bring to Front on Hover (z-index)"
+msgstr ""
+
+#: src/components/OverlayControls.js:16
+msgid "🌑 Overlay & Tint"
+msgstr ""
+
+#: src/components/OverlayControls.js:17
+msgid "Overlay Color"
+msgstr ""
+
+#: src/components/OverlayControls.js:23
+msgid "Tint Opacity"
+msgstr ""
+
+#: src/components/PulseControls.js:17
+msgid "Pulse Effect"
+msgstr ""
+
+#: src/components/PulseControls.js:21
+msgid "Soft Glow"
+msgstr ""
+
+#: src/components/PulseControls.js:22
+msgid "Sonar Ripple"
+msgstr ""
+
+#: src/components/PulseControls.js:23
+msgid "Fluid Morphing"
+msgstr ""
+
+#: src/components/PulseControls.js:24
+msgid "Magnetic Focus"
+msgstr ""
+
+#: src/components/PulseControls.js:25
+msgid "Glassmorphism"
+msgstr ""
+
+#: src/components/PulseControls.js:26
+msgid "Target Brackets"
+msgstr ""
+
+#: src/components/ShadowControls.js:26
+msgid "Enable Container Shadow"
+msgstr ""
+
+#: src/components/ShadowControls.js:35
+msgid "Shadow Style"
+msgstr ""
+
+#: src/components/ShadowControls.js:38
+msgid "Soft (Classic)"
+msgstr ""
+
+#: src/components/ShadowControls.js:39
+msgid "Crisp (Solid)"
+msgstr ""
+
+#: src/components/ShadowControls.js:40
+msgid "Floating (Diffused)"
+msgstr ""
+
+#: src/components/ShadowControls.js:41
+msgid "Dynamic Glow"
+msgstr ""
+
+#: src/components/ShadowControls.js:42
+msgid "Elegant Luxury"
+msgstr ""
+
+#: src/components/ShadowControls.js:45
+msgid "Dynamic Glow uses the accent/handle color automatically!"
+msgstr ""
+
+#: src/components/ShadowControls.js:61
+msgid "Blur / Softness (Mobile)"
+msgstr ""
+
+#: src/components/ShadowControls.js:70
+msgid "Base Shadow Opacity"
+msgstr ""
+
+#: src/components/ShadowControls.js:88
+msgid "Advanced Shadow Colors"
+msgstr ""
+
+#: src/components/ShadowControls.js:93
+msgid "Base Shadow"
+msgstr ""
+
+#: src/components/ShadowControls.js:98
+msgid "Hover Shadow"
+msgstr ""
+
+#: src/components/VisibilityControls.js:13
+msgid "📱 Visibility"
+msgstr ""
+
+#: src/components/VisibilityControls.js:15
+msgid "Hide on Mobile"
+msgstr ""
+
+#: src/components/VisibilityControls.js:20
+msgid "Hide on Desktop"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/block.json
+msgctxt "block title"
+msgid "Kinetic Ambient Aura"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/block.json
+msgctxt "block description"
+msgid "Static decorative ambient glow effect rendered server-side."
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/block.json
+msgctxt "block keyword"
+msgid "glow"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/block.json
+msgctxt "block keyword"
+msgid "aura"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/block.json
+msgctxt "block keyword"
+msgid "ambient"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/block.json
+msgctxt "block keyword"
+msgid "light"
+msgstr ""
+
+#: src/blocks/kinetic-ambient-aura/block.json
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block keyword"
+msgid "background"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/block.json
+msgctxt "block title"
+msgid "Kinetic Audio Player"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/block.json
+msgctxt "block description"
+msgid "Ultra-optimized Gutenberg audio player with waveform, seek controls, and accessible playback UI."
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/block.json
+msgctxt "block keyword"
+msgid "audio player"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/block.json
+msgctxt "block keyword"
+msgid "audio"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/block.json
+msgctxt "block keyword"
+msgid "music player"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/block.json
+msgctxt "block keyword"
+msgid "podcast"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/block.json
+msgctxt "block keyword"
+msgid "sound"
+msgstr ""
+
+#: src/blocks/kinetic-audio-player/block.json
+msgctxt "block keyword"
+msgid "media player"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/block.json
+msgctxt "block title"
+msgid "Kinetic Before/After"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/block.json
+msgctxt "block description"
+msgid "Interactive image comparison slider with CSS-based masking and hardware-accelerated transitions."
+msgstr ""
+
+#: src/blocks/kinetic-before-after/block.json
+msgctxt "block keyword"
+msgid "before after"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/block.json
+msgctxt "block keyword"
+msgid "image comparison"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/block.json
+msgctxt "block keyword"
+msgid "slider"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/block.json
+msgctxt "block keyword"
+msgid "photo compare"
+msgstr ""
+
+#: src/blocks/kinetic-before-after/block.json
+msgctxt "block keyword"
+msgid "comparison"
+msgstr ""
+
+#: src/blocks/kinetic-box/block.json
+msgctxt "block title"
+msgid "Kinetic Box"
+msgstr ""
+
+#: src/blocks/kinetic-box/block.json
+msgctxt "block description"
+msgid "Structured container block with motion-ready layout and hover interaction controls."
+msgstr ""
+
+#: src/blocks/kinetic-box/block.json
+msgctxt "block keyword"
+msgid "box"
+msgstr ""
+
+#: src/blocks/kinetic-box/block.json
+msgctxt "block keyword"
+msgid "container"
+msgstr ""
+
+#: src/blocks/kinetic-box/block.json
+msgctxt "block keyword"
+msgid "3D tilt"
+msgstr ""
+
+#: src/blocks/kinetic-box/block.json
+msgctxt "block keyword"
+msgid "magnetic hover"
+msgstr ""
+
+#: src/blocks/kinetic-box/block.json
+msgctxt "block keyword"
+msgid "glassmorphism"
+msgstr ""
+
+#: src/blocks/kinetic-box/block.json
+#: src/blocks/kinetic-magnetic-button/block.json
+msgctxt "block keyword"
+msgid "parallax"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/block.json
+msgctxt "block title"
+msgid "Kinetic Cursor Reveal"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/block.json
+msgctxt "block description"
+msgid "Interactive list with floating media reveals and cursor-following previews."
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/block.json
+msgctxt "block keyword"
+msgid "cursor reveal"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/block.json
+msgctxt "block keyword"
+msgid "floating media"
+msgstr ""
+
+#: src/blocks/kinetic-cursor-reveal/block.json
+msgctxt "block keyword"
+msgid "physics-based"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block title"
+msgid "Kinetic Hero Mesh"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block description"
+msgid "Full-width hero section with an animated generative canvas background and layered content."
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block keyword"
+msgid "hero section"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block keyword"
+msgid "mesh"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block keyword"
+msgid "plexus"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block keyword"
+msgid "liquid"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block keyword"
+msgid "gradient"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block keyword"
+msgid "webgl"
+msgstr ""
+
+#: src/blocks/kinetic-hero-mesh/block.json
+msgctxt "block keyword"
+msgid "aurora"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/block.json
+msgctxt "block title"
+msgid "Kinetic Magnetic Button"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/block.json
+msgctxt "block description"
+msgid "High-performance magnetic button with advanced hover physics, glassmorphism, and dynamic scaling."
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/block.json
+msgctxt "block keyword"
+msgid "button"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/block.json
+msgctxt "block keyword"
+msgid "magnetic"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/block.json
+msgctxt "block keyword"
+msgid "interactive"
+msgstr ""
+
+#: src/blocks/kinetic-magnetic-button/block.json
+msgctxt "block keyword"
+msgid "call to action"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/block.json
+msgctxt "block title"
+msgid "Kinetic Marquee"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/block.json
+msgctxt "block description"
+msgid "Infinite scrolling marquee optimized for logos and images with hardware-accelerated physics."
+msgstr ""
+
+#: src/blocks/kinetic-marquee/block.json
+msgctxt "block keyword"
+msgid "marquee"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/block.json
+msgctxt "block keyword"
+msgid "scrolling text"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/block.json
+msgctxt "block keyword"
+msgid "ticker"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/block.json
+msgctxt "block keyword"
+msgid "moving text"
+msgstr ""
+
+#: src/blocks/kinetic-marquee/block.json
+msgctxt "block keyword"
+msgid "loop text"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/block.json
+msgctxt "block title"
+msgid "Kinetic Scroll Divider"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/block.json
+msgctxt "block description"
+msgid "Server-rendered animated divider with strict validation and graceful degradation."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/block.json
+msgctxt "block keyword"
+msgid "divider"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/block.json
+msgctxt "block keyword"
+msgid "separator"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/block.json
+msgctxt "block keyword"
+msgid "line"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/block.json
+msgctxt "block keyword"
+msgid "hr"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-divider/block.json
+#: src/blocks/kinetic-scroll-progress/block.json
+msgctxt "block keyword"
+msgid "kinetic"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/block.json
+msgctxt "block title"
+msgid "Kinetic Scroll Progress"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/block.json
+msgctxt "block description"
+msgid "Lightweight scroll progress indicator with an optional milestone journey built automatically from the page headings."
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/block.json
+msgctxt "block keyword"
+msgid "scroll"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/block.json
+msgctxt "block keyword"
+msgid "progress"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/block.json
+msgctxt "block keyword"
+msgid "indicator"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/block.json
+msgctxt "block keyword"
+msgid "milestones"
+msgstr ""
+
+#: src/blocks/kinetic-scroll-progress/block.json
+msgctxt "block keyword"
+msgid "journey"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/block.json
+msgctxt "block title"
+msgid "Kinetic Split Scroll"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/block.json
+msgctxt "block description"
+msgid "Split-screen layout with sticky scrolling media, synchronized text, and hardware-accelerated physics."
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/block.json
+msgctxt "block keyword"
+msgid "split scroll"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/block.json
+msgctxt "block keyword"
+msgid "sticky scroll"
+msgstr ""
+
+#: src/blocks/kinetic-split-scroll/block.json
+msgctxt "block keyword"
+msgid "synchronized text"
+msgstr ""
+
+#: src/blocks/kinetic-typography/block.json
+msgctxt "block title"
+msgid "Kinetic Typography"
+msgstr ""
+
+#: src/blocks/kinetic-typography/block.json
+msgctxt "block description"
+msgid "Animated headline block with character splitting and scroll-triggered text effects."
+msgstr ""
+
+#: src/blocks/kinetic-typography/block.json
+msgctxt "block keyword"
+msgid "animated text"
+msgstr ""
+
+#: src/blocks/kinetic-typography/block.json
+msgctxt "block keyword"
+msgid "headline"
+msgstr ""
+
+#: src/blocks/kinetic-typography/block.json
+msgctxt "block keyword"
+msgid "typography"
+msgstr ""
+
+#: src/blocks/kinetic-typography/block.json
+msgctxt "block keyword"
+msgid "text animation"
+msgstr ""
+
+#: src/blocks/kinetic-typography/block.json
+msgctxt "block keyword"
+msgid "title"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/block.json
+msgctxt "block title"
+msgid "Kinetic Video Modal"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/block.json
+msgctxt "block description"
+msgid "Enterprise-ready video container with graceful lazy loading, inline playback, and strict URL safelists."
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/block.json
+msgctxt "block keyword"
+msgid "video"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/block.json
+msgctxt "block keyword"
+msgid "modal"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/block.json
+msgctxt "block keyword"
+msgid "youtube"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/block.json
+msgctxt "block keyword"
+msgid "vimeo"
+msgstr ""
+
+#: src/blocks/kinetic-video-modal/block.json
+msgctxt "block keyword"
+msgid "player"
+msgstr ""

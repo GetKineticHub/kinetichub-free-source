@@ -126,6 +126,69 @@ body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
         }
     }
 
+    /* Make Entire Box Clickable: hit testing, not paint order.
+     *
+     * The overlay above is a ::after absolutely positioned against the wrapper at
+     * z-index 5. .kh-box-inner-content is position:relative with z-index:20, so
+     * it paints over that overlay and won the click on every piece of its own
+     * text - the overlay only ever received clicks on wrapper padding, which is
+     * exactly the reported symptom.
+     *
+     * Raising the overlay is not the fix. z-index:20 on .kh-box-inner-content
+     * makes it a stacking context, so the z-index:30 nested-control rule above
+     * orders links and buttons only *within* it and cannot lift them past a
+     * sibling of it. Any overlay above 20 would sit over every nested control and
+     * swallow its clicks.
+     *
+     * So paint order is left exactly as it is and only hit testing changes: the
+     * content layer stops being a hit target, a click on ordinary content falls
+     * through to the overlay beneath it, and anything that owns its own click
+     * declares itself a hit target again - still painting above the overlay, so
+     * it still wins its own clicks. Grain, spotlight, crisp edge, shine, content
+     * and nested controls all stack precisely as before, and the Idle Levitation
+     * control is not inside .kh-box-inner-content at all, so nothing here reaches
+     * it.
+     *
+     * Gated on .kh-box-has-stretched-link, which the server emits only when a URL
+     * is set AND the toggle is on, and matched as a direct child, so one Box
+     * never reaches into another Box's content. The editor never emits that
+     * class, so editor content stays selectable and editable. */
+    &.kh-box-has-stretched-link > .kh-box-inner-content {
+        pointer-events: none;
+
+        /* The first six mirror the categories the z-index rule above already
+         * recognises; the rest are the ordinary form, media, disclosure and
+         * editable controls that can legitimately appear in InnerBlocks, plus
+         * anything the author explicitly marked focusable or gave a widget role.
+         * A nested Kinetic Box is restored whole - it owns its own hover, its own
+         * pointer physics and its own stretched link, and must not lose any of
+         * them to an outer Box's overlay. */
+        a,
+        button,
+        .wp-block-button__link,
+        iframe,
+        canvas,
+        .kh-ap-wrapper,
+        input,
+        select,
+        textarea,
+        label,
+        details,
+        summary,
+        audio,
+        video,
+        object,
+        embed,
+        [contenteditable="true"],
+        [contenteditable=""],
+        [tabindex],
+        [role="button"],
+        [role="link"],
+        .kh-box-wrapper {
+            pointer-events: auto;
+        }
+    }
+
     
 
     /* CSS Animations - FREE: lift, scale, tilt */
@@ -209,11 +272,42 @@ body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
 }
 
 @media (max-width: 768px) {
+    /* Mobile Effect Intensity and Mobile Shadow Softness are rendered inline on
+     * the wrapper as --kh-box-m-intensity and --kh-box-m-blur, alongside their
+     * inline desktop counterparts. Redeclaring the desktop names here is a normal
+     * author declaration and lost to the inline declarations of the very same two
+     * properties, so both mobile controls were exposed but inert.
+     *
+     * !important is what makes them authoritative: an important author
+     * declaration outranks a normal inline one, which is the only lever available
+     * without inventing a second set of desktop variables. It is confined to
+     * these two custom properties inside this breakpoint - above 768px the media
+     * query does not match and the inline desktop values stand untouched. */
     body .wp-block-kinetichub-kinetic-box, body .kh-box-wrapper { 
-        --kh-box-intensity: var(--kh-box-m-intensity); 
-        --kh-box-shadow-blur: var(--kh-box-m-blur); 
+        --kh-box-intensity: var(--kh-box-m-intensity) !important;
+        --kh-box-shadow-blur: var(--kh-box-m-blur) !important;
     }
     .kh-box-hide-mobile { display: none !important; }
+
+    /* Mobile Width override. Same selector shape and the same !important as the desktop
+     * custom-width rule at the top of this file, so the two tie on specificity and this
+     * one wins purely on source order - but only while the breakpoint matches. Above
+     * 768px the media query does not apply and the desktop rule stands untouched, which
+     * is what keeps a saved box with mobileBoxWidth = 0 rendering exactly as before: the
+     * gating class is never emitted for it at all.
+     *
+     * The alignment variables are repeated here deliberately. A box can carry a mobile
+     * width with no desktop width (boxWidth 0), in which case the desktop rule is inert
+     * and nothing else would apply the margins and align-self that boxAlign resolves to.
+     * Those are the existing variables - there is no separate mobile alignment. */
+    body .kh-box-wrapper.kh-box-has-custom-mobile-width,
+    body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-mobile-width {
+        width: var(--kh-box-m-w) !important;
+        max-width: var(--kh-box-m-w) !important;
+        margin-left: var(--kh-box-ml) !important;
+        margin-right: var(--kh-box-mr) !important;
+        align-self: var(--kh-box-align-self) !important;
+    }
 }
 @media (min-width: 769px) { .kh-box-hide-desktop { display: none !important; } }
 
@@ -223,4 +317,6 @@ body .wp-block-kinetichub-kinetic-box.kh-box-has-custom-width {
         &.kh-box-zoom-img:hover .kh-box-inner-content > img, &.kh-box-zoom-img:hover .kh-box-inner-content > .wp-block-image,
         &.is-physics-active .kh-box-inner-content > *, &.has-parallax .kh-box-inner-content > * { transform: none !important; }
     }
+
+    
 }

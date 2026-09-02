@@ -14,11 +14,21 @@
 
     const cleanupBlock = (box) => {
         box._kh_box_isDestroyed = true; 
+        // Readiness guarantees a live Pause listener. Revoke it before the
+        // instance signal is aborted, while preserving the visitor's pause.
+        box.classList.remove('kh-box-idle-control-ready');
 
         if (box._kh_box_rafId) {
             cancelAnimationFrame(box._kh_box_rafId);
             box._kh_box_rafId = null;
         }
+        
+        if (box._kh_box_entranceTimer) {
+            clearTimeout(box._kh_box_entranceTimer);
+            box._kh_box_entranceTimer = null;
+        }
+        box._kh_box_completeEntrance = null;
+        box._kh_box_idleControl = null;
         if (globalEntranceObserver) {
             globalEntranceObserver.unobserve(box);
         }
@@ -42,11 +52,20 @@
 
     
 
+    
+
     const initEntrance = (box) => {
         if (box.classList.contains('kh-box-ready')) return;
         box.classList.add('kh-box-ready');
         box._kh_box_isDestroyed = false;
         activeInstances.add(box);
+
+        // Exactly one AbortController per instance, created here rather than in
+        // initPhysics so every Box has one whether or not the physics engine
+        // runs, and so the FREE strip cannot remove the creation while
+        // cleanupBlock still aborts it.
+        box._kh_box_abortController = new AbortController();
+        const { signal } = box._kh_box_abortController;
 
         let hasEntrance = false;
         
@@ -87,7 +106,8 @@
                             if (node.nodeType === 1) {
                                 if (node.classList && node.classList.contains('kh-box-wrapper')) {
                                     cleanupBlock(node);
-                                } else if (node.querySelectorAll) {
+                                }
+                                if (node.querySelectorAll) {
                                     node.querySelectorAll('.kh-box-wrapper').forEach(cleanupBlock);
                                 }
                             }

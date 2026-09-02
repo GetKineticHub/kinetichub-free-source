@@ -78,6 +78,14 @@
     transition: background-color 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease, box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease;
 }
 
+/* Beat generic WordPress Global Styles link colour without overriding hover. */
+/* Themes (Astra, OceanWP) also inject text-decoration on content links; the
+   component owns its own underline contract on the frontend anchor. */
+a.kh-mb-button {
+    color: var(--kh-mb-text);
+    text-decoration: none !important;
+}
+
 .kh-mb-button:focus {
     outline: none;
 }
@@ -377,9 +385,11 @@
     .kh-mb-button-fx::after,
     .kh-mb-text-inner,
     .kh-mb-icon,
-    .kh-mb-wrapper[class*="anim-"] {
+    .kh-mb-wrapper[class*="kh-mb-entrance-"] {
         animation: none !important;
         transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease !important;
         transform: none !important;
     }
+
+    
 }

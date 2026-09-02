@@ -16,6 +16,11 @@ import { KineticVisibilityControls } from '../../components/VisibilityControls';
 import { KineticShadowControls } from '../../components/ShadowControls';
 import { KineticEditorNotice } from '../../components/EditorNotice';
 
+import { InspectorHelp, labelWithHelp } from '../../components/InspectorUX';
+
+import { ProNote } from '../../components/InspectorUX';
+
+
 registerBlockType(metadata.name, {
     icon: (
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -92,6 +97,12 @@ registerBlockType(metadata.name, {
         let editorPulseEffect = 'none';
         
 
+        // handleStyle is destructured inside a premium region, so it does not exist in
+        // FREE. Same shape as editorPulseEffect above, and as render.php, where the
+        // FREE default is 'classic' and PRO overrides it from the attribute.
+        let editorHandleStyle = 'classic';
+        
+
         return (
             <>
                 <InspectorControls>
@@ -117,7 +128,7 @@ registerBlockType(metadata.name, {
                         )}
                         <hr/>
                         <SelectControl 
-                            label={__('Image Ratio (Crop)', 'kinetichub')} 
+                            label={labelWithHelp(__('Image Ratio (Crop)', 'kinetichub'), __('Auto leaves each image at its own proportions, so two images that were not shot alike will not line up. Any fixed ratio crops both into the same box, which guarantees they do.', 'kinetichub'))}
                             value={aspectRatio} 
                             options={[
                                 {label: __('Auto (Original)', 'kinetichub'), value:'auto'}, 
@@ -127,20 +138,19 @@ registerBlockType(metadata.name, {
                                 {label: __('3:4 (Portrait)', 'kinetichub'), value:'3/4'}
                             ]} 
                             onChange={(v) => setAttributes({ aspectRatio: v })}
-                            help={__('Forces both images to same height. Auto preserves original.', 'kinetichub')}
                         />
 
                         <hr style={{margin: '20px 0'}} />
 
                         
                         
-                        <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                            {__('Before image filter: None (original). Additional filters available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('The before image can carry its own treatment: grayscale, sepia, blur, invert or high contrast, plus a colour wash with adjustable opacity - all applied to that side alone.', 'kinetichub')}
+                        />
                         
 
                         <SelectControl 
-                            label={__('After Image Filter', 'kinetichub')} 
+                            label={labelWithHelp(__('After Image Filter', 'kinetichub'), __('Applies to the after image only. Leave it at None when the before filter is already carrying the contrast between the two.', 'kinetichub'))}
                             value={afterFilter} 
                             options={[
                                 {label: __('Color Overlay', 'kinetichub'), value:'color'},
@@ -152,16 +162,14 @@ registerBlockType(metadata.name, {
                                 {label: __('None', 'kinetichub'), value:'none'}
                             ]} 
                             onChange={(v) => setAttributes({ afterFilter: v })}
-                            help={__('Apply different effects to after image.', 'kinetichub')}
                         />
                         {afterFilter === 'blur' && (
                             <div style={{ background: '#f0f0f0', padding: '10px', borderRadius: '4px', marginTop: '10px' }}>
                                 <RangeControl 
-                                    label={__('Blur Intensity (px)', 'kinetichub')} 
+                                    label={labelWithHelp(__('Blur Intensity (px)', 'kinetichub'), __('Blur radius in pixels, applied to the after image only - the way to build a sharp-against-soft focus comparison.', 'kinetichub'))}
                                     value={afterBlurIntensity} 
                                     onChange={(v) => setAttributes({ afterBlurIntensity: v })} 
                                     min={1} max={20}
-                                    help={__('Useful for focus comparison effects.', 'kinetichub')}
                                 />
                             </div>
                         )}
@@ -169,11 +177,10 @@ registerBlockType(metadata.name, {
                             <div style={{ background: '#f0f0f0', padding: '10px', borderRadius: '4px', marginTop: '10px' }}>
                                 <ColorPalette value={afterOverlayColor} enableAlpha={true} onChange={(v) => setAttributes({ afterOverlayColor: v })} />
                                 <RangeControl 
-                                    label={__('Opacity', 'kinetichub')} 
+                                    label={labelWithHelp(__('Opacity', 'kinetichub'), __('How strongly the colour covers the after image. 0 leaves it untouched, 1 replaces it with solid colour.', 'kinetichub'))}
                                     value={afterOverlayOpacity} 
                                     onChange={(v) => setAttributes({ afterOverlayOpacity: v })} 
                                     min={0} max={1} step={0.1}
-                                    help={__('Darkens or tints the after image.', 'kinetichub')}
                                 />
                             </div>
                         )}
@@ -182,51 +189,44 @@ registerBlockType(metadata.name, {
                     
                     
                     <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('Depth and guidance for the comparison itself: an inner parallax that shifts both images against the divider, a hold-to-peek mode that springs back on release, and a badge that follows the cursor to invite the first drag.', 'kinetichub')}
+                        />
                     </PanelBody>
                     
 
                     <PanelBody title={__('🚀 Engine & Transitions', 'kinetichub')} initialOpen={false}>
                         
                         
-                        <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginBottom: '10px' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('The reveal itself opens up: a vertical split, an angled diagonal cut, a fade with no edge, and the option to reverse which image is uncovered. Interaction gains hover-to-slide, inertia that lets the divider glide on after release, snapping to the quarter points, and four styles for the intro animation.', 'kinetichub')}
+                        />
                         
-                        <RangeControl label={__('Start Position (%)', 'kinetichub')} value={initialOffset} onChange={(v) => setAttributes({ initialOffset: v })} min={0} max={100} help={__('Initial slider position. 50% = equal split.', 'kinetichub')} />
+                        <RangeControl label={labelWithHelp(__('Start Position (%)', 'kinetichub'), __('Where the divider rests before anyone touches it. 0 shows the after image alone, 100 shows the before image alone.', 'kinetichub'))} value={initialOffset} onChange={(v) => setAttributes({ initialOffset: v })} min={0} max={100} />
                         <ToggleControl 
-                            label={__('Enable Hover Zoom', 'kinetichub')} 
+                            label={labelWithHelp(__('Enable Hover Zoom', 'kinetichub'), __('Both images scale up slightly while the pointer is over the block.', 'kinetichub'))}
                             checked={hoverZoom} 
                             onChange={(v) => setAttributes({ hoverZoom: v })}
-                            help={__('Images zoom slightly on hover.', 'kinetichub')}
                             
                         />
                         <hr/>
-                        <ToggleControl label={__('Auto-Play Intro Animation', 'kinetichub')} checked={autoPlayIntro} onChange={(v) => setAttributes({ autoPlayIntro: v })} help={__('Dramatic reveal when block first appears.', 'kinetichub')} />
+                        <ToggleControl label={labelWithHelp(__('Auto-Play Intro Animation', 'kinetichub'), __('Plays a one-off reveal the first time the block scrolls into view, then hands control back to the visitor. It is skipped for anyone who asks for reduced motion.', 'kinetichub'))} checked={autoPlayIntro} onChange={(v) => setAttributes({ autoPlayIntro: v })} />
                         
                         
 
                         
                         <ToggleControl 
-                            label={__('Click to Move', 'kinetichub')} 
+                            label={labelWithHelp(__('Click to Move', 'kinetichub'), __('A click anywhere on the image jumps the divider to that point, so the comparison works without a drag.', 'kinetichub'))}
                             checked={clickToMove} 
                             onChange={(v) => setAttributes({ clickToMove: v })}
-                            help={__('Click anywhere to jump slider to that position.', 'kinetichub')}
                         />
-                        
-                        
-                        <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
                         
                     </PanelBody>
 
                     <PanelBody title={__('🎛️ Handle & Pulse', 'kinetichub')} initialOpen={false}>
                         
                         <SelectControl 
-                            label={__('Divider Line Style', 'kinetichub')} 
+                            label={labelWithHelp(__('Divider Line Style', 'kinetichub'), __('The line between the two images, not the handle sitting on it. Solid is a plain rule, Neon adds a glow around it, and Gradient fades the line out towards its ends.', 'kinetichub'))}
                             value={dividerStyle} 
                             options={[
                                 {label: __('Solid Line', 'kinetichub'), value: 'solid'}, 
@@ -234,65 +234,70 @@ registerBlockType(metadata.name, {
                                 {label: __('Faded Gradient', 'kinetichub'), value: 'gradient'}
                             ]} 
                             onChange={(v) => setAttributes({ dividerStyle: v })}
-                            help={__('Style of the vertical/horizontal divider line. Solid = simple and clean, Neon = glowing accent, Gradient = subtle fade effect.', 'kinetichub')}
                         />
                         
                         
-                        <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('The handle can take other shapes - a minimal dot, or a text handle in place of the arrows - and carry a looping attention effect: a soft glow, a sonar ripple, fluid morphing, magnetic focus, glassmorphism or target brackets.', 'kinetichub')}
+                        />
                         
-                        <p style={{fontWeight:'bold', marginTop:'10px', marginBottom:'5px'}}>{__('Handle Background Color', 'kinetichub')}</p>
-                        <p style={{fontSize:'12px', color:'#757575', marginBottom:'8px'}}>{__('Background color of the slider handle circle. Choose high contrast for visibility against your images.', 'kinetichub')}</p>
+                        <p style={{ fontWeight: 'bold', marginTop: '10px', marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+                            {__('Handle Background Color', 'kinetichub')}
+                            <InspectorHelp
+                                label={__('Handle Background Color', 'kinetichub')}
+                                text={__('Fill of the circle the visitor drags. It has to stay visible against both images - a handle that disappears into a bright sky is a comparison nobody finds.', 'kinetichub')}
+                            />
+                        </p>
                         <ColorPalette value={handleColor} enableAlpha={true} onChange={(v) => setAttributes({ handleColor: v })} />
                         
-                        <p style={{fontWeight:'bold', marginTop:'10px', marginBottom:'5px'}}>{__('Icon / Text Color', 'kinetichub')}</p>
-                        <p style={{fontSize:'12px', color:'#757575', marginBottom:'8px'}}>{__('Color of the arrows, text, or icon inside the handle. Should contrast with handle background.', 'kinetichub')}</p>
+                        <p style={{ fontWeight: 'bold', marginTop: '10px', marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+                            {__('Icon / Text Color', 'kinetichub')}
+                            <InspectorHelp
+                                label={__('Icon / Text Color', 'kinetichub')}
+                                text={__('Colour of the arrows or text inside the handle. This one needs to contrast with the handle fill above it, not with the images.', 'kinetichub')}
+                            />
+                        </p>
                         <ColorPalette value={handleIconColor} enableAlpha={true} onChange={(v) => setAttributes({ handleIconColor: v })} />
                     </PanelBody>
 
                     
                     
                     <PanelBody title={__('📱 Mobile Settings', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('Phones can be treated separately: a taller crop just for screens 768px and under, and the option to drop the Before and After captions where they would sit over the images.', 'kinetichub')}
+                        />
                     </PanelBody>
                     
 
                     <PanelBody title={__('🏷️ Labels & Styling', 'kinetichub')} initialOpen={false}>
                         <ToggleControl 
-                            label={__('Show Labels', 'kinetichub')} 
+                            label={labelWithHelp(__('Show Labels', 'kinetichub'), __('Puts a caption on each side of the divider so the visitor knows which image they are looking at.', 'kinetichub'))}
                             checked={showLabels} 
                             onChange={(v) => setAttributes({ showLabels: v })}
-                            help={__('Display "Before" and "After" text labels on the images. Helps users understand which side is which.', 'kinetichub')}
                         />
                         {showLabels && (
                             <>
                                 <TextControl 
-                                    label={__('Before Label', 'kinetichub')} 
+                                    label={labelWithHelp(__('Before Label', 'kinetichub'), __('Caption for the before side. "Old", "Original" and "Then" all work as well as the default.', 'kinetichub'))}
                                     value={beforeLabel} 
                                     onChange={(v) => setAttributes({ beforeLabel: v })}
-                                    help={__('Custom text for the before image label. Default: "Before". Try "Old", "Original", "Then", etc.', 'kinetichub')}
                                 />
                                 <TextControl 
-                                    label={__('After Label', 'kinetichub')} 
+                                    label={labelWithHelp(__('After Label', 'kinetichub'), __('Caption for the after side. "New", "Improved" and "Now" all work as well as the default.', 'kinetichub'))}
                                     value={afterLabel} 
                                     onChange={(v) => setAttributes({ afterLabel: v })}
-                                    help={__('Custom text for the after image label. Default: "After". Try "New", "Improved", "Now", etc.', 'kinetichub')}
                                 />
                                 <ToggleControl 
-                                    label={__('Hide Labels While Moving', 'kinetichub')} 
+                                    label={labelWithHelp(__('Hide Labels While Moving', 'kinetichub'), __('The captions fade out while the divider is being dragged and come back when it stops, so nothing sits over the images mid-comparison.', 'kinetichub'))}
                                     checked={hideLabelsOnMove} 
                                     onChange={(v) => setAttributes({ hideLabelsOnMove: v })}
-                                    help={__('Before/After labels fade out when slider is moving. Reduces visual clutter during interaction.', 'kinetichub')}
                                 />
                                 
                                 
                                 
-                                <p style={{ fontSize: '12px', color: '#757575', fontStyle: 'italic', marginTop: '8px' }}>
-                                    {__('Available in KineticHub Pro.', 'kinetichub')}
-                                </p>
+                                <ProNote
+                                    text={__('The captions can be styled rather than left at white on translucent black - text colour and label background are both open, alpha included.', 'kinetichub')}
+                                />
                                 
                             </>
                         )}
@@ -327,9 +332,16 @@ registerBlockType(metadata.name, {
                             </div>
                             <div className="kh-ba-handle" style={{ left: isHoriz ? `${safeOffset}%` : '0', top: isHoriz ? '0' : `${safeOffset}%` }}>
                                 <button className={`kh-ba-circle pulse-${editorPulseEffect}`}>
-                                    
-                                    
-                                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="9 18 3 12 9 6"></polyline><polyline points="15 18 21 12 15 6"></polyline></svg>
+                                    {/*
+                                      * One icon producer, gated exactly like render.php: classic draws the
+                                      * chevrons, minimal draws nothing, text swaps in the label. There used to
+                                      * be a second, unconditional copy in a FREE-only region beside this one.
+                                      * Only the strip-built packages ever separated the two, so the unstripped
+                                      * dev build rendered both: the editor showed doubled chevrons and Handle
+                                      * Style could never clear them. editorHandleStyle keeps the FREE build
+                                      * correct without needing that duplicate.
+                                      */}
+                                    {editorHandleStyle === 'classic' && <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: isHoriz ? 'none' : 'rotate(90deg)' }}><polyline points="9 18 3 12 9 6"></polyline><polyline points="15 18 21 12 15 6"></polyline></svg>}
                                     
                                 </button>
                             </div>
@@ -343,7 +355,7 @@ registerBlockType(metadata.name, {
                     )}
 
                     {isSelected && beforeImage?.url && afterImage?.url && (
-                        <KineticEditorNotice message={__('Slider Engine & Kinetic Physics active on Frontend', 'kinetichub')} />
+                        <KineticEditorNotice message={__('Slider dragging and kinetic motion run on the live frontend.', 'kinetichub')} />
                     )}
                 </div>
             </>

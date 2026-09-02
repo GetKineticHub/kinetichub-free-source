@@ -2,8 +2,8 @@
 Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
-Tested up to: 7.0
-Stable tag: 1.0.14
+Tested up to: 7.1
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -31,7 +31,7 @@ Use KineticHub to build:
 View demos and documentation at:
 https://getkinetichub.com
 
-KineticHub includes 12 Gutenberg blocks. The full block list is available in the Blocks section below.
+KineticHub includes 13 Gutenberg blocks. The full block list is available in the Blocks section below.
 
 = Performance Focused =
 
@@ -137,18 +137,19 @@ https://getkinetichub.com
 
 == Screenshots ==
 
-1. Kinetic Ambient Aura block used as a soft animated background effect.
-2. Kinetic Audio Player block with custom playback controls.
-3. Kinetic Before/After block with interactive image comparison slider.
-4. Kinetic Box block used as a motion-ready content container.
-5. Kinetic Cursor Reveal block with floating media preview behavior.
-6. Kinetic Hero Mesh block used as an animated hero background.
-7. Kinetic Magnetic Button block with interactive call-to-action styling.
-8. Kinetic Marquee block for scrolling media, logos, or content rows.
-9. Kinetic Scroll Divider block with animated scroll-triggered line effect.
-10. Kinetic Split Scroll layout with pinned media and scrolling content.
-11. Kinetic Typography block with text reveal animation.
-12. Kinetic Video Modal block with cover image and play button.
+1. Kinetic Box block used as a motion-ready content container.
+2. Kinetic Typography block with animated text effects.
+3. Kinetic Hero Mesh block with animated mesh visuals.
+4. Kinetic Before/After block with interactive image comparison slider.
+5. Kinetic Hero Mesh block in an alternate hero presentation.
+6. Kinetic Cursor Reveal block with floating media preview behavior.
+7. Kinetic Split Scroll layout with pinned media and scrolling content.
+8. Kinetic Ambient Aura block used as a soft animated background effect.
+9. Kinetic Video Modal block.
+10. Kinetic Video Modal block.
+11. Kinetic Audio Player block with custom playback controls.
+12. Kinetic Magnetic Button block with interactive call-to-action styling.
+13. Kinetic Scroll Progress block with visual page-progress indicators.
 
 == Source Code ==
 
@@ -156,7 +157,7 @@ This plugin includes compiled JavaScript and CSS generated with npm and WordPres
 
 The human-readable free-version source files used to build the distributed assets are publicly available here:
 
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.0.14
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.1.0
 
 The public source branch includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed `build/` directory.
 
@@ -169,7 +170,7 @@ To rebuild the distributed assets from the public source branch:
 1. Clone the public source repository.
 2. Check out the matching source branch:
 
-`wporg-free-source-1.0.14`
+`wporg-free-source-1.1.0`
 
 3. Install build dependencies:
 
@@ -188,6 +189,14 @@ The build process compiles source files from the source repository into a `build
 
 == Changelog ==
 
+= 1.1.0 =
+* Added Kinetic Scroll Progress with horizontal and vertical progress indicators, heading milestones, responsive positioning, and label controls.
+* Improved Marquee motion controls with persistent Pause/Resume behavior, keyboard handling, reduced-motion support, and more reliable motion state.
+* Improved Split Scroll responsive behavior, indicators, RTL support, keyboard interaction, and reduced-motion handling.
+* Improved Kinetic Typography animation lifecycle and off-screen performance.
+* Standardized editor notices across KineticHub blocks through shared reusable handling.
+* Improved cross-theme and responsive compatibility across Audio Player, Magnetic Button, Video Modal, Cursor Reveal, Before/After, Kinetic Box, and other affected blocks.
+* Updated the KineticHub Free dashboard and block discovery experience for the 13-block collection.
 = 1.0.14 =
 * Improved Kinetic Box compatibility with nested fixed-position content by removing an unnecessary persistent 3D rendering context.
 * Fixed Hero Mesh so valid markup from nested blocks, including SVG and canvas content, is preserved correctly.

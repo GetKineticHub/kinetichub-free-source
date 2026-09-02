@@ -16,6 +16,10 @@ import { KineticEntranceControls } from '../../components/EntranceControls';
 import { KineticVisibilityControls } from '../../components/VisibilityControls';
 import { KineticShadowControls } from '../../components/ShadowControls';
 import { KineticEditorNotice } from '../../components/EditorNotice';
+import { InspectorNote, labelWithHelp } from '../../components/InspectorUX';
+
+import { ProNote } from '../../components/InspectorUX';
+
 
 const generateId = () => window.crypto && crypto.randomUUID ? crypto.randomUUID().split('-')[0] : Math.random().toString(36).substr(2, 9);
 
@@ -66,7 +70,7 @@ registerBlockType(metadata.name, {
 
         const blockProps = useBlockProps({
             className: `kh-ap-wrapper ${blockId}`,
-            style: { display: 'flex', justifyContent: align || 'center', alignItems: 'center', width: '100%' }
+            style: { display: 'flex', flexWrap: 'wrap', justifyContent: align || 'center', alignItems: 'center', width: '100%' }
         });
 
         const handleVisualPlay = (e) => {
@@ -126,7 +130,7 @@ registerBlockType(metadata.name, {
                         
                         <div style={{ marginTop: '20px' }}>
                             <SelectControl 
-                                label={__('Preload Strategy', 'kinetichub')} 
+                                label={labelWithHelp(__('Preload Strategy', 'kinetichub'), __('How much of the file the browser fetches before anyone presses play. Metadata Only reads just the duration and keeps the page light. Auto downloads the whole track up front. None waits until play is pressed.', 'kinetichub'))}
                                 value={preloadStrategy} 
                                 options={[
                                     {label: __('Metadata Only (Recommended)', 'kinetichub'), value: 'metadata'}, 
@@ -134,29 +138,33 @@ registerBlockType(metadata.name, {
                                     {label: __('None (Do not load)', 'kinetichub'), value: 'none'}
                                 ]} 
                                 onChange={(v) => setAttributes({ preloadStrategy: v })} 
-                                help={__('Controls how much of the file the browser downloads automatically.', 'kinetichub')}
                             />
                         </div>
                     </PanelBody>
 
                     <PanelBody title={__('⚙️ Layout & Sticky Behavior', 'kinetichub')} initialOpen={false}>
-                        <SelectControl label={__('Player Style', 'kinetichub')} value={playerLayout} options={[{label: __('Standard (Extended)', 'kinetichub'), value: 'extended'}, {label: __('Compact (Circle)', 'kinetichub'), value: 'compact'}]} onChange={(v) => setAttributes({ playerLayout: v })} help={__('Extended bar or compact circle.', 'kinetichub')} />
-                        {isCompact && <RangeControl label={__('Circle Size (px)', 'kinetichub')} value={compactSize} onChange={(v) => setAttributes({ compactSize: v })} min={60} max={300} step={5} help={__('Diameter of the circle player.', 'kinetichub')} />}
-                        <SelectControl label={__('Block Alignment', 'kinetichub')} value={align} options={[{label: 'Left', value: 'flex-start'}, {label: 'Center', value: 'center'}, {label: 'Right', value: 'flex-end'}]} onChange={(v) => setAttributes({ align: v })} help={__('Player position in the container.', 'kinetichub')} />
+                        <SelectControl label={labelWithHelp(__('Player Style', 'kinetichub'), __('Standard is a horizontal bar carrying the cover, title, artist and controls. Compact is a circular button showing the cover and play control only — it has no title, time display or volume slider.', 'kinetichub'))} value={playerLayout} options={[{label: __('Standard (Extended)', 'kinetichub'), value: 'extended'}, {label: __('Compact (Circle)', 'kinetichub'), value: 'compact'}]} onChange={(v) => setAttributes({ playerLayout: v })} />
+                        {isCompact && <RangeControl label={labelWithHelp(__('Circle Size (px)', 'kinetichub'), __('Diameter of the circular player.', 'kinetichub'))} value={compactSize} onChange={(v) => setAttributes({ compactSize: v })} min={60} max={300} step={5} />}
+                        <SelectControl label={labelWithHelp(__('Block Alignment', 'kinetichub'), __('Where the player sits inside the width it is given.', 'kinetichub'))} value={align} options={[{label: __('Left', 'kinetichub'), value: 'flex-start'}, {label: __('Center', 'kinetichub'), value: 'center'}, {label: __('Right', 'kinetichub'), value: 'flex-end'}]} onChange={(v) => setAttributes({ align: v })} />
                         
                         
 
                         
+                        {/* Exactly the seat the sticky controls take in PRO, and
+                          * the whole of what this panel gains there -- placement
+                          * and shape are settings of the same capability, so one
+                          * note covers the group. */}
                         <hr/>
-                        <p style={{ fontSize: '12px', opacity: 0.6, marginTop: '4px' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('Sticky playback, so the player detaches and stays on screen once it scrolls away — pinned to the top or floating in a corner, on the side and in the shape you choose, with a close button for the listener.', 'kinetichub')}
+                        />
                         
                         
-                        {!isCompact && <SelectControl label={__('Time Display Mode', 'kinetichub')} value={timeDisplayMode} options={[{label: 'Hidden', value: 'none'}, {label: 'Elapsed Time', value: 'elapsed'}, {label: 'Remaining Time', value: 'remaining'}, {label: 'Total Duration', value: 'total'}]} onChange={(v) => setAttributes({ timeDisplayMode: v })} help={__('Shows current, remaining, or total.', 'kinetichub')} />}
+                        {!isCompact && <SelectControl label={labelWithHelp(__('Time Display Mode', 'kinetichub'), __('Which figure the player prints beside the controls: time played so far, time left, or the full length of the track.', 'kinetichub'))} value={timeDisplayMode} options={[{label: __('Hidden', 'kinetichub'), value: 'none'}, {label: __('Elapsed Time', 'kinetichub'), value: 'elapsed'}, {label: __('Remaining Time', 'kinetichub'), value: 'remaining'}, {label: __('Total Duration', 'kinetichub'), value: 'total'}]} onChange={(v) => setAttributes({ timeDisplayMode: v })} />}
                     </PanelBody>
 
                     <PanelBody title={__('🎨 Colors & Styling', 'kinetichub')} initialOpen={false}>
+                        <p style={{fontSize: '11px'}}>{__('Player Background', 'kinetichub')}</p>
                         <ColorPalette value={bgColor} onChange={(v) => setAttributes({ bgColor: v })} enableAlpha={true} />
                         <p style={{fontSize: '11px', marginTop:'5px'}}>{__('Text & Icon Color', 'kinetichub')}</p>
                         <ColorPalette value={textColor} onChange={(v) => setAttributes({ textColor: v })} enableAlpha={true} />
@@ -167,10 +175,10 @@ registerBlockType(metadata.name, {
                         <hr/>
                         {!isCompact && (
                             <>
-                                <RangeControl label={__('Border Radius', 'kinetichub')} value={borderRadius} onChange={(v) => setAttributes({ borderRadius: v })} min={0} max={50} help={__('Rounds the player corners.', 'kinetichub')} />
+                                <RangeControl label={labelWithHelp(__('Border Radius', 'kinetichub'), __('Rounds the corners of the player. 50 gives a fully rounded bar.', 'kinetichub'))} value={borderRadius} onChange={(v) => setAttributes({ borderRadius: v })} min={0} max={50} />
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '10px' }}>
-                                    <RangeControl label={__('Inner V-Padding', 'kinetichub')} value={paddingV} onChange={(v) => setAttributes({ paddingV: v })} min={5} max={40} help={__('Top/bottom space inside player.', 'kinetichub')} />
-                                    <RangeControl label={__('Inner H-Padding', 'kinetichub')} value={paddingH} onChange={(v) => setAttributes({ paddingH: v })} min={10} max={60} help={__('Left/right space inside player.', 'kinetichub')} />
+                                    <RangeControl label={labelWithHelp(__('Inner V-Padding', 'kinetichub'), __('Space above and below the contents, inside the player.', 'kinetichub'))} value={paddingV} onChange={(v) => setAttributes({ paddingV: v })} min={5} max={40} />
+                                    <RangeControl label={labelWithHelp(__('Inner H-Padding', 'kinetichub'), __('Space to the left and right of the contents, inside the player.', 'kinetichub'))} value={paddingH} onChange={(v) => setAttributes({ paddingH: v })} min={10} max={60} />
                                 </div>
                             </>
                         )}
@@ -178,15 +186,27 @@ registerBlockType(metadata.name, {
 
                     <PanelBody title={__('🧠 Engine & Advanced', 'kinetichub')} initialOpen={false}>
                         
+
                         
-                        <ToggleControl label={__('Show Animated Waveform', 'kinetichub')} checked={showWaveform} onChange={(v) => setAttributes({ showWaveform: v })} help={__('Animated bars synced to audio.', 'kinetichub')} />
+                        {/* The seat the two appearance controls take in PRO, at the
+                          * top of this panel. The waveform bar shapes named here are
+                          * chosen a few controls further down, under the toggle that
+                          * switches the bars on -- one note rather than a second one
+                          * hidden behind a toggle FREE may never turn on. */}
+                        <ProNote
+                            text={__('Motion and light on the player itself — a magnetic tilt toward the cursor, three glow styles that breathe while the track plays, and square or rounded shapes for the waveform bars.', 'kinetichub')}
+                        />
+                        <hr/>
+                        
+                        
+                        <ToggleControl label={labelWithHelp(__('Show Animated Waveform', 'kinetichub'), __('Four decorative bars beside the controls. They rise and fall on a fixed loop while the track is playing and rest flat when it is paused. The motion is illustrative — it does not read the audio, so it will not match what is actually being heard.', 'kinetichub'))} checked={showWaveform} onChange={(v) => setAttributes({ showWaveform: v })} />
                         {showWaveform && (
                             <>
                                 
                             </>
                         )}
                         
-                        <ToggleControl label={__('Enable Interactive Seekbar', 'kinetichub')} checked={enableSeekbar} onChange={(v) => setAttributes({ enableSeekbar: v })} help={__('Click to jump to any position.', 'kinetichub')} />
+                        <ToggleControl label={labelWithHelp(__('Enable Interactive Seekbar', 'kinetichub'), __('Lets the listener click or drag along the progress track to jump to any point. Switched off, the progress track still fills as the audio plays but cannot be moved.', 'kinetichub'))} checked={enableSeekbar} onChange={(v) => setAttributes({ enableSeekbar: v })} />
                         {enableSeekbar && (
                             <>
                                 
@@ -197,15 +217,19 @@ registerBlockType(metadata.name, {
                         
                         {!isCompact && (
                             <>
-                                <ToggleControl label={__('Show Volume Control', 'kinetichub')} checked={enableVolume} onChange={(v) => setAttributes({ enableVolume: v })} help={__('Volume button and slider.', 'kinetichub')} />
+                                <ToggleControl label={labelWithHelp(__('Show Volume Control', 'kinetichub'), __('Adds a speaker button and slider to the player. Not available on the compact circular layout.', 'kinetichub'))} checked={enableVolume} onChange={(v) => setAttributes({ enableVolume: v })} />
                                 
                             </>
                         )}
 
                         
-                        <p style={{ fontSize: '12px', opacity: 0.6, marginTop: '10px' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        {/* The second group in this panel: everything PRO adds to how
+                          * the player BEHAVES, as opposed to how it looks, which the
+                          * note at the top of the panel covers. Last in the panel in
+                          * both editions, where these controls end in PRO. */}
+                        <ProNote
+                            text={__('Listening behaviour — resume the track where the listener left off, stop it when they switch browser tabs, offer the file as a download, and keep the progress track read-only on touch screens.', 'kinetichub')}
+                        />
                         
                     </PanelBody>
 
@@ -263,8 +287,25 @@ registerBlockType(metadata.name, {
                             </div>
                         )}
                     </div>
+                    {/*
+                      * The toast is absolutely positioned, and .kh-ap-wrapper -- the
+                      * nearest positioned ancestor -- is exactly the height of the
+                      * player row, so anchored there it lands on top of the volume
+                      * slider and the time display.
+                      *
+                      * This lane is a full-width second flex line beneath the player,
+                      * which is what the wrapper's flex-wrap is for. It has real flow
+                      * height of its own, it leaves the player's own alignment
+                      * untouched, and the toast now measures its width against the
+                      * whole block rather than against a compact circular player.
+                      *
+                      * Editor only: the frontend markup comes from render.php, which
+                      * never emits this element.
+                      */}
                     {isSelected && (
-                        <KineticEditorNotice message={__('Audio playback & advanced glow physics active on Frontend', 'kinetichub')} />
+                        <div style={{ flex: '0 0 100%', position: 'relative', minHeight: '52px' }}>
+                            <KineticEditorNotice message={__('Audio playback and motion effects run on the live frontend.', 'kinetichub')} />
+                        </div>
                     )}
                 </div>
             </>

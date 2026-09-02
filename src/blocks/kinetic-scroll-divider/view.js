@@ -55,6 +55,16 @@
                 } else {
                     block.classList.add('is-animated');
                 }
+
+                // Scrub mode draws the line from --kh-div-progress, and the scroll
+                // engine that writes it lives past this return, so the property was
+                // left at its 0 default: is-animated is outranked by the .tether-scrub
+                // rules and the divider stayed invisible. Present the completed state,
+                // exactly as the mobile-static intercept below already does. 'hide' is
+                // deliberately excluded - that divider is meant to stay gone.
+                if (isScrub && rmBehavior !== 'hide') {
+                    block.style.setProperty('--kh-div-progress', '1');
+                }
                 return;
             }
 

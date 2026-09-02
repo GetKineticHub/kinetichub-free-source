@@ -284,14 +284,16 @@
                     const targetY = pos.y;
 
                     // Page coordinate of the box's containing-block origin. 'over' moves the
-                    // box to document.body, so its containing block is the initial one and the
-                    // origin is the document origin. 'under' leaves it an absolute child of the
-                    // relatively positioned wrapper, so the origin is the wrapper's PADDING box
-                    // (clientLeft/clientTop add the border widths that getBoundingClientRect,
-                    // which reports the border box, includes). Everything below stays in page
-                    // space for both modes; the origin is subtracted only at the transform write.
-                    let originX = 0;
-                    let originY = 0;
+                    // box to document.body, where the stylesheet makes it position: fixed, so
+                    // its containing block is the viewport and its origin is the current scroll
+                    // offset. 'under' leaves it an absolute child of the relatively positioned
+                    // wrapper, so the origin is the wrapper's PADDING box (clientLeft/clientTop
+                    // add the border widths that getBoundingClientRect, which reports the border
+                    // box, includes). Everything below stays in page space for both modes; the
+                    // origin is subtracted only at the transform write, so the clamp and the
+                    // on-screen result are identical to before - only the containing block moved.
+                    let originX = window.scrollX;
+                    let originY = window.scrollY;
 
                     
 
@@ -332,8 +334,8 @@
                         ? window.scrollY + (viewH / 2)
                         : Math.max(minY, Math.min(finalY, maxY));
 
-                    // Page space -> containing-block space. originX/originY are 0 for 'over',
-                    // so this is arithmetically unchanged there.
+                    // Page space -> containing-block space: viewport space for 'over', the
+                    // wrapper's padding box for 'under'.
                     const transformX = clampedX - originX;
                     const transformY = clampedY - originY;
 

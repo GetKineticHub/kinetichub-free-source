@@ -1,0 +1,205 @@
+Block Name: Kinetic Scroll Progress
+Version: 1.1.0
+---
+
+## 1. Overview
+
+Kinetic Scroll Progress is a lightweight Gutenberg block for showing scroll progress and an optional milestone journey.
+
+It renders a slim indicator fixed to one edge of the screen. Use it on:
+
+- landing pages
+- long-form pages
+- documentation
+- product tours
+- guided page journeys
+- articles
+
+The block is server-rendered. Its structure and styling come from the saved settings, and the indicator is driven on the frontend by the scroll position.
+
+This foundation tracks progress through the whole page. The block is designed around progress and milestone journeys, so the indicator, the milestone list, and their states are all built on a single normalized progress value.
+
+---
+
+## 2. Features
+
+### Presentations
+- Horizontal bar
+- Vertical rail
+
+
+
+### Screen Position
+- Top
+- Bottom
+- Left
+- Right
+
+Device safe areas are added automatically, so the indicator clears notches and home indicators on modern phones.
+
+### Size and Placement
+- Thickness
+- Thickness on mobile
+- Indicator length
+- Indicator length on mobile
+- Distance from the screen edge
+- Distance from the screen edge on mobile
+- Layer (z-index)
+
+### Colors and Shape
+- Track color
+- Progress color
+- Track opacity
+- Progress opacity
+- Border radius
+- Direction, normal or reversed
+- Support for common CSS color formats:
+  - HEX
+  - RGB
+  - RGBA
+  - HSL
+  - HSLA
+  - CSS variables
+
+### Smoothing
+- None
+- Subtle
+- Smooth
+
+
+
+
+
+
+
+
+
+### Milestones
+Milestones mark the sections of a page along the indicator. They are built automatically from the headings in the page content.
+
+- Enable or disable milestones
+- Marker style: Dot or Tick
+- Show or hide labels
+- Reached and not-reached colors
+
+### Milestone Density
+
+How many milestones appear is set separately for desktop and mobile, so a full journey on a wide screen can become a short one on a phone without a second block.
+
+Heading levels:
+- Heading levels — desktop: H2, or H2 and H3
+- Heading levels — mobile: H2, or H2 and H3, defaulting to H2 only
+
+Maximum milestones:
+- Maximum milestones — desktop: 3 to 30, defaulting to 12
+- Maximum milestones — mobile: 3 to 30, defaulting to 6
+
+Mobile values apply at 768px and below and cover both the horizontal bar and the vertical rail.
+
+The headings themselves are read once. Changing the screen width re-selects from that same reading, so rotating a phone or resizing a window updates the journey immediately without re-reading the page.
+
+When a page has more headings than the maximum, markers are spread evenly across it and the first and last heading are always kept. This is the same for desktop and mobile.
+
+### Label Behavior
+
+Labels is the master switch. When it is off, no labels appear on any screen.
+
+When it is on, desktop and mobile are controlled separately.
+
+Labels on desktop:
+- Show all: every milestone shows its label
+- Major headings only: H2 labels stay visible while H3 milestones remain as markers
+- Current only: just the label of the section being read
+- Hide: markers only
+
+Labels on mobile, at 768px and below:
+- Show all
+- Major headings only: H2 labels stay visible while H3 milestones remain as markers
+- Current only, the default, so narrow screens stay readable without hiding the journey
+- Hide
+
+Mobile settings always win on small screens, so a busy desktop layout never carries over to a phone.
+
+### Horizontal Label Layout
+
+For horizontal bars on desktop:
+- Standard: every label sits in one row next to the bar
+- Staggered: labels alternate above and below the bar, reading like a timeline, so neighbouring labels are never side by side
+
+In Staggered the bar moves a little further into the page to make room for the row on its outer side, so both rows stay on screen. This is automatic and works alongside the distance-from-edge setting, device safe areas, and the WordPress toolbar.
+
+With Major Headings Only, alternation follows the order of the H2 labels that are actually visible.
+
+If a horizontal journey feels crowded, try Major Headings Only, Current Only, Staggered, or a lower Maximum Milestones value.
+
+### Milestone Label Background
+
+An optional plate drawn behind the label text, for pages where the content underneath makes a bare label hard to read.
+
+- None, the default: labels are drawn as text only, exactly as before.
+- Box: square corners.
+- Rounded: softly rounded corners.
+- Pill: fully rounded ends.
+
+Label Background sets its color, next to the existing milestone colors. It only appears once a background style is chosen.
+
+Sync Background with Progress ties that color to the indicator instead. Labels not yet reached use the Track color, and current and reached labels use the Progress color, so the journey reads as one object. The chosen shape is unaffected, and milestone text colors stay under Reached and Not reached as always. Track and progress opacity are not applied to the plate, since fading it would fade the label text with it. Turning Sync off restores the manual Label Background color, which is kept rather than cleared.
+
+The padding is fixed and balanced, so there is nothing to tune and a background cannot knock the journey out of alignment. Milestone markers never move: the background applies to the label text alone.
+
+Readability is yours to set. The background is drawn exactly as chosen and nothing is adjusted automatically, so pick a background that contrasts with your Reached and Not reached label colors.
+
+It works with everything labels already do. Backgrounds follow every desktop and mobile label mode, disappearing with hidden labels and fading with Current Only. On a staggered horizontal layout the bar automatically moves a little further inward to make room for the taller labels, so both rows stay on screen. Floating Ring does not show milestones, so it shows no label backgrounds either.
+
+### Visibility
+- Hide on mobile
+- Hide on desktop
+
+---
+
+## 3. Accessibility
+
+The indicator is decorative. It repeats information the browser already provides through the scrollbar, so it is marked as hidden from assistive technology and is not announced while scrolling.
+
+Motion preferences are respected. When a visitor asks for reduced motion, nothing in the block animates on its own.
+
+---
+
+## 4. Editor Notes
+
+The block canvas shows a static preview at a fixed sample value. It reflects the chosen presentation, colors, thickness, radius, direction, and milestone options so the setup is readable while editing.
+
+The preview does not track scrolling inside the editor. Positioning against the screen edge and real progress are frontend behavior.
+
+---
+
+## 5. Performance
+
+The block adds one stylesheet and one small script, and only on pages where it is used.
+
+No third-party animation library is used, and no work is scheduled while the page is idle.
+
+---
+
+## 6. Recommended Use
+
+- A top horizontal bar suits most articles and landing pages.
+- A vertical rail with milestones suits documentation, product tours, and other guided journeys on wider screens.
+- More than one indicator per page is allowed. Give each one a different edge so they do not overlap.
+- On narrow screens, keep the default current-only milestone labels, or hide them entirely.
+- On a dense horizontal journey, try Major Headings Only, Current Only, Staggered Labels, or reduce Maximum Milestones.
+
+A good starting point for a long documentation page:
+
+Desktop:
+- Heading levels: H2 and H3
+- Maximum milestones: 12
+- Labels: Major headings only
+- Horizontal label layout: Staggered
+
+Mobile:
+- Heading levels: H2 only
+- Maximum milestones: 6
+- Labels: Current only
+
+- If the indicator overlaps a sticky header, increase the distance from the edge or lower the layer value.

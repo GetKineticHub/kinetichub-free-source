@@ -80,7 +80,7 @@ $kh_vm_teaser_badge_text = '';
 $kh_vm_magnetic_pull     = false;
 $kh_vm_pulse_anim        = false;
 $kh_vm_autoplay          = false;
-$kh_vm_mute_local        = true;
+$kh_vm_mute_local        = false;
 $kh_vm_force_loop        = false;
 $kh_vm_start_time        = 0;
 

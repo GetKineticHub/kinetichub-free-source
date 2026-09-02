@@ -110,9 +110,22 @@
     cursor: pointer;
 }
 
-.kh-vm-play-button {
+/*
+ * Element-qualified on purpose. Themes ship generic `button, [type="button"]`
+ * rules at the same (0,1,0) specificity as a bare class but later in the
+ * cascade, so they were winning: Hello Biz re-applied appearance:button and
+ * padding:8px 16px, collapsing the 80px control to ~55.7px wide and squeezing
+ * the icon to ~7.6px. `button.kh-vm-play-button` is (0,1,1) and wins outright,
+ * so no !important escalation is needed. Both the frontend (render.php) and the
+ * editor preview (index.js) render this control as a real <button>.
+ */
+button.kh-vm-play-button {
     width: var(--kh-vm-btn-s);
     height: var(--kh-vm-btn-s);
+    min-width: 0;
+    min-height: 0;
+    max-width: none;
+    box-sizing: border-box;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -120,6 +133,10 @@
     border: none;
     outline: none;
     padding: 0;
+    margin: 0;
+    line-height: 0;
+    -webkit-appearance: none;
+    appearance: none;
     cursor: pointer;
     will-change: transform;
     transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
@@ -191,9 +208,22 @@ body.kh-vm-body-scroll-lock {
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-    perspective: 1000px;
+    /* Single authoritative modal duration. view.js MODAL_TRANSITION_DURATION
+       must stay equal to this value in ms, or close is cut short. */
+    --kh-vm-modal-duration: 0.45s;
+    --kh-vm-close-size: 44px;
+    --kh-vm-close-gap: 12px;
+    transition: opacity var(--kh-vm-modal-duration) ease, visibility var(--kh-vm-modal-duration) ease;
+    /*
+     * The overlay is created on open and removed on close, so this is a hint for the
+     * ~450ms it is actually animating, not a permanent promotion on a resident
+     * wrapper. It lets the compositor keep the (expensive) backdrop-filter result on
+     * its own layer while opacity animates, instead of re-deriving it every frame.
+     */
+    will-change: opacity;
 }
+
+
 
 .kh-vm-dialog-overlay.is-open {
     opacity: 1;
@@ -220,39 +250,105 @@ body.kh-vm-body-scroll-lock {
     background: rgba(248, 250, 252, 0.98);
 }
 
-.kh-vm-dialog-close {
+/* Element-qualified for the same reason as the play button: generic theme
+   button/type rules would otherwise re-inject padding, native appearance and
+   min-sizes onto this 44x44 control. */
+button.kh-vm-dialog-close {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 44px;
-    height: 44px;
+    width: var(--kh-vm-close-size, 44px);
+    height: var(--kh-vm-close-size, 44px);
+    min-width: 0;
+    min-height: 0;
+    max-width: none;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+    -webkit-appearance: none;
+    appearance: none;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.3);
+    /* Explicit chip + explicit colour: the X must read the same over the black
+       content frame and over any backdrop variant, without depending on the theme. */
+    background: rgba(15, 23, 42, 0.55);
     backdrop-filter: blur(4px);
     color: #fff;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
     cursor: pointer;
     z-index: 20;
     transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.kh-vm-dialog-overlay.close-outside .kh-vm-dialog-close {
-    top: 30px;
-    right: 40px;
+/*
+ * Outside: the button is a child of .kh-vm-dialog-content, which is overflow:hidden,
+ * so any negative offset used to be clipped away - the old rule could only nudge it
+ * 10px further inside. Open the clip for this variant and re-apply the corner
+ * rounding to the media itself, then lift the button clear of the frame by its own
+ * height plus a gap, so the separation scales with the control instead of a magic px.
+ */
+.kh-vm-dialog-overlay.close-outside .kh-vm-dialog-content {
+    overflow: visible;
+    /*
+     * Reserve the lift geometrically instead of guessing a breakpoint. The panel is
+     * centred, so trimming its cap by twice the lift grows the space above it by
+     * exactly the lift: with H <= 85vh - 2L, space above = (100vh - H) / 2 >= 7.5vh + L.
+     * That clears L at every viewport height, not only below some magic value.
+     *
+     * Written as repeated subtraction rather than `- 2 * (...)` so the expression needs
+     * only calc addition/subtraction. Same value: with the default tokens this is
+     * 85vh - 44px - 12px - 44px - 12px = calc(85vh - 112px).
+     */
+    max-height: calc(
+        85vh
+        - var(--kh-vm-close-size, 44px)
+        - var(--kh-vm-close-gap, 12px)
+        - var(--kh-vm-close-size, 44px)
+        - var(--kh-vm-close-gap, 12px)
+    );
 }
 
-.kh-vm-dialog-overlay.bd-glass-light .kh-vm-dialog-close,
-.kh-vm-dialog-overlay.bd-solid-light .kh-vm-dialog-close {
-    color: #0f172a;
-    background: rgba(0,0,0,0.05);
+.kh-vm-dialog-overlay.close-outside .kh-vm-dialog-content > .kh-vm-iframe-wrapper,
+.kh-vm-dialog-overlay.close-outside .kh-vm-dialog-content > .kh-vm-native-video {
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.kh-vm-dialog-overlay.close-outside .kh-vm-dialog-close {
+    /*
+     * Addition/subtraction-only calc, matching the max-height above. Same value:
+     * with the default tokens this is 0px - 44px - 12px = -56px.
+     */
+    top: calc(
+        0px
+        - var(--kh-vm-close-size, 44px)
+        - var(--kh-vm-close-gap, 12px)
+    );
+    right: 0;
+}
+
+/*
+ * Narrow phones: an outside control reads as detached at that width, so it returns
+ * inside the frame. right:0 / right:12px both stay within the content box, so no
+ * variant of this can widen the page.
+ */
+@media (max-width: 782px) {
+    .kh-vm-dialog-overlay.close-outside .kh-vm-dialog-content {
+        overflow: hidden;
+        max-height: 85vh;
+    }
+    .kh-vm-dialog-overlay.close-outside .kh-vm-dialog-close {
+        top: 12px;
+        right: 12px;
+    }
 }
 
 .kh-vm-dialog-close:hover {
     transform: scale(1.1) rotate(90deg);
-    background: rgba(0,0,0,0.5);
+    background: rgba(15, 23, 42, 0.78);
 }
 
 .kh-vm-dialog-close:focus-visible {
@@ -269,15 +365,29 @@ body.kh-vm-body-scroll-lock {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+    /* easeOutCubic: the previous cubic-bezier(0.16, 1, 0.3, 1) reached ~88% of its
+       travel in the first ~180ms, so every mode snapped and read as "no entrance". */
+    transition: transform var(--kh-vm-modal-duration) cubic-bezier(0.33, 1, 0.68, 1),
+                opacity var(--kh-vm-modal-duration) cubic-bezier(0.33, 1, 0.68, 1);
+    /*
+     * This panel is the hard case for the rasteriser: a large blurred box-shadow, a
+     * rounded overflow clip, and a live iframe or video inside it, all being
+     * transformed. Without a promotion hint the shadow and the rounded clip are
+     * re-rasterised every frame, which is what read as jerky. The element only exists
+     * while the modal is open, so the hint is scoped to the animation by construction.
+     * backface-visibility is safe for Flip: rotateX peaks at 32deg and never turns the
+     * face away.
+     */
+    will-change: transform, opacity;
+    backface-visibility: hidden;
 }
 
-.kh-vm-dialog-overlay.anim-zoom .kh-vm-dialog-content {
-    transform: scale(0.95);
+.kh-vm-dialog-overlay.kh-vm-modal-zoom .kh-vm-dialog-content {
+    transform: scale(0.88);
     opacity: 0;
 }
 
-.kh-vm-dialog-overlay.anim-zoom.is-open .kh-vm-dialog-content {
+.kh-vm-dialog-overlay.kh-vm-modal-zoom.is-open .kh-vm-dialog-content {
     transform: scale(1);
     opacity: 1;
 }

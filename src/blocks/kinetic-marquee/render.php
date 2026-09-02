@@ -21,12 +21,59 @@ if ( ! function_exists( 'kinetichub_mq_validate_color_strict' ) ) {
     }
 }
 
+// Helper: derive an accessible name for a linked item that has no author-written
+// description. Every original gets the SAME generic string otherwise, so a screen
+// reader hears a row of indistinguishable links. The destination is the only other
+// thing the item already knows, and it identifies where the link goes.
+//
+// $link is the value already sanitised for href, so nothing new is trusted here, and
+// no network work is done - wp_parse_url is pure string parsing.
+if ( ! function_exists( 'kinetichub_mq_link_fallback_label' ) ) {
+    function kinetichub_mq_link_fallback_label( $link ) {
+        $kh_mq_host = wp_parse_url( $link, PHP_URL_HOST );
+
+        if ( is_string( $kh_mq_host ) && '' !== $kh_mq_host ) {
+            // A leading www. is noise in a spoken name and never distinguishes two
+            // destinations, so "www.example.com" and "example.com" read alike.
+            $kh_mq_host_label = preg_replace( '/^www\./i', '', $kh_mq_host );
+
+            // Test what is actually being returned, not what was parsed. A host of
+            // exactly "www." strips to nothing, and returning that produced an
+            // aria-label="" on a rendered anchor whose image is alt="" - a link with no
+            // accessible name at all. Checking the stripped value instead lets that
+            // case fall through to the destination string below, which is still
+            // specific and, more to the point, never empty.
+            if ( is_string( $kh_mq_host_label ) && '' !== trim( $kh_mq_host_label ) ) {
+                return $kh_mq_host_label;
+            }
+        }
+
+        // Hostless but valid destinations - mailto:, tel:, /about, #section - keep the
+        // sanitised destination itself. It is still specific, still non-empty, and far
+        // better than one shared generic label repeated down the row.
+        if ( is_string( $link ) && '' !== $link ) {
+            return $link;
+        }
+
+        // Formally total only. The anchor is rendered exclusively when $kh_mq_link is
+        // non-empty, so this cannot be reached during normal anchor rendering.
+        return __( 'Marquee item link', 'kinetichub' );
+    }
+}
+
 // Helper function to render individual marquee items
 if ( ! function_exists( 'kinetichub_mq_render_item_markup' ) ) {
-    function kinetichub_mq_render_item_markup( $item, $index, $is_first_group, $show_frame, $frame_shadow, $open_in_new_tab, $origin_index ) {
+    function kinetichub_mq_render_item_markup( $item, $index, $is_first_group, $show_frame, $frame_shadow, $open_in_new_tab, $origin_index, $is_accessible_copy ) {
         $kh_mq_item      = is_array( $item ) ? $item : array();
         $kh_mq_url       = ! empty( $kh_mq_item['url'] ) ? esc_url( $kh_mq_item['url'] ) : '';
-        $kh_mq_alt       = ! empty( $kh_mq_item['alt'] ) ? sanitize_text_field( $kh_mq_item['alt'] ) : __( 'Marquee brand logo', 'kinetichub' );
+
+        // Normalise BEFORE deciding anything. The old test ran on the raw value and
+        // then swapped in a generic string, so an author could never express "this
+        // logo is decorative" - and a whitespace-only value counted as a description
+        // while announcing as nothing.
+        $kh_mq_alt       = isset( $kh_mq_item['alt'] ) ? sanitize_text_field( (string) $kh_mq_item['alt'] ) : '';
+        $kh_mq_alt       = trim( $kh_mq_alt );
+
         $kh_mq_link      = ! empty( $kh_mq_item['link'] ) ? esc_url( $kh_mq_item['link'] ) : '';
         $kh_mq_loading   = ( $is_first_group && $index < 4 ) ? 'eager' : 'lazy';
         $kh_mq_frame_cls = $show_frame ? 'kh-mq-marquee-frame shadow-' . sanitize_html_class( $frame_shadow ) : '';
@@ -37,11 +84,35 @@ if ( ! function_exists( 'kinetichub_mq_render_item_markup' ) ) {
         if ( ! empty( $kh_mq_link ) ) {
             $kh_mq_target     = $open_in_new_tab ? '_blank' : '_self';
             $kh_mq_rel        = $open_in_new_tab ? 'noopener noreferrer' : '';
-            /* translators: %s: brand or image alt text */
-            $kh_mq_aria_label = sprintf( __( 'Visit %s website', 'kinetichub' ), $kh_mq_alt );            $kh_mq_content_html = sprintf( '<a href="%1$s" target="%2$s"%3$s aria-label="%4$s">%5$s</a>', $kh_mq_link, esc_attr( $kh_mq_target ), $kh_mq_rel ? ' rel="' . esc_attr( $kh_mq_rel ) . '"' : '', esc_attr( $kh_mq_aria_label ), $kh_mq_img_html );
+
+            // An image that is the sole content of a link already names that link
+            // through its alt, so a described item needs no aria-label at all - and an
+            // aria-label would OVERRIDE the alt, discarding the author's own wording in
+            // favour of a translated wrapper phrase. Only a described-as-decorative
+            // image leaves the link unnamed, and only that case gets a label.
+            $kh_mq_aria_attr = '';
+            if ( '' === $kh_mq_alt ) {
+                $kh_mq_aria_attr = ' aria-label="' . esc_attr( kinetichub_mq_link_fallback_label( $kh_mq_link ) ) . '"';
+            }
+
+            // Duplicate visual copies keep their href, target and rel, so a pointer user
+            // can still click whichever copy is in front of them. tabindex="-1" removes
+            // them from sequential keyboard navigation only. inert would have done both
+            // in one attribute but also kills pointer events, which would leave the
+            // logos clickable solely in the leading pass - unusable in practice.
+            $kh_mq_tabindex_attr = $is_accessible_copy ? '' : ' tabindex="-1"';
+
+            $kh_mq_content_html = sprintf( '<a href="%1$s" target="%2$s"%3$s%4$s%5$s>%6$s</a>', $kh_mq_link, esc_attr( $kh_mq_target ), $kh_mq_rel ? ' rel="' . esc_attr( $kh_mq_rel ) . '"' : '', $kh_mq_aria_attr, $kh_mq_tabindex_attr, $kh_mq_img_html );
         }
 
-        return sprintf( '<div class="kh-mq-marquee-item" data-kh-mq-origin-index="%1$d"><div class="kh-mq-marquee-item-inner"><div class="%2$s">%3$s</div></div></div>', (int) $origin_index, esc_attr( $kh_mq_frame_cls ), $kh_mq_content_html );
+        // The track repeats each original many times over so the loop never runs dry.
+        // Only the leading pass is meaningful content; every later copy is the same
+        // logo drawn again, and announcing it five more times is noise. Hiding the
+        // wrapper removes the whole subtree - image and link alike - from the
+        // accessibility tree without altering a single pixel.
+        $kh_mq_hidden_attr = $is_accessible_copy ? '' : ' aria-hidden="true"';
+
+        return sprintf( '<div class="kh-mq-marquee-item"%1$s data-kh-mq-origin-index="%2$d"><div class="kh-mq-marquee-item-inner"><div class="%3$s">%4$s</div></div></div>', $kh_mq_hidden_attr, (int) $origin_index, esc_attr( $kh_mq_frame_cls ), $kh_mq_content_html );
     }
 }
 
@@ -77,6 +148,17 @@ $kh_mq_highlight_active       = ! empty( $attributes['highlightActiveCenter'] );
 $kh_mq_sibling_blur           = ! empty( $attributes['siblingBlur'] );
 $kh_mq_pause_on_hover         = ! empty( $attributes['pauseOnHover'] );
 $kh_mq_hover_slow_down        = ! empty( $attributes['hoverSlowDown'] );
+
+/*
+ * Auto Motion. The one switch that decides whether this marquee moves by itself,
+ * and therefore whether it needs a mechanism a visitor can stop it with.
+ *
+ * Not ! empty(): every marquee saved before this attribute existed carries no key
+ * at all and must keep moving, while a marquee an author deliberately set to false
+ * must stay still. ! empty() reads both as falsey and cannot tell them apart, so
+ * absence is tested explicitly and only a value that is actually present is cast.
+ */
+$kh_mq_auto_motion = array_key_exists( 'autoMotion', $attributes ) ? (bool) $attributes['autoMotion'] : true;
 
 // Enforce mutual exclusion: pause takes priority over slow
 if ( $kh_mq_pause_on_hover ) {
@@ -136,6 +218,16 @@ $kh_mq_css_vars = sprintf(
 $kh_mq_outer_classes = array_filter(
     array(
         'kh-mq-marquee-container',
+        // Frontend only - the editor preview builds its own class list and never gets
+        // this. It marks markup that carries the persistent motion control, which is
+        // what lets the stylesheet hold the CSS engine until view.js proves the control
+        // is bound, without ever freezing a Marquee in the Gutenberg canvas.
+        //
+        // Mutually exclusive with kh-mq-static, and the pair is the whole Auto Motion
+        // contract: a moving marquee claims a control and is held by the stylesheet
+        // until one is proven usable; a static one claims nothing, is never held, and
+        // has no control to prove - there is no automatic motion to stop.
+        $kh_mq_auto_motion ? 'kh-mq-has-motion-control' : 'kh-mq-static',
         'full' === $kh_mq_align ? 'alignfull' : '',
         $kh_mq_pause_on_hover ? 'is-pause-hover' : '',
         $kh_mq_hover_slow_down ? 'is-slow-hover' : '',
@@ -163,19 +255,53 @@ $kh_mq_wrapper_attrs = get_block_wrapper_attributes(
         'data-original-count'           => (string) count( $kh_mq_images ),
         'data-progress-count'           => (string) count( $kh_mq_images ),
         'role'                          => 'group',
-        'aria-label'                    => __( 'Auto-scrolling Gallery', 'kinetichub' ),
+        'aria-label'                    => __( 'Marquee Gallery', 'kinetichub' ),
     )
 );
 
+// wp_kses drops anything not listed here, silently and without warning. The two
+// accessibility attributes below are the whole point of the duplicate-copy contract,
+// so they have to be allowed in the same breath as they are emitted - otherwise the
+// markup still renders, PHP still lints, and the fix quietly does nothing.
 $kh_mq_allowed_item_tags = array(
-    'div'  => array( 'class' => true, 'data-kh-mq-origin-index' => true ),
-    'a'    => array( 'href' => true, 'target' => true, 'rel' => true, 'aria-label' => true, 'class' => true ),
+    'div'  => array( 'class' => true, 'data-kh-mq-origin-index' => true, 'aria-hidden' => true ),
+    'a'    => array( 'href' => true, 'target' => true, 'rel' => true, 'aria-label' => true, 'class' => true, 'tabindex' => true ),
     'img'  => array( 'src' => true, 'alt' => true, 'loading' => true, 'decoding' => true, 'class' => true ),
     'span' => array( 'class' => true, 'data-state' => true ),
 );
 ?>
 
 <div <?php echo $kh_mq_wrapper_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+    <?php
+    /*
+     * The persistent motion control. Hover, focus, a tap and leaving the viewport all
+     * pause this marquee, but every one of them ends by itself - none of them is a
+     * mechanism a visitor can operate and rely on. This is.
+     *
+     * First child deliberately: a keyboard user meets it before tabbing into the row of
+     * links. It sits outside .kh-mq-marquee-inner, so the overflow and the edge-fade
+     * mask never touch it, and outside both .kh-mq-marquee-group elements, so the loop
+     * never clones it and 4B never hides it. Being literal template markup, it also
+     * bypasses the per-item wp_kses helper entirely - that allowlist stays closed.
+     *
+     * The name stays "Pause marquee motion" in both states; aria-pressed carries the
+     * state, which is how a native toggle button is meant to work. Only the glyph
+     * changes, and the stylesheet swaps it from aria-pressed alone.
+     *
+     * Rendered for every automatically moving marquee, and only for those. Auto Motion
+     * off is not the same marquee with its control hidden - there is no automatic
+     * motion left for a visitor to stop, so the button would control nothing. Omitting
+     * the element rather than hiding it leaves no dead control in the accessibility
+     * tree and none in the tab order.
+     */
+    ?>
+    <?php if ( $kh_mq_auto_motion ) : ?>
+    <button type="button" class="kh-mq-pause-toggle" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Pause marquee motion', 'kinetichub' ); ?>">
+        <svg class="kh-mq-glyph kh-mq-glyph-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>
+        <svg class="kh-mq-glyph kh-mq-glyph-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.53.85l10-6.5a1 1 0 0 0 0-1.7l-10-6.5A1 1 0 0 0 8 5.5Z"></path></svg>
+    </button>
+    <?php endif; ?>
+
     <?php if ( $kh_mq_show_indicator ) : ?>
         <div class="kh-mq-interaction-indicator" data-state="running">
             <span class="kh-mq-indicator-label kh-mq-indicator-running"><?php echo esc_html__( 'RUNNING', 'kinetichub' ); ?></span>
@@ -197,14 +323,25 @@ $kh_mq_allowed_item_tags = array(
             <div class="kh-mq-marquee-group">
                 <?php foreach ( $kh_mq_cloned_images as $kh_mq_index => $kh_mq_img ) : ?>
                     <?php $kh_mq_origin_index = $kh_mq_index % count( $kh_mq_images ); ?>
-                    <?php echo wp_kses( kinetichub_mq_render_item_markup( $kh_mq_img, $kh_mq_index, true, $kh_mq_show_frame, $kh_mq_frame_shadow, $kh_mq_open_in_new_tab, $kh_mq_origin_index ), $kh_mq_allowed_item_tags ); ?>
+                    <?php
+                    /*
+                     * Clone arithmetic belongs to the caller, which is the only scope where
+                     * $kh_mq_images exists - the helper is a top-level function and inherits
+                     * nothing. So the decision is made here and crosses as plain intent: the
+                     * leading pass over the originals is the meaningful accessible copy, every
+                     * repetition after it is not.
+                     */
+                    $kh_mq_is_accessible_copy = ( $kh_mq_index < count( $kh_mq_images ) );
+                    ?>
+                    <?php echo wp_kses( kinetichub_mq_render_item_markup( $kh_mq_img, $kh_mq_index, true, $kh_mq_show_frame, $kh_mq_frame_shadow, $kh_mq_open_in_new_tab, $kh_mq_origin_index, $kh_mq_is_accessible_copy ), $kh_mq_allowed_item_tags ); ?>
                 <?php endforeach; ?>
             </div>
 
+            <?php /* The second group exists purely to close the loop visually - nothing in it is ever the meaningful copy. */ ?>
             <div class="kh-mq-marquee-group" aria-hidden="true">
                 <?php foreach ( $kh_mq_cloned_images as $kh_mq_index => $kh_mq_img ) : ?>
                     <?php $kh_mq_origin_index = $kh_mq_index % count( $kh_mq_images ); ?>
-                    <?php echo wp_kses( kinetichub_mq_render_item_markup( $kh_mq_img, $kh_mq_index, false, $kh_mq_show_frame, $kh_mq_frame_shadow, $kh_mq_open_in_new_tab, $kh_mq_origin_index ), $kh_mq_allowed_item_tags ); ?>
+                    <?php echo wp_kses( kinetichub_mq_render_item_markup( $kh_mq_img, $kh_mq_index, false, $kh_mq_show_frame, $kh_mq_frame_shadow, $kh_mq_open_in_new_tab, $kh_mq_origin_index, false ), $kh_mq_allowed_item_tags ); ?>
                 <?php endforeach; ?>
             </div>
         </div>

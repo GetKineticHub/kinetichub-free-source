@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/hero-mesh",
-  "version": "1.0.14",
+  "version": "1.1.0",
   "title": "Kinetic Hero Mesh",
   "category": "kinetic-suite",
   "icon": "cover-image",

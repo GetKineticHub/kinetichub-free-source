@@ -147,6 +147,14 @@
 
 .kh-ap-vol-wrapper { display: flex; align-items: center; gap: 5px; position: relative; }
 .kh-ap-vol-slider { width: 0; overflow: hidden; height: 4px; transition: width 0.3s ease; appearance: none; background: rgba(255,255,255,0.2); border-radius: 2px; }
+/* Element+attribute-qualified on purpose. Generic theme form resets commonly ship
+   input[type=range] { width: 100% } at (0,1,1), which outranks a bare
+   .kh-ap-vol-slider at (0,1,0) and leaves the bar expanded at rest. That resting
+   width is what the hover transition animates away from, so on a shrink-to-fit
+   sticky container it drives the container's own width. This re-owns the collapsed
+   width at (0,2,1). The expansion rules below stay at (0,3,0) and still win on
+   hover and focus-within, so expanded geometry and keyboard access are unchanged. */
+input[type="range"].kh-ap-vol-slider { width: 0; }
 .kh-ap-vol-wrapper:hover .kh-ap-vol-slider, .kh-ap-vol-wrapper:focus-within .kh-ap-vol-slider { width: 50px; }
 .kh-ap-vol-slider::-webkit-slider-thumb { appearance: none; width: 10px; height: 10px; border-radius: 50%; background: var(--kh-ap-accent, var(--kh-accent, #10b981)); cursor: pointer; border: none; }
 
@@ -167,6 +175,19 @@
 @keyframes khApFadeIn { to { opacity: 1; } }
 @keyframes khApSlideUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes khApZoomIn { to { opacity: 1; transform: scale(1); } }
+
+/* Visibility: hide on mobile / desktop.
+   Ungated on purpose - the Visibility toggles are ungated in the inspector and the
+   kh-hide-* classes are emitted ungated in render.php, so the rules must exist in FREE
+   too or the FREE toggles do nothing. !important is required: the wrapper carries an
+   inline display:flex from get_block_wrapper_attributes. */
+@media (max-width: 768px) {
+    .kh-ap-wrapper.kh-hide-mobile { display: none !important; }
+}
+
+@media (min-width: 769px) {
+    .kh-ap-wrapper.kh-hide-desktop { display: none !important; }
+}
 
 .kh-ap-button.is-error { opacity: 0.7; }
 .kh-ap-button.is-error .kh-ap-title { color: #ff4757; }

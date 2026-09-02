@@ -8,6 +8,10 @@ import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, RangeControl, SelectControl, ColorPalette, ToggleControl, GradientPicker } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { labelWithHelp } from '../../components/InspectorUX';
+
+import { ProNote } from '../../components/InspectorUX';
+
 import metadata from './block.json';
 
 const dividerIcon = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 4V8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 16V20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>;
@@ -81,12 +85,6 @@ registerBlockType(metadata.name, {
                         
                         
 
-                        
-                        <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginBottom: '10px' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
-                        
-
                         {editorLineType !== 'gradient' && (
                             <div style={{ marginBottom: '15px' }}>
                                 <p style={{ fontWeight: 'bold', marginTop: 0, marginBottom: '10px' }}>{__('Line Color', 'kinetichub')}</p>
@@ -103,13 +101,16 @@ registerBlockType(metadata.name, {
                         
                         
                         
-                        <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        {/* The seat the width cap takes in PRO. The gradient it names is
+                          * chosen at the top of the same panel, so both halves of what PRO
+                          * adds to the line itself are found in one place. */}
+                        <ProNote
+                            text={__('Gradient line colors, and a maximum width in pixels that stops the divider growing past a set size on wide screens.', 'kinetichub')}
+                        />
                         
 
                         <SelectControl 
-                            label={__('Vertical Spacing', 'kinetichub')} 
+                            label={labelWithHelp(__('Vertical Spacing', 'kinetichub'), __('A quick preset. For precise control use the native Padding option in the block sidebar — it overrides this preset.', 'kinetichub'))}
                             value={spacingPreset || 'normal'} 
                             options={[
                                 { label: __('Tight', 'kinetichub'), value: 'tight' }, 
@@ -117,7 +118,6 @@ registerBlockType(metadata.name, {
                                 { label: __('Spacious', 'kinetichub'), value: 'spacious' }
                             ]} 
                             onChange={(v) => setAttributes({ spacingPreset: v })} 
-                            help={__('Quick spacing preset. For precise control, use the native Padding option in the block sidebar — it overrides this preset.', 'kinetichub')}
                         />
                         <SelectControl label={__('Alignment', 'kinetichub')} value={alignment} options={[{ label: __('Left', 'kinetichub'), value: 'left' }, { label: __('Center', 'kinetichub'), value: 'center' }, { label: __('Right', 'kinetichub'), value: 'right' }]} onChange={(v) => setAttributes({ alignment: v })} />
                         <SelectControl label={__('Border Style', 'kinetichub')} value={borderStyle} options={[{ label: __('Solid', 'kinetichub'), value: 'solid' }, { label: __('Dashed', 'kinetichub'), value: 'dashed' }, { label: __('Dotted', 'kinetichub'), value: 'dotted' }]} onChange={(v) => setAttributes({ borderStyle: v })} />
@@ -125,13 +125,8 @@ registerBlockType(metadata.name, {
 
                     <PanelBody title={__('🎬 Scroll Animation', 'kinetichub')} initialOpen={false}>
                         
-                        
-                        <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginBottom: '10px' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
-                        
 
-                        <SelectControl label={__('Draw Animation', 'kinetichub')} value={animStyle} options={[{ label: __('Draw from Center', 'kinetichub'), value: 'draw-center' }, { label: __('Draw from Left', 'kinetichub'), value: 'draw-left' }, { label: __('Draw from Right', 'kinetichub'), value: 'draw-right' }, { label: __('Fade In', 'kinetichub'), value: 'fade-in' }]} onChange={(v) => setAttributes({ animStyle: v })} />
+                        <SelectControl label={labelWithHelp(__('Draw Animation', 'kinetichub'), __('The editor shows the finished line; the draw itself plays on the live frontend.', 'kinetichub'))} value={animStyle} options={[{ label: __('Draw from Center', 'kinetichub'), value: 'draw-center' }, { label: __('Draw from Left', 'kinetichub'), value: 'draw-left' }, { label: __('Draw from Right', 'kinetichub'), value: 'draw-right' }, { label: __('Fade In', 'kinetichub'), value: 'fade-in' }]} onChange={(v) => setAttributes({ animStyle: v })} />
                         
                         {editorScrollTether !== 'scrub' && (
                             <RangeControl label={__('Animation Duration (s)', 'kinetichub')} value={duration} onChange={(v) => setAttributes({ duration: v })} min={0.2} max={4} step={0.1} />
@@ -139,9 +134,12 @@ registerBlockType(metadata.name, {
                         
                         
                         
-                        <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        {/* Last in the panel either way: the easing, curve and offset
+                          * controls sit here, and the engine mode they follow is the first
+                          * thing this panel asks in PRO. */}
+                        <ProNote
+                            text={__('Scroll-tethered scrubbing that ties the draw to the scrollbar, easing and opacity curves, and a trigger offset that moves where the animation starts.', 'kinetichub')}
+                        />
                         
                     </PanelBody>
 
@@ -151,10 +149,12 @@ registerBlockType(metadata.name, {
                             <>
                                 
                                 
-                                <SelectControl label={__('Glow Intensity', 'kinetichub')} value={'low'} options={[{ label: __('Low', 'kinetichub'), value: 'low' }]} onChange={() => setAttributes({ glowIntensity: 'low' })} />
-                                <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic' }}>
-                                    {__('Available in KineticHub Pro.', 'kinetichub')}
-                                </p>
+                                {/* Only once the glow is switched on, where its two premium
+                                  * controls would be. No stand-in control: a select offering the
+                                  * value it already holds cannot do anything. */}
+                                <ProNote
+                                    text={__('Medium and High glow intensity, plus glow color modes — a white tint, or a soft mix with the line color.', 'kinetichub')}
+                                />
                                 
                             </>
                         )}
@@ -174,9 +174,11 @@ registerBlockType(metadata.name, {
 
                         
                         
-                        <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginTop: '10px' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        {/* After Device Visibility, which FREE keeps: everything PRO adds
+                          * here is the same question asked on a smaller screen. */}
+                        <ProNote
+                            text={__('Mobile handling for the divider — thinner, shorter or hidden on small screens — a static mobile version with no draw animation, and control over what visitors who prefer reduced motion see.', 'kinetichub')}
+                        />
                         
                     </PanelBody>
                 </InspectorControls>

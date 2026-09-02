@@ -75,6 +75,7 @@ $kh_box_inner_content = $content ?? '';
     $kh_box_hover_shadow_opacity   = max( 0, min( 1, (float) ( $attributes['hoverShadowOpacity'] ?? 0.2 ) ) );
     $kh_box_min_height             = max( 0, min( 2000, (int) ( $attributes['minHeight'] ?? 0 ) ) );
     $kh_box_box_width              = max( 0, min( 100, (int) ( $attributes['boxWidth'] ?? 0 ) ) );
+    $kh_box_mobile_box_width       = max( 0, min( 100, (int) ( $attributes['mobileBoxWidth'] ?? 0 ) ) );
 
     $kh_box_bring_to_front = ! empty( $attributes['bringToFront'] );
     $kh_box_zoom_images    = ! empty( $attributes['zoomImages'] );
@@ -94,6 +95,12 @@ $kh_box_inner_content = $content ?? '';
     $kh_box_url        = ! empty( $attributes['url'] ) ? esc_url_raw( $attributes['url'] ) : '';
     $kh_box_link_label = ! empty( $attributes['linkLabel'] ) ? sanitize_text_field( $attributes['linkLabel'] ) : '';
     $kh_box_link_rel   = ! empty( $attributes['linkRel'] ) ? sanitize_text_field( $attributes['linkRel'] ) : '';
+
+    // One source of truth for "this Box really is a link": a URL is set AND the
+    // Make Entire Box Clickable toggle is on. The state class, the hit-testing
+    // CSS it gates and the anchor below all read this same value, so the markup
+    // can never carry the class without the anchor or the anchor without the class.
+    $kh_box_has_stretched_link = ( ! empty( $kh_box_url ) && $kh_box_stretched_link );
 
     // Auto-add security rel for target="_blank" only if not already present
     if ( $kh_box_open_new_tab ) {
@@ -172,6 +179,10 @@ $kh_box_inner_content = $content ?? '';
         '--kh-box-zoom-int'     => (string) $kh_box_zoom_intensity,
         '--kh-box-min-h'        => $kh_box_min_height > 0 ? $kh_box_min_height . 'px' : 'auto',
         '--kh-box-w'            => $kh_box_box_width > 0 ? $kh_box_box_width . '%' : '100%',
+        // Mirrors --kh-box-w when no mobile override is set, so the variable is always
+        // resolvable. It is only ever read by the <=768px rule, and that rule is gated on
+        // kh-box-has-custom-mobile-width, which is emitted only when the override is > 0.
+        '--kh-box-m-w'          => $kh_box_mobile_box_width > 0 ? $kh_box_mobile_box_width . '%' : ( $kh_box_box_width > 0 ? $kh_box_box_width . '%' : '100%' ),
         '--kh-box-ml'           => $kh_box_margin_l,
         '--kh-box-mr'           => $kh_box_margin_r,
         '--kh-box-align-self'   => $kh_box_align_self,
@@ -191,6 +202,7 @@ $kh_box_inner_content = $content ?? '';
         array(
             'kh-box-wrapper',
             $kh_box_box_width > 0 ? 'kh-box-has-custom-width' : '',
+            $kh_box_mobile_box_width > 0 ? 'kh-box-has-custom-mobile-width' : '',
             'anim-' . $kh_box_animation_type,
             'kh-box-ease-' . $kh_box_easing,
             $kh_box_has_custom_bg ? 'kh-box-change-bg' : '',
@@ -202,6 +214,7 @@ $kh_box_inner_content = $content ?? '';
             $kh_box_bring_to_front ? 'kh-box-z-top' : '',
             $kh_box_hide_on_mobile ? 'kh-box-hide-mobile' : '',
             $kh_box_hide_on_desktop ? 'kh-box-hide-desktop' : '',
+            $kh_box_has_stretched_link ? 'kh-box-has-stretched-link' : '',
         )
     );
 
@@ -210,8 +223,19 @@ $kh_box_inner_content = $content ?? '';
     $kh_box_attrs = array(
         'class'          => implode( ' ', $kh_box_classes ),
         'style'          => trim( $kh_box_style_string ),
-        'role'           => ( ! empty( $kh_box_url ) && $kh_box_stretched_link ) ? 'link' : 'group',
-        'aria-label'     => ( ! empty( $kh_box_url ) && $kh_box_stretched_link && ! empty( $kh_box_link_label ) ) ? $kh_box_link_label : __( 'Interactive Content Box', 'kinetichub' ),
+        /*
+         * The wrapper is a container, never a second link.
+         *
+         * role="link" here announced the wrapper as a link while giving it no
+         * href and no tabindex, so it could be reached by a screen reader but
+         * never operated - and reusing linkLabel as its accessible name put the
+         * same name on two elements, one of which does nothing. The real
+         * .kh-box-stretched-link anchor rendered below is the only link
+         * semantics for the Box URL: it owns href, target, rel, the single Tab
+         * stop and linkLabel as its accessible name.
+         */
+        'role'           => 'group',
+        'aria-label'     => __( 'Interactive Content Box', 'kinetichub' ),
     );
 
     
@@ -229,7 +253,7 @@ $kh_box_inner_content = $content ?? '';
             ?>
         </div>
 
-        <?php if ( ! empty( $kh_box_url ) && $kh_box_stretched_link ) : ?>
+        <?php if ( $kh_box_has_stretched_link ) : ?>
             <a
                 href="<?php echo esc_url( $kh_box_url ); ?>"
                 class="kh-box-stretched-link"

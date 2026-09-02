@@ -113,6 +113,83 @@
 .kh-ss-indicator-wrap.has-percentage { padding: 12px 16px; }
 
 
+
+
+/*
+ * Continuous-motion control (B5-30 video, B5-31 Ken Burns).
+ *
+ * A full-bleed click-through layer, so the one sticky button stays reachable in
+ * both presentations: the desktop pinned layout, and the non-sticky mobile layout
+ * that hides .kh-ss-pinned-col outright. pointer-events is off for the layer and
+ * back on for the button alone, so nothing else in the block loses a click.
+ */
+.kh-ss-motion-control {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.kh-ss-motion-control.pos-right { align-items: flex-end; }
+
+/*
+ * Fail-closed presentation. A wrapper that claims a control presents none until
+ * view.js has proven the button works, so a script that never ran leaves no dead
+ * control - and, with no autoplay attribute in the markup, no motion either.
+ */
+.kh-ss-wrapper.kh-ss-has-motion-control:not(.kh-ss-motion-control-ready) .kh-ss-motion-control {
+    display: none;
+}
+
+/*
+ * The runtime withdraws an irrelevant control with the native hidden attribute,
+ * which takes the button out of sight, pointer, tab order and the accessibility
+ * tree together. The UA rule behind hidden is display:none in the user-agent
+ * origin, and the display:flex above is author origin, so hidden would otherwise
+ * do nothing at all here. This is the rule that makes the attribute mean what it
+ * says. FREE needs it as much as PRO, so it stays outside the premium markers.
+ */
+.kh-ss-motion-control[hidden] {
+    display: none;
+}
+
+.kh-ss-motion-toggle {
+    position: sticky;
+    top: calc(var(--kh-ss-offset, 0px) + 16px);
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    color: #111111;
+    line-height: 0;
+    cursor: pointer;
+}
+
+.kh-ss-motion-toggle:focus-visible {
+    outline: 2px solid var(--kh-ss-accent, #10b981);
+    outline-offset: 2px;
+}
+
+.kh-ss-motion-glyph { display: block; width: 18px; height: 18px; }
+.kh-ss-motion-toggle .kh-ss-motion-glyph-play { display: none; }
+.kh-ss-wrapper.kh-ss-motion-paused .kh-ss-motion-toggle .kh-ss-motion-glyph-pause { display: none; }
+.kh-ss-wrapper.kh-ss-motion-paused .kh-ss-motion-toggle .kh-ss-motion-glyph-play { display: block; }
+
 .kh-ss-progress-line {
     width: 4px;
     height: 150px;
@@ -199,13 +276,51 @@
         transition: opacity 0.8s ease !important; 
         transform: none !important;
     }
+    /*
+     * .js-ready hides this content (opacity: 0) and the fade observer that adds
+     * .is-visible is skipped in this mode, so the transform reset alone left the
+     * whole text column blank on desktop. Land it in the finished state instead.
+     */
     .kh-ss-wrapper.text-fx-fade-up.js-ready .kh-ss-scroll-col > * {
+        opacity: 1 !important;
         transform: none !important; 
     }
-    .kh-ss-media-layer, .kh-ss-media-layer.is-active {
-        transition: opacity 0.5s ease !important;
+
+    
+
+    /*
+     * Reduced motion keeps the media/section correspondence working but makes the
+     * swap instant. All four transition variants collapse onto one model here:
+     * opacity alone decides visibility, nothing transitions, and clip-path never
+     * hides a layer. The wipe/circle/diagonal variants park every layer at
+     * opacity 1 and hide with clip-path, so dropping clip-path without forcing
+     * opacity would leave all of them stacked and visible at once.
+     */
+    .kh-ss-media-layer {
+        opacity: 0 !important;
         clip-path: none !important;
+        transition: none !important;
     }
+    .kh-ss-media-layer.is-active {
+        opacity: 1 !important;
+    }
+    /*
+     * Media children ease transform over 1.5s normally. With active-state
+     * switching restored above, that would animate a scale on every swap.
+     */
+    .kh-ss-media-layer img, .kh-ss-media-layer video {
+        transition: none !important;
+        transform: scale(1) !important;
+    }
+
+    /*
+     * Nothing automatic is running in this mode: view.js never starts the videos,
+     * and the rule below already stops Ken Burns. A control offering to pause what
+     * is already stopped is noise, so it is hidden. Presentation only - the runtime
+     * still owns video state, and this is never the thing that pauses a video.
+     */
+    .kh-ss-motion-control { display: none; }
+
     
 }
 

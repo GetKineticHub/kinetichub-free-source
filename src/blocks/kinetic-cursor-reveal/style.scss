@@ -51,7 +51,22 @@
 
 
 
-.kh-cr-list { display: flex; flex-direction: column; width: 100%; text-align: inherit; }
+/*
+ * overflow-x: clip keeps the hover-scaled / magnetically nudged title from widening
+ * the document. clip (not hidden) leaves the Y axis genuinely visible instead of
+ * forcing it to auto, so nothing that legitimately grows downward is cut, and it
+ * creates no scroll container. The floating preview is never affected: in 'over'
+ * mode it is moved to document.body, and in 'under' mode it is a child of
+ * .kh-cr-wrapper - a sibling of this list, not a descendant.
+ */
+.kh-cr-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: inherit;
+    overflow-x: clip;
+    overflow-y: visible;
+}
 
 .kh-cr-item {
     position: relative; padding: var(--kh-cr-item-gap, 50px) 0; border-bottom: var(--kh-cr-item-border-w, 1px) solid var(--kh-cr-item-border-c, rgba(127,127,127,0.15));
@@ -143,6 +158,36 @@
     }
 }
 
+/*
+ * OVER mode (the default, and the only mode in FREE): view.js moves the box to
+ * document.body, so `body > .kh-cr-floating-box` selects exactly that case and
+ * nothing else. Before JS runs, and again after cleanupBlock puts the box back
+ * inside the wrapper, this does not match and the box stays absolute.
+ *
+ * Why fixed rather than absolute. The clamp in view.js bounds the box's own
+ * rotated layout envelope to the viewport, and that part is correct - but the box
+ * is overflow: visible, so anything that legitimately paints outside it still
+ * counted towards documentElement.scrollWidth: bg-glow's ::before at inset:-20px,
+ * sub-pixel rounding of the offsetWidth the clamp measures with, and any future
+ * decoration hung off the box. Each one produced a horizontal page scrollbar when
+ * the reveal was moved toward the right edge, and clamping harder would only ever
+ * chase them one at a time.
+ *
+ * A fixed-position box is attached to the viewport and is excluded from the
+ * document's scrollable overflow region, so no descendant of it can widen the page
+ * - the defect class is gone rather than bounded. Its ancestors are only body and
+ * html, and a fixed element is not clipped by their overflow, so this is also
+ * strictly less exposed than absolute was. view.js compensates by handing the
+ * transform viewport coordinates instead of page coordinates; the clamp itself is
+ * unchanged, so nothing moves on screen.
+ *
+ * The mobile [data-mobile-action="tap"] rule already used position: fixed and is
+ * unaffected: it is later, in a media query, and carries !important.
+ */
+body > .kh-cr-floating-box {
+    position: fixed;
+}
+
 /* --- REVEAL MASKS --- */
 .kh-cr-floating-box.mask-fade { clip-path: inset(0 0 0 0); }
 .kh-cr-floating-box.mask-circle { clip-path: circle(0.1% at 50% 50%); }
@@ -186,7 +231,13 @@
 
 @media (max-width: 768px) {
     .kh-cr-title { font-size: var(--kh-cr-font-mob); }
-    .kh-cr-item:hover .kh-cr-title { transform: translateX(10px) scale(1.05); }
+    /*
+     * Was a hardcoded scale(1.05), which overrode --kh-cr-scale entirely and pinned
+     * mobile hover to base + 5% (30px -> 31.5px) no matter what was configured.
+     * --kh-cr-scale-mob carries the same pixel delta as desktop: 30px -> 40px by default.
+     */
+    .kh-cr-item:hover .kh-cr-title { transform: translateX(10px) scale(var(--kh-cr-scale-mob, 1.333)); }
+    
     
     .kh-cr-floating-box[data-mobile-action="tap"] {
         position: fixed !important;
@@ -199,8 +250,18 @@
         z-index: 999999 !important;
     }
     
+    /*
+     * Every reveal mask - the default fade included - establishes a clip-path on
+     * .kh-cr-floating-box, and the close control is a descendant of that box, so
+     * the desktop overhang (top/right: -15px) is clipped away on the mobile tap
+     * path. Bring the control inside the box for this path only; the mask, its
+     * animation and the radius are untouched. (0,4,0) beats the base rule, so no
+     * !important is needed.
+     */
     .kh-cr-floating-box[data-mobile-action="tap"].is-active .kh-cr-close-btn {
         display: flex;
+        top: 8px;
+        right: 8px;
     }
 }
 
@@ -208,6 +269,42 @@
     .kh-cr-floating-box { display: none !important; }
     .kh-cr-title-wrapper { transition: none !important; transform: none !important; }
     .kh-cr-title { transform: none !important; transition: color 0.3s ease !important; }
-    
+
+    /*
+     * The floating reveal box is hidden just above, so the static per-item media is
+     * the only thing keeping the configured images/videos reachable. Ungated on
+     * purpose: this is the accessibility fallback, so it has to hold in FREE as well
+     * as PRO and for every mobileBehavior. It exposes no premium control - the PRO
+     * 'always' rule further up still governs normal motion and is untouched.
+     */
+    .kh-cr-wrapper .kh-cr-mobile-stack-media {
+        display: block;
+        margin-top: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    /*
+     * .kh-cr-link-overlay is absolute/inset:0/z-index:30 over the whole item and is
+     * meant to take pointer events, so it also covers the fallback media revealed
+     * above. The video is unpositioned, which left its native controls unclickable -
+     * and with preload="none" that made the media unreachable entirely.
+     *
+     * Scoped to video[controls] on purpose. It lifts only the element that actually
+     * needs the clicks: the img fallback stays under the link, so clicking the image
+     * still follows the item URL exactly like the title does, and the PRO 'always'
+     * video - which renders autoplay/loop with no controls attribute - is not
+     * matched and keeps its current click-through behaviour.
+     *
+     * position: relative adds no offset, so nothing moves. z-index 40 clears the
+     * overlay's 30 and stays inside .kh-cr-item's own stacking context (position:
+     * relative; z-index: 10), so it cannot escape past anything outside the item.
+     */
+    .kh-cr-wrapper .kh-cr-mobile-stack-media video[controls] {
+        position: relative;
+        z-index: 40;
+    }
+
     
 }

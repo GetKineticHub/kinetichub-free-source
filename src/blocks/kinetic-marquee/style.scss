@@ -22,10 +22,32 @@
     
 }
 
-.wp-block-post-content.has-global-padding > .kh-mq-marquee-container.alignfull {
-    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px));
-    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px));
-    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px));
+/* ==========================================================================
+   Full-width breakout, in three layers.
+
+   Layer 1 defeats the constrained-layout max-width and resets any positioning
+   a theme may have put on the block. It deliberately does NOT pin the margins
+   to 0: the Batch 2 draft did, with !important, which outranked core's own
+   `.has-global-padding > .alignfull` negative margins and cancelled the one
+   mechanism the platform provides. Width stays the base 100%, so with no
+   JavaScript the block can never be wider than its containing block and
+   cannot produce a horizontal scrollbar.
+
+   Layer 2 is the 1.0.x contract: compensate the root padding when the direct
+   parent actually carries it. Core adds .has-global-padding only where the
+   padding is genuinely applied, which is why that - and not .wp-site-blocks -
+   is the gate (see Hero Mesh style.scss, 1.0.13).
+
+   Layer 3 is the real fix. Layers 1 and 2 are percentage math, so they can
+   only ever fill the parent column; browser QA proved that insufficient once
+   the block sits anywhere deeper than a root-level constrained container.
+   view.js measures the actual viewport geometry for alignfull instances only
+   and writes it here. The width comes from document.documentElement.clientWidth,
+   which excludes a classic scrollbar by definition - unlike 100vw, which
+   includes it and is exactly how this used to grow the document. If the JS
+   never runs, .kh-mq-bleed is never added and layers 1-2 stand unchanged.
+   ========================================================================== */
+.kh-mq-marquee-container.alignfull {
     max-width: none;
     position: relative;
     left: auto;
@@ -34,6 +56,31 @@
     box-sizing: border-box;
 }
 
+.has-global-padding > .kh-mq-marquee-container.alignfull {
+    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px));
+    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px));
+    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px));
+    max-width: none;
+}
+
+/*
+ * Logical margins on purpose: rtlcss flips margin-left/right declarations but not
+ * their values, so a physical pair would be mirrored to the wrong side in the RTL
+ * stylesheet. margin-inline-* is already direction-relative and is left alone.
+ */
+.kh-mq-marquee-container.alignfull.kh-mq-bleed {
+    width: var(--kh-mq-bleed-w) !important;
+    max-width: var(--kh-mq-bleed-w) !important;
+    margin-inline-start: var(--kh-mq-bleed-s) !important;
+    margin-inline-end: 0 !important;
+}
+
+/*
+ * Editor: view.js does not run there, so .kh-mq-bleed never applies and the
+ * preview is layers 1-2 only - percentage math that cannot make the canvas
+ * scroll horizontally. This override stays for the non-iframed editor, where
+ * .block-editor-page is on the document that also holds the canvas.
+ */
 .block-editor-page .kh-mq-marquee-container.alignfull {
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -95,6 +142,164 @@
     animation-play-state: paused !important;
 }
 
+/*
+ * CSS-fallback slow.
+ *
+ * playbackRate is a WAAPI concept; a keyframe animation has only a duration, which is
+ * why hovering a marquee whose WAAPI creation failed used to do nothing at all. The
+ * value here is a concrete time view.js publishes at the moment it hands motion to
+ * this engine - no CSS time arithmetic, and nothing written on the normal path.
+ *
+ * --kh-mq-duration is untouched and remains the normal-speed contract: it is the
+ * fallback of the fallback, so a marquee that somehow carries the class without the
+ * property simply runs at normal speed rather than at the 30s keyword default. When
+ * the slow reason ends the class stops matching and the shorthand's value applies
+ * again, and cleanupBlock removes the property so a re-init starts clean.
+ *
+ * A longhand after the shorthand at higher specificity, so no !important is needed.
+ * On the WAAPI path `.js-anim-active` already sets `animation: none !important`, which
+ * neutralises this rule there. Direction-agnostic: the compiled LTR and RTL sheets
+ * carry the identical shorthand and keyframes.
+ */
+.kh-mq-marquee-container.is-slow-by-js .kh-mq-marquee-group {
+    animation-duration: var(--kh-mq-duration-slow, var(--kh-mq-duration, 30s));
+}
+
+/*
+ * Loop-seam geometry gate.
+ *
+ * Each group travels by translateX(-100%) - by ITS OWN current border-box width -
+ * so the seam is only correct while both groups measure the same, and an item's
+ * width is its image's width (height:100%/width:auto, no stored dimensions). Until
+ * view.js has resolved one intrinsic ratio per distinct image, that width is a
+ * moving target, so the CSS engine must not be running yet.
+ *
+ * Deliberately added by view.js and never by render.php: with scripting disabled
+ * the class is never applied at all and the CSS fallback runs exactly as it does
+ * today. view.js also removes it on every settle path - success, broken image, or
+ * a WAAPI failure that falls back to these keyframes - so nothing here can leave a
+ * marquee permanently static. No !important, so is-paused-by-js still wins.
+ */
+.kh-mq-marquee-container.is-geometry-pending .kh-mq-marquee-group {
+    animation-play-state: paused;
+}
+
+/*
+ * Control-readiness gate.
+ *
+ * Continuous motion with no way to stop it is the whole defect the pause control
+ * exists to close, so the motion must not begin before the control is proven usable.
+ * view.js adds .kh-mq-control-ready only once it has found the button and registered
+ * its handler; until then - and forever, if the script never loads or fails before
+ * that point - the keyframes stay parked and the page shows a static row of logos.
+ *
+ * Scoped to .kh-mq-has-motion-control, which only render.php emits. The Gutenberg
+ * preview builds its own class list without it, so an editor Marquee is never frozen
+ * by a readiness signal that only exists on the frontend.
+ *
+ * !important for the same reason the paused-by-js rule uses it: it has to outrank the
+ * animation shorthand on the group. No :has(), no second animation engine - this is
+ * the existing CSS engine, held at play-state paused.
+ */
+.kh-mq-marquee-container.kh-mq-has-motion-control:not(.kh-mq-control-ready) .kh-mq-marquee-group {
+    animation-play-state: paused !important;
+}
+
+/*
+ * The control itself.
+ *
+ * Hidden by default and revealed only by .kh-mq-control-ready - never by js-ready,
+ * which means "view.js started", not "the button works". A visible control that does
+ * nothing would be worse than no control at all.
+ *
+ * Absolutely positioned against the container, which has position:relative and no
+ * overflow of its own, so nothing here changes the wrapper height, the track width,
+ * the measured full-width bleed or the document's horizontal extent. Physical `left`
+ * rather than a logical inset: every existing overlay uses physical `right` or
+ * `left:50%`, so a logical property would flip this into the interaction indicator
+ * and the right-hand progress rail under RTL.
+ *
+ * No backdrop-filter. The indicator can afford one because it is transient; a control
+ * that is permanently visible over a continuously animating track would make the
+ * compositor recompute its backdrop every frame. A solid surface costs nothing and
+ * reads on light, dark and photographic backgrounds alike.
+ *
+ * Anchored to the bottom rather than the top, and 32px rather than 40px. The inner has
+ * 24px of vertical padding, so at bottom:8px the control reaches only 16px into the
+ * logo row instead of 26px, and it reaches the row's lower edge rather than crossing
+ * its centre. That 16px is arithmetic on the padding alone, so it holds at every item
+ * height. Bottom-LEFT specifically: the interaction indicator owns the top right and
+ * the right-hand progress rail runs down the full height of that side, both of which a
+ * bottom-right control would sit on top of.
+ *
+ * Size, not opacity: nothing here fades the control or reveals it on hover. A control a
+ * visitor cannot find is not a mechanism they can rely on, and 32px stays clear of the
+ * 24px minimum target size.
+ */
+.kh-mq-pause-toggle {
+    display: none;
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    z-index: 6;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.18);
+    background: rgba(255, 255, 255, 0.55);
+    color: rgba(15, 23, 42, 0.80);
+    cursor: pointer;
+    line-height: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.kh-mq-marquee-container.kh-mq-control-ready > .kh-mq-pause-toggle {
+    display: inline-flex;
+}
+
+.kh-mq-pause-toggle:hover {
+    background: rgba(255, 255, 255, 0.82);
+    color: #0f172a;
+}
+
+.kh-mq-pause-toggle:active {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.kh-mq-pause-toggle[aria-pressed="true"] {
+    border-color: rgba(15, 23, 42, 0.34);
+    color: #0f172a;
+}
+
+/* Never removed, only made explicit: the container sets outline:none on itself, and
+ * this control must not inherit that intent. Offset 2px rather than the 4px used on
+ * item links, so the ring is not cropped against the container edge. */
+.kh-mq-pause-toggle:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px #0f172a;
+}
+
+.kh-mq-glyph {
+    display: block;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+}
+
+/* State is carried by aria-pressed and mirrored by the glyph - never by colour alone.
+ * Not pressed: the action offered is Pause. Pressed: the action offered is Play. */
+.kh-mq-pause-toggle .kh-mq-glyph-play { display: none; }
+.kh-mq-pause-toggle[aria-pressed="true"] .kh-mq-glyph-pause { display: none; }
+.kh-mq-pause-toggle[aria-pressed="true"] .kh-mq-glyph-play { display: block; }
+
 @media (prefers-reduced-motion: reduce) {
     .kh-mq-marquee-group { animation: none !important; }
     .kh-mq-marquee-inner { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
@@ -102,7 +307,42 @@
     .kh-mq-marquee-container.has-progress-rail .kh-mq-progress-rail,
     .kh-mq-marquee-container.has-interaction-indicator .kh-mq-interaction-indicator,
     .kh-mq-marquee-container.has-active-center-highlight .kh-mq-center-focus-zone { display: none !important; }
+
+    /* There is no automatic motion to control here, so the control would be a button
+     * that does nothing. display:none also takes it out of the tab order, so it costs
+     * a keyboard user nothing either. !important because the readiness rule that shows
+     * it is more specific. The horizontal-scroll fallback above is untouched. */
+    .kh-mq-marquee-container .kh-mq-pause-toggle { display: none !important; }
 }
+
+/*
+ * Auto Motion off.
+ *
+ * The same static presentation the reduced-motion block above already defines, reached
+ * by a different route: there it is the visitor's system setting, here it is the
+ * author's choice, and the end state has to be one thing rather than two.
+ *
+ * overflow-x: auto is not cosmetic here. The track carries thirty-odd repetitions of
+ * the gallery inside an inner that normally clips them, so simply stopping the movement
+ * would leave every logo past the first screenful permanently unreachable. Manual
+ * horizontal scrolling with snap points is what makes a still marquee usable content
+ * rather than a cropped one.
+ *
+ * kh-mq-static is written by render.php, so it is on the element at first paint: the
+ * keyframes never start, and there is no flash of motion for view.js to catch. The
+ * container-scoped selectors, rather than the media query's bare ones, are the only
+ * real difference - this describes one instance, not the whole page.
+ */
+.kh-mq-marquee-container.kh-mq-static .kh-mq-marquee-group { animation: none !important; }
+.kh-mq-marquee-container.kh-mq-static .kh-mq-marquee-inner { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+.kh-mq-marquee-container.kh-mq-static .kh-mq-marquee-item { scroll-snap-align: start; }
+
+/* All three of these report on movement - a progress position, a running/paused state,
+ * a centre the track is carrying items through - so with nothing moving they report on
+ * nothing. The logos themselves are untouched. */
+.kh-mq-marquee-container.kh-mq-static.has-progress-rail .kh-mq-progress-rail,
+.kh-mq-marquee-container.kh-mq-static.has-interaction-indicator .kh-mq-interaction-indicator,
+.kh-mq-marquee-container.kh-mq-static.has-active-center-highlight .kh-mq-center-focus-zone { display: none !important; }
 
 .kh-mq-marquee-item {
     flex-shrink: 0;
@@ -120,7 +360,40 @@
     transform: translate3d(0,0,0);
 }
 
-.kh-mq-marquee-item img {
+/*
+ * render.php and the editor preview both emit exactly ONE div here, and it only
+ * carries .kh-mq-marquee-frame when Show Frame is on - with the frame off it is
+ * `<div class="">` with no height of its own.
+ *
+ * A block box at height:auto is not a definite containing block, so with the frame
+ * off `height: 100%` on the <a> and on the image both computed to auto and the logo
+ * fell back to its natural size, ignoring Logo Height. Giving that div the height
+ * its framed sibling already declares closes the chain for all four combinations of
+ * frame and link, which is what lets view.js reserve a clone's width from an aspect
+ * ratio before its image has loaded.
+ *
+ * Same value the frame already sets, so the framed path is unaffected. No padding
+ * or box-sizing is added: the unframed div has neither, and the frame keeps its own.
+ */
+.kh-mq-marquee-item-inner > div {
+    height: 100%;
+}
+
+/*
+ * Scoped through the container on purpose. Themes commonly ship a generic
+ * `.alignfull img { width: 100vw; }` rule, and the Marquee root is itself alignfull,
+ * so that rule matched these logos at (0,1,1) - the same specificity a bare
+ * `.kh-mq-marquee-item img` carries. The theme stylesheet loads later, so the tie
+ * handed it `width`, every logo became viewport-wide, and the frame padding on top
+ * of that left roughly one item visible per screen.
+ *
+ * Adding the container ancestor raises this to (0,2,1), which beats the generic rule
+ * outright without !important and without naming any theme. The sizing model is
+ * unchanged: height comes from the configured item/logo height, width stays `auto` so
+ * it follows the intrinsic aspect ratio, and --kh-mq-max-w still caps it. Every image
+ * state rule below is (0,3,1) or higher and is unaffected.
+ */
+.kh-mq-marquee-container .kh-mq-marquee-item img {
     height: 100%;
     width: auto;
     display: block;

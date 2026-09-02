@@ -15,6 +15,10 @@ import { __ } from '@wordpress/i18n';
 
 import { KineticVisibilityControls } from '../../components/VisibilityControls';
 import { KineticEditorNotice } from '../../components/EditorNotice';
+import { InspectorHelp, labelWithHelp } from '../../components/InspectorUX';
+
+import { ProNote } from '../../components/InspectorUX';
+
 
 import metadata from './block.json';
 import './style.scss';
@@ -38,7 +42,7 @@ registerBlockType(metadata.name, {
             shadowSoftness, mobileShadowSoftness, shadowOpacity, hoverShadowOpacity, 
             shadowColor, hoverShadowColor, hoverBgColor, hoverBorderColor, hoverTextColor,
             url, linkLabel, openInNewTab, linkRel, stretchedLink, hideOnMobile, hideOnDesktop,
-            tiltEffect, magneticHover, enableParallax, minHeight, boxWidth, boxAlign, hAlign, vAlign,
+            tiltEffect, magneticHover, enableParallax, minHeight, boxWidth, mobileBoxWidth, boxAlign, hAlign, vAlign,
             spotlightGlow, spotlightColor, spotlightSize, filmGrain, grainOpacity, idleLevitation, crispEdge, edgeColor
         } = attributes;
 
@@ -108,6 +112,9 @@ registerBlockType(metadata.name, {
             '--kh-box-zoom-int': zoomIntensity,
             '--kh-box-min-h': minHeight > 0 ? `${minHeight}px` : 'auto',
             '--kh-box-w': boxWidth > 0 ? `${boxWidth}%` : '100%',
+            // Mirrors --kh-box-w when no mobile override is set. Only the <=768px rule reads
+            // it, and that rule is gated on kh-box-has-custom-mobile-width below.
+            '--kh-box-m-w': mobileBoxWidth > 0 ? `${mobileBoxWidth}%` : (boxWidth > 0 ? `${boxWidth}%` : '100%'),
             '--kh-box-ml': marginL,
             '--kh-box-mr': marginR,
             '--kh-box-align-self': alignSelf,
@@ -121,6 +128,7 @@ registerBlockType(metadata.name, {
         const classes = [
             'kh-box-wrapper', 'kh-box-editor-preview', 'is-editor-canvas',
             boxWidth > 0 ? 'kh-box-has-custom-width' : '',
+            mobileBoxWidth > 0 ? 'kh-box-has-custom-mobile-width' : '',
             `anim-${animationType}`, `kh-box-ease-${easing}`,
             hasCustomBg ? 'kh-box-change-bg' : '',
             hasCustomText ? 'kh-box-change-text' : '',
@@ -153,30 +161,39 @@ registerBlockType(metadata.name, {
 
                 <InspectorControls>
                     <PanelBody title={__('⚡ Quick Presets', 'kinetichub')} initialOpen={true}>
-                        <SelectControl 
-                            label={__('Style Preset', 'kinetichub')} 
-                            value={preset} 
-                            onChange={applyPreset} 
-                            help={__('Automatically overwrites padding, shadows, and physics with professionally calibrated math.', 'kinetichub')}
-                            options={presetOptions} 
+                        <SelectControl
+                            label={labelWithHelp(__('Style Preset', 'kinetichub'), __('Applies a matched set of interaction, shadow and hover-colour values to the panels below, overwriting whatever is already set there. Anything you change afterwards is kept, so the name shown here is a starting point rather than a live description. Reset Block returns the same settings to their defaults.', 'kinetichub'))}
+                            value={preset}
+                            onChange={applyPreset}
+                            options={presetOptions}
                         />
                         <Button isDestructive variant="secondary" onClick={() => applyPreset('reset')} style={{width: '100%', justifyContent:'center'}}>{__('Reset Block', 'kinetichub')}</Button>
+
+                        
+                        <ProNote
+                            text={__('Three further presets configure the box in a single step: Frosted Glass for a blurred translucent panel, Tech Trace for a border that draws itself on hover, and Kinetic 3D for a pointer-driven tilt with parallax inner content.', 'kinetichub')}
+                        />
+                        
                     </PanelBody>
 
                     <PanelBody title={__('📐 Layout & Size', 'kinetichub')} initialOpen={false}>
-                        <RangeControl 
-                            label={__('Box Width (%)', 'kinetichub')} 
-                            value={boxWidth} 
-                            onChange={(v)=>setAttributes({boxWidth:v})} 
-                            min={0} max={100} step={1} 
-                            help={__('Set to 0 to automatically expand to 100% width.', 'kinetichub')} 
+                        <RangeControl
+                            label={labelWithHelp(__('Box Width (%)', 'kinetichub'), __('Width of the box as a percentage of the space it sits in. 0 lets it fill that space. Any value above 0 is enforced over the theme layout, including over a full-width alignment.', 'kinetichub'))}
+                            value={boxWidth}
+                            onChange={(v)=>setAttributes({boxWidth:v})}
+                            min={0} max={100} step={1}
                         />
-                        <RangeControl 
-                            label={__('Minimum Height (px)', 'kinetichub')} 
-                            value={minHeight} 
-                            onChange={(v)=>setAttributes({minHeight:v})} 
-                            min={0} max={1000} step={10} 
-                            help={__('Enforces a strict minimum height for the container. Useful for maintaining symmetry in multi-column grid layouts.', 'kinetichub')} 
+                        <RangeControl
+                            label={labelWithHelp(__('Mobile Width (%)', 'kinetichub'), __('Optional width override at 768px and under. 0 keeps the desktop Box Width; any value above 0 sets a separate mobile width, using the same alignment as the desktop box.', 'kinetichub'))}
+                            value={mobileBoxWidth}
+                            onChange={(v)=>setAttributes({mobileBoxWidth:v})}
+                            min={0} max={100} step={1}
+                        />
+                        <RangeControl
+                            label={labelWithHelp(__('Minimum Height (px)', 'kinetichub'), __('A floor for the height of the box: it still grows past this to fit its content. Useful for keeping boxes level across a row of columns whose text runs to different lengths. 0 removes the floor.', 'kinetichub'))}
+                            value={minHeight}
+                            onChange={(v)=>setAttributes({minHeight:v})}
+                            min={0} max={1000} step={10}
                         />
                     </PanelBody>
 
@@ -238,18 +255,18 @@ registerBlockType(metadata.name, {
                     
                     
                     <PanelBody title={__('🧠 Kinetic Physics', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('Pointer-driven motion for the whole box: a 3D tilt that tracks the cursor across its surface, a magnetic hover that lets the box follow the cursor, and inner parallax layers that move the content against the tilt for depth.', 'kinetichub')}
+                        />
                     </PanelBody>
                     
 
                     
                     
                     <PanelBody title={__('✨ Smart Addons', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>
-                            {__('Available in KineticHub Pro.', 'kinetichub')}
-                        </p>
+                        <ProNote
+                            text={__('Atmosphere layers over the box: a spotlight glow that follows the cursor, cinematic film grain with its own opacity, an idle levitation that keeps the box breathing while nobody is interacting with it, and a crisp inner 3D edge in a colour of your choosing.', 'kinetichub')}
+                        />
                     </PanelBody>
                     
 
@@ -272,8 +289,8 @@ registerBlockType(metadata.name, {
                                                 </div>
                                             ) : (
                                                 <>
-                                                    <SelectControl 
-                                                        label={__('Hover Interaction Type', 'kinetichub')} 
+                                                    <SelectControl
+                                                        label={labelWithHelp(__('Hover Interaction Type', 'kinetichub'), __('What the box does while the pointer is over it. Lift raises it, Scale grows it slightly, Tilt rotates it on both axes. Effect Intensity below drives whichever one is chosen.', 'kinetichub'))}
                                                         value={animationType} 
                                                         options={animOptions} 
                                                         onChange={(v) => setAttributes({ animationType: v })} 
@@ -281,15 +298,20 @@ registerBlockType(metadata.name, {
                                                     
                                                     {animationType !== 'none' && animationType !== 'trace' && animationType !== 'shine' && (
                                                         <>
-                                                            <RangeControl label={__('Effect Intensity (Desktop)', 'kinetichub')} value={hoverIntensity} onChange={(v) => setAttributes({ hoverIntensity: v })} min={0} max={30} />
-                                                            <RangeControl label={__('Effect Intensity (Mobile)', 'kinetichub')} value={mobileIntensity} onChange={(v) => setAttributes({ mobileIntensity: v })} min={0} max={30} />
+                                                            <RangeControl label={labelWithHelp(__('Effect Intensity (Desktop)', 'kinetichub'), __('A single strength figure whose meaning follows the interaction type: for Lift it is the travel in pixels, for Scale and Tilt it is scaled down into a small growth or a few degrees of rotation. 0 leaves the box still.', 'kinetichub'))} value={hoverIntensity} onChange={(v) => setAttributes({ hoverIntensity: v })} min={0} max={30} />
+                                                            <RangeControl label={labelWithHelp(__('Effect Intensity (Mobile)', 'kinetichub'), __('Replaces the desktop figure at 768px and under, for the same hover interaction.', 'kinetichub'))} value={mobileIntensity} onChange={(v) => setAttributes({ mobileIntensity: v })} min={0} max={30} />
                                                         </>
                                                     )}
                                                 </>
                                             )}
 
-                                            <RangeControl label={__('Transition Speed (s)', 'kinetichub')} value={transitionSpeed} onChange={(v) => setAttributes({ transitionSpeed: v })} min={0.1} max={2.0} step={0.1} />
+                                            <RangeControl label={labelWithHelp(__('Transition Speed (s)', 'kinetichub'), __('How long the box takes to settle into its hover state and back. The slider is remapped before it reaches the CSS so that very short values cannot fight the pointer: the bottom of the range runs at 0.6s and the top at 2s, rising evenly in between.', 'kinetichub'))} value={transitionSpeed} onChange={(v) => setAttributes({ transitionSpeed: v })} min={0.1} max={2.0} step={0.1} />
                                             
+                                            
+                                            
+                                            <ProNote
+                                                text={__('Three more hover types here - Trace, which draws the border on, plus Shine and Sink - along with bouncy and snappy easing curves, a rotation angle to add to Lift and Scale, a hover text colour in the Paint tab and a separate shadow softness for phones in the Depth tab. The box can also animate in the first time it scrolls into view.', 'kinetichub')}
+                                            />
                                             
 
                                             <ToggleControl 
@@ -306,10 +328,16 @@ registerBlockType(metadata.name, {
                                             <p style={{ fontWeight: 'bold', fontSize: '13px', marginBottom: '5px' }}>{__('Base Shadow Color', 'kinetichub')}</p>
                                             <ColorPalette value={shadowColor} onChange={(v) => setAttributes({ shadowColor: v })} enableAlpha={true} />
                                             <RangeControl label={__('Shadow Opacity', 'kinetichub')} value={shadowOpacity} onChange={(v) => setAttributes({ shadowOpacity: v })} min={0} max={1} step={0.05} />
-                                            <RangeControl label={__('Blur / Softness (Desktop)', 'kinetichub')} value={shadowSoftness} onChange={(v) => setAttributes({ shadowSoftness: v })} min={0} max={100} />
+                                            <RangeControl label={labelWithHelp(__('Blur / Softness (Desktop)', 'kinetichub'), __('Blur radius of the shadow in pixels. The same figure is used for the resting shadow and the hover shadow, which differ only in colour, opacity and how far they are cast.', 'kinetichub'))} value={shadowSoftness} onChange={(v) => setAttributes({ shadowSoftness: v })} min={0} max={100} />
                                             
                                             <hr style={{margin: '20px 0'}} />
-                                            <p style={{ fontWeight: 'bold', fontSize: '13px', marginBottom: '5px' }}>{__('Hover Shadow Color', 'kinetichub')}</p>
+                                            <p style={{ fontWeight: 'bold', fontSize: '13px', marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+                                                {__('Hover Shadow Color', 'kinetichub')}
+                                                <InspectorHelp
+                                                    label={__('Hover Shadow Color', 'kinetichub')}
+                                                    text={__('Colour of the shadow while the pointer is over the box. Outer Glow Effect, in Advanced Visuals, also draws its halo in this colour.', 'kinetichub')}
+                                                />
+                                            </p>
                                             <ColorPalette value={hoverShadowColor} onChange={(v) => setAttributes({ hoverShadowColor: v })} enableAlpha={true} />
                                             <RangeControl label={__('Hover Shadow Opacity', 'kinetichub')} value={hoverShadowOpacity} onChange={(v) => setAttributes({ hoverShadowOpacity: v })} min={0} max={1} step={0.05} />
                                         </div>
@@ -336,18 +364,23 @@ registerBlockType(metadata.name, {
                     </PanelBody>
 
                     <PanelBody title={__('✨ Advanced Visuals', 'kinetichub')} initialOpen={false}>
-                        <ToggleControl label={__('Zoom Inner Content', 'kinetichub')} checked={zoomImages} onChange={(v)=>setAttributes({zoomImages:v})} />
+                        <ToggleControl label={labelWithHelp(__('Zoom Inner Content', 'kinetichub'), __('Scales images on hover. It reaches only the direct children of the box, so an image sitting inside a nested group or column is not affected.', 'kinetichub'))} checked={zoomImages} onChange={(v)=>setAttributes({zoomImages:v})} />
                         {zoomImages && (
                             <div style={{ background: '#f8f9fa', padding: '10px', borderRadius: '4px', marginBottom: '15px' }}>
                                 <RangeControl label={__('Zoom Intensity', 'kinetichub')} value={zoomIntensity} onChange={(v)=>setAttributes({zoomIntensity:v})} min={1.02} max={1.50} step={0.02} />
                             </div>
                         )}
-                        <ToggleControl label={__('Outer Glow Effect', 'kinetichub')} checked={hasGlow} onChange={(v)=>setAttributes({hasGlow:v})} />
-                        <ToggleControl label={__('Grayscale to Color', 'kinetichub')} checked={isGrayscale} onChange={(v)=>setAttributes({isGrayscale:v})} />
+                        <ToggleControl label={labelWithHelp(__('Outer Glow Effect', 'kinetichub'), __('Replaces the hover shadow with a wide coloured halo around the box, drawn in the Hover Shadow Color from the Depth tab. The softness and opacity set there do not apply to the halo.', 'kinetichub'))} checked={hasGlow} onChange={(v)=>setAttributes({hasGlow:v})} />
+                        <ToggleControl label={labelWithHelp(__('Grayscale to Color', 'kinetichub'), __('The box and everything in it sit desaturated at rest and return to full colour on hover.', 'kinetichub'))} checked={isGrayscale} onChange={(v)=>setAttributes({isGrayscale:v})} />
                         
+                        
+                        
+                        <ProNote
+                            text={__('Glassmorphism as well: the background of the box becomes a translucent white layer over a backdrop blur, with the opacity of the layer and the strength of the blur both adjustable.', 'kinetichub')}
+                        />
                         
                     </PanelBody>
-                    
+
                     <KineticVisibilityControls attributes={attributes} setAttributes={setAttributes} />
                 </InspectorControls>
 

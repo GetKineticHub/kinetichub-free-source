@@ -22,6 +22,7 @@ It is designed for sponsor strips, partner logos, client logos, product highligh
 - Open in new tab option for links
 
 ### Movement Controls
+- Auto Motion toggle
 - Speed control
 - Reverse direction control
 - Pause on hover
@@ -91,6 +92,7 @@ The block includes controls for marquee motion.
 
 Available movement settings include:
 
+- Auto Motion: turns the automatic movement on or off. It is on by default. With it off the marquee becomes a still row of images that visitors can scroll through by hand.
 - Speed: controls how quickly the track scrolls.
 - Reverse direction: changes the scroll direction.
 - Pause on hover: stops the marquee while the visitor hovers over it.
@@ -165,9 +167,13 @@ The open in new tab option applies to item links when enabled.
 
 Kinetic Marquee is built with accessibility in mind.
 
-The block uses a semantic group structure and hides decorative duplicate tracks from assistive technologies so screen readers do not announce repeated content unnecessarily.
+The marquee repeats each image many times so the loop never runs dry. Each image you added is exposed to assistive technologies once, and reaches the keyboard once; every repeated visual copy is hidden from screen readers and removed from tab order, while staying clickable with a mouse.
+
+Each item has its own Image description, filled in from the Media Library and editable per item. Leaving it blank marks an unlinked image as decorative. An item that has a destination link always keeps an accessible name: if its description is blank, the link is named after its destination address instead.
 
 When linked items receive keyboard focus, the marquee can pause to help keyboard users interact with the content.
+
+Every automatically moving marquee on the front end carries one small Pause control in its bottom left corner, usable with a mouse, a keyboard or a tap. A pause a visitor asks for that way stays until they press the control again: moving the pointer away, moving keyboard focus elsewhere, or scrolling the marquee off screen and back does not restart it. Temporary pauses from hover, focus or leaving the viewport work exactly as before and do not affect that setting. The control belongs to automatic movement, so it appears only where there is movement to stop: turning Auto Motion off, or a visitor having Reduced Motion enabled, leaves a still marquee and no control.
 
 When a visitor has reduced motion enabled in their operating system, motion-heavy behavior is reduced for a more comfortable browsing experience.
 

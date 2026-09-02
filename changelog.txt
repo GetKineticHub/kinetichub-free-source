@@ -1,10 +1,21 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.0.14
+Current Version: 1.1.0
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.1.0] - 2026-09-01
+----------------------------------------------------------------------
+- Added Kinetic Scroll Progress with horizontal and vertical progress indicators, heading milestones, responsive positioning, and label controls.
+- Improved Marquee motion controls with persistent Pause/Resume behavior, keyboard handling, reduced-motion support, and more reliable lifecycle cleanup.
+- Improved Split Scroll responsive behavior, indicators, RTL support, keyboard interaction, and reduced-motion handling.
+- Improved Kinetic Typography animation lifecycle and off-screen rendering performance.
+- Standardized editor notices across KineticHub blocks through shared reusable handling.
+- Improved Audio Player compatibility with theme range-input styles, including stable sticky/floating volume controls.
+- Improved cross-theme and responsive behavior across Magnetic Button, Video Modal, Cursor Reveal, Before/After, Kinetic Box, and other affected blocks.
+- Updated the KineticHub Free dashboard and block discovery experience for the 13-block collection.
 ----------------------------------------------------------------------
 ## [1.0.14] - 2026-08-11
 ----------------------------------------------------------------------

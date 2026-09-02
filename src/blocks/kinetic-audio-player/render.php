@@ -116,27 +116,38 @@ $kh_ap_css_vars = sprintf(
 	$kh_ap_is_compact ? 'center' : $kh_ap_align
 );
 
-if ( $kh_ap_entrance_delay > 0 ) {
-	$kh_ap_css_vars .= sprintf( ' animation-delay: %ss;', $kh_ap_entrance_delay );
-}
-
 $kh_ap_wrapper_classes = array_filter(
 	array(
 		'kh-ap-wrapper',
 		$kh_ap_block_id,
-		'none' !== $kh_ap_entrance_anim ? 'kh-entrance anim-' . $kh_ap_entrance_anim : '',
+		// Entrance is driven solely by [data-entrance] + .kh-animated (view.js IntersectionObserver).
+		// No generic anim-* class here: it matched the globally enqueued .anim-fade/.anim-slide/
+		// .anim-zoom rules, which fired their own 0.8s forwards animation at page load and
+		// revealed the player before the observer ever ran.
+		'none' !== $kh_ap_entrance_anim ? 'kh-entrance' : '',
 		$kh_ap_hide_mobile ? 'kh-hide-mobile' : '',
 		$kh_ap_hide_desktop ? 'kh-hide-desktop' : '',
 	)
 );
 
+$kh_ap_wrapper_style = sprintf(
+	'display: flex; justify-content: %s; align-items: center; width: 100%%; position: relative; z-index: 20;',
+	$kh_ap_align
+);
+
+// The entrance keyframes run on the wrapper (.kh-ap-wrapper[data-entrance].kh-animated),
+// so animation-delay has to be declared here. It used to be appended to $kh_ap_css_vars,
+// which is printed on the inner .kh-ap-button: animation-delay does not inherit, so the
+// delay never reached the entrance animation at all, and in PRO it silently delayed the
+// sticky/floating keyframes that DO live on that button instead.
+if ( 'none' !== $kh_ap_entrance_anim && $kh_ap_entrance_delay > 0 ) {
+	$kh_ap_wrapper_style .= sprintf( ' animation-delay: %ss;', number_format( $kh_ap_entrance_delay, 2, '.', '' ) );
+}
+
 $kh_ap_wrapper_attrs = get_block_wrapper_attributes(
 	array(
 		'class'        => implode( ' ', $kh_ap_wrapper_classes ),
-		'style'        => sprintf(
-			'display: flex; justify-content: %s; align-items: center; width: 100%%; position: relative; z-index: 20;',
-			$kh_ap_align
-		),
+		'style'        => $kh_ap_wrapper_style,
 		'data-block-id'  => $kh_ap_block_id,
 		'data-entrance'  => 'none' !== $kh_ap_entrance_anim ? $kh_ap_entrance_anim : null,
 		'role'           => 'group',

@@ -14,7 +14,6 @@ import {
     SelectControl,
     TabPanel,
     TextControl,
-    Notice,
     Button
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -25,6 +24,10 @@ import { KineticVisibilityControls } from '../../components/VisibilityControls';
 import { KineticLinkControls } from '../../components/LinkControls';
 import { KineticBorderControls } from '../../components/BorderControls';
 import { KineticEditorNotice } from '../../components/EditorNotice';
+import { InspectorHelp, InspectorNotice, labelWithHelp } from '../../components/InspectorUX';
+
+import { ProNote } from '../../components/InspectorUX';
+
 
 import metadata from './block.json';
 
@@ -362,7 +365,7 @@ registerBlockType(metadata.name, {
 
         const wrapperProps = useBlockProps({
             className: 'kh-mb-wrapper',
-            style: { justifyContent: alignmentMap[align] || 'center' }
+            style: { flexWrap: 'wrap', justifyContent: alignmentMap[align] || 'center' }
         });
 
         const btnClasses = [
@@ -404,22 +407,21 @@ registerBlockType(metadata.name, {
                 <InspectorControls>
                     <PanelBody title={<PanelTitle icon={colorsIcon} text={__('Colors & Styling', 'kinetichub')} />} initialOpen={true}>
                         <ToggleControl
-                            label={__('Outline Mode (Transparent)', 'kinetichub')}
+                            label={labelWithHelp(__('Outline Mode (Transparent)', 'kinetichub'), __('Empties the fill and draws the button as an outline: the background colour becomes both the border and the label colour, and a border width of 0 is raised to 2px. Text colour, glassmorphism, the shadow panel and the border panel are hidden while it is on, because none of them apply.', 'kinetichub'))}
                             checked={isOutline}
                             onChange={(value) => setAttributes({ isOutline: value })}
-                            help={__('Automatically converts the button to an outline style using the background color as the border.', 'kinetichub')}
                         />
 
                         {hasLowNormalContrast && (
-                            <Notice status="warning" isDismissible={false}>
+                            <InspectorNotice>
                                 {__('Low contrast: normal button text may be hard to read. Aim for at least 4.5:1.', 'kinetichub')}
-                            </Notice>
+                            </InspectorNotice>
                         )}
 
                         {hasLowHoverContrast && (
-                            <Notice status="warning" isDismissible={false}>
+                            <InspectorNotice>
                                 {__('Low contrast: hover button text may be hard to read. Aim for at least 4.5:1.', 'kinetichub')}
-                            </Notice>
+                            </InspectorNotice>
                         )}
 
                         {!isOutline && (
@@ -465,8 +467,12 @@ registerBlockType(metadata.name, {
                                 <div style={{ marginTop: '15px' }}>
                                     {tab.name === 'normal' && (
                                         <>
-                                            <p style={{ marginBottom: '5px', fontWeight: 'bold' }}>
+                                            <p style={{ marginBottom: '5px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
                                                 {isOutline ? __('Primary Brand Color', 'kinetichub') : __('Background Color', 'kinetichub')}
+                                                <InspectorHelp
+                                                    label={isOutline ? __('Primary Brand Color', 'kinetichub') : __('Background Color', 'kinetichub')}
+                                                    text={__('One colour drives several parts of the button. In normal mode it fills it; in Outline Mode it becomes the border and the label instead. It is also the colour of the pulse ring, in either mode.', 'kinetichub')}
+                                                />
                                             </p>
                                             <ColorPalette value={bgColor} onChange={(value) => setAttributes({ bgColor: value })} enableAlpha={true} />
 
@@ -477,7 +483,7 @@ registerBlockType(metadata.name, {
                                                     </p>
                                                     <ColorPalette value={textColor} onChange={(value) => setAttributes({ textColor: value })} enableAlpha={true} />
                                                     <ToggleControl
-                                                        label={__('Glassmorphism (Blur BG)', 'kinetichub')}
+                                                        label={labelWithHelp(__('Glassmorphism (Blur BG)', 'kinetichub'), __('Drops the solid fill and blurs whatever sits behind the button by 12px instead. The hover background override is not painted while this is on, so plan the hover state around the text and border colours.', 'kinetichub'))}
                                                         checked={glassmorphism}
                                                         onChange={(value) => setAttributes({ glassmorphism: value })}
                                                     />
@@ -485,7 +491,7 @@ registerBlockType(metadata.name, {
                                             )}
 
                                             <ToggleControl
-                                                label={__('Pulse Animation', 'kinetichub')}
+                                                label={labelWithHelp(__('Pulse Animation', 'kinetichub'), __('A ring that expands out of the button every two seconds to draw the eye, in the background colour. It is drawn as a box shadow, so it replaces the configured shadow for as long as it runs, and it stops while the pointer is over the button. Visitors who ask for reduced motion never see it.', 'kinetichub'))}
                                                 checked={enablePulse}
                                                 onChange={(value) => setAttributes({ enablePulse: value })}
                                             />
@@ -494,8 +500,12 @@ registerBlockType(metadata.name, {
 
                                     {tab.name === 'hover' && (
                                         <>
-                                            <p style={{ marginBottom: '5px', fontWeight: 'bold' }}>
+                                            <p style={{ marginBottom: '5px', fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
                                                 {__('Hover Background Override', 'kinetichub')}
+                                                <InspectorHelp
+                                                    label={__('Hover Background Override', 'kinetichub')}
+                                                    text={__('Left empty, an outline button fills with its brand colour on hover and a solid button keeps its normal fill. The colour is painted by an overlay layer inside the button, which glassmorphism turns transparent, so the two do not combine.', 'kinetichub')}
+                                                />
                                             </p>
                                             <ColorPalette value={bgHoverColor} onChange={(value) => setAttributes({ bgHoverColor: value })} enableAlpha={true} />
 
@@ -507,16 +517,16 @@ registerBlockType(metadata.name, {
                                             <hr />
 
                                             
-                                            <p style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic', marginTop: '10px' }}>
-                                                {__('This free build includes the core hover effect. Additional hover styles are reserved for the commercial edition.', 'kinetichub')}
-                                            </p>
+                                            <ProNote
+                                                text={__('Ten further hover treatments in place of the plain colour fade - a glass shine, four directional sweeps, a float, a tactile press, a sonar ripple, a glitch and an inner outline reveal - plus a neon glow that pulses around the button and a ghost mode that hollows the label out on hover.', 'kinetichub')}
+                                            />
                                             
 
                                             
 
                                             {hoverEffect !== 'lift-up' && (
                                                 <ToggleControl
-                                                    label={__('Scale Up on Hover', 'kinetichub')}
+                                                    label={labelWithHelp(__('Scale Up on Hover', 'kinetichub'), __('Grows the button to 105% while the pointer is over it, and on keyboard focus as well. A press always dips it to 93%, whether this is on or not.', 'kinetichub'))}
                                                     checked={hoverScale}
                                                     onChange={(value) => setAttributes({ hoverScale: value })}
                                                 />
@@ -534,19 +544,18 @@ registerBlockType(metadata.name, {
                                 {__('Font Size (Custom Override)', 'kinetichub')}
                             </p>
                             <RangeControl
-                                label={__('Desktop Size', 'kinetichub')}
+                                label={labelWithHelp(__('Desktop Size', 'kinetichub'), __('Label size in pixels. 0 hands the size back to the theme.', 'kinetichub'))}
                                 value={customFontSize}
                                 onChange={(value) => setAttributes({ customFontSize: value })}
                                 min={0}
                                 max={100}
                             />
                             <RangeControl
-                                label={__('Mobile Size', 'kinetichub')}
+                                label={labelWithHelp(__('Mobile Size', 'kinetichub'), __('Label size in pixels at 768px and under. 0 keeps the desktop size on small screens.', 'kinetichub'))}
                                 value={mobileFontSize}
                                 onChange={(value) => setAttributes({ mobileFontSize: value })}
                                 min={0}
                                 max={100}
-                                help={__('Leave blank to inherit desktop size.', 'kinetichub')}
                             />
                         </div>
 
@@ -565,6 +574,12 @@ registerBlockType(metadata.name, {
                             min={0}
                             max={150}
                         />
+
+                        
+                        <ProNote
+                            text={__('Per-device visibility for the button as well: show it on desktop and hide it at 768px and under, or the other way round, without keeping a second copy of the block.', 'kinetichub')}
+                        />
+                        
                     </PanelBody>
 
                     <PanelBody title={<PanelTitle icon={contentIcon} text={__('Icons & Content', 'kinetichub')} />} initialOpen={false}>
@@ -604,7 +619,7 @@ registerBlockType(metadata.name, {
                                     />
 
                                     <ToggleControl
-                                        label={__('Always Visible', 'kinetichub')}
+                                        label={labelWithHelp(__('Always Visible', 'kinetichub'), __('By default the icon is hidden and slides into view only while the pointer is over the button. Turn this on to keep it in place at all times.', 'kinetichub'))}
                                         checked={showIconNormal}
                                         onChange={(value) => setAttributes({ showIconNormal: value })}
                                     />
@@ -620,7 +635,7 @@ registerBlockType(metadata.name, {
                                     />
 
                                     <RangeControl
-                                        label={__('Icon Size (Mobile)', 'kinetichub')}
+                                        label={labelWithHelp(__('Icon Size (Mobile)', 'kinetichub'), __('Applies at 768px and under, replacing the desktop icon size there.', 'kinetichub'))}
                                         value={mobileIconSize}
                                         onChange={(value) => setAttributes({ mobileIconSize: value })}
                                         min={10}
@@ -682,7 +697,7 @@ registerBlockType(metadata.name, {
                     <PanelBody title={<PanelTitle icon={physicsIcon} text={__('Physics Engine', 'kinetichub')} />} initialOpen={false}>
                         <div>
                             <RangeControl
-                                label={__('Magnetic Pull', 'kinetichub')}
+                                label={labelWithHelp(__('Magnetic Pull', 'kinetichub'), __('How much of the pointer offset the button copies while the pointer is over it: at 0.3 it moves three tenths of the way towards the cursor. Travel is capped at 30px in each direction whatever the value, so raising it makes the button reach that limit sooner rather than travel further.', 'kinetichub'))}
                                 value={magneticStrength}
                                 onChange={(value) => setAttributes({ magneticStrength: value })}
                                 min={0.1}
@@ -691,7 +706,7 @@ registerBlockType(metadata.name, {
                             />
 
                             <RangeControl
-                                label={__('Detection Range', 'kinetichub')}
+                                label={labelWithHelp(__('Detection Range', 'kinetichub'), __('How far the pull reaches in pixels, measured from the centre of the button and added to half its width. Past that distance the button settles back to rest. It does not attract the pointer from across the page: the pull only runs once the pointer is over the button.', 'kinetichub'))}
                                 value={magneticRange}
                                 onChange={(value) => setAttributes({ magneticRange: value })}
                                 min={20}
@@ -699,17 +714,23 @@ registerBlockType(metadata.name, {
                             />
 
                             <ToggleControl
-                                label={__('3D Text Parallax', 'kinetichub')}
+                                label={labelWithHelp(__('3D Text Parallax', 'kinetichub'), __('The label and icon drift as well, at roughly a third of the travel of the button itself, so the face reads as floating above the surface rather than painted on it.', 'kinetichub'))}
                                 checked={textSeparation}
                                 onChange={(value) => setAttributes({ textSeparation: value })}
                             />
+
+                            
+                            <ProNote
+                                text={__('Motion on arrival as well: the button can fade, slide up or zoom in the first time it scrolls into view, with a delay of up to two seconds so a row of buttons can land one after another.', 'kinetichub')}
+                            />
+                            
                         </div>
                     </PanelBody>
 
                     {!isOutline && (
                         <PanelBody title={<PanelTitle icon={shadowIcon} text={__('Box Shadow / Glow', 'kinetichub')} />} initialOpen={false}>
                             <ToggleControl
-                                label={__('Enable Shadow', 'kinetichub')}
+                                label={labelWithHelp(__('Enable Shadow', 'kinetichub'), __('Draws the drop shadow beneath the button from the colour and blur below. The panel is only offered while Outline Mode is off, and the pulse animation replaces the shadow for as long as it is running.', 'kinetichub'))}
                                 checked={enableShadow}
                                 onChange={(value) => setAttributes({ enableShadow: value })}
                             />
@@ -777,7 +798,26 @@ registerBlockType(metadata.name, {
                         </span>
                     </div>
 
-                    {isSelected && <KineticEditorNotice />}
+                    {/*
+                      * .kh-mb-wrapper is a flex row exactly as tall as the button,
+                      * so a toast anchored straight to it lands across the button's
+                      * own right-hand half -- over the label, and over the icon when
+                      * one is on the right.
+                      *
+                      * This lane is a full-width second flex line beneath the
+                      * button, which is what the wrapper's flex-wrap is for. It has
+                      * real flow height, the button's alignment is untouched because
+                      * justify-content still applies to the button's own line, and
+                      * nothing of the button sits underneath the toast.
+                      *
+                      * Editor only: render.php emits the frontend button and never
+                      * this element.
+                      */}
+                    {isSelected && (
+                        <div style={{ flex: '0 0 100%', position: 'relative', minHeight: '52px' }}>
+                            <KineticEditorNotice message={__('Magnetic interaction and motion effects run on the live frontend.', 'kinetichub')} />
+                        </div>
+                    )}
                 </div>
             </>
         );

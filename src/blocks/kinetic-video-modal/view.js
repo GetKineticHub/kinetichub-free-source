@@ -12,7 +12,10 @@
     const MAGNETIC_LERP = 0.1;
     const THUMBNAIL_MIN_WIDTH = 120;
     const FALLBACK_TIMEOUT = 3000;
-    const MODAL_TRANSITION_DURATION = 300;
+    // Must equal --kh-vm-modal-duration in style.scss (0.45s). The old 300 removed
+    // the overlay while its 400ms/600ms transitions were only half done, which is
+    // why the close animation looked cut short.
+    const MODAL_TRANSITION_DURATION = 450;
     const ANNOUNCEMENT_CLEANUP_DELAY = 1000;
     const PRELOAD_MARGIN = '200px';
 
@@ -223,7 +226,7 @@
          * Build video element (iframe or native video)
          * Added loading state and intelligent preloading
          */
-        const buildVideoElement = (parsed, preload) => {
+        const buildVideoElement = (parsed, preload, deferInsert) => {
             if (parsed.isIframe) {
                 // Wrap iframe with loader
                 const wrapper = document.createElement('div');
@@ -250,7 +253,19 @@
                     }
                 }, { once: true });
                 
-                wrapper.appendChild(iframe);
+                if (deferInsert) {
+                    /*
+                     * Hold the iframe out of the document. An iframe only starts its
+                     * navigation when it is inserted into a browsing context, so keeping
+                     * it detached - rather than stripping and restoring src - means no
+                     * about:blank load fires and the once-listener above still belongs
+                     * to the real embed. openModal inserts it one frame after the
+                     * entrance transition has started; the spinner covers the gap.
+                     */
+                    wrapper._khVmDeferredIframe = iframe;
+                } else {
+                    wrapper.appendChild(iframe);
+                }
                 return wrapper;
             } else if (parsed.src) {
                 const video = document.createElement('video');
@@ -260,7 +275,10 @@
                 video.playsInline = true;
                 if (isAutoplay) video.autoplay = true;
                 if (isLoop) video.loop = true;
-                if (isMute) video.muted = true;
+                // muteLocalVideo is off by default now, so local video opens with sound.
+                // Autoplay is the only case that still forces mute, because browsers
+                // refuse unmuted autoplay - the saved preference is left untouched.
+                if (isMute || isAutoplay) video.muted = true;
                 
                 const preloadAttr = preload || triggerZone.getAttribute('data-preload') || 'metadata';
                 video.setAttribute('preload', preloadAttr);
@@ -298,7 +316,15 @@
          * Open modal dialog
          */
         const openModal = () => {
-            const parsed = parseVideoUrl(rawUrl, startSec, true, isLoop, isMute);
+            // Remote embed contract for the modal path (these two params only ever reach
+            // YouTube/Vimeo - local video is muted on the element itself further down):
+            //   autoplay = the real setting. OFF must mean the visitor presses play in the
+            //              embedded player, which is what the control promises.
+            //   mute     = tied to autoplay only. Browsers refuse unmuted autoplay, so ON
+            //              needs &mute=1 to start reliably; OFF must never force mute.
+            // 'Mute Local/Inline Video' is deliberately absent here: it is a local/inline
+            // setting and must not silently mute a remote embed.
+            const parsed = parseVideoUrl(rawUrl, startSec, isAutoplay, isLoop, isAutoplay);
             if (!parsed.src) {
                 console.error('Kinetic Video Modal: Invalid or unsupported video URL');
                 return;
@@ -307,7 +333,7 @@
             originalFocus = document.activeElement;
 
             const dialogOverlay = document.createElement('div');
-            dialogOverlay.className = `kh-vm-dialog-overlay bd-${triggerZone.getAttribute('data-backdrop')} anim-${triggerZone.getAttribute('data-entrance')}`;
+            dialogOverlay.className = `kh-vm-dialog-overlay bd-${triggerZone.getAttribute('data-backdrop')} kh-vm-modal-${triggerZone.getAttribute('data-entrance')}`;
             
             const contentWrap = document.createElement('div');
             contentWrap.className = 'kh-vm-dialog-content';
@@ -330,7 +356,10 @@
                 dialogOverlay.classList.add('close-outside');
             }
 
-            const mediaEl = buildVideoElement(parsed);
+            // Deferred only for the modal path: an embed's frame creation and first
+            // composite used to land inside the opening frames of the entrance
+            // transition. The inline path (below) is untouched.
+            const mediaEl = buildVideoElement(parsed, null, true);
             
             contentWrap.appendChild(mediaEl);
             contentWrap.appendChild(closeBtn);
@@ -341,10 +370,38 @@
             // Announce modal opening to screen readers
             announceToScreenReader(`${ariaLabel} opened`);
 
-            void dialogOverlay.offsetWidth;
-            dialogOverlay.classList.add('is-open');
+            // Close state is declared here, ahead of the opening rAF, so the callback
+            // below closes over an already-initialised binding rather than one hoisted
+            // past it.
+            let isClosing = false;
+            let removalTimer = null;
 
-            contentWrap.focus();
+            // Double rAF: the pre-state has to be painted before .is-open lands or the
+            // browser collapses both into one style change and there is no transition.
+            // The old forced reflow ran in the same task as the iframe/video insertion.
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    // isClosing, not just containment: closeModal leaves the overlay in
+                    // the DOM while its close transition runs, so an Escape/click landing
+                    // before this frame would otherwise be undone by re-adding is-open.
+                    if (!isClosing && document.body.contains(dialogOverlay)) {
+                        dialogOverlay.classList.add('is-open');
+
+                        // One more frame, so the transition owns the frame it starts on
+                        // and the embed's navigation begins on the next one. If the modal
+                        // was closed in between, the embed is never loaded at all.
+                        requestAnimationFrame(() => {
+                            const deferred = mediaEl && mediaEl._khVmDeferredIframe;
+                            if (!isClosing && deferred && document.body.contains(mediaEl)) {
+                                mediaEl._khVmDeferredIframe = null;
+                                mediaEl.appendChild(deferred);
+                            }
+                        });
+                    }
+                });
+            });
+
+            contentWrap.focus({ preventScroll: true });
 
             /**
              * Focus trap and keyboard controls
@@ -370,20 +427,50 @@
             };
 
             /**
-             * Close modal and cleanup
+             * Single teardown, safe to reach more than once: transitionend and the
+             * fallback timer race, and Escape can arrive while a click is closing.
              */
+            const finalizeClose = () => {
+                if (removalTimer) {
+                    clearTimeout(removalTimer);
+                    removalTimer = null;
+                }
+                dialogOverlay.removeEventListener('transitionend', onCloseTransitionEnd);
+                if (document.body.contains(dialogOverlay)) document.body.removeChild(dialogOverlay);
+                if (activeDialog === dialogOverlay) activeDialog = null;
+                if (originalFocus && typeof originalFocus.focus === 'function') originalFocus.focus();
+            };
+
+            /**
+             * The overlay transitions both opacity and visibility, and the content's own
+             * transitions bubble up here, so only the overlay's own opacity run counts.
+             */
+            const onCloseTransitionEnd = (e) => {
+                if (e.target === dialogOverlay && e.propertyName === 'opacity') finalizeClose();
+            };
+
             const closeModal = () => {
+                if (isClosing) return;
+                isClosing = true;
+
                 dialogOverlay.classList.remove('is-open');
                 document.removeEventListener('keydown', trapFocus);
                 document.body.classList.remove('kh-vm-body-scroll-lock');
-                
+
                 // Announce closing to screen readers
                 announceToScreenReader('Video player closed');
-                
-                setTimeout(() => {
-                    if (document.body.contains(dialogOverlay)) document.body.removeChild(dialogOverlay);
-                    if (originalFocus && typeof originalFocus.focus === 'function') originalFocus.focus();
-                }, MODAL_TRANSITION_DURATION);
+
+                // Reduced motion kills the transition entirely, so transitionend never
+                // fires and there is nothing to wait for.
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    finalizeClose();
+                    return;
+                }
+
+                dialogOverlay.addEventListener('transitionend', onCloseTransitionEnd);
+                // Fallback for a cancelled or never-started transition (background tab,
+                // transition removed by a theme). Slightly over the CSS duration.
+                removalTimer = setTimeout(finalizeClose, MODAL_TRANSITION_DURATION + 80);
             };
 
             closeBtn.addEventListener('click', closeModal);
@@ -402,7 +489,11 @@
          * Play video inline (replace preview with video)
          */
         const playInline = () => {
-            const parsed = parseVideoUrl(rawUrl, startSec, true, isLoop, isMute);
+            // Inline is its own playbackMode: the click replaces the preview with a live
+            // player, so starting playback is the point of the mode and does not depend on
+            // the Autoplay setting. Remote mute stays false - muteLocalVideo governs the
+            // local <video> element, not a YouTube/Vimeo embed.
+            const parsed = parseVideoUrl(rawUrl, startSec, true, isLoop, false);
             if (!parsed.src) {
                 console.error('Kinetic Video Modal: Invalid or unsupported video URL');
                 return;

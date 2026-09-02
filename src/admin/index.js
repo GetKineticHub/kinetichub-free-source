@@ -17,6 +17,7 @@ import {
 	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
+import { cog, info, layout, starEmpty } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 
 const dashboardData = window.kinetichubDashboardData || {};
@@ -76,6 +77,13 @@ const BLOCKS = [
 		image: 'assets/images/Kinetic-divider.jpg',
 	},
 	{
+		id: 'kinetic-scroll-progress',
+		name: __('Scroll Progress', 'kinetichub'),
+		description: __('Scroll progress indicator with an optional milestone journey built from page headings.', 'kinetichub'),
+		icon: 'dashicons-chart-bar',
+		image: 'assets/images/Kinetic-progress.jpg',
+	},
+	{
 		id: 'kinetic-video-modal',
 		name: __('Video Modal', 'kinetichub'),
 		description: __('Lazy video modal and inline playback block.', 'kinetichub'),
@@ -130,18 +138,22 @@ const TABS = [
 	{
 		id: 'overview',
 		label: __('Overview', 'kinetichub'),
+		icon: starEmpty,
 	},
 	{
 		id: 'blocks',
 		label: __('My Suite', 'kinetichub'),
+		icon: layout,
 	},
 	{
 		id: 'settings',
 		label: __('Global Settings', 'kinetichub'),
+		icon: cog,
 	},
 	{
 		id: 'system',
 		label: __('System Info', 'kinetichub'),
+		icon: info,
 	},
 ];
 
@@ -250,6 +262,16 @@ function Dashboard() {
 		}));
 	};
 
+	/**
+	 * A save notice belongs to the tab that produced it, so it is dismissed
+	 * whenever the user navigates elsewhere. Every tab-changing path goes
+	 * through here.
+	 */
+	const changeTab = (tabId) => {
+		setNotice(null);
+		setActiveTab(tabId);
+	};
+
 	const saveSettings = () => {
 		setIsSaving(true);
 		setNotice(null);
@@ -308,25 +330,33 @@ function Dashboard() {
 				</p>
 
 				<div className="kh-overview-actions">
-					<Button variant="primary" onClick={() => setActiveTab('blocks')}>
+					<Button variant="primary" onClick={() => changeTab('blocks')}>
 						{__('Manage Blocks', 'kinetichub')}
 					</Button>
-					<Button variant="secondary" onClick={() => setActiveTab('settings')}>
+					<Button variant="secondary" onClick={() => changeTab('settings')}>
 						{__('Global Settings', 'kinetichub')}
+					</Button>
+					<Button
+						variant="secondary"
+						href="https://getkinetichub.com/docs/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{__('Documentation', 'kinetichub')}
 					</Button>
 				</div>
 			</div>
 
-			<div className="kh-dashboard-wide" style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: '20px', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', boxShadow: '0 2px 12px rgba(16,185,129,0.07)' }}>
+			<div className="kh-dashboard-wide kh-promo-banner">
 				<div>
-					<p style={{ margin: '0 0 4px', fontWeight: '700', fontSize: '14px', color: '#a7f3d0', letterSpacing: '-0.01em' }}>
+					<p className="kh-promo-title">
 						{__('KineticHub Pro', 'kinetichub')}
 					</p>
-					<p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.68)', lineHeight: '1.45' }}>
+					<p className="kh-promo-text">
 						{__('Unlock the full animation toolkit for client-ready interactive builds.', 'kinetichub')}
 					</p>
 				</div>
-				<a href="https://getkinetichub.com/" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '9px 18px', borderRadius: '8px', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)', color: '#a7f3d0', fontWeight: '700', fontSize: '13px', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
+				<a className="kh-promo-cta" href="https://getkinetichub.com/" target="_blank" rel="noopener noreferrer">
 					{__('Explore Pro', 'kinetichub')}
 				</a>
 			</div>
@@ -444,14 +474,13 @@ function Dashboard() {
 						help={__('Use a hex color such as #10b981.', 'kinetichub')}
 					/>
 
-					<RangeControl
-						label={__('Glass Blur Intensity', 'kinetichub')}
-						value={settings.glassIntensity}
-						onChange={(value) => updateSetting('glassIntensity', value)}
-						min={0}
-						max={50}
-						step={1}
-					/>
+					{/*
+					 * glassIntensity is intentionally not surfaced here. The
+					 * setting, its normalization, its persistence and the
+					 * --kh-glass-blur token are all retained for backwards
+					 * compatibility, but nothing consumes the token yet, so a
+					 * visible control would imply an effect that does not exist.
+					 */}
 
 					<div className="kh-color-preview" style={{ backgroundColor: settings.accentColor }}>
 						{__('Accent preview', 'kinetichub')}
@@ -540,15 +569,21 @@ function Dashboard() {
 			</header>
 
 			<nav className="kh-dashboard-tabs" aria-label={__('Dashboard sections', 'kinetichub')}>
-				{TABS.map((tab) => (
-					<Button
-						key={tab.id}
-						variant={activeTab === tab.id ? 'primary' : 'secondary'}
-						onClick={() => setActiveTab(tab.id)}
-					>
-						{tab.label}
-					</Button>
-				))}
+				{TABS.map((tab) => {
+					const isCurrent = activeTab === tab.id;
+
+					return (
+						<Button
+							key={tab.id}
+							className={isCurrent ? 'is-active' : undefined}
+							icon={tab.icon}
+							aria-current={isCurrent ? 'page' : undefined}
+							onClick={() => changeTab(tab.id)}
+						>
+							{tab.label}
+						</Button>
+					);
+				})}
 			</nav>
 
 			{notice && (

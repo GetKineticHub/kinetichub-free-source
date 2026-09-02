@@ -6,12 +6,18 @@
 import './style.scss';
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { PanelBody, RangeControl, SelectControl, ColorPalette, Button, TextControl, ToggleControl, Notice, Flex, FlexItem, __experimentalDivider as Divider } from '@wordpress/components';
+import { PanelBody, RangeControl, SelectControl, ColorPalette, Button, TextControl, ToggleControl, Flex, FlexItem, __experimentalDivider as Divider } from '@wordpress/components';
 import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 
 import metadata from './block.json';
+
+import { InspectorHelp, InspectorNote, InspectorNotice, labelWithHelp } from '../../components/InspectorUX';
+import { KineticEditorNotice } from '../../components/EditorNotice';
+
+import { ProNote } from '../../components/InspectorUX';
+
 
 const kineticCursorIcon = <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 12H12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M14.5 11L18.5 19L20 17.5L22 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 const IconUp = <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>;
@@ -60,7 +66,8 @@ registerBlockType(metadata.name, {
         let editorStyle = {
             '--kh-cr-font-size': `${fontSize}px`,
             '--kh-cr-font-mob': `${mobileFontSize}px`,
-            '--kh-cr-scale': fontSize > 0 ? ((fontSize + 5) / fontSize).toFixed(3) : '1',
+            '--kh-cr-scale': fontSize > 0 ? ((fontSize + 10) / fontSize).toFixed(3) : '1',
+            '--kh-cr-scale-mob': mobileFontSize > 0 ? (Math.max(10, mobileFontSize + 10) / mobileFontSize).toFixed(3) : '1',
             '--kh-cr-accent': 'var(--kh-accent, #10b981)',
             '--kh-cr-sub-color': subtitleColor || '#666666',
             '--kh-cr-sub-size': `${subtitleSize}px`,
@@ -127,14 +134,6 @@ registerBlockType(metadata.name, {
                         <p style={{ fontSize: '13px', color: '#666', marginBottom: '15px' }}>
                             {__('Add and edit your list items with titles, subtitles, media, and links.', 'kinetichub')}
                         </p>
-
-                        
-                        {items.length >= 3 && (
-                            <div style={{ marginBottom: '15px', padding: '10px 12px', background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '6px', fontSize: '12px', color: '#856404' }}>
-                                {__('FREE version supports up to 3 items. More items available in KineticHub Pro.', 'kinetichub')}
-                            </div>
-                        )}
-                        
 
                         {items.map((item, index) => (
                             <div key={index} style={{
@@ -212,9 +211,9 @@ registerBlockType(metadata.name, {
 
                         
                         {!canAddMore && (
-                            <p style={{ fontSize: '12px', color: '#6b7280', textAlign: 'center', padding: '10px 0' }}>
-                                {__('Up to 50 items available in KineticHub Pro.', 'kinetichub')}
-                            </p>
+                            <ProNote
+                                text={__('Three items is the cap here. Fifty are available, which is what a full portfolio or services index needs.', 'kinetichub')}
+                            />
                         )}
                         
 
@@ -227,36 +226,36 @@ registerBlockType(metadata.name, {
                     </PanelBody>
 
                     <PanelBody title={__('✍️ Text Styling', 'kinetichub')} initialOpen={false}>
-                        <RangeControl label={__('Font Size (Desktop)', 'kinetichub')} value={fontSize} onChange={(v) => setAttributes({ fontSize: v })} min={10} max={300} help={__('Base text size on desktop devices', 'kinetichub')} />
-                        <RangeControl label={__('Font Size (Mobile)', 'kinetichub')} value={mobileFontSize} onChange={(v) => setAttributes({ mobileFontSize: v })} min={10} max={200} help={__('Text size on mobile devices', 'kinetichub')} />
+                        <RangeControl label={labelWithHelp(__('Font Size (Desktop)', 'kinetichub'), __('Resting size of the item titles in pixels, used above 768px. This block is usually set far larger than body copy - the list is the headline.', 'kinetichub'))} value={fontSize} onChange={(v) => setAttributes({ fontSize: v })} min={10} max={300} />
+                        <RangeControl label={labelWithHelp(__('Font Size (Mobile)', 'kinetichub'), __('Title size in pixels at 768px and below, where the desktop size would usually break the line.', 'kinetichub'))} value={mobileFontSize} onChange={(v) => setAttributes({ mobileFontSize: v })} min={10} max={200} />
                         
                         
-                        <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px' }}>{__('Available in KineticHub Pro.', 'kinetichub')}</p>
+                        <ProNote
+                            text={__('The titles themselves can react: outline-to-solid, blur-into-focus and lift reveals, a hover size the text grows to, dimming of every other row, and an accent colour for the active one.', 'kinetichub')}
+                        />
                         
                     </PanelBody>
 
                     <PanelBody title={__('🏷️ Subtitle Styling', 'kinetichub')} initialOpen={false}>
                         <p style={{ fontWeight: 'bold', marginBottom: '10px' }}>{__('Subtitle Color', 'kinetichub')}</p>
                         <ColorPalette value={subtitleColor} onChange={(v) => setAttributes({ subtitleColor: v })} />
-                        <RangeControl label={__('Subtitle Size', 'kinetichub')} value={subtitleSize} onChange={(v) => setAttributes({ subtitleSize: v })} min={8} max={100} help={__('Font size for subtitle text', 'kinetichub')} />
-                        <RangeControl label={__('Letter Spacing', 'kinetichub')} value={subtitleSpacing} onChange={(v) => setAttributes({ subtitleSpacing: v })} min={0} max={50} help={__('Space between letters in subtitle', 'kinetichub')} />
+                        <RangeControl label={labelWithHelp(__('Subtitle Size', 'kinetichub'), __('Size of the small line under each title, in pixels. It is rendered in uppercase, which reads smaller than the same value in sentence case.', 'kinetichub'))} value={subtitleSize} onChange={(v) => setAttributes({ subtitleSize: v })} min={8} max={100} />
+                        <RangeControl label={labelWithHelp(__('Letter Spacing', 'kinetichub'), __('Extra space between the subtitle letters, in pixels. A little tracking is what makes small uppercase text legible.', 'kinetichub'))} value={subtitleSpacing} onChange={(v) => setAttributes({ subtitleSpacing: v })} min={0} max={50} />
                     </PanelBody>
 
                     <PanelBody title={__('📐 List Layout', 'kinetichub')} initialOpen={false}>
                         <RangeControl
-                            label={__('Item Vertical Spacing', 'kinetichub')}
+                            label={labelWithHelp(__('Item Vertical Spacing', 'kinetichub'), __('Padding above and below each row, in pixels. It sets how much of the page the list occupies and how far the pointer travels between items.', 'kinetichub'))}
                             value={itemGap ?? 50}
                             onChange={(v) => setAttributes({ itemGap: v })}
                             min={0}
                             max={100}
                             step={5}
-                            help={__('Top and bottom padding for each list item.', 'kinetichub')}
                         />
                         <ToggleControl
-                            label={__('Show Item Divider', 'kinetichub')}
+                            label={labelWithHelp(__('Show Item Divider', 'kinetichub'), __('Draws a hairline under every row. With generous spacing the list often reads better without it.', 'kinetichub'))}
                             checked={showItemBorder !== false}
                             onChange={(v) => setAttributes({ showItemBorder: v })}
-                            help={__('Show bottom border line between list items.', 'kinetichub')}
                         />
                         {(showItemBorder !== false) && (
                             <>
@@ -273,20 +272,24 @@ registerBlockType(metadata.name, {
                     </PanelBody>
 
                     <PanelBody title={__('🎬 Media Settings', 'kinetichub')} initialOpen={false}>
-                        <RangeControl label={__('Media Width', 'kinetichub')} value={mediaWidth} onChange={(v) => setAttributes({ mediaWidth: v })} min={100} max={1200} help={__('Width of floating media container', 'kinetichub')} />
-                        <SelectControl label={__('Media Aspect Ratio', 'kinetichub')} value={mediaRatio} options={[ { label: __('4:5 Portrait', 'kinetichub'), value: '4/5' }, { label: __('1:1 Square', 'kinetichub'), value: '1/1' }, { label: __('16:9 Landscape', 'kinetichub'), value: '16/9' }, { label: __('21:9 Ultrawide', 'kinetichub'), value: '21/9' } ]} onChange={(v) => setAttributes({ mediaRatio: v })} help={__('Shape of media container', 'kinetichub')} />
-                        <SelectControl label={__('Reveal Mask', 'kinetichub')} value={revealMask} options={[ { label: __('Fade', 'kinetichub'), value: 'fade' }, { label: __('Circle Expand', 'kinetichub'), value: 'circle' }, { label: __('Diagonal Wipe', 'kinetichub'), value: 'diagonal' }, { label: __('Curtain', 'kinetichub'), value: 'curtain' } ]} onChange={(v) => setAttributes({ revealMask: v })} help={__('Animation when media appears', 'kinetichub')} />
-                        <SelectControl label={__('Hover Filter', 'kinetichub')} value={hoverFilter} options={[ { label: __('None', 'kinetichub'), value: 'none' }, { label: __('Grayscale to Color', 'kinetichub'), value: 'grayscale' } ]} onChange={(v) => setAttributes({ hoverFilter: v })} help={__('Color filter applied on hover', 'kinetichub')} />
+                        <RangeControl label={labelWithHelp(__('Media Width', 'kinetichub'), __('Width of the floating preview in pixels, between 100 and 1200. Height is not set directly - it follows from this width and the aspect ratio below.', 'kinetichub'))} value={mediaWidth} onChange={(v) => setAttributes({ mediaWidth: v })} min={100} max={1200} />
+                        <SelectControl label={labelWithHelp(__('Media Aspect Ratio', 'kinetichub'), __('Shape of the floating preview. Height comes from the width above at this ratio, so a tall ratio on a wide preview makes a large picture.', 'kinetichub'))} value={mediaRatio} options={[ { label: __('4:5 Portrait', 'kinetichub'), value: '4/5' }, { label: __('1:1 Square', 'kinetichub'), value: '1/1' }, { label: __('16:9 Landscape', 'kinetichub'), value: '16/9' }, { label: __('21:9 Ultrawide', 'kinetichub'), value: '21/9' } ]} onChange={(v) => setAttributes({ mediaRatio: v })} />
+                        <SelectControl label={labelWithHelp(__('Reveal Mask', 'kinetichub'), __('How the preview arrives once a row is hovered: a plain fade, a circle opening out, a diagonal wipe, or a curtain.', 'kinetichub'))} value={revealMask} options={[ { label: __('Fade', 'kinetichub'), value: 'fade' }, { label: __('Circle Expand', 'kinetichub'), value: 'circle' }, { label: __('Diagonal Wipe', 'kinetichub'), value: 'diagonal' }, { label: __('Curtain', 'kinetichub'), value: 'curtain' } ]} onChange={(v) => setAttributes({ revealMask: v })} />
+                        <SelectControl label={labelWithHelp(__('Hover Filter', 'kinetichub'), __('Grayscale to Color starts the preview desaturated and brings the colour up as it settles. None shows it as uploaded.', 'kinetichub'))} value={hoverFilter} options={[ { label: __('None', 'kinetichub'), value: 'none' }, { label: __('Grayscale to Color', 'kinetichub'), value: 'grayscale' } ]} onChange={(v) => setAttributes({ hoverFilter: v })} />
                         
                         
-                        <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px' }}>{__('Available in KineticHub Pro.', 'kinetichub')}</p>
+                        <ProNote
+                            text={__('The floating preview can be styled and layered: glass, vignette, polaroid and glow treatments, optical blend modes that let the titles read through the image, a choice of painting it over or under the list, and a film-grain overlay.', 'kinetichub')}
+                        />
                         
                     </PanelBody>
 
                     
                     
                     <PanelBody title={__('⚡ Physics Engine', 'kinetichub')} initialOpen={false}>
-                        <p style={{ fontSize: '13px', color: '#6b7280', padding: '10px 0' }}>{__('Available in KineticHub Pro.', 'kinetichub')}</p>
+                        <ProNote
+                            text={__('How the preview follows the cursor becomes adjustable: the smoothing that makes it trail and glide, X and Y offsets from the pointer, a velocity tilt as it swings, a magnetic pull on the hovered title, and parallax inside the frame.', 'kinetichub')}
+                        />
                     </PanelBody>
                     
 
@@ -295,11 +298,15 @@ registerBlockType(metadata.name, {
 
                 {/* PREVIEW */}
                 <div {...blockProps}>
-                    <div className="kh-cr-editor-preview" style={{ padding: '30px 20px', textAlign: 'center', border: '2px dashed #e0e0e0', borderRadius: '12px', background: '#fafafa', overflow: 'hidden' }}>
-                        <p style={{ fontSize: '13px', color: '#666', marginBottom: '15px', fontWeight: '500' }}>{__('✨ Editor Preview - Interactive features appear on frontend', 'kinetichub')}</p>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'flex-start', maxWidth: '100%', overflow: 'hidden' }}>
+                    {/*
+                      * position: relative is what the toast is anchored to. It is
+                      * absolutely positioned, and without a positioned ancestor here it
+                      * would settle against the editor canvas instead of this preview.
+                      */}
+                    <div className="kh-cr-editor-preview" style={{ position: 'relative', padding: '30px 20px', textAlign: 'center', border: '2px dashed #e0e0e0', borderRadius: '12px', background: '#fafafa', overflow: 'hidden' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start', maxWidth: '100%', overflow: 'hidden' }}>
                             {items.map((item, index) => (
-                                <div key={index} style={{ width: '100%', padding: '16px 20px', background: '#fff', borderRadius: '8px', boxShadow: previewContainerShadow ? '0 4px 12px rgba(0,0,0,0.08)' : '0 2px 6px rgba(0,0,0,0.04)', textAlign: 'left', border: '1px solid #f0f0f0', transition: 'all 0.3s ease' }}>
+                                <div key={index} style={{ width: '100%', paddingTop: `${itemGap ?? 50}px`, paddingBottom: `${itemGap ?? 50}px`, paddingLeft: '20px', paddingRight: '20px', background: '#fff', borderRadius: '8px', boxShadow: previewContainerShadow ? '0 4px 12px rgba(0,0,0,0.08)' : '0 2px 6px rgba(0,0,0,0.04)', textAlign: 'left', border: '1px solid #f0f0f0', borderBottom: (showItemBorder !== false) ? `1px solid ${itemBorderColor || 'rgba(127,127,127,0.15)'}` : '1px solid #f0f0f0', transition: 'all 0.3s ease' }}>
                                     {item.title && ( <div style={{ fontSize: `${previewFontSize}px`, fontWeight: 'bold', color: '#1a1a1a', marginBottom: item.subtitle ? '6px' : '0', wordWrap: 'break-word' }}>{item.title}</div> )}
                                     {item.subtitle && ( <div style={{ fontSize: `${previewSubtitleSize}px`, color: previewSubtitleColor || '#666', textTransform: 'uppercase', letterSpacing: `${previewSubtitleSpacing}px`, opacity: 0.8 }}>{item.subtitle}</div> )}
                                     {item.mediaUrl && ( <div style={{ marginTop: '12px', fontSize: '11px', color: '#999', display: 'flex', alignItems: 'center', gap: '6px' }}><span>📸</span><span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>{item.mediaUrl.split('/').pop()}</span></div> )}
@@ -307,13 +314,25 @@ registerBlockType(metadata.name, {
                                 </div>
                             ))}
                         </div>
+                        {/*
+                          * Two different things were being said in one panel, and only one
+                          * of them is transient. "The interactive parts run on the
+                          * frontend" was also being said twice, once here and once at the
+                          * top of this preview; it is the toast now, said once.
+                          *
+                          * What stays printed is the authoring consequence: a list item
+                          * with no reveal image renders nothing at all. That is a thing to
+                          * go and fix, so it has to still be here after the next click --
+                          * KineticEditorNotice hides itself on any interaction, which is
+                          * exactly why this line is not inside one.
+                          */}
                         <div style={{ marginTop: '20px', padding: '12px', background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '6px' }}>
                             <p style={{ fontSize: '11px', color: '#856404', margin: 0, lineHeight: '1.5' }}>
-                                💡 <strong>{__('Preview shows basic layout only.', 'kinetichub')}</strong><br />
-                                {__('Hover effects, physics, and animations appear on frontend.', 'kinetichub')}<br />
-                                {__('If no reveal image is selected, nothing will appear on the frontend.', 'kinetichub')}
+                                💡 {__('If no reveal image is selected, nothing will appear on the frontend.', 'kinetichub')}
                             </p>
                         </div>
+
+                        <KineticEditorNotice message={__('Hover effects, physics, and animations appear on frontend.', 'kinetichub')} />
                     </div>
                 </div>
             </>
