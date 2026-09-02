@@ -258,23 +258,19 @@ export const InspectorNotice = ({ status = 'warning', isDismissible = false, chi
  * ---------------------------------------------------------------------------
  * FREE-ONLY CONTRACT -- read before using this component.
  *
- * Every import of ProNote, and every place one is rendered, MUST sit inside an
- * fs_free_only region. Both marker forms below are written with an escaped
- * closing slash ("*\/") so this docblock cannot terminate early, and so the
- * build's own transform cannot mistake this documentation for a real region --
- * write them without the backslash in real code.
+ * Every import of ProNote, and every place one is rendered, MUST sit inside a
+ * FREE-only build region, delimited with the canonical marker syntax defined
+ * by the private release builder. The literal marker tokens are deliberately
+ * not spelled out in this public source file; take them from the builder's
+ * own marker definitions.
  *
- * At the import, the bare block-comment form:
+ * At the import, wrap the statement in the bare block-comment marker form:
  *
- *     /* <fs_free_only> *\/
  *     import { ProNote } from '../../components/InspectorUX';
- *     /* </fs_free_only> *\/
  *
- * Inside JSX, the braced form:
+ * Inside JSX, wrap the element in the braced block-comment marker form:
  *
- *     {/* <fs_free_only> *\/}
  *     <ProNote text={ __( '...', 'kinetichub' ) } />
- *     {/* </fs_free_only> *\/}
  *
  * A "//" line comment is NOT one of the recognised marker syntaxes. Written
  * that way the region is never stripped and the upsell ships to PRO.
