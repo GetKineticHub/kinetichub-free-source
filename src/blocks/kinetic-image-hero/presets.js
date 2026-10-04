@@ -15,7 +15,7 @@
  * setting are reset, so each bundle lands the same way whatever was set
  * before.
  *
- * Presets and bundle keys between fs_premium_only markers are removed at
+ * Presets and bundle keys inside PRO-only build regions are removed at
  * compile time from a build that does not offer them, so a preset there
  * writes only settings that build offers and leaves any other saved value
  * as it was.

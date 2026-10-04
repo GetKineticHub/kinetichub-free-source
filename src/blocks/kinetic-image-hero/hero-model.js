@@ -8,8 +8,8 @@
  * these, so it lands on the same classes and values as the frontend. render.php
  * implements the same rules in PHP; keep the two in step.
  *
- * The lists below are what this build offers. Values between fs_premium_only
- * markers are removed at compile time from a build that does not offer them;
+ * The lists below are what this build offers. Values inside PRO-only build
+ * regions are removed at compile time from a build that does not offer them;
  * a saved value that build does not offer renders as its VALUE_FALLBACKS
  * entry, and the attribute itself is never rewritten.
  *
