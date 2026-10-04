@@ -245,6 +245,12 @@ input[type="range"].kh-ap-vol-slider { width: 0; }
 @media (max-width: 480px) {
     .kh-ap-button:not([data-compact="true"]) { padding-left: 15px !important; padding-right: 15px !important; gap: 10px; }
     .kh-ap-seek-layer { transform: scale(1.2); } 
+    /* An extended player fills its container at this width, so the uniform scale above
+       pushed the seek layer 10% past both container edges (page-level horizontal overflow
+       whenever the side gutter is narrower than that). Seeking maps against the button's
+       own box, so only the vertical touch extension is kept. Compact players keep the
+       uniform scale: their angle-based seeking uses the ring around the circle. */
+    .kh-ap-button.is-extended .kh-ap-seek-layer { transform: scaleY(1.2); }
     
 }
 

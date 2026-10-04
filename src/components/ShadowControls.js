@@ -7,7 +7,9 @@ import { ToggleControl, SelectControl, RangeControl } from '@wordpress/component
 import { PanelColorSettings } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 
-export const KineticShadowControls = ({ attributes, setAttributes }) => {
+// glowHelp: a block whose Dynamic Glow does not follow an accent or handle colour
+// passes its own wording (Marquee: its glow takes the shadow colours).
+export const KineticShadowControls = ({ attributes, setAttributes, glowHelp = __('Dynamic Glow uses the accent/handle color automatically!', 'kinetichub') }) => {
     const { 
         containerShadow, shadowStyle, shadowSoftness, 
         mobileShadowSoftness, shadowOpacity, hoverShadowOpacity, 
@@ -42,7 +44,7 @@ export const KineticShadowControls = ({ attributes, setAttributes }) => {
                             {label: __('Elegant Luxury', 'kinetichub'), value: 'elegant'}
                         ]} 
                         onChange={(v) => setAttributes({ shadowStyle: v })} 
-                        help={__('Dynamic Glow uses the accent/handle color automatically!', 'kinetichub')}
+                        help={glowHelp}
                     />
                 </div>
             )}

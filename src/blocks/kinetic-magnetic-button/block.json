@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/magnetic-button",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "title": "Kinetic Magnetic Button",
   "category": "kinetic-suite",
   "description": "High-performance magnetic button with advanced hover physics, glassmorphism, and dynamic scaling.",
@@ -195,6 +195,25 @@
     "align": {
       "type": "string",
       "default": "center"
+    },
+    "entranceSpeed": {
+      "type": "string"
+    },
+    "buttons": {
+      "type": "array",
+      "default": []
+    },
+    "buttonStyle": {
+      "type": "string"
+    },
+    "buttonLayout": {
+      "type": "string"
+    },
+    "buttonMobileLayout": {
+      "type": "string"
+    },
+    "buttonGap": {
+      "type": "number"
     }
   },
   "supports": {

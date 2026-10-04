@@ -1,0 +1,2535 @@
+/**
+ * Kinetic Image Hero - Stylesheet
+ *
+ * Layers: .kh-ih-media (0) < .kh-ih-overlay (1) < .kh-ih-content-layer (2).
+ *
+ * Transform ownership is split up front so motion can never fight over one
+ * element: .kh-ih-slot (composition geometry through position and the
+ * individual `rotate` / `scale` properties; the reveal owns `transform`),
+ * .kh-ih-slot-inner (the card face; scroll and pointer own its `translate` /
+ * `rotate` / `scale`, hover owns its `transform`), .kh-ih-img (crop, focal
+ * point and image treatment). The content layer sits outside every slot, so
+ * image transforms can never carry the text with them. See MOTION.
+ *
+ * Two stages share the one DOM. Backdrop (single, split-duo): the media
+ * layer fills the section behind the overlay and the content. Composed
+ * (offset-duo, stacked-cards, editorial-collage): the section becomes a grid
+ * and the media is a composition in its own area -- the stage -- beside the
+ * content. On desktop the stage can grow past its grid track to the hero's
+ * outer edge and under the content; the section clips it.
+ *
+ * Composition settings arrive from render.php (and the editor) as unitless
+ * custom properties on the section: --kh-ih-gap, --kh-ih-radius,
+ * --kh-ih-rotation, --kh-ih-overlap, --kh-ih-depth. Only this file gives
+ * them units, and every presentation reads them from here. The composed
+ * stage's semantic settings arrive as classes: kh-ih-scale-*,
+ * kh-ih-balance-*, kh-ih-crossover-* (Content Overlap), kh-ih-scene-*. The
+ * content and button design arrives the same way (CONTENT DESIGN, BUTTON
+ * STYLES), written only when a setting differs from its default.
+ *
+ * Nothing here starts hidden and nothing depends on a script: the hero is
+ * complete with JavaScript disabled, and only the view script can arm a
+ * reveal. The content entrance is a plain animation that ends on the static
+ * hero; the script can only hold a hero that is not on screen yet. Mobile
+ * is 768px and below throughout.
+ */
+
+/* A composition of absolutely placed cards. Each presentation sets the
+   --kh-ih-slot-* properties per slot, in percentages of the media box, for
+   content on the left; --kh-ih-mirror flips the whole composition (and every
+   tilt) when the content is on the right. */
+@mixin kh-ih-placed-slots {
+
+    .kh-ih-media {
+        display: block;
+    }
+
+    .kh-ih-slot {
+        position: absolute;
+        top: var(--kh-ih-slot-y, 0%);
+        left: calc(var(--kh-ih-slot-x, 0%) + var(--kh-ih-mirror) * (100% - 2 * var(--kh-ih-slot-x, 0%) - var(--kh-ih-slot-w, 100%)));
+        z-index: var(--kh-ih-slot-z, auto);
+        width: var(--kh-ih-slot-w, 100%);
+        height: var(--kh-ih-slot-h, 100%);
+        rotate: calc(var(--kh-ih-tilt) * var(--kh-ih-slot-turn, 0) * (1 - 2 * var(--kh-ih-mirror)));
+        scale: var(--kh-ih-slot-scale, 1);
+    }
+}
+
+/* ==========================================================================
+   SECTION
+   Height is a pair of unitless custom properties from render.php / the
+   editor. svh where supported, so mobile browser chrome collapsing does not
+   resize the hero mid-scroll.
+   ========================================================================== */
+.kh-ih-hero {
+    --kh-ih-content-max: 44rem;
+    --kh-ih-pad-block: clamp(3rem, 8vh, 6rem);
+    --kh-ih-pad-inline: clamp(1.25rem, 5vw, 4.5rem);
+    --kh-ih-gap-size: calc(var(--kh-ih-gap, 0) * 1px);
+    --kh-ih-radius-size: calc(var(--kh-ih-radius, 0) * 1px);
+    --kh-ih-tilt: calc(var(--kh-ih-rotation, 0) * 1deg);
+    --kh-ih-shadow: none;
+    --kh-ih-mirror: 0;
+
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: calc(var(--kh-ih-h-desk, 90) * 1vh);
+
+    /* Compositions bleed past the edges on purpose. `clip` cuts them off
+       like `hidden` but is not a scroll container, so focusing a button or
+       following an anchor can never scroll the hero's own content. */
+    overflow: hidden;
+    overflow: clip;
+    color: #fff;
+    background-color: #0f172a;
+
+    @media (max-width: 768px) {
+        min-height: calc(var(--kh-ih-h-mob, 80) * 1vh);
+    }
+}
+
+@supports (min-height: 1svh) {
+    .kh-ih-hero {
+        min-height: calc(var(--kh-ih-h-desk, 90) * 1svh);
+
+        @media (max-width: 768px) {
+            min-height: calc(var(--kh-ih-h-mob, 80) * 1svh);
+        }
+    }
+}
+
+/* ==========================================================================
+   FULL-WIDTH (adapted from the Hero Mesh pattern)
+   Plain fallback first: no root-padding compensation, which would push the
+   hero past 100% (and cause a horizontal scrollbar) wherever the padding
+   variables are defined but not applied. .has-global-padding is the only
+   reliable signal that root padding really is applied to the parent.
+   ========================================================================== */
+.kh-ih-hero.alignfull {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.has-global-padding > .kh-ih-hero.alignfull {
+    width: calc(100% + var(--wp--style--root--padding-left, 0px) + var(--wp--style--root--padding-right, 0px)) !important;
+    max-width: none !important;
+    margin-left: calc(-1 * var(--wp--style--root--padding-left, 0px)) !important;
+    margin-right: calc(-1 * var(--wp--style--root--padding-right, 0px)) !important;
+}
+
+/* Nested in a constrained container (Kinetic Box, Columns): stay inside it.
+   Group / Cover are deliberately not listed -- FSE wraps root content in
+   them too, and matching them would break root-level full width. */
+.wp-block-kinetichub-kinetic-box,
+.kh-box-inner-content,
+.wp-block-column,
+.wp-block-columns {
+    .kh-ih-hero.alignfull {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* ==========================================================================
+   MEDIA LAYER
+   The grid fills the section; every slot is sized by the grid (or placed by
+   a composition) and every image fills its slot, so nothing depends on
+   intrinsic image size (no CLS).
+   ========================================================================== */
+.kh-ih-hero .kh-ih-media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.kh-ih-hero .kh-ih-slot {
+    position: relative;
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+}
+
+/* The card face. Clip, radius and shadow live one level inside the slot, so
+   the shadow is never clipped by the slot and a later pointer transform
+   moves the whole face. */
+.kh-ih-hero .kh-ih-slot-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    border-radius: var(--kh-ih-radius-size);
+    box-shadow: var(--kh-ih-shadow);
+}
+
+.kh-ih-hero .kh-ih-picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.kh-ih-hero .kh-ih-img {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    object-fit: cover;
+    object-position: var(--kh-ih-focal, 50% 50%);
+}
+
+/* A mobile replacement is a different file: the focal point was set on the
+   desktop image, so the replacement is centred instead. */
+@media (max-width: 768px) {
+
+    .kh-ih-hero .kh-ih-slot.has-mobile-source .kh-ih-img {
+        object-position: 50% 50%;
+    }
+}
+
+/* Image Fit: Contain shows the whole image, centred in its frame -- the
+   focal point steers a crop, so it has nothing to do here -- and leaves the
+   frame's own ground around it: the section behind a full-bleed image, the
+   card's face in a composition (COMPOSED STAGE). The frame keeps its size
+   and place; only what is drawn inside it changes. Motion leaves the image
+   whole (see MOTION). The mobile replacement shares its slot's fit. */
+.kh-ih-hero .kh-ih-slot.is-fit-contain .kh-ih-img {
+    object-fit: contain;
+    object-position: 50% 50%;
+}
+
+/* Shadows: one token, painted by the card face. */
+.kh-ih-hero.kh-ih-shadow-soft {
+    --kh-ih-shadow: 0 14px 34px -14px rgba(2, 6, 23, 0.5), 0 4px 12px -6px rgba(2, 6, 23, 0.35);
+}
+
+.kh-ih-hero.kh-ih-shadow-floating {
+    --kh-ih-shadow: 0 40px 80px -28px rgba(2, 6, 23, 0.7), 0 20px 40px -20px rgba(2, 6, 23, 0.5);
+
+    @media (max-width: 768px) {
+        --kh-ih-shadow: 0 22px 44px -18px rgba(2, 6, 23, 0.6), 0 10px 20px -12px rgba(2, 6, 23, 0.45);
+    }
+}
+
+/* ==========================================================================
+   BACKDROP STAGE: SPLIT DUO
+   Gap is both the gutter between the images and their inset from the
+   section edge: 0 is one seamless backdrop, anything above turns the pair
+   into cards. Rotation turns them away from each other; Depth staggers them
+   vertically on desktop -- the first rises, the second drops -- but only
+   once Gap has separated them (min(gap, 1) is 0 at Gap 0, 1 above it), so
+   the seamless backdrop can never open a seam.
+   ========================================================================== */
+.kh-ih-hero.kh-ih-layout-split-duo .kh-ih-media {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--kh-ih-gap-size);
+    padding: var(--kh-ih-gap-size);
+}
+
+.kh-ih-hero.kh-ih-layout-split-duo .kh-ih-slot-1 {
+    rotate: calc(var(--kh-ih-tilt) * -0.5);
+}
+
+.kh-ih-hero.kh-ih-layout-split-duo .kh-ih-slot-2 {
+    rotate: calc(var(--kh-ih-tilt) * 0.5);
+}
+
+@media (min-width: 769px) {
+
+    .kh-ih-hero.kh-ih-layout-split-duo .kh-ih-media {
+        --kh-ih-sd-stagger: calc(var(--kh-ih-depth, 0) * min(var(--kh-ih-gap, 0), 1) * 0.12vh);
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo .kh-ih-slot-1 {
+        margin-bottom: var(--kh-ih-sd-stagger);
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo .kh-ih-slot-2 {
+        margin-top: var(--kh-ih-sd-stagger);
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo.kh-ih-ratio-40-60 .kh-ih-media {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo.kh-ih-ratio-60-40 .kh-ih-media {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
+
+    /* The text keeps to the image it sits on: left-aligned text to the
+       first, right-aligned to the second. The content layer stops short of
+       the other image by the tracks above -- percentages of the hero, like
+       the grid's -- and then by the inset the text already keeps from its
+       card's outer edge, so no seam or card edge runs through it. Content
+       Width still sets the measure; the card only caps it. Centred text
+       spans both images by choice and is left alone. */
+    .kh-ih-hero.kh-ih-layout-split-duo {
+        --kh-ih-sd-share-1: 0.5;
+        --kh-ih-sd-share-2: 0.5;
+        --kh-ih-sd-inset: max(var(--kh-ih-pad-inline) - var(--kh-ih-gap-size), 1rem);
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo.kh-ih-ratio-40-60 {
+        --kh-ih-sd-share-1: 0.4;
+        --kh-ih-sd-share-2: 0.6;
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo.kh-ih-ratio-60-40 {
+        --kh-ih-sd-share-1: 0.6;
+        --kh-ih-sd-share-2: 0.4;
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo.kh-ih-content-x-left .kh-ih-content-layer {
+        padding-right: calc((100% - 3 * var(--kh-ih-gap-size)) * var(--kh-ih-sd-share-2) + 2 * var(--kh-ih-gap-size) + var(--kh-ih-sd-inset));
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo.kh-ih-content-x-right .kh-ih-content-layer {
+        padding-left: calc((100% - 3 * var(--kh-ih-gap-size)) * var(--kh-ih-sd-share-1) + 2 * var(--kh-ih-gap-size) + var(--kh-ih-sd-inset));
+    }
+
+    /* A narrow card (the smaller image, a narrow window) can leave the
+       heading a column too tight for its longest word, which would then
+       break mid-word. So that column is a size container and each Heading
+       Size step (TYPOGRAPHY, CONTENT DESIGN) is capped at 15% of it -- about
+       6.5em a line -- which only engages where the card is narrow. */
+    .kh-ih-hero.kh-ih-layout-split-duo:is(.kh-ih-content-x-left, .kh-ih-content-x-right) {
+
+        .kh-ih-content-layer {
+            container-type: inline-size;
+        }
+
+        .kh-ih-heading {
+            font-size: min(clamp(2.25rem, 1.5rem + 3.5vw, 4.75rem), 15cqi);
+        }
+
+        &.kh-ih-heading-large .kh-ih-heading {
+            font-size: min(clamp(2rem, 1.35rem + 2.6vw, 3.75rem), 15cqi);
+        }
+
+        &.kh-ih-heading-display .kh-ih-heading {
+            font-size: min(clamp(2.5rem, 1.25rem + 5.2vw, 6.5rem), 15cqi);
+        }
+    }
+}
+
+/* Stacked top / bottom at 768px and below, whatever the ratio. The content
+   keeps to the first image: the second is a band of fixed height beneath
+   it, and the content layer stops where the band's gap begins, so no seam
+   or card edge can run through the text however long it is. Primary Only
+   (MOBILE, below) gives the first image the whole section again. */
+@media (max-width: 768px) {
+
+    .kh-ih-hero.kh-ih-layout-split-duo {
+        --kh-ih-sd-band: clamp(7rem, 24vh, 14rem);
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo .kh-ih-media {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr) var(--kh-ih-sd-band);
+    }
+
+    .kh-ih-hero.kh-ih-layout-split-duo:not(.kh-ih-mobile-primary) .kh-ih-content-layer {
+        margin-bottom: calc(var(--kh-ih-sd-band) + 2 * var(--kh-ih-gap-size));
+    }
+}
+
+/* ==========================================================================
+   OVERLAY
+   Colour and opacity are written inline on the element; these are defaults.
+   ========================================================================== */
+.kh-ih-hero .kh-ih-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   CONTENT LAYER + PLACEMENT
+   ========================================================================== */
+.kh-ih-hero .kh-ih-content-layer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: var(--kh-ih-pad-block) var(--kh-ih-pad-inline);
+}
+
+.kh-ih-hero .kh-ih-content {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: var(--kh-ih-content-max);
+    overflow-wrap: break-word;
+    text-align: center;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY
+   `color: inherit` beats theme.json element colours (h1..h6, a), which
+   target the bare element and would otherwise paint dark text on the image.
+
+   Rhythm: no element keeps a margin of its own. The space goes between
+   neighbours (RHYTHM, below), so a field left empty leaves no gap behind.
+   Content Spacing sets the steps; Balanced is the original rhythm.
+   ========================================================================== */
+.kh-ih-hero {
+    --kh-ih-space-kicker: 1rem;
+    --kh-ih-space-text: 1.25rem;
+    --kh-ih-space-actions: 2rem;
+    --kh-ih-space-ctas: 0.75rem;
+}
+
+.kh-ih-hero.kh-ih-spacing-compact {
+    --kh-ih-space-kicker: 0.75rem;
+    --kh-ih-space-text: 1rem;
+    --kh-ih-space-actions: 1.5rem;
+    --kh-ih-space-ctas: 0.5rem;
+}
+
+.kh-ih-hero.kh-ih-spacing-airy {
+    --kh-ih-space-kicker: 1.5rem;
+    --kh-ih-space-text: 1.75rem;
+    --kh-ih-space-actions: 2.75rem;
+    --kh-ih-space-ctas: 1rem;
+}
+
+.kh-ih-hero .kh-ih-kicker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 0.75rem;
+    margin: 0;
+}
+
+.kh-ih-hero .kh-ih-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3em 0.75em;
+    border: 1px solid currentcolor;
+    border-radius: 999px;
+    color: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+}
+
+.kh-ih-hero .kh-ih-eyebrow {
+    margin: 0;
+    color: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.kh-ih-hero .kh-ih-heading {
+    margin: 0;
+    color: inherit;
+    font-size: clamp(2.25rem, 1.5rem + 3.5vw, 4.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+.kh-ih-hero .kh-ih-description {
+    margin: 0;
+    color: inherit;
+    font-size: clamp(1rem, 0.95rem + 0.35vw, 1.25rem);
+    line-height: 1.6;
+
+    a {
+        color: inherit;
+        text-decoration: underline;
+    }
+}
+
+/* ==========================================================================
+   ACTIONS
+   Two-class selectors so theme `a:hover` rules cannot out-rank them.
+   ========================================================================== */
+.kh-ih-hero .kh-ih-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--kh-ih-space-ctas);
+    margin: 0;
+}
+
+/* RHYTHM: the kicker, then the heading, the description and the buttons,
+   each spaced from whatever actually precedes it. */
+.kh-ih-hero .kh-ih-kicker + * {
+    margin-top: var(--kh-ih-space-kicker);
+}
+
+.kh-ih-hero .kh-ih-heading + .kh-ih-description {
+    margin-top: var(--kh-ih-space-text);
+}
+
+.kh-ih-hero .kh-ih-content > * + .kh-ih-actions {
+    margin-top: var(--kh-ih-space-actions);
+}
+
+.kh-ih-hero .kh-ih-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: 0.8em 1.6em;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+}
+
+.kh-ih-hero .kh-ih-cta-primary,
+.kh-ih-hero .kh-ih-cta-primary:hover,
+.kh-ih-hero .kh-ih-cta-primary:focus {
+    border-color: #fff;
+    background-color: #fff;
+    color: #0f172a;
+    text-decoration: none;
+}
+
+.kh-ih-hero .kh-ih-cta-secondary,
+.kh-ih-hero .kh-ih-cta-secondary:hover,
+.kh-ih-hero .kh-ih-cta-secondary:focus {
+    border-color: currentcolor;
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+}
+
+.kh-ih-hero .kh-ih-cta-primary:hover {
+    background-color: rgba(255, 255, 255, 0.86);
+}
+
+.kh-ih-hero .kh-ih-cta-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+.kh-ih-hero .kh-ih-cta:focus-visible {
+    outline: 2px solid var(--kh-accent, #10b981);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .kh-ih-hero .kh-ih-cta {
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+}
+
+/* ==========================================================================
+   PLACEMENT
+   After the base rules above, which these refine.
+   ========================================================================== */
+.kh-ih-hero.kh-ih-content-x-left {
+    .kh-ih-content-layer { justify-content: flex-start; }
+    .kh-ih-content { text-align: left; }
+    .kh-ih-kicker,
+    .kh-ih-actions { justify-content: flex-start; }
+}
+
+.kh-ih-hero.kh-ih-content-x-center {
+    .kh-ih-content-layer { justify-content: center; }
+    .kh-ih-content { text-align: center; }
+    .kh-ih-kicker,
+    .kh-ih-actions { justify-content: center; }
+}
+
+.kh-ih-hero.kh-ih-content-x-right {
+    .kh-ih-content-layer { justify-content: flex-end; }
+    .kh-ih-content { text-align: right; }
+    .kh-ih-kicker,
+    .kh-ih-actions { justify-content: flex-end; }
+}
+
+.kh-ih-hero.kh-ih-content-y-top .kh-ih-content-layer { align-items: flex-start; }
+.kh-ih-hero.kh-ih-content-y-center .kh-ih-content-layer { align-items: center; }
+.kh-ih-hero.kh-ih-content-y-bottom .kh-ih-content-layer { align-items: flex-end; }
+
+/* ==========================================================================
+   CONTENT DESIGN
+   Classes from render.php / the editor, written only when a setting differs
+   from its default, so the rules above are the defaults exactly: Standard
+   width, Balanced spacing, XL heading, Normal description, Plain eyebrow,
+   Minimal badge. Scale, rhythm and treatment only -- the font family,
+   weight and colours stay the theme's and the native Styles settings'.
+   ========================================================================== */
+
+/* Content Width. The column the content sits in always caps it: beside a
+   composition that is the content track, so a width wider than the track
+   simply fills it. */
+.kh-ih-hero.kh-ih-width-narrow {
+    --kh-ih-content-max: 36rem;
+}
+
+.kh-ih-hero.kh-ih-width-wide {
+    --kh-ih-content-max: 54rem;
+}
+
+.kh-ih-hero.kh-ih-width-custom {
+    --kh-ih-content-max: calc(var(--kh-ih-content-w, 700) * 1px);
+}
+
+/* Heading Size. XL is the size above; the heading level (H1-H6) never
+   changes it. A composition beside the text leaves it a narrower column,
+   so each step is a little smaller there (COMPOSED STAGE has XL's). */
+.kh-ih-hero.kh-ih-heading-large .kh-ih-heading {
+    font-size: clamp(2rem, 1.35rem + 2.6vw, 3.75rem);
+    line-height: 1.08;
+}
+
+.kh-ih-hero.kh-ih-heading-display .kh-ih-heading {
+    font-size: clamp(2.5rem, 1.25rem + 5.2vw, 6.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.kh-ih-hero.kh-ih-stage-composed.kh-ih-heading-large .kh-ih-heading {
+    font-size: clamp(2rem, 1.1rem + 2.1vw, 3.5rem);
+}
+
+.kh-ih-hero.kh-ih-stage-composed.kh-ih-heading-display .kh-ih-heading {
+    font-size: clamp(2.5rem, 1rem + 3.9vw, 5.5rem);
+}
+
+.kh-ih-hero.kh-ih-description-large .kh-ih-description {
+    font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+    line-height: 1.55;
+}
+
+/* Eyebrow Style. Accent Line: a short rule in the KineticHub accent on the
+   outer side of the text, on both sides when it is centred. Pill: a quiet
+   capsule in the text's own tone with an accent dot. Both stay text first,
+   and neither is a separate element. */
+@mixin kh-ih-accent-rule {
+    content: "";
+    display: inline-block;
+    width: 1.75rem;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--kh-accent, #10b981);
+    vertical-align: 0.3em;
+
+    /* Shorter on a phone, so a long eyebrow keeps its line. */
+    @media (max-width: 768px) {
+        width: 1.125rem;
+    }
+}
+
+.kh-ih-hero.kh-ih-eyebrow-accent-line:not(.kh-ih-content-x-right) .kh-ih-eyebrow::before {
+
+    @include kh-ih-accent-rule;
+    margin-inline-end: 0.85em;
+}
+
+.kh-ih-hero.kh-ih-eyebrow-accent-line:not(.kh-ih-content-x-left) .kh-ih-eyebrow::after {
+
+    @include kh-ih-accent-rule;
+    margin-inline-start: 0.7em;
+}
+
+.kh-ih-hero.kh-ih-eyebrow-pill .kh-ih-eyebrow {
+    padding: 0.55em 1.05em 0.55em 0.95em;
+    border-radius: 999px;
+    background-color: rgba(148, 163, 184, 0.16);
+    background-color: color-mix(in srgb, currentcolor 10%, transparent);
+    box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.3);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentcolor 18%, transparent);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+}
+
+.kh-ih-hero.kh-ih-eyebrow-pill .kh-ih-eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    margin-inline-end: 0.7em;
+    border-radius: 50%;
+    background-color: var(--kh-accent, #10b981);
+    vertical-align: 0.1em;
+}
+
+/* Badge Style. Minimal is the hairline capsule above. Soft: a tint of the
+   text's own tone, no rule -- neutral, so it holds over any photograph (an
+   accent tint vanished into matching foliage). Glass: a translucent capsule
+   in the tone opposite the text, so it stays readable, lightly blurred. */
+.kh-ih-hero.kh-ih-badge-soft .kh-ih-badge {
+    border-color: transparent;
+    background-color: rgba(148, 163, 184, 0.22);
+    background-color: color-mix(in srgb, currentcolor 18%, transparent);
+}
+
+.kh-ih-hero.kh-ih-badge-glass .kh-ih-badge {
+    border-color: rgba(148, 163, 184, 0.4);
+    border-color: color-mix(in srgb, currentcolor 30%, transparent);
+    background-color: rgba(2, 6, 23, 0.3);
+    background-color: color-mix(in srgb, var(--kh-ih-shade) 26%, transparent);
+    -webkit-backdrop-filter: blur(8px) saturate(1.4);
+    backdrop-filter: blur(8px) saturate(1.4);
+}
+
+/* ==========================================================================
+   BUTTON STYLES
+   A button whose style was never chosen keeps the primary / secondary look
+   under ACTIONS. A chosen style is one class on the link:
+     Solid    filled in the text's tone, the label in the opposite tone
+     Outline  a hairline in the text colour
+     Ghost    the label alone; a tint on hover
+     Glass    a translucent, lightly blurred plate with a hairline
+   Every colour is derived from the hero's text colour, so each style holds
+   on a dark or a light section, over a photograph or a mesh. Icons are
+   drawn by the link's ::after -- a masked glyph in the label's colour --
+   so they add no element and nothing a screen reader would announce.
+   ========================================================================== */
+
+/* Solid: on a light text colour (the default dark hero) exactly the white
+   fill and slate label the first button always had; on a dark text colour
+   a near-black fill with a white label. Without relative colour support it
+   stays white and slate. */
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-solid {
+    --kh-ih-cta-ink: #0f172a;
+    --kh-ih-cta-fill: #fff;
+}
+
+/* Channel math without calc(), which the minifier would try to reduce. The
+   ink is read against the inherited text colour; the fill against the ink. */
+@supports (color: oklch(from red max(round(1 - l), 0.2) min(0.04, round(l) * 0.04) 265)) {
+    .kh-ih-hero .kh-ih-cta.kh-ih-cta-solid {
+        --kh-ih-cta-ink: oklch(from currentcolor max(round(1 - l), 0.208) min(0.04, round(l) * 0.04) 265.75);
+        --kh-ih-cta-fill: oklch(from currentcolor round(1 - l) 0 0);
+    }
+}
+
+/* A label long enough to wrap stays centred in its button. */
+.kh-ih-hero .kh-ih-cta:is(.kh-ih-cta-solid, .kh-ih-cta-outline, .kh-ih-cta-ghost, .kh-ih-cta-glass, .kh-ih-cta-icon-arrow, .kh-ih-cta-icon-external-arrow) {
+    text-align: center;
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-solid,
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-solid:hover,
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-solid:focus {
+    border-color: var(--kh-ih-cta-fill);
+    background-color: var(--kh-ih-cta-fill);
+    color: var(--kh-ih-cta-ink);
+    text-decoration: none;
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-solid:hover {
+    background-color: color-mix(in srgb, var(--kh-ih-cta-fill) 86%, transparent);
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-outline,
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-outline:hover,
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-outline:focus {
+    border-color: currentcolor;
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-ghost,
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-ghost:hover,
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-ghost:focus {
+    border-color: transparent;
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-outline:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+    background-color: color-mix(in srgb, currentcolor 14%, transparent);
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    background-color: color-mix(in srgb, currentcolor 10%, transparent);
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-glass,
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-glass:hover,
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-glass:focus {
+    border-color: rgba(148, 163, 184, 0.45);
+    border-color: color-mix(in srgb, currentcolor 32%, transparent);
+    background-color: rgba(2, 6, 23, 0.4);
+    background-color: color-mix(in srgb, var(--kh-ih-shade) 28%, transparent);
+    background-image: linear-gradient(color-mix(in srgb, currentcolor 16%, transparent), color-mix(in srgb, currentcolor 6%, transparent));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, currentcolor 22%, transparent);
+    color: inherit;
+    text-decoration: none;
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    backdrop-filter: blur(12px) saturate(1.4);
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-glass:hover {
+    background-color: color-mix(in srgb, var(--kh-ih-shade) 34%, transparent);
+    background-image: linear-gradient(color-mix(in srgb, currentcolor 24%, transparent), color-mix(in srgb, currentcolor 10%, transparent));
+}
+
+/* Icons. The glyph sits after the label and follows the reading direction;
+   its own side bearing is taken back so the button stays optically even. */
+.kh-ih-hero .kh-ih-cta:is(.kh-ih-cta-icon-arrow, .kh-ih-cta-icon-external-arrow)::after {
+    content: "";
+    flex: none;
+    width: 1em;
+    height: 1em;
+    margin-inline: 0.5em -0.15em;
+    background-color: currentcolor;
+    -webkit-mask: var(--kh-ih-cta-glyph) center / contain no-repeat;
+    mask: var(--kh-ih-cta-glyph) center / contain no-repeat;
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-icon-arrow {
+    --kh-ih-cta-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.75 8h10.5M9 3.75 13.25 8 9 12.25'/%3E%3C/svg%3E");
+}
+
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-icon-external-arrow {
+    --kh-ih-cta-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 11.5l7-7M5.75 4.5h5.75v5.75'/%3E%3C/svg%3E");
+}
+
+.kh-ih-hero .kh-ih-cta:dir(rtl)::after {
+    scale: -1 1;
+}
+
+/* Button Size. Medium is the size under ACTIONS; one size for the pair, so
+   two buttons side by side always share a height. */
+.kh-ih-hero.kh-ih-ctas-size-large .kh-ih-cta {
+    min-height: 52px;
+    padding: 0.95em 2em;
+    font-size: 1.0625rem;
+}
+
+/* Button Layout. Stack: one column, every button as wide as the widest,
+   aligned with the content. On mobile the pair can stack, or stack and
+   span the content's full width. A long label wraps inside its button. */
+.kh-ih-hero.kh-ih-ctas-stack .kh-ih-actions {
+    display: grid;
+    grid-template-columns: minmax(0, max-content);
+}
+
+@media (max-width: 768px) {
+
+    .kh-ih-hero.kh-ih-ctas-mobile-stack .kh-ih-actions {
+        display: grid;
+        grid-template-columns: minmax(0, max-content);
+    }
+
+    .kh-ih-hero.kh-ih-ctas-mobile-full-width .kh-ih-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Button Hover: fine pointers only, so a tap never leaves a button lifted,
+   and the keyboard gets the same on focus -- over the focus ring, never in
+   place of it. Lift and Arrow Shift are movement, so reduced motion drops
+   them; Glow is a halo, so it stays, without the fade. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+
+    .kh-ih-hero:is(.kh-ih-ctas-hover-lift, .kh-ih-ctas-hover-glow) .kh-ih-cta {
+        transition: background-color 0.2s ease, border-color 0.2s ease, translate 0.35s var(--kh-ih-ease), box-shadow 0.35s var(--kh-ih-ease);
+    }
+
+    .kh-ih-hero.kh-ih-ctas-hover-lift .kh-ih-cta:is(:hover, :focus-visible) {
+        translate: 0 -2px;
+        box-shadow: 0 14px 28px -14px rgba(2, 6, 23, 0.55);
+    }
+
+    .kh-ih-hero.kh-ih-ctas-hover-arrow-shift .kh-ih-cta::after {
+        transition: translate 0.35s var(--kh-ih-ease);
+    }
+
+    .kh-ih-hero.kh-ih-ctas-hover-arrow-shift .kh-ih-cta:is(:hover, :focus-visible)::after {
+        translate: 0.25em 0;
+    }
+
+    .kh-ih-hero.kh-ih-ctas-hover-arrow-shift .kh-ih-cta:dir(rtl):is(:hover, :focus-visible)::after {
+        translate: -0.25em 0;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+    .kh-ih-hero.kh-ih-ctas-hover-glow .kh-ih-cta:is(:hover, :focus-visible) {
+        box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.6), 0 8px 28px -6px rgba(16, 185, 129, 0.55);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--kh-accent, #10b981) 60%, transparent), 0 8px 28px -6px color-mix(in srgb, var(--kh-accent, #10b981) 55%, transparent);
+    }
+}
+
+/* ==========================================================================
+   COMPOSED STAGE
+   The section becomes a grid with a content area and a media area -- the
+   stage. The overlay exists to keep text readable over an image; here the
+   text never sits on one, so it is not drawn.
+   ========================================================================== */
+.kh-ih-hero.kh-ih-stage-composed {
+    --kh-ih-stage-max: 80rem;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "content"
+        "media";
+    padding: var(--kh-ih-pad-block) var(--kh-ih-pad-inline);
+
+    .kh-ih-media {
+        position: relative;
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: auto;
+        grid-area: media;
+        min-width: 0;
+
+        /* Scale's defaults (Balanced); see COMPOSITIONS. */
+        --kh-ih-out: 0%;
+        --kh-ih-lift: 0%;
+        --kh-ih-mass: 0;
+    }
+
+    .kh-ih-overlay {
+        display: none;
+    }
+
+    /* A card whose lazy image has not arrived yet still reads as a card,
+       rather than a shadow floating on its own. */
+    .kh-ih-slot-inner {
+        background-color: rgba(148, 163, 184, 0.14);
+    }
+
+    /* A contained image leaves part of its card bare, and the cards
+       overlap, so that card's face is solid: the same tint over the tone
+       opposite the text (--kh-ih-shade, the ground Content Surface uses).
+       A card behind never shows through the space around the image. */
+    .kh-ih-slot.is-fit-contain .kh-ih-slot-inner {
+        background: linear-gradient(rgba(148, 163, 184, 0.14), rgba(148, 163, 184, 0.14)), var(--kh-ih-shade);
+    }
+
+    /* Frame background off: the face is left clear, so whatever sits
+       behind the card shows in the space around the image. The card keeps
+       its size, radius, shadow and every movement. */
+    .kh-ih-slot.is-contain-transparent .kh-ih-slot-inner {
+        background: none;
+    }
+
+    .kh-ih-content-layer {
+        grid-area: content;
+        padding: 0;
+    }
+
+    .kh-ih-heading {
+        font-size: clamp(2.25rem, 1.25rem + 2.75vw, 4.25rem);
+    }
+}
+
+/* ==========================================================================
+   COMPOSITIONS
+   Every composed presentation is a few absolutely placed cards whose
+   geometry is a function of the stage (percentages), the scale class and
+   the numeric settings. Written for content on the left -- the outer side
+   is the right -- and mirrored by --kh-ih-mirror.
+
+   Scale sets how far the composition reaches:
+     --kh-ih-out   inset from the outer edge (negative bleeds off the hero)
+     --kh-ih-lift  inset from the top (negative bleeds off the hero)
+     --kh-ih-mass  0 / 1 / 2 -- how much of the stage the cards claim
+   ========================================================================== */
+.kh-ih-hero.kh-ih-scale-large .kh-ih-media {
+    --kh-ih-out: 5%;
+    --kh-ih-mass: 1;
+}
+
+.kh-ih-hero.kh-ih-scale-oversized .kh-ih-media {
+    --kh-ih-out: -7%;
+    --kh-ih-lift: -6%;
+    --kh-ih-mass: 2;
+}
+
+/* Offset Duo: a dominant primary anchored to the outer side, and a floating
+   card over its inner edge, lower down. Overlap slides the primary under
+   the card; Depth (--kh-ih-od-d) sets how far apart they sit vertically.
+   The primary stays straight -- the card is the one that turns. */
+.kh-ih-hero.kh-ih-layout-offset-duo .kh-ih-media {
+    --kh-ih-od-o: calc(var(--kh-ih-overlap, 35) / 100);
+    --kh-ih-od-d: calc(var(--kh-ih-depth, 50) / 100);
+    --kh-ih-od-sw: calc(46% - var(--kh-ih-mass) * 3%);
+    --kh-ih-od-sh: calc(50% - var(--kh-ih-mass) * 1%);
+    --kh-ih-od-ph: calc(80% + var(--kh-ih-mass) * 4%);
+    --kh-ih-od-px: calc(var(--kh-ih-od-sw) * (1 - 0.9 * var(--kh-ih-od-o)));
+}
+
+/* The card always hangs below the primary's lower edge -- 6% at Depth 0,
+   16% at 100 -- so the two never almost line up. */
+.kh-ih-hero.kh-ih-layout-offset-duo .kh-ih-slot-1 {
+    --kh-ih-slot-x: var(--kh-ih-od-px);
+    --kh-ih-slot-y: calc(var(--kh-ih-lift) + (1 - var(--kh-ih-od-d)) * 4%);
+    --kh-ih-slot-w: calc(100% - var(--kh-ih-od-px) - var(--kh-ih-out));
+    --kh-ih-slot-h: var(--kh-ih-od-ph);
+    --kh-ih-slot-z: 1;
+    --kh-ih-slot-turn: 0;
+}
+
+.kh-ih-hero.kh-ih-layout-offset-duo .kh-ih-slot-2 {
+    --kh-ih-slot-x: 0%;
+    --kh-ih-slot-y: calc(100% - var(--kh-ih-od-sh) - (1 - var(--kh-ih-od-d)) * 6%);
+    --kh-ih-slot-w: var(--kh-ih-od-sw);
+    --kh-ih-slot-h: var(--kh-ih-od-sh);
+    --kh-ih-slot-z: 2;
+    --kh-ih-slot-turn: 1;
+}
+
+/* Stacked Cards: the primary is the front card; the others step out from
+   behind it in opposite directions -- the second up and toward the outer
+   side, the third (the deepest) down and toward the inner side -- each a
+   little smaller and turned the other way. Depth sets the step. */
+.kh-ih-hero.kh-ih-layout-stacked-cards .kh-ih-media {
+    --kh-ih-sc-w: calc(56% + var(--kh-ih-mass) * 4%);
+    --kh-ih-sc-h: calc(74% + var(--kh-ih-mass) * 6%);
+    --kh-ih-sc-step: calc(9% + var(--kh-ih-depth, 50) * 0.12%);
+    --kh-ih-sc-rise: calc(4% + var(--kh-ih-depth, 50) * 0.06%);
+    --kh-ih-sc-x: calc((100% - var(--kh-ih-sc-w) - var(--kh-ih-sc-pair, 0) * var(--kh-ih-sc-step)) / 2);
+    --kh-ih-sc-y: calc((100% - var(--kh-ih-sc-h) + var(--kh-ih-sc-pair, 0) * var(--kh-ih-sc-rise)) / 2);
+}
+
+/* Two cards: the pair is centred as one, rather than the front card alone. */
+.kh-ih-hero.kh-ih-layout-stacked-cards.kh-ih-slots-2 {
+    --kh-ih-sc-pair: 1;
+}
+
+.kh-ih-hero.kh-ih-layout-stacked-cards .kh-ih-slot {
+    --kh-ih-slot-w: var(--kh-ih-sc-w);
+    --kh-ih-slot-h: var(--kh-ih-sc-h);
+}
+
+.kh-ih-hero.kh-ih-layout-stacked-cards .kh-ih-slot-1 {
+    --kh-ih-slot-x: var(--kh-ih-sc-x);
+    --kh-ih-slot-y: var(--kh-ih-sc-y);
+    --kh-ih-slot-z: 3;
+    --kh-ih-slot-turn: -0.3;
+}
+
+.kh-ih-hero.kh-ih-layout-stacked-cards .kh-ih-slot-2 {
+    --kh-ih-slot-x: calc(var(--kh-ih-sc-x) + var(--kh-ih-sc-step));
+    --kh-ih-slot-y: calc(var(--kh-ih-sc-y) - var(--kh-ih-sc-rise));
+    --kh-ih-slot-z: 2;
+    --kh-ih-slot-turn: 0.8;
+    --kh-ih-slot-scale: 0.93;
+}
+
+.kh-ih-hero.kh-ih-layout-stacked-cards .kh-ih-slot-3 {
+    --kh-ih-slot-x: calc(var(--kh-ih-sc-x) - var(--kh-ih-sc-step));
+    --kh-ih-slot-y: calc(var(--kh-ih-sc-y) + 1.6 * var(--kh-ih-sc-rise));
+    --kh-ih-slot-z: 1;
+    --kh-ih-slot-turn: -1;
+    --kh-ih-slot-scale: 0.87;
+}
+
+/* Editorial Collage: three different shapes. A wide primary across the top,
+   reaching the outer side; a tall second image on the inner side, crossing
+   the primary's lower corner; a small accent in the space under the
+   primary. Stagger (Depth) drops the second image; Gap spaces the accent.
+   The geometry is desktop only; mobile has its own grid (below). */
+.kh-ih-hero.kh-ih-layout-editorial-collage .kh-ih-media {
+    --kh-ih-ec-d: calc(var(--kh-ih-depth, 40) / 100);
+    --kh-ih-ec-ph: calc(58% + var(--kh-ih-mass) * 3%);
+    --kh-ih-ec-sw: calc(34% - var(--kh-ih-mass) * 1%);
+    --kh-ih-ec-top: calc(var(--kh-ih-lift) + 3%);
+}
+
+/* ==========================================================================
+   SCENE BACKDROP (ATMOSPHERE)
+   Decorative layers only: pseudo-elements, so no element, nothing for
+   assistive technology, never a pointer target. The section's own
+   background stays the native Background colour -- make it transparent and
+   the hero sits on whatever is behind it (Hero Mesh, Ambient Aura, a Group)
+   with these layers on top.
+
+   Behind the composition, drawn by the stage's ::before: Soft Glow, Gradient
+   Wash, Dual Glow, Accent Panel. Each presentation places it
+   (--kh-ih-scene-*, percentages of the stage, content-left; mirrored like
+   the slots). Over it, drawn by the section's ::before under the overlay and
+   the content: Vignette, the one backdrop a full-bleed image can show.
+
+   Every colour comes from the KineticHub accent. Dual Glow's second light
+   is the accent turned 42deg around the hue circle, so a cyan accent pairs
+   with a deep blue and an emerald one with sky; without relative colour
+   support it is the accent softened toward the text colour.
+
+   Gradients only -- no filter, nothing that repaints. Backdrop Intensity
+   scales their strength (--kh-ih-scene-a); Medium is 1.
+   ========================================================================== */
+.kh-ih-hero {
+    --kh-ih-scene-a: 1;
+
+    /* The side the composition actually faces: mirrored for content on the
+       right, and again in a right-to-left document, where the RTL stylesheet
+       mirrors the placement but cannot reach inside a gradient. */
+    --kh-ih-rtl: 0;
+    --kh-ih-side: calc(var(--kh-ih-mirror) + var(--kh-ih-rtl) - 2 * var(--kh-ih-mirror) * var(--kh-ih-rtl));
+    --kh-ih-glow-a: var(--kh-accent, #10b981);
+    --kh-ih-glow-b: var(--kh-accent, #10b981);
+}
+
+.kh-ih-hero:dir(rtl) {
+    --kh-ih-rtl: 1;
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+    .kh-ih-hero {
+        --kh-ih-glow-b: color-mix(in srgb, var(--kh-accent, #10b981) 55%, currentcolor);
+    }
+}
+
+/* Channel math without calc(), which the minifier would try to reduce. */
+@supports (color: oklch(from red clamp(0, l * 0.92, 1) c mod(h + 42, 360))) {
+    .kh-ih-hero {
+        --kh-ih-glow-b: oklch(from var(--kh-accent, #10b981) clamp(0, l * 0.92, 1) c mod(h + 42, 360));
+    }
+}
+
+.kh-ih-hero.kh-ih-atmos-subtle {
+    --kh-ih-scene-a: 0.6;
+}
+
+.kh-ih-hero.kh-ih-atmos-strong {
+    --kh-ih-scene-a: 1.4;
+}
+
+.kh-ih-hero:is(.kh-ih-scene-soft-glow, .kh-ih-scene-gradient-wash, .kh-ih-scene-dual-glow, .kh-ih-scene-accent-panel) .kh-ih-media::before {
+    content: "";
+    position: absolute;
+    top: var(--kh-ih-scene-y);
+    left: calc(var(--kh-ih-scene-x) + var(--kh-ih-mirror) * (100% - 2 * var(--kh-ih-scene-x) - var(--kh-ih-scene-w)));
+    z-index: 0;
+    width: var(--kh-ih-scene-w);
+    height: var(--kh-ih-scene-h);
+    pointer-events: none;
+}
+
+.kh-ih-hero.kh-ih-scene-soft-glow .kh-ih-media::before {
+    background: radial-gradient(closest-side, rgba(148, 163, 184, 0.4), rgba(148, 163, 184, 0.2) 50%, rgba(148, 163, 184, 0));
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--kh-accent, #10b981) calc(48% * var(--kh-ih-scene-a)), transparent), color-mix(in srgb, var(--kh-accent, #10b981) calc(24% * var(--kh-ih-scene-a)), transparent) 50%, transparent);
+}
+
+/* A broad diagonal of light rising from the composition's outer, lower
+   corner -- open stage in every presentation, where the primary image does
+   not cover it -- feathered to nothing on every side. */
+.kh-ih-hero.kh-ih-scene-gradient-wash .kh-ih-media::before {
+    background: linear-gradient(calc(315deg - 270deg * var(--kh-ih-side)), rgba(148, 163, 184, 0.34), rgba(148, 163, 184, 0) 72%);
+    background: linear-gradient(calc(315deg - 270deg * var(--kh-ih-side)), color-mix(in srgb, var(--kh-ih-glow-a) calc(46% * var(--kh-ih-scene-a)), transparent) 10%, color-mix(in srgb, var(--kh-ih-glow-b) calc(22% * var(--kh-ih-scene-a)), transparent) 44%, transparent 76%);
+    -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent);
+    mask-image: radial-gradient(closest-side, #000 45%, transparent);
+}
+
+/* Two lights in the stage's open corners: the accent low on the outer side,
+   its partner high on the inner side. Each ellipse ends exactly at the
+   layer's edges, so neither is ever cut by them. */
+.kh-ih-hero.kh-ih-scene-dual-glow .kh-ih-media::before {
+    background: radial-gradient(closest-side, rgba(148, 163, 184, 0.34), rgba(148, 163, 184, 0));
+    background:
+        radial-gradient(34% 34% at calc(66% - 32% * var(--kh-ih-side)) 66%, color-mix(in srgb, var(--kh-ih-glow-a) calc(52% * var(--kh-ih-scene-a)), transparent), color-mix(in srgb, var(--kh-ih-glow-a) calc(20% * var(--kh-ih-scene-a)), transparent) 50%, transparent),
+        radial-gradient(34% 34% at calc(34% + 32% * var(--kh-ih-side)) 34%, color-mix(in srgb, var(--kh-ih-glow-b) calc(50% * var(--kh-ih-scene-a)), transparent), color-mix(in srgb, var(--kh-ih-glow-b) calc(18% * var(--kh-ih-scene-a)), transparent) 50%, transparent);
+}
+
+.kh-ih-hero.kh-ih-scene-accent-panel .kh-ih-media::before {
+    border-radius: calc(var(--kh-ih-radius-size) * 1.5);
+    background-color: var(--kh-accent, #10b981);
+}
+
+.kh-ih-hero.kh-ih-scene-accent-panel.kh-ih-atmos-subtle .kh-ih-media::before {
+    background-color: color-mix(in srgb, var(--kh-accent, #10b981) 55%, transparent);
+}
+
+.kh-ih-hero.kh-ih-scene-accent-panel.kh-ih-atmos-strong .kh-ih-media::before {
+    box-shadow: 0 48px 110px -40px color-mix(in srgb, var(--kh-accent, #10b981) 70%, transparent);
+}
+
+/* Vignette: the section's edges fall away into shadow, over the images and
+   under the overlay and the content. */
+.kh-ih-hero.kh-ih-scene-vignette::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background: radial-gradient(ellipse 125% 115% at 50% 42%, transparent 45%, rgba(2, 6, 23, 0.46) 100%);
+    background: radial-gradient(ellipse 125% 115% at 50% 42%, transparent 45%, rgba(2, 6, 23, calc(0.46 * var(--kh-ih-scene-a))) 100%);
+    pointer-events: none;
+}
+
+/* Where each presentation puts it: the glow is centred on the composition's
+   mass, the wash and the dual glow spread past it on every side; the panel
+   sits behind it, offset toward the outer side. */
+.kh-ih-hero.kh-ih-scene-soft-glow .kh-ih-media {
+    --kh-ih-scene-x: -6%;
+    --kh-ih-scene-y: -10%;
+    --kh-ih-scene-w: 118%;
+    --kh-ih-scene-h: 120%;
+}
+
+.kh-ih-hero:is(.kh-ih-scene-gradient-wash, .kh-ih-scene-dual-glow) .kh-ih-media {
+    --kh-ih-scene-x: -14%;
+    --kh-ih-scene-y: -16%;
+    --kh-ih-scene-w: 128%;
+    --kh-ih-scene-h: 132%;
+}
+
+.kh-ih-hero.kh-ih-scene-accent-panel.kh-ih-layout-offset-duo .kh-ih-media {
+    --kh-ih-scene-x: calc(var(--kh-ih-od-px) + 16%);
+    --kh-ih-scene-y: 22%;
+    --kh-ih-scene-w: 100%;
+    --kh-ih-scene-h: 100%;
+}
+
+.kh-ih-hero.kh-ih-scene-accent-panel.kh-ih-layout-stacked-cards .kh-ih-media {
+    --kh-ih-scene-x: 40%;
+    --kh-ih-scene-y: 26%;
+    --kh-ih-scene-w: 100%;
+    --kh-ih-scene-h: 100%;
+}
+
+.kh-ih-hero.kh-ih-scene-accent-panel.kh-ih-layout-editorial-collage .kh-ih-media {
+    --kh-ih-scene-x: 58%;
+    --kh-ih-scene-y: 44%;
+    --kh-ih-scene-w: 100%;
+    --kh-ih-scene-h: 100%;
+}
+
+/* ==========================================================================
+   COMPOSED STAGE: DESKTOP (769px and up)
+   The inline padding moves into the grid as two edge tracks, so the stage
+   can grow into them: [edge][content][gap][media][edge]. Balance sets the
+   content / media tracks; Scale how far the stage reaches past its track
+   (Large and Oversized to the hero's outer edge, and into the block
+   padding); Content Overlap how far it reaches under the content.
+   ========================================================================== */
+@media (min-width: 769px) {
+
+    .kh-ih-hero.kh-ih-stage-composed {
+        --kh-ih-edge: max(var(--kh-ih-pad-inline), (100% - var(--kh-ih-stage-max)) / 2);
+        --kh-ih-col-gap: clamp(2rem, 4.5vw, 5rem);
+        --kh-ih-content-fr: 2fr;
+        --kh-ih-media-fr: 3fr;
+        --kh-ih-reach: 0%;
+
+        grid-template-columns:
+            var(--kh-ih-edge)
+            minmax(min(20rem, 100%), var(--kh-ih-content-fr))
+            var(--kh-ih-col-gap)
+            minmax(0, var(--kh-ih-media-fr))
+            var(--kh-ih-edge);
+        grid-template-areas: ". content . media .";
+        padding-right: 0;
+        padding-left: 0;
+
+        @include kh-ih-placed-slots;
+
+        .kh-ih-media {
+            min-height: 24rem;
+            margin-left: calc(-1 * var(--kh-ih-reach));
+        }
+    }
+
+    .kh-ih-hero.kh-ih-balance-50-50 {
+        --kh-ih-content-fr: 1fr;
+        --kh-ih-media-fr: 1fr;
+    }
+
+    .kh-ih-hero.kh-ih-balance-35-65 {
+        --kh-ih-content-fr: 7fr;
+        --kh-ih-media-fr: 13fr;
+    }
+
+    /* Scale: Large and Oversized take the outer edge track too, and grow
+       into the block padding -- half of it, or all of it. */
+    .kh-ih-hero.kh-ih-scale-large .kh-ih-media,
+    .kh-ih-hero.kh-ih-scale-oversized .kh-ih-media {
+        grid-column-end: -1;
+    }
+
+    .kh-ih-hero.kh-ih-scale-large .kh-ih-media {
+        margin-top: calc(-0.5 * var(--kh-ih-pad-block));
+        margin-bottom: calc(-0.5 * var(--kh-ih-pad-block));
+    }
+
+    .kh-ih-hero.kh-ih-scale-oversized .kh-ih-media {
+        margin-top: calc(-1 * var(--kh-ih-pad-block));
+        margin-bottom: calc(-1 * var(--kh-ih-pad-block));
+    }
+
+    .kh-ih-hero.kh-ih-stage-composed.kh-ih-content-x-right {
+        --kh-ih-mirror: 1;
+
+        grid-template-columns:
+            var(--kh-ih-edge)
+            minmax(0, var(--kh-ih-media-fr))
+            var(--kh-ih-col-gap)
+            minmax(min(20rem, 100%), var(--kh-ih-content-fr))
+            var(--kh-ih-edge);
+        grid-template-areas: ". media . content .";
+
+        .kh-ih-media {
+            margin-right: calc(-1 * var(--kh-ih-reach));
+            margin-left: 0;
+        }
+    }
+
+    .kh-ih-hero.kh-ih-content-x-right.kh-ih-scale-large .kh-ih-media,
+    .kh-ih-hero.kh-ih-content-x-right.kh-ih-scale-oversized .kh-ih-media {
+        grid-column: 1 / media-end;
+    }
+}
+
+/* A tall window (a portrait tablet, a 5:4 screen) would stretch a side
+   stage into a sliver twice as tall as it is wide. There the stage keeps a
+   4:5 shape instead, centred against the content. */
+@media (min-width: 769px) and (max-aspect-ratio: 5 / 4) {
+
+    .kh-ih-hero.kh-ih-stage-composed:not(.kh-ih-content-x-center) .kh-ih-media {
+        align-self: center;
+        margin-top: 0;
+        margin-bottom: 0;
+        aspect-ratio: 4 / 5;
+    }
+}
+
+@media (min-width: 769px) {
+
+    /* Content Overlap: the stage reaches across the gap and under the
+       content. The content then stands on a plate of the section's own
+       colour (inherited, so it follows the Styles background), a little
+       larger than the text: wherever an image passes beneath, the text keeps
+       a solid ground and the image appears to run behind it. The plate is
+       drawn with padding cancelled by an equal negative margin, so the text
+       itself does not move. The content layer stays above the media, so no
+       image can ever sit over a button. */
+    .kh-ih-hero.kh-ih-crossover-subtle {
+        --kh-ih-reach: calc(var(--kh-ih-col-gap) + clamp(2rem, 5vw, 4.5rem));
+        --kh-ih-plate: clamp(1rem, 2vw, 1.75rem);
+    }
+
+    .kh-ih-hero.kh-ih-crossover-strong {
+        --kh-ih-reach: calc(var(--kh-ih-col-gap) + clamp(3rem, 9vw, 8rem));
+        --kh-ih-plate: clamp(1.5rem, 3vw, 2.75rem);
+    }
+
+    .kh-ih-hero.kh-ih-crossover-subtle,
+    .kh-ih-hero.kh-ih-crossover-strong {
+
+        .kh-ih-content-layer {
+            align-self: center;
+            width: auto;
+            margin: calc(-1 * var(--kh-ih-plate));
+            padding: var(--kh-ih-plate);
+            border-radius: var(--kh-ih-radius-size);
+            background-color: inherit;
+        }
+
+        &.kh-ih-content-y-top .kh-ih-content-layer {
+            align-self: start;
+        }
+
+        &.kh-ih-content-y-bottom .kh-ih-content-layer {
+            align-self: end;
+        }
+    }
+
+    /* Centred content: the composition sits below it, sized to stay on
+       screen; Oversized spans the full width of the hero. Balance does not
+       apply; Content Overlap raises the stage under the content instead. */
+    .kh-ih-hero.kh-ih-stage-composed.kh-ih-content-x-center {
+        grid-template-columns: var(--kh-ih-edge) minmax(0, 1fr) var(--kh-ih-edge);
+        grid-template-areas:
+            ". content ."
+            ". media .";
+        row-gap: clamp(2rem, 6vh, 4rem);
+        align-content: center;
+
+        .kh-ih-media {
+            justify-self: center;
+            align-self: start;
+            width: min(100%, 60rem, 92vh);
+            min-height: 0;
+            margin: calc(-1 * var(--kh-ih-reach)) 0 0;
+            aspect-ratio: 16 / 10;
+        }
+    }
+
+    .kh-ih-hero.kh-ih-content-x-center.kh-ih-scale-large .kh-ih-media {
+        grid-column: 1 / -1;
+        width: min(calc(100% - 2 * var(--kh-ih-pad-inline)), 76rem, 130vh);
+        margin-bottom: calc(-0.5 * var(--kh-ih-pad-block));
+        aspect-ratio: 2 / 1;
+    }
+
+    .kh-ih-hero.kh-ih-content-x-center.kh-ih-scale-oversized .kh-ih-media {
+        grid-column: 1 / -1;
+        width: 100%;
+        margin-bottom: calc(-1 * var(--kh-ih-pad-block));
+        aspect-ratio: 12 / 5;
+    }
+
+    .kh-ih-hero.kh-ih-content-x-center.kh-ih-crossover-subtle {
+        --kh-ih-reach: calc(clamp(2rem, 6vh, 4rem) + 2rem);
+    }
+
+    .kh-ih-hero.kh-ih-content-x-center.kh-ih-crossover-strong {
+        --kh-ih-reach: calc(clamp(2rem, 6vh, 4rem) + 6rem);
+    }
+
+    .kh-ih-hero.kh-ih-stage-composed.kh-ih-content-x-center.kh-ih-content-y-top {
+        align-content: start;
+    }
+
+    .kh-ih-hero.kh-ih-stage-composed.kh-ih-content-x-center.kh-ih-content-y-bottom {
+        align-content: end;
+    }
+
+    /* Editorial Collage geometry (desktop). */
+    .kh-ih-hero.kh-ih-layout-editorial-collage .kh-ih-slot-1 {
+        --kh-ih-slot-x: calc(var(--kh-ih-ec-sw) * 0.55);
+        --kh-ih-slot-y: var(--kh-ih-ec-top);
+        --kh-ih-slot-w: calc(100% - var(--kh-ih-ec-sw) * 0.55 - var(--kh-ih-out));
+        --kh-ih-slot-h: var(--kh-ih-ec-ph);
+        --kh-ih-slot-z: 1;
+        --kh-ih-slot-turn: -0.25;
+    }
+
+    .kh-ih-hero.kh-ih-layout-editorial-collage .kh-ih-slot-2 {
+        --kh-ih-slot-x: 0%;
+        --kh-ih-slot-y: calc(var(--kh-ih-ec-top) + var(--kh-ih-ec-ph) - 16% + var(--kh-ih-ec-d) * 12%);
+        --kh-ih-slot-w: var(--kh-ih-ec-sw);
+        --kh-ih-slot-h: calc(98% - var(--kh-ih-ec-top) - var(--kh-ih-ec-ph) + 16% - var(--kh-ih-ec-d) * 12%);
+        --kh-ih-slot-z: 2;
+        --kh-ih-slot-turn: 0.5;
+    }
+
+    .kh-ih-hero.kh-ih-layout-editorial-collage .kh-ih-slot-3 {
+        --kh-ih-slot-x: calc(var(--kh-ih-ec-sw) + 11% + var(--kh-ih-gap-size));
+        --kh-ih-slot-y: calc(var(--kh-ih-ec-top) + var(--kh-ih-ec-ph) - 7%);
+        --kh-ih-slot-w: 28%;
+        --kh-ih-slot-h: 25%;
+        --kh-ih-slot-z: 3;
+        --kh-ih-slot-turn: -1;
+    }
+
+    /* Two images: no accent to hold the space under the primary, so the
+       primary runs deeper and the second image grows to meet it. */
+    .kh-ih-hero.kh-ih-layout-editorial-collage.kh-ih-slots-2 .kh-ih-media {
+        --kh-ih-ec-ph: calc(66% + var(--kh-ih-mass) * 3%);
+    }
+
+    .kh-ih-hero.kh-ih-layout-editorial-collage.kh-ih-slots-2 .kh-ih-slot-2 {
+        --kh-ih-slot-y: calc(var(--kh-ih-ec-top) + 36% + var(--kh-ih-ec-d) * 10%);
+        --kh-ih-slot-w: calc(var(--kh-ih-ec-sw) + 7%);
+        --kh-ih-slot-h: calc(98% - var(--kh-ih-ec-top) - 36% - var(--kh-ih-ec-d) * 10%);
+    }
+
+    /* Soft Glow surrounds the whole stage, so with Content Overlap it would
+       run under the content and be cut by the plate's hard edge. There it
+       keeps to where the stage would stand without the overlap. */
+    .kh-ih-hero.kh-ih-scene-soft-glow:not(.kh-ih-crossover-none):not(.kh-ih-content-x-center) .kh-ih-media {
+        --kh-ih-scene-x: calc(-6% + var(--kh-ih-reach));
+        --kh-ih-scene-w: calc(118% - var(--kh-ih-reach));
+    }
+
+    .kh-ih-hero.kh-ih-scene-soft-glow.kh-ih-content-x-center:not(.kh-ih-crossover-none) .kh-ih-media {
+        --kh-ih-scene-y: calc(-10% + var(--kh-ih-reach));
+        --kh-ih-scene-h: calc(120% - var(--kh-ih-reach));
+    }
+
+    /* The wash and the dual glow spread furthest, so they start no nearer
+       the content than the stage would without the overlap. */
+    .kh-ih-hero:is(.kh-ih-scene-gradient-wash, .kh-ih-scene-dual-glow):not(.kh-ih-crossover-none):not(.kh-ih-content-x-center) .kh-ih-media {
+        --kh-ih-scene-x: var(--kh-ih-reach);
+        --kh-ih-scene-w: calc(114% - var(--kh-ih-reach));
+    }
+
+    .kh-ih-hero:is(.kh-ih-scene-gradient-wash, .kh-ih-scene-dual-glow).kh-ih-content-x-center:not(.kh-ih-crossover-none) .kh-ih-media {
+        --kh-ih-scene-y: var(--kh-ih-reach);
+        --kh-ih-scene-h: calc(116% - var(--kh-ih-reach));
+    }
+}
+
+/* ==========================================================================
+   MOBILE (768px and below)
+   Never the desktop composition shrunk: every presentation has its own
+   simplified form (Auto), or the images stack straight (Stack), or only the
+   primary shows (Primary Only). Rotation halves in Auto and is dropped
+   everywhere else; gaps are capped at 16px. Balance and Content Overlap are
+   desktop settings; Large and Oversized let the stage run to the screen
+   edges, inside the hero, so nothing can scroll sideways.
+   ========================================================================== */
+@media (max-width: 768px) {
+
+    .kh-ih-hero {
+        --kh-ih-gap-size: calc(min(var(--kh-ih-gap, 0), 16) * 1px);
+        --kh-ih-tilt: calc(var(--kh-ih-rotation, 0) * 0.5deg);
+    }
+
+    .kh-ih-hero.kh-ih-stage-backdrop,
+    .kh-ih-hero.kh-ih-mobile-stack,
+    .kh-ih-hero.kh-ih-mobile-primary {
+        --kh-ih-tilt: 0deg;
+    }
+
+    /* Composed: content and composition stack, in the chosen order. */
+    .kh-ih-hero.kh-ih-stage-composed {
+        row-gap: clamp(1.75rem, 7vw, 2.5rem);
+        align-content: center;
+
+        .kh-ih-media {
+            align-self: start;
+            aspect-ratio: 4 / 3;
+        }
+    }
+
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-scale-oversized .kh-ih-media {
+        margin-right: calc(-1 * var(--kh-ih-pad-inline));
+        margin-left: calc(-1 * var(--kh-ih-pad-inline));
+    }
+
+    .kh-ih-hero.kh-ih-stage-composed.kh-ih-mobile-media-first {
+        grid-template-areas:
+            "media"
+            "content";
+    }
+
+    .kh-ih-hero.kh-ih-stage-composed.kh-ih-content-y-top {
+        align-content: start;
+    }
+
+    .kh-ih-hero.kh-ih-stage-composed.kh-ih-content-y-bottom {
+        align-content: end;
+    }
+
+    /* Primary Only: the other slots are not displayed, so their lazy images
+       are never fetched; the primary fills the media area on its own. */
+    .kh-ih-hero.kh-ih-mobile-primary .kh-ih-slot:not(.is-primary) {
+        display: none;
+    }
+
+    .kh-ih-hero.kh-ih-mobile-primary.kh-ih-has-media .kh-ih-media {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr);
+    }
+
+    /* Stack: every image full width, one under the other, straight. */
+    .kh-ih-hero.kh-ih-mobile-stack.kh-ih-stage-composed .kh-ih-media {
+        display: flex;
+        flex-direction: column;
+        gap: var(--kh-ih-gap-size);
+        aspect-ratio: auto;
+    }
+
+    .kh-ih-hero.kh-ih-mobile-stack.kh-ih-stage-composed .kh-ih-slot {
+        aspect-ratio: 4 / 3;
+    }
+
+    /* Auto: Editorial Collage becomes a curated grid -- the primary full
+       width, the others beneath it at different sizes. */
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-editorial-collage .kh-ih-media {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        grid-template-rows: none;
+        align-items: start;
+        gap: var(--kh-ih-gap-size);
+        aspect-ratio: auto;
+    }
+
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-editorial-collage .kh-ih-slot-1 {
+        grid-column: 1 / -1;
+        aspect-ratio: 4 / 3;
+    }
+
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-editorial-collage .kh-ih-slot-2 {
+        aspect-ratio: 4 / 5;
+    }
+
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-editorial-collage .kh-ih-slot-3 {
+        align-self: end;
+        aspect-ratio: 1;
+    }
+
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-editorial-collage.kh-ih-slots-2 .kh-ih-slot-2 {
+        grid-column: 1 / -1;
+        justify-self: end;
+        width: 64%;
+        aspect-ratio: 16 / 10;
+    }
+
+    /* Auto: Offset Duo and Stacked Cards keep their composition with fixed,
+       gentler geometry. Overlap and Depth are desktop settings. */
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-offset-duo,
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-stacked-cards {
+
+        @include kh-ih-placed-slots;
+    }
+
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-offset-duo .kh-ih-media {
+        --kh-ih-od-sw: 50%;
+        --kh-ih-od-sh: 50%;
+        --kh-ih-od-ph: 84%;
+        --kh-ih-od-px: 26%;
+        --kh-ih-od-d: 0.7;
+        --kh-ih-lift: 0%;
+
+        aspect-ratio: 1;
+    }
+
+    .kh-ih-hero.kh-ih-mobile-auto.kh-ih-layout-stacked-cards .kh-ih-media {
+        --kh-ih-sc-step: 10%;
+        --kh-ih-sc-rise: 5%;
+        --kh-ih-sc-w: 70%;
+        --kh-ih-sc-h: 80%;
+
+        aspect-ratio: 1;
+    }
+}
+
+/* ==========================================================================
+   SMART READABILITY
+   Deterministic, not image analysis: a quieter ground behind the text
+   wherever it can sit on an image, drawn inside the content layer's
+   stacking context -- under the text, above every image, never a pointer
+   target, and never moving the text or the buttons.
+
+   - The scrim: a broad, soft fall of shade centred on the text block and
+     sized from it, in the tone opposite the text colour (dark behind light
+     text, light behind dark text). No edges, no box: the image simply grows
+     quieter behind the words. Used wherever the text stands on a photograph
+     -- Single and Split Duo -- and with Content Overlap on a see-through
+     section (kh-ih-surface-clear), where there is no section colour to fade
+     into.
+   - The veil: Content Overlap on an opaque section. The section's own
+     background colour, inherited, feathered on every side in place of the
+     solid plate, so the images dissolve into the section behind the text
+     instead of stopping at a hard edge. The plate's box keeps its place (its
+     padding and negative margin cancelled), so the text does not move.
+
+   Under a Content Surface neither is drawn -- the panel is the readable
+   ground, and deepens instead (CONTENT SURFACE). The :where() guards add
+   no specificity.
+   ========================================================================== */
+.kh-ih-hero {
+    --kh-ih-shade: #020617;
+}
+
+@supports (color: oklch(from currentcolor round(1 - l) 0 0)) {
+    .kh-ih-hero {
+        --kh-ih-shade: oklch(from currentcolor round(1 - l) 0 0);
+    }
+}
+
+@mixin kh-ih-scrim {
+
+    .kh-ih-content {
+        position: relative;
+    }
+
+    .kh-ih-content::before {
+        content: "";
+        position: absolute;
+        top: -36%;
+        right: -30%;
+        bottom: -36%;
+        left: -30%;
+        z-index: -1;
+        background: radial-gradient(closest-side, rgba(2, 6, 23, 0.58), rgba(2, 6, 23, 0.52) 42%, rgba(2, 6, 23, 0.26) 72%, rgba(2, 6, 23, 0));
+        background: radial-gradient(closest-side, color-mix(in srgb, var(--kh-ih-shade) var(--kh-ih-scrim-core, 58%), transparent), color-mix(in srgb, var(--kh-ih-shade) var(--kh-ih-scrim-mid, 52%), transparent) 42%, color-mix(in srgb, var(--kh-ih-shade) var(--kh-ih-scrim-edge, 26%), transparent) 72%, transparent);
+        pointer-events: none;
+    }
+}
+
+.kh-ih-hero.kh-ih-addon-readability.kh-ih-stage-backdrop:where(:not(.kh-ih-panel-soft-panel, .kh-ih-panel-glass)) {
+
+    @include kh-ih-scrim;
+}
+
+/* Composed stage: only where Content Overlap runs the images under the text,
+   which is desktop only. */
+@media (min-width: 769px) {
+
+    .kh-ih-hero.kh-ih-addon-readability.kh-ih-stage-composed:not(.kh-ih-crossover-none) {
+        --kh-ih-veil-ramp: clamp(2.5rem, 5vw, 4.5rem);
+
+        .kh-ih-content-layer {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+    }
+
+    .kh-ih-hero.kh-ih-addon-readability.kh-ih-stage-composed:not(.kh-ih-crossover-none):not(.kh-ih-surface-clear):where(:not(.kh-ih-panel-soft-panel, .kh-ih-panel-glass)) .kh-ih-content-layer::before {
+        content: "";
+        position: absolute;
+        top: calc(-1 * (var(--kh-ih-plate) + var(--kh-ih-veil-ramp)));
+        right: calc(-1 * (var(--kh-ih-plate) + var(--kh-ih-veil-ramp)));
+        bottom: calc(-1 * (var(--kh-ih-plate) + var(--kh-ih-veil-ramp)));
+        left: calc(-1 * (var(--kh-ih-plate) + var(--kh-ih-veil-ramp)));
+        z-index: -1;
+        background-color: inherit;
+        pointer-events: none;
+        -webkit-mask-image:
+            linear-gradient(to right, transparent, #000 var(--kh-ih-veil-ramp), #000 calc(100% - var(--kh-ih-veil-ramp)), transparent),
+            linear-gradient(transparent, #000 var(--kh-ih-veil-ramp), #000 calc(100% - var(--kh-ih-veil-ramp)), transparent);
+        -webkit-mask-composite: source-in;
+        mask-image:
+            linear-gradient(to right, transparent, #000 var(--kh-ih-veil-ramp), #000 calc(100% - var(--kh-ih-veil-ramp)), transparent),
+            linear-gradient(transparent, #000 var(--kh-ih-veil-ramp), #000 calc(100% - var(--kh-ih-veil-ramp)), transparent);
+        mask-composite: intersect;
+    }
+
+    .kh-ih-hero.kh-ih-addon-readability.kh-ih-surface-clear.kh-ih-stage-composed:not(.kh-ih-crossover-none):where(:not(.kh-ih-panel-soft-panel, .kh-ih-panel-glass)) {
+        --kh-ih-scrim-core: 74%;
+        --kh-ih-scrim-mid: 66%;
+        --kh-ih-scrim-edge: 32%;
+
+
+        @include kh-ih-scrim;
+    }
+}
+
+/* ==========================================================================
+   CONTENT SURFACE
+   A deliberate panel behind the text, drawn by the content box itself: it
+   sits where the content sits and never touches the images or their
+   geometry. On desktop it reaches out around the text by its own padding
+   (cancelled by an equal negative margin, like the Content Overlap plate),
+   so switching a surface on never moves or narrows the text; on mobile,
+   where there is no room outside, it is inset.
+
+   Where the text stands on an image -- a backdrop presentation, or Content
+   Overlap -- its ground is the tone opposite the text (--kh-ih-shade), so it
+   reads over a photograph, a mesh or a gradient. Beside a composition, on
+   the section's own colour, Soft Panel is instead a quiet lift in the
+   text's tone: a dark box there would only be heavy. A hairline in the
+   text's tone gives either an edge.
+
+   Glass also blurs what lies behind it, over the panel's own area only and
+   never animated. Without backdrop-filter it is simply a deeper tint.
+
+   With Smart Readability the panel deepens rather than sitting on a scrim.
+   With Content Overlap it takes the plate's place, so the images run behind
+   one surface, not two.
+   ========================================================================== */
+.kh-ih-hero:is(.kh-ih-panel-soft-panel, .kh-ih-panel-glass) {
+    --kh-ih-panel-pad: 1.25rem;
+
+    .kh-ih-content {
+        padding: var(--kh-ih-panel-pad);
+        border-radius: max(var(--kh-ih-radius-size), 1rem);
+    }
+}
+
+@media (min-width: 769px) {
+
+    .kh-ih-hero:is(.kh-ih-panel-soft-panel, .kh-ih-panel-glass) {
+        --kh-ih-panel-pad: clamp(1.5rem, 2.2vw, 2.25rem);
+
+        .kh-ih-content {
+            width: calc(100% + 2 * var(--kh-ih-panel-pad));
+            max-width: calc(var(--kh-ih-content-max) + 2 * var(--kh-ih-panel-pad));
+            margin: calc(-1 * var(--kh-ih-panel-pad));
+        }
+    }
+}
+
+.kh-ih-hero.kh-ih-panel-soft-panel {
+    --kh-ih-panel-a: 58%;
+}
+
+.kh-ih-hero.kh-ih-panel-glass {
+    --kh-ih-panel-a: 55%;
+}
+
+.kh-ih-hero.kh-ih-addon-readability.kh-ih-panel-soft-panel {
+    --kh-ih-panel-a: 72%;
+}
+
+.kh-ih-hero.kh-ih-panel-soft-panel .kh-ih-content {
+    background-color: rgba(2, 6, 23, 0.58);
+    background-color: color-mix(in srgb, var(--kh-ih-shade) var(--kh-ih-panel-a), transparent);
+    box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.16), 0 30px 70px -40px rgba(2, 6, 23, 0.7);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentcolor 10%, transparent), 0 30px 70px -40px rgba(2, 6, 23, 0.7);
+}
+
+.kh-ih-hero.kh-ih-panel-glass .kh-ih-content {
+    background-color: rgba(2, 6, 23, 0.55);
+    background-color: color-mix(in srgb, var(--kh-ih-shade) var(--kh-ih-panel-a), transparent);
+    background-image: linear-gradient(155deg, color-mix(in srgb, currentcolor 12%, transparent), transparent 55%);
+    box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.24), 0 30px 70px -40px rgba(2, 6, 23, 0.6);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentcolor 16%, transparent), inset 0 1px 0 color-mix(in srgb, currentcolor 24%, transparent), 0 30px 70px -40px rgba(2, 6, 23, 0.6);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+
+    .kh-ih-hero.kh-ih-panel-glass {
+        --kh-ih-panel-a: 30%;
+    }
+
+    .kh-ih-hero.kh-ih-addon-readability.kh-ih-panel-glass {
+        --kh-ih-panel-a: 46%;
+    }
+
+    .kh-ih-hero.kh-ih-panel-glass .kh-ih-content {
+        -webkit-backdrop-filter: blur(16px) saturate(1.35);
+        backdrop-filter: blur(16px) saturate(1.35);
+    }
+}
+
+.kh-ih-hero.kh-ih-stage-composed.kh-ih-panel-soft-panel .kh-ih-content {
+    background-color: rgba(148, 163, 184, 0.08);
+    background-color: color-mix(in srgb, currentcolor 5%, transparent);
+    box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentcolor 12%, transparent);
+}
+
+@media (min-width: 769px) {
+
+    .kh-ih-hero:is(.kh-ih-crossover-subtle, .kh-ih-crossover-strong):is(.kh-ih-panel-soft-panel, .kh-ih-panel-glass) .kh-ih-content-layer {
+        background-color: transparent;
+    }
+
+    .kh-ih-hero.kh-ih-stage-composed.kh-ih-panel-soft-panel:is(.kh-ih-crossover-subtle, .kh-ih-crossover-strong) .kh-ih-content {
+        background-color: color-mix(in srgb, var(--kh-ih-shade) var(--kh-ih-panel-a), transparent);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, currentcolor 10%, transparent), 0 30px 70px -40px rgba(2, 6, 23, 0.7);
+    }
+}
+
+/* ==========================================================================
+   MOTION
+   Classes from render.php / the editor, amplitudes here, live values from
+   the view script. Every channel has one owner, so no interaction can
+   overwrite another:
+
+     .kh-ih-slot         transform, opacity, clip-path, filter: the reveal
+     .kh-ih-slot-inner   translate / rotate / scale: continuous motion
+                         (scroll progress, pointer position), untransitioned
+                         transform: hover state (Hover, Card Focus, Stack
+                         Fan), transitioned
+     .kh-ih-img          translate: the photograph inside its frame (scroll)
+                         transform: hover zoom, Focus Reveal, and Card
+                         Focus's draw-in (Editorial Collage)
+
+   The composition itself -- position, size, and the slot's own rotate and
+   scale -- is never touched, so with motion off, or before any input, the
+   hero is the static composition exactly. Its stacking changes in one case
+   only: Card Focus brings the hovered card of a stack to the front (SMART
+   ADDONS). The content layer is outside every slot: text and buttons never
+   move.
+
+   The script writes only --kh-ih-progress (-1 to 1: where the hero is in
+   the viewport, 0 at its centre), --kh-ih-pointer-x / -y (-1 to 1 across
+   the composition, for the spotlight) and --kh-ih-parallax-x / -y (the
+   same pointer as the layers follow it: eased out of rest when the pointer
+   arrives and back when it leaves). Each plane turns those into its own
+   movement below.
+   ========================================================================== */
+.kh-ih-hero {
+    --kh-ih-flip: calc(1 - 2 * var(--kh-ih-mirror));
+    --kh-ih-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --kh-ih-hover-lift: 10px;
+    --kh-ih-travel: 44px;
+    --kh-ih-turn: 1deg;
+    --kh-ih-grow: 0.02;
+    --kh-ih-sway: 14px;
+    --kh-ih-mobile-travel: 1;
+
+    /* Scroll Motion's travel is --kh-ih-travel, lifted per presentation:
+       travel * (1 + lift * level). The lift is the presentation's (below);
+       the level is the intensity's, so Subtle stays close to its travel
+       everywhere while Medium and Strong open up by presentation. */
+    --kh-ih-scroll-lift: 0.36;
+    --kh-ih-scroll-level: 1;
+    --kh-ih-mobile-lift: 1;
+}
+
+/* Motion Intensity: the same movement, further. */
+.kh-ih-hero.kh-ih-intensity-subtle {
+    --kh-ih-hover-lift: 6px;
+    --kh-ih-travel: 28px;
+    --kh-ih-turn: 0.6deg;
+    --kh-ih-grow: 0.012;
+    --kh-ih-sway: 9px;
+    --kh-ih-scroll-level: 0.2;
+}
+
+.kh-ih-hero.kh-ih-intensity-strong {
+    --kh-ih-hover-lift: 16px;
+    --kh-ih-travel: 56px;
+    --kh-ih-turn: 1.6deg;
+    --kh-ih-grow: 0.03;
+    --kh-ih-sway: 20px;
+    --kh-ih-scroll-level: 1.3;
+}
+
+/* Every plane's part in the motion, set per presentation and slot:
+     --kh-ih-plane  0..1, how near the viewer: the primary moves least
+     --kh-ih-lean   which way it moves apart from the others (+ outer side)
+     --kh-ih-spin   which way it turns (follows its tilt; mirrored)
+     --kh-ih-rise   up (-) or down (+) when a stack fans
+     --kh-ih-order  its place in a staggered reveal
+   and each presentation's scroll lift (--kh-ih-scroll-lift, above). Single's
+   photograph only drifts inside its frame, so it gains least -- depth, not
+   a floating backdrop; Split Duo's two drift at their own rates behind a
+   seam that never moves. The compositions move their cards, so their planes
+   separate further: Offset Duo and Stacked Cards clearly, Editorial Collage
+   the most. */
+.kh-ih-hero .kh-ih-slot {
+    --kh-ih-plane: 1;
+    --kh-ih-lean: 0;
+    --kh-ih-spin: 0;
+    --kh-ih-rise: 0;
+    --kh-ih-order: 0;
+}
+
+.kh-ih-hero.kh-ih-layout-split-duo {
+    --kh-ih-scroll-lift: 0.45;
+
+    .kh-ih-slot-1 { --kh-ih-plane: 0.55; --kh-ih-lean: -1; --kh-ih-spin: -1; }
+    .kh-ih-slot-2 { --kh-ih-lean: 1; --kh-ih-spin: 1; --kh-ih-order: 1; }
+}
+
+.kh-ih-hero.kh-ih-layout-offset-duo {
+    --kh-ih-scroll-lift: 0.9;
+
+    .kh-ih-slot-1 { --kh-ih-plane: 0.25; --kh-ih-lean: 0.4; }
+    .kh-ih-slot-2 { --kh-ih-lean: -1; --kh-ih-spin: 1; --kh-ih-order: 1; }
+}
+
+.kh-ih-hero.kh-ih-layout-stacked-cards {
+    --kh-ih-scroll-lift: 0.9;
+
+    .kh-ih-slot-1 { --kh-ih-plane: 0.25; --kh-ih-spin: -0.4; }
+    .kh-ih-slot-2 { --kh-ih-plane: 0.6; --kh-ih-lean: 1; --kh-ih-spin: 1; --kh-ih-rise: -1; --kh-ih-order: 1; }
+    .kh-ih-slot-3 { --kh-ih-lean: -1; --kh-ih-spin: -1; --kh-ih-rise: 0.8; --kh-ih-order: 2; }
+}
+
+.kh-ih-hero.kh-ih-layout-editorial-collage {
+    --kh-ih-scroll-lift: 1.2;
+
+    .kh-ih-slot-1 { --kh-ih-plane: 0.25; --kh-ih-lean: 0.3; --kh-ih-spin: -0.3; }
+    .kh-ih-slot-2 { --kh-ih-plane: 0.6; --kh-ih-lean: -1; --kh-ih-spin: 0.6; --kh-ih-order: 1; }
+    .kh-ih-slot-3 { --kh-ih-lean: 0.6; --kh-ih-spin: -1; --kh-ih-order: 2; }
+}
+
+/* With two images the second is the deepest plane. */
+.kh-ih-hero.kh-ih-slots-2:is(.kh-ih-layout-stacked-cards, .kh-ih-layout-editorial-collage) .kh-ih-slot-2 {
+    --kh-ih-plane: 1;
+}
+
+/* Hover shadow: one step deeper than the resting one, faded in. */
+.kh-ih-hero.kh-ih-shadow-soft {
+    --kh-ih-shadow-lift: 0 30px 60px -24px rgba(2, 6, 23, 0.45);
+}
+
+.kh-ih-hero.kh-ih-shadow-floating {
+    --kh-ih-shadow-lift: 0 60px 110px -38px rgba(2, 6, 23, 0.6);
+}
+
+/* Small screens: half the travel, and half the presentation's lift -- a
+   small stage has less room for its planes to separate; none where the
+   images stack straight or only one shows, which have no depth to reveal. */
+@media (max-width: 768px) {
+
+    .kh-ih-hero {
+        --kh-ih-mobile-travel: 0.5;
+        --kh-ih-mobile-lift: 0.5;
+    }
+
+    .kh-ih-hero:is(.kh-ih-mobile-stack, .kh-ih-mobile-primary) {
+        --kh-ih-mobile-travel: 0;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+    /* Scroll, composed: each card travels at its own rate -- the primary
+       least, the deepest plane most -- and turns a fraction as it goes. */
+    .kh-ih-hero:is(.kh-ih-motion-scroll, .kh-ih-motion-scroll-hover) .kh-ih-slot {
+        --kh-ih-travel-now: calc(var(--kh-ih-travel) * (1 + var(--kh-ih-scroll-lift) * var(--kh-ih-scroll-level) * var(--kh-ih-mobile-lift)) * var(--kh-ih-mobile-travel) * var(--kh-ih-boost, 1));
+        --kh-ih-sy: calc(var(--kh-ih-progress, 0) * var(--kh-ih-travel-now) * var(--kh-ih-plane));
+        --kh-ih-sr: calc(var(--kh-ih-progress, 0) * var(--kh-ih-turn) * 0.5 * var(--kh-ih-spin) * var(--kh-ih-plane) * var(--kh-ih-flip) * var(--kh-ih-mobile-travel));
+    }
+
+    /* Scroll, backdrop: the photograph drifts inside its frame, slower than
+       the page. It is drawn taller by the drift at each end (--kh-ih-overscan),
+       so the frame never shows an edge. */
+    .kh-ih-hero.kh-ih-stage-backdrop:is(.kh-ih-motion-scroll, .kh-ih-motion-scroll-hover) .kh-ih-img {
+        --kh-ih-overscan: calc(var(--kh-ih-travel-now) * var(--kh-ih-plane));
+    }
+
+    .kh-ih-hero:is(.kh-ih-stage-backdrop:is(.kh-ih-motion-scroll, .kh-ih-motion-scroll-hover), .kh-ih-stage-composed.kh-ih-addon-scroll-depth) .kh-ih-img {
+        height: calc(100% + 2 * var(--kh-ih-overscan));
+        translate: 0 calc(-1 * var(--kh-ih-overscan) * (1 + var(--kh-ih-progress, 0)));
+    }
+
+    /* Depth on Scroll: the planes separate a little further, the nearer
+       ones grow a touch as the hero rises and the rear ones recede, and each
+       photograph shifts against its card -- a window onto a deeper scene.
+       The travel's lift already separates the planes, so the extra travel
+       stays small: a collage at Strong keeps its geometry. */
+    .kh-ih-hero.kh-ih-addon-scroll-depth {
+        --kh-ih-boost: 1.1;
+    }
+
+    .kh-ih-hero.kh-ih-addon-scroll-depth.kh-ih-stage-composed .kh-ih-slot {
+        --kh-ih-ss: calc(1 - var(--kh-ih-progress, 0) * 0.045 * (var(--kh-ih-plane) - 0.45) * var(--kh-ih-mobile-travel));
+    }
+
+    .kh-ih-hero.kh-ih-addon-scroll-depth.kh-ih-stage-composed .kh-ih-img {
+        --kh-ih-overscan: calc(0.3 * var(--kh-ih-travel) * var(--kh-ih-mobile-travel));
+    }
+
+    /* Scroll Drift: the planes behind the primary also slide sideways and
+       turn a little further as the page scrolls. The section clips them, so
+       nothing can scroll sideways. */
+    .kh-ih-hero.kh-ih-addon-scroll-drift .kh-ih-slot {
+        --kh-ih-sx: calc(var(--kh-ih-progress, 0) * var(--kh-ih-sway) * 1.8 * var(--kh-ih-lean) * var(--kh-ih-plane) * (1 - 2 * var(--kh-ih-side)) * var(--kh-ih-mobile-travel));
+        --kh-ih-sr-drift: calc(var(--kh-ih-progress, 0) * var(--kh-ih-turn) * 1.4 * var(--kh-ih-spin) * var(--kh-ih-plane) * var(--kh-ih-flip) * var(--kh-ih-mobile-travel));
+    }
+
+    /* Pointer Depth: every plane shifts against the pointer, the nearer
+       ones further, so the composition reads as layers. The script eases
+       the pointer it hands over (--kh-ih-parallax-*), so the layers glide
+       out of rest as it arrives and back as it leaves. */
+    .kh-ih-hero.kh-ih-addon-pointer-depth .kh-ih-slot {
+        --kh-ih-px: calc(var(--kh-ih-parallax-x, 0) * -1 * var(--kh-ih-sway) * (0.3 + 0.7 * var(--kh-ih-plane)));
+        --kh-ih-py: calc(var(--kh-ih-parallax-y, 0) * -1 * var(--kh-ih-sway) * (0.3 + 0.7 * var(--kh-ih-plane)));
+    }
+
+    .kh-ih-hero.kh-ih-stage-composed:is(.kh-ih-motion-scroll, .kh-ih-motion-scroll-hover, .kh-ih-addon-pointer-depth) .kh-ih-slot-inner {
+        translate: calc(var(--kh-ih-sx, 0px) + var(--kh-ih-px, 0px)) calc(var(--kh-ih-sy, 0px) + var(--kh-ih-py, 0px));
+        rotate: calc(var(--kh-ih-sr, 0deg) + var(--kh-ih-sr-drift, 0deg));
+        scale: var(--kh-ih-ss, 1);
+    }
+
+    /* Image Fit Contain: the whole image is already in the frame, with no
+       crop to spare, so nothing moves or scales inside it -- no drift, no
+       hover zoom, no Focus Reveal crop, none of Card Focus's draw-in.
+       Scaling it would crop it, and a drift would need the overscan only
+       Cover has. The frame itself still takes every movement. */
+    .kh-ih-hero .kh-ih-media > .kh-ih-slot.is-fit-contain .kh-ih-img {
+        --kh-ih-overscan: 0%;
+        --kh-ih-zoom: 1;
+        --kh-ih-crop: 1;
+    }
+}
+
+/* Hover: fine pointers only, so a tap never leaves a card stuck mid-lift. */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+
+    .kh-ih-hero:is(.kh-ih-motion-hover, .kh-ih-motion-scroll-hover) .kh-ih-slot-inner {
+        transform:
+            translate(calc(var(--kh-ih-hx, 0px) + var(--kh-ih-fan-x, 0px)), calc(var(--kh-ih-hy, 0px) + var(--kh-ih-fy, 0px) + var(--kh-ih-fan-y, 0px)))
+            rotate(calc(var(--kh-ih-hr, 0deg) + var(--kh-ih-fan-r, 0deg)))
+            scale(calc(var(--kh-ih-hs, 1) * var(--kh-ih-fs, 1)));
+        transition: transform 0.9s var(--kh-ih-ease);
+    }
+
+    .kh-ih-hero:is(.kh-ih-motion-hover, .kh-ih-motion-scroll-hover) .kh-ih-img {
+        transform: scale(calc(var(--kh-ih-zoom, 1) * var(--kh-ih-crop, 1)));
+        transform-origin: var(--kh-ih-focal, 50% 50%);
+        transition: transform 1.2s var(--kh-ih-ease);
+    }
+
+    /* Composed: while the pointer is over the composition the planes come
+       apart -- each lifts, leans away from the others, turns a little
+       further into its tilt and grows, by its own amount -- and their
+       shadows deepen. The shadow lives on the card face's ::before, so the
+       clip moves to the picture; at rest that draws exactly the same. */
+    .kh-ih-hero.kh-ih-stage-composed:is(.kh-ih-motion-hover, .kh-ih-motion-scroll-hover) {
+
+        .kh-ih-slot-inner {
+            overflow: visible;
+        }
+
+        .kh-ih-picture {
+            overflow: hidden;
+            border-radius: inherit;
+        }
+
+        .kh-ih-slot-inner::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: inherit;
+            box-shadow: var(--kh-ih-shadow-lift, none);
+            opacity: 0;
+            transition: opacity 0.9s var(--kh-ih-ease);
+            pointer-events: none;
+        }
+
+        .kh-ih-media:hover .kh-ih-slot {
+            --kh-ih-hx: calc(var(--kh-ih-lean) * var(--kh-ih-hover-lift) * 0.6 * var(--kh-ih-flip));
+            --kh-ih-hy: calc(-1 * var(--kh-ih-hover-lift) * (0.3 + 0.7 * var(--kh-ih-plane)));
+            --kh-ih-hr: calc(var(--kh-ih-spin) * var(--kh-ih-turn) * var(--kh-ih-flip));
+            --kh-ih-hs: calc(1 + var(--kh-ih-grow) * var(--kh-ih-plane));
+        }
+
+        .kh-ih-media:hover .kh-ih-slot-inner::before {
+            opacity: calc(0.4 + 0.6 * var(--kh-ih-plane));
+        }
+    }
+
+    /* Backdrop: the photographs ease closer, each by its own amount; Split
+       Duo cards (Gap above 0) also lift. A seamless Split Duo never opens a
+       seam: min(gap, 1) is 0 there. */
+    .kh-ih-hero.kh-ih-stage-backdrop:is(.kh-ih-motion-hover, .kh-ih-motion-scroll-hover):hover .kh-ih-slot {
+        --kh-ih-zoom: calc(1 + var(--kh-ih-grow) * 1.25 * var(--kh-ih-plane));
+        --kh-ih-hy: calc(-1 * var(--kh-ih-hover-lift) * min(var(--kh-ih-gap, 0), 1) * (0.4 + 0.6 * var(--kh-ih-plane)));
+    }
+}
+
+/* ==========================================================================
+   REVEAL
+   The script arms a hero that is not yet on screen (kh-ih-reveal-armed:
+   its images wait in their starting state), then runs it once the hero is
+   meaningfully in view (kh-ih-reveal-run) and lets go when it ends. Without
+   the script nothing is ever armed, so nothing is ever hidden; a hero
+   already on screen when the script starts is never hidden either. Only the
+   images take part: the text is there from the first paint, or plays its
+   own entrance (CONTENT ENTRANCE). Screen only, so a printed page never has
+   hidden images.
+   ========================================================================== */
+.kh-ih-hero {
+    --kh-ih-enter: 0.9s;
+    --kh-ih-rise-from: translateY(32px);
+    --kh-ih-scale-from: scale(0.92);
+    --kh-ih-blur-from: scale(1.02);
+    --kh-ih-clip-from: inset(-40% -40% 100% -40%);
+    --kh-ih-clip-to: inset(-40%);
+}
+
+/* A full-bleed image cannot move without showing an edge: it settles from
+   slightly larger instead, and Clip opens from a letterbox line. */
+.kh-ih-hero.kh-ih-stage-backdrop {
+    --kh-ih-enter: 1.1s;
+    --kh-ih-rise-from: translateY(2.5%) scale(1.06);
+    --kh-ih-scale-from: scale(1.1);
+    --kh-ih-blur-from: scale(1.05);
+    --kh-ih-clip-from: inset(50% 0 50% 0);
+    --kh-ih-clip-to: inset(0);
+}
+
+.kh-ih-hero.kh-ih-stagger .kh-ih-slot {
+    --kh-ih-enter-delay: calc(var(--kh-ih-order) * 0.12s);
+}
+
+@keyframes kh-ih-fade-rise {
+    from {
+        opacity: 0;
+        transform: var(--kh-ih-rise-from);
+    }
+}
+
+@keyframes kh-ih-scale-in {
+    from {
+        opacity: 0;
+        transform: var(--kh-ih-scale-from);
+    }
+}
+
+@keyframes kh-ih-clip-in {
+    from {
+        clip-path: var(--kh-ih-clip-from);
+    }
+
+    to {
+        clip-path: var(--kh-ih-clip-to);
+    }
+}
+
+@keyframes kh-ih-blur-in {
+    from {
+        opacity: 0;
+        filter: blur(14px);
+        transform: var(--kh-ih-blur-from);
+    }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+
+    .kh-ih-hero.kh-ih-reveal-armed:not(.kh-ih-reveal-clip) .kh-ih-slot {
+        opacity: 0;
+    }
+
+    .kh-ih-hero.kh-ih-reveal-armed.kh-ih-reveal-clip .kh-ih-slot {
+        clip-path: var(--kh-ih-clip-from);
+    }
+
+    .kh-ih-hero.kh-ih-reveal-run .kh-ih-slot {
+        animation-duration: var(--kh-ih-enter);
+        animation-timing-function: var(--kh-ih-ease);
+        animation-delay: var(--kh-ih-enter-delay, 0s);
+        animation-fill-mode: both;
+    }
+
+    .kh-ih-hero.kh-ih-reveal-run.kh-ih-reveal-fade-rise .kh-ih-slot {
+        animation-name: kh-ih-fade-rise;
+    }
+
+    .kh-ih-hero.kh-ih-reveal-run.kh-ih-reveal-scale .kh-ih-slot {
+        animation-name: kh-ih-scale-in;
+    }
+
+    .kh-ih-hero.kh-ih-reveal-run.kh-ih-reveal-clip .kh-ih-slot {
+        animation-name: kh-ih-clip-in;
+    }
+
+    .kh-ih-hero.kh-ih-reveal-run.kh-ih-reveal-blur-sharp .kh-ih-slot {
+        animation-name: kh-ih-blur-in;
+    }
+}
+
+/* ==========================================================================
+   CONTENT ENTRANCE
+   The text arrives in reading order -- kicker, heading, description,
+   buttons -- a short step apart, as one quiet sequence. Unlike the image
+   reveal it needs no script: it is an ordinary animation from the first
+   paint, so the text is never shown and then taken away, with JavaScript
+   or without, and it ends exactly on the static hero (fill `backwards`
+   only). A panel and Smart Readability's scrim fade in with it.
+
+   The view script only holds back a hero the visitor has not reached yet
+   (kh-ih-content-held) and lets it play on arrival, together with the
+   image reveal. Timing: with the images, just after them, or once they
+   have mostly settled (a share of the image reveal's own length).
+
+   Screen only, never under reduced motion, and never in the editor, where
+   the block list's own class marks the canvas copy.
+   ========================================================================== */
+.kh-ih-hero {
+    --kh-ih-c-enter: 0.8s;
+    --kh-ih-c-wait: 0s;
+}
+
+.kh-ih-hero.kh-ih-content-delay-short {
+    --kh-ih-c-wait: 0.3s;
+}
+
+.kh-ih-hero.kh-ih-content-delay-after-media {
+    --kh-ih-c-wait: calc(var(--kh-ih-enter) * 0.75);
+}
+
+.kh-ih-hero .kh-ih-content > :nth-child(2) {
+    --kh-ih-c-step: 1;
+}
+
+.kh-ih-hero .kh-ih-content > :nth-child(3) {
+    --kh-ih-c-step: 2;
+}
+
+.kh-ih-hero .kh-ih-content > :nth-child(4) {
+    --kh-ih-c-step: 3;
+}
+
+@keyframes kh-ih-content-rise {
+    from {
+        opacity: 0;
+        translate: 0 1.25rem;
+    }
+}
+
+/* Each line group wipes open from its top edge as it settles. The clip
+   reaches well past the box, so descenders and focus rings are never cut. */
+@keyframes kh-ih-content-clip {
+    from {
+        clip-path: inset(-50% -50% 100% -50%);
+        translate: 0 0.6em;
+    }
+
+    to {
+        clip-path: inset(-50%);
+    }
+}
+
+@keyframes kh-ih-content-blur {
+    from {
+        opacity: 0;
+        filter: blur(12px);
+    }
+}
+
+@keyframes kh-ih-content-fade {
+    from {
+        opacity: 0;
+    }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+
+    .kh-ih-hero:is(.kh-ih-content-in-fade-rise, .kh-ih-content-in-clip, .kh-ih-content-in-blur-sharp):not(.kh-ih-content-held, .block-editor-block-list__block) {
+
+        .kh-ih-content > * {
+            animation-duration: var(--kh-ih-c-enter);
+            animation-timing-function: var(--kh-ih-ease);
+            animation-delay: calc(var(--kh-ih-c-wait) + var(--kh-ih-c-step, 0) * 0.09s);
+            animation-fill-mode: backwards;
+        }
+
+        .kh-ih-content::before {
+            animation: kh-ih-content-fade var(--kh-ih-c-enter) var(--kh-ih-ease) var(--kh-ih-c-wait) backwards;
+        }
+
+        &:is(.kh-ih-panel-soft-panel, .kh-ih-panel-glass) .kh-ih-content {
+            animation: kh-ih-content-fade var(--kh-ih-c-enter) var(--kh-ih-ease) var(--kh-ih-c-wait) backwards;
+        }
+    }
+
+    .kh-ih-hero.kh-ih-content-in-fade-rise:not(.kh-ih-content-held, .block-editor-block-list__block) .kh-ih-content > * {
+        animation-name: kh-ih-content-rise;
+    }
+
+    .kh-ih-hero.kh-ih-content-in-clip:not(.kh-ih-content-held, .block-editor-block-list__block) .kh-ih-content > * {
+        animation-name: kh-ih-content-clip;
+    }
+
+    .kh-ih-hero.kh-ih-content-in-blur-sharp:not(.kh-ih-content-held, .block-editor-block-list__block) .kh-ih-content > * {
+        animation-name: kh-ih-content-blur;
+    }
+
+    .kh-ih-hero.kh-ih-content-held .kh-ih-content {
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   SMART ADDONS (pointer)
+   Each refines Hover and exists only on fine pointers. None adds an element
+   or makes an image focusable: they follow the pointer, never the keyboard,
+   and nothing they show is information.
+   ========================================================================== */
+@media (hover: hover) and (pointer: fine) {
+
+    /* Card Focus: the other planes step back into the section's tone while
+       one is under the pointer. Not movement, so it stays with reduced
+       motion too, only without the fade. */
+    .kh-ih-hero.kh-ih-addon-card-focus .kh-ih-slot-inner::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: inherit;
+        background-color: var(--kh-ih-shade);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .kh-ih-hero.kh-ih-addon-card-focus .kh-ih-media:has(> .kh-ih-slot:hover) > .kh-ih-slot:not(:hover) .kh-ih-slot-inner::after {
+        opacity: 0.3;
+    }
+
+    /* Editorial Collage: attention shifts, the layout holds. The others
+       only quiet down -- a lighter veil than a stack's -- so the collage
+       never reads as one photograph and a dimmed background. */
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-layout-editorial-collage .kh-ih-media:has(> .kh-ih-slot:hover) > .kh-ih-slot:not(:hover) .kh-ih-slot-inner::after {
+        opacity: 0.18;
+    }
+
+    /* Stacked Cards: the card under the pointer also comes to the front, so
+       a card behind can be seen whole; the rest keep their order behind it,
+       and the stack's own order returns as the pointer leaves. A change of
+       layer, not movement. The stack is one stacking context under the
+       content, so no card can rise over the text or the buttons. */
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-layout-stacked-cards .kh-ih-media > .kh-ih-slot:hover {
+        --kh-ih-slot-z: 4;
+    }
+
+    /* On a backdrop stage the content layer spans the hero; its empty space
+       lets the pointer through to the images, the content itself does not. */
+    .kh-ih-hero.kh-ih-stage-backdrop:is(.kh-ih-addon-card-focus, .kh-ih-addon-focus-reveal) {
+
+        .kh-ih-content-layer {
+            pointer-events: none;
+        }
+
+        .kh-ih-content {
+            pointer-events: auto;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+
+    .kh-ih-hero.kh-ih-addon-card-focus .kh-ih-slot-inner::after {
+        transition: opacity 0.6s ease;
+    }
+
+    /* Card Focus: the plane under the pointer comes forward, the others
+       settle back. Only Stacked Cards changes its stacking (above); every
+       other composition keeps its order. */
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-stage-composed .kh-ih-media > .kh-ih-slot:hover {
+        --kh-ih-fy: calc(-0.5 * var(--kh-ih-hover-lift));
+        --kh-ih-fs: calc(1 + 0.6 * var(--kh-ih-grow));
+    }
+
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-stage-composed .kh-ih-media:has(> .kh-ih-slot:hover) > .kh-ih-slot:not(:hover) {
+        --kh-ih-fs: calc(1 - 0.8 * var(--kh-ih-grow));
+    }
+
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-stage-composed .kh-ih-media > .kh-ih-slot:hover .kh-ih-slot-inner::before {
+        opacity: 1;
+    }
+
+    /* Editorial Collage: nothing steps forward or back. The photograph
+       under the pointer draws in closer inside its frame, slowly, like a
+       print being studied; the frame lifts a hair and every frame keeps its
+       size, place and layer. With Focus Reveal the photograph opens to its
+       full frame instead, so the crop has one owner. */
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-layout-editorial-collage .kh-ih-media > .kh-ih-slot:hover {
+        --kh-ih-fy: calc(-0.25 * var(--kh-ih-hover-lift));
+        --kh-ih-fs: 1;
+    }
+
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-layout-editorial-collage:not(.kh-ih-addon-focus-reveal) .kh-ih-media > .kh-ih-slot:hover {
+        --kh-ih-zoom: calc(1 + 2.5 * var(--kh-ih-grow));
+    }
+
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-layout-editorial-collage .kh-ih-media:has(> .kh-ih-slot:hover) > .kh-ih-slot:not(:hover) {
+        --kh-ih-fs: 1;
+    }
+
+    .kh-ih-hero.kh-ih-addon-card-focus.kh-ih-stage-backdrop .kh-ih-media > .kh-ih-slot:hover {
+        --kh-ih-zoom: calc(1 + var(--kh-ih-grow) * 2);
+    }
+
+    /* Stack Fan: the cards behind the front one swing out along the way
+       they already step -- the second up and outward, the third down and
+       inward -- and turn apart, independent of Rotation, so a straight
+       stack fans as well. */
+    .kh-ih-hero.kh-ih-addon-stack-fan .kh-ih-media:hover .kh-ih-slot {
+        --kh-ih-fan-x: calc(var(--kh-ih-lean) * var(--kh-ih-hover-lift) * 2.4 * var(--kh-ih-flip));
+        --kh-ih-fan-y: calc(var(--kh-ih-rise) * var(--kh-ih-hover-lift) * 1.2);
+        --kh-ih-fan-r: calc(var(--kh-ih-spin) * var(--kh-ih-turn) * 3.2 * var(--kh-ih-flip));
+    }
+
+    /* Focus Reveal: each photograph rests a few percent inside its frame
+       and opens to the full frame under the pointer, around its focal
+       point. */
+    .kh-ih-hero.kh-ih-addon-focus-reveal .kh-ih-slot {
+        --kh-ih-crop: 1.045;
+    }
+
+    .kh-ih-hero.kh-ih-addon-focus-reveal .kh-ih-media > .kh-ih-slot:hover {
+        --kh-ih-crop: 1;
+    }
+
+    /* Reactive Spotlight: a soft light at the pointer. Behind a composition
+       it lights the stage between the cards; over a full-bleed image it is a
+       faint soft-light sheen. Moved by translate alone, so following the
+       pointer never repaints it. */
+    .kh-ih-hero.kh-ih-addon-spotlight .kh-ih-media::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 0;
+        background: radial-gradient(circle clamp(11rem, 22vw, 24rem) at 50% 50%, rgba(148, 163, 184, 0.3), rgba(148, 163, 184, 0));
+        background: radial-gradient(circle clamp(11rem, 22vw, 24rem) at 50% 50%, color-mix(in srgb, var(--kh-accent, #10b981) 36%, transparent), transparent);
+        opacity: 0;
+        translate: calc(var(--kh-ih-pointer-x, 0) * 50%) calc(var(--kh-ih-pointer-y, 0) * 50%);
+        transition: opacity 0.6s ease;
+        pointer-events: none;
+    }
+
+    .kh-ih-hero.kh-ih-addon-spotlight.kh-ih-stage-backdrop .kh-ih-media::after {
+        z-index: 1;
+        background: radial-gradient(circle clamp(14rem, 28vw, 30rem) at 50% 50%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+        mix-blend-mode: soft-light;
+    }
+
+    .kh-ih-hero.kh-ih-addon-spotlight.kh-ih-stage-composed .kh-ih-media:hover::after,
+    .kh-ih-hero.kh-ih-addon-spotlight.kh-ih-stage-backdrop:hover .kh-ih-media::after {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   VISIBILITY
+   ========================================================================== */
+@media (max-width: 768px) {
+    .kh-ih-hero.kh-ih-hide-mobile { display: none !important; }
+}
+
+@media (min-width: 769px) {
+    .kh-ih-hero.kh-ih-hide-desktop { display: none !important; }
+}
+
+/* ==========================================================================
+   EDITOR ONLY
+   These classes are never rendered by render.php.
+   ========================================================================== */
+
+/* A button with text but no URL is omitted on the site; say so on canvas. */
+.kh-ih-hero .kh-ih-cta.kh-ih-cta-is-unlinked {
+    outline: 1px dashed currentcolor;
+    outline-offset: 3px;
+    opacity: 0.7;
+}
+
+.kh-ih-editor-placeholder {
+    box-sizing: border-box;
+    width: 100%;
+}

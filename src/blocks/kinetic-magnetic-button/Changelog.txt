@@ -1,5 +1,5 @@
 Block Name: Kinetic Magnetic Button
-Version: 1.0.0
+Version: 1.2.0
 
 ### Added
 - Initial release of Kinetic Magnetic Button.
@@ -21,6 +21,13 @@ Version: 1.0.0
 - Added status indicators including dot, radar, sparkles, and badge.
 - Added accessibility support for decorative SVG handling and keyboard-friendly link behavior.
 - Added reduced motion handling for visitors who prefer less animation.
+- Added button groups: up to two buttons in one block, with add, duplicate, reorder and remove controls.
+
+- Added Row and Column group layouts, a gap control, and Auto, Stack and Full Width mobile layouts.
+- Added separate link, style, icon, status indicator and pulse settings for each button.
+- Added the Soft button style alongside Solid and Outline.
+
+- Added screen-reader text to grouped links that open in a new tab.
 
 ### Improved
 - Improved magnetic interaction performance with shared pointer tracking.
@@ -30,6 +37,8 @@ Version: 1.0.0
 - Improved shadow and pulse rendering in outline mode.
 - Improved status indicator consistency between editor and frontend output.
 - Improved frontend output escaping and attribute handling.
+- Improved idle performance: a focused button no longer keeps an animation loop running, and offscreen pulse, radar and sparkles indicators are paused.
+- Improved pointer release handling so only the pressed button is released.
 
 ### Fixed
 - Fixed sparkles status indicator availability in the editor and frontend styles.

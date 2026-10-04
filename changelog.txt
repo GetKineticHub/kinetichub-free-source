@@ -1,10 +1,23 @@
 # kinetichub SUITE - MASTER CHANGELOG
 Product: kinetichub Suite
-Current Version: 1.1.0
+Current Version: 1.2.0
 Website: https://getkinetichub.com
 
 
 
+----------------------------------------------------------------------
+## [1.2.0] - 2026-10-02
+----------------------------------------------------------------------
+- Added Kinetic Image Hero, an art-directed photographic hero with Single, Split Duo, and Offset Duo presentations, focal-point cropping, responsive images, a built-in eyebrow, badge, heading, description, and buttons, presets, hover motion, and image reveals.
+- Added button groups to Magnetic Button: up to two buttons in one block, with Row or Column layout, gap and mobile stacking controls, and per-button links, styles, icons, and status indicators.
+- Added the Soft button style to Magnetic Button.
+- Improved Magnetic Button motion performance, and added screen-reader text for grouped links that open in a new tab.
+- Added an optional center Icon or Text element to Scroll Divider.
+- Fixed Marquee full-width layouts that could extend past the screen edge and add a horizontal scrollbar.
+- Fixed the Audio Player seek area causing a horizontal scrollbar on narrow screens.
+- Improved Split Scroll so Focal Point can be set when Image Fit is Contain.
+- Polished editor controls and help text in Magnetic Button and Split Scroll.
+- Updated the KineticHub Free dashboard and block discovery experience for the 14-block collection.
 ----------------------------------------------------------------------
 ## [1.1.0] - 2026-09-01
 ----------------------------------------------------------------------

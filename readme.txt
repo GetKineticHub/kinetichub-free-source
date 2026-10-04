@@ -3,7 +3,7 @@ Contributors: kinetichub
 Tags: blocks, animation, gutenberg, interactive, motion
 Requires at least: 6.2
 Tested up to: 7.1
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ Animated Gutenberg blocks for motion, media, typography, buttons, marquees, divi
 
 KineticHub is a lightweight suite of animated Gutenberg blocks for designers, agencies, developers, and site builders who want to add motion, media, and interactive UI effects to WordPress pages without leaving the block editor.
 
-The plugin includes visual blocks for animated typography, video modals, audio players, before-and-after image comparisons, marquees, interactive buttons, hero backgrounds, scroll dividers, split scroll layouts, cursor reveal lists, ambient visuals, and motion-ready containers.
+The plugin includes visual blocks for animated typography, video modals, audio players, before-and-after image comparisons, marquees, interactive buttons, hero backgrounds, photographic image heroes, scroll dividers, split scroll layouts, cursor reveal lists, ambient visuals, and motion-ready containers.
 
 KineticHub is designed for modern WordPress workflows. Blocks can be inserted, configured, and reused directly inside the editor, while frontend assets are loaded through WordPress block asset registration.
 
@@ -31,7 +31,7 @@ Use KineticHub to build:
 View demos and documentation at:
 https://getkinetichub.com
 
-KineticHub includes 13 Gutenberg blocks. The full block list is available in the Blocks section below.
+KineticHub includes 14 Gutenberg blocks. The full block list is available in the Blocks section below.
 
 = Performance Focused =
 
@@ -157,7 +157,7 @@ This plugin includes compiled JavaScript and CSS generated with npm and WordPres
 
 The human-readable free-version source files used to build the distributed assets are publicly available here:
 
-https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.1.0
+https://github.com/GetKineticHub/kinetichub-free-source/tree/wporg-free-source-1.2.0
 
 The public source branch includes the uncompiled free-version source files, package.json, webpack configuration, and build instructions for the JavaScript and CSS assets included in the distributed `build/` directory.
 
@@ -170,7 +170,7 @@ To rebuild the distributed assets from the public source branch:
 1. Clone the public source repository.
 2. Check out the matching source branch:
 
-`wporg-free-source-1.1.0`
+`wporg-free-source-1.2.0`
 
 3. Install build dependencies:
 
@@ -188,6 +188,18 @@ The build process compiles source files from the source repository into a `build
 * npm 9 or later
 
 == Changelog ==
+
+= 1.2.0 =
+* Added Kinetic Image Hero, an art-directed photographic hero with Single, Split Duo, and Offset Duo presentations, focal-point cropping, responsive images, a built-in eyebrow, badge, heading, description, and buttons, presets, hover motion, and image reveals.
+* Added button groups to Magnetic Button: up to two buttons in one block, with Row or Column layout, gap and mobile stacking controls, and per-button links, styles, icons, and status indicators.
+* Added the Soft button style to Magnetic Button.
+* Improved Magnetic Button motion performance, and added screen-reader text for grouped links that open in a new tab.
+* Added an optional center Icon or Text element to Scroll Divider.
+* Fixed Marquee full-width layouts that could extend past the screen edge and add a horizontal scrollbar.
+* Fixed the Audio Player seek area causing a horizontal scrollbar on narrow screens.
+* Improved Split Scroll so Focal Point can be set when Image Fit is Contain.
+* Polished editor controls and help text in Magnetic Button and Split Scroll.
+* Updated the KineticHub Free dashboard and block discovery experience for the 14-block collection.
 
 = 1.1.0 =
 * Added Kinetic Scroll Progress with horizontal and vertical progress indicators, heading milestones, responsive positioning, and label controls.

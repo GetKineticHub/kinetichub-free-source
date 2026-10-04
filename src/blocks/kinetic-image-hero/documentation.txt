@@ -1,0 +1,381 @@
+Block Name: Kinetic Image Hero
+Version: 1.2.0
+---
+
+## 1. Overview
+
+Kinetic Image Hero is a Gutenberg block for art-directed photographic hero sections.
+
+It arranges your own photographs as a designed composition and sets a short message beside or over them: an eyebrow, a badge, a heading, a description and up to two buttons. Each image keeps its own focal point, image fit and alternative text, and the composition adapts to smaller screens.
+
+Use it on:
+
+- homepages
+- product and service landing pages
+- portfolio and studio introductions
+- campaign and launch pages
+- editorial and feature openers
+
+The block is server-rendered and its images are served responsively from the Media Library. Motion is optional: with every motion setting off, the hero is a complete, static composition.
+
+What Image Hero is not:
+
+- It is not a gallery or a slider. It shows one composition, and every image in it is on screen at once.
+- It is not a page builder or a freeform canvas. Images sit in the places the chosen presentation gives them, and they cannot be dragged to arbitrary positions.
+- It does not hold nested blocks. The content belongs to the block itself: eyebrow, badge, heading, description and up to two buttons.
+
+---
+
+## 2. Image Hero or Hero Mesh
+
+Both are hero blocks, built for different jobs.
+
+- Kinetic Hero Mesh is a generative hero: an abstract, animated visual background with any blocks you like placed on top of it. Choose it when the atmosphere is the message and there is no photograph to feature.
+- Kinetic Image Hero is an art-directed photographic hero: your photographs, composed and cropped with intent, with a focused message and buttons. Choose it when the photography carries the page, such as a product, a place, a team or a piece of work.
+
+The two can work together. Place an Image Hero inside a Hero Mesh, an Ambient Aura or a Group, and give the Image Hero a transparent background, so the background behind it shows around the photographs. See "Transparent background" in section 9.
+
+---
+
+## 3. Adding the Block
+
+1. Open a page or post in the WordPress block editor.
+2. Click the block inserter and search for "Kinetic Image Hero" or "image hero".
+3. Insert the block. It is full width by default, and Wide is also available.
+4. Choose your images from the Media Library. The first becomes the primary image.
+5. Type the eyebrow, badge, heading, description and button text directly on the canvas.
+6. Choose a Presentation, or apply a Preset, in the Presentation panel.
+7. Add the button links in the Buttons panel.
+
+Empty fields are left out of the published page, with no gap where they would have been.
+
+---
+
+## 4. Images
+
+### Adding, Ordering and Replacing
+
+- The Images panel lists every image with a thumbnail. Select one to edit its settings.
+- The first image is the primary image. It leads the composition and loads first, at high priority.
+- Move an image up or down to change its place in the composition.
+- Replace swaps the file and starts that image fresh: its focal point, image fit, alternative text and frame background return to their defaults.
+- Remove takes the image out of the hero. The file stays in the Media Library.
+
+Each presentation shows a set number of images: Single shows one, Split Duo and Offset Duo show two.
+
+
+
+A presentation that needs more images than the hero has is shown as Single until they are added, and the chosen presentation is kept. Images a presentation does not use are kept but not shown, so switching presentation never loses an image.
+
+### Focal Point
+
+With Image Fit set to Cover, each image has a focal point: the part of the photograph kept in view when the hero crops it. The crop changes with the shape of the screen, so check the desktop and mobile previews after setting it.
+
+### Image Fit
+
+- Cover, the default: fills the frame and may crop the image. The focal point chooses what stays in view.
+- Contain: shows the whole image inside its frame and may leave empty space around it. The focal point is kept for when you switch back to Cover.
+
+Use Contain for artwork that must never be cropped, such as a product cut-out, a poster or a screenshot. A contained image is not zoomed or shifted by motion effects, because that would crop it.
+
+### Frame Background
+
+In composed presentations, where the images sit as separate cards beside the content, such as Offset Duo, a contained image has a Frame background setting.
+
+- On, the default: a solid backing fills the card behind the image, so an overlapping card never shows through.
+- Off: the card has no backing and the contained image floats on the section. The card's shadow is kept, so a soft outline of the frame can stay visible, most clearly on a light section.
+
+In Single and Split Duo a contained image already sits directly on the section, so the setting is not shown there.
+
+### Alternative Text
+
+- Alternative text: leave it empty to use the text saved in the Media Library, which is read fresh every time the page renders, or write a description for this hero.
+- Decorative image: outputs an empty alt so screen readers skip the image. Use it only when the image adds nothing a visitor would miss without seeing it.
+
+
+
+---
+
+## 5. Presentations
+
+A presentation decides how the images are arranged and where the content sits.
+
+### Single
+
+The primary image fills the hero and the content sits over it. Overlay Color and Overlay Opacity keep the text readable.
+
+### Split Duo
+
+Two images side by side behind the content. At a Gap of 0 they meet edge to edge as one backdrop; above 0 they become separate cards. Split sets how the width is shared between them: 50 / 50, 40 / 60 or 60 / 40.
+
+### Offset Duo
+
+A composition of two images beside the content: the primary image with a second card floating over its edge. Overlap and Vertical Offset set how far the second card reaches over the first and how far it hangs below it. With the content centred, the composition sits below it.
+
+
+
+### Content Position
+
+Content position in the block toolbar, and Horizontal placement in the Content panel, set where the content sits:
+
+- Where the images fill the hero (Single, Split Duo): content left, centred or right over the images.
+- In composed presentations: content left with the images right, content right with the images left, or content centred with the images below.
+
+Right-to-left languages are mirrored automatically.
+
+---
+
+## 6. Presets
+
+A preset is a curated starting point. Applying one sets the presentation, composition, atmosphere, motion and the styling of the content and buttons together. Your images, text and links are never changed, and every setting stays editable afterwards.
+
+- Clean Split: two images side by side as clean cards, a gentle reveal and a subtle hover, a restrained heading, a solid button with an arrow and an outline one. The safe choice for a business page.
+- Floating Duo: a large image with a second card floating over its edge and a soft glow behind them. The image under the pointer comes forward, and the buttons lift on hover.
+
+
+
+A preset designed for more images than the hero has shows what it can until they are added.
+
+---
+
+## 7. Content and Buttons
+
+The eyebrow, badge, heading, description and button text are typed directly on the canvas. The Content panel styles them.
+
+### Layout
+
+- Horizontal placement: see Content Position in section 5.
+- Vertical placement: Top, Center or Bottom.
+- Content Width: Narrow, Standard, Wide or Custom (320px to 1200px). The space the content has always caps it, so the text never runs into the images.
+- Spacing: Compact, Balanced or Airy. The rhythm between the eyebrow, heading, description and buttons.
+
+### Typography
+
+- Heading level: H1 to H6. It sets the heading's place in the page outline for screen readers and search engines, and never changes its size. Use H1 only when this hero carries the page's main heading and the theme does not already print one above it.
+- Heading Size: Large, XL (the standard size) or Display (poster scale, for a few words).
+- Description Size: Normal or Large.
+
+The font and weight follow the theme.
+
+### Eyebrow and Badge
+
+- Eyebrow Style: Plain, Accent Line or Pill.
+- Badge Style: Minimal, Soft or Glass.
+
+### Surface and Readability
+
+- Content Surface: None, Soft Panel or Glass. A visible panel behind the text, for a busy photograph.
+
+Overlay Opacity (section 9) and Smart Readability (section 11) also help keep text readable over an image.
+
+### Content Entrance
+
+- Content Entrance: None, Fade & Rise, Clip or Blur → Sharp. The text arrives once, in reading order: eyebrow, heading, description, then buttons.
+- Timing: With the images, Just after, or After the images.
+
+The entrance plays on the published page, and the editor shows the content at rest.
+
+### Buttons
+
+A button appears on the site only once it has both text and a link.
+
+For each button:
+
+- Link URL
+- Open in new tab
+- Link rel, such as nofollow or sponsored. noopener is added automatically when the link opens in a new tab.
+- Style: Solid, Outline, Ghost or Glass. Every style follows the hero's text colour, so it works on a dark or a light section.
+- Icon: None, Arrow or External Arrow.
+
+For both buttons together:
+
+- Size: Medium or Large.
+- Arrangement: Side by side or Stacked.
+- On Mobile: As on desktop, Stacked, or Stacked, full width.
+- Hover: None, Lift, Arrow Shift or Glow. The same response is shown on keyboard focus.
+
+---
+
+## 8. Composition
+
+The Composition panel tunes the arrangement of the images. It appears for every presentation except Single.
+
+### Composed Presentations
+
+- Scale: how much of the hero the images claim. Balanced stays inside the content width; Large reaches toward the outer edge of the hero.
+- Content / Media: how the width is shared between the content and the images on desktop: 50 / 50 or 40 / 60. It applies when the content is on the left or right.
+- Content Overlap: None or Subtle. Lets the images run behind the content, which then stands on a plate of the section's background colour so it stays readable. Desktop only.
+
+
+
+### Images
+
+- Split (Split Duo): 50 / 50, 40 / 60 or 60 / 40.
+- Gap (px): the space between the images. On mobile it is capped at 16px.
+- Card Radius (px): rounds the corners of every image.
+- Shadow: None, Soft or Floating.
+- Rotation (°): turns the images in opposite directions, up to 8°. On mobile it is halved, or removed when the images stack.
+- Overlap (%) (Offset Duo): how far the second image reaches over the first.
+- Vertical Offset (%) (Offset Duo): how far the second image hangs below the first.
+- Stagger (%) (Split Duo, once Gap separates the images): the first card rises and the second drops.
+
+
+
+Each presentation has its own tuning. A value you change is kept when you switch presentation, and Reset hands it back to the presentation's own tuning.
+
+---
+
+## 9. Appearance and Scene Backdrop
+
+### Height
+
+- Hero Min Height, Desktop and Mobile, from 30 to 100 (vh). 100 is one full screen. It is a minimum: content taller than this makes the hero taller.
+
+### Overlay
+
+Where the images fill the hero (Single, Split Duo), Overlay Color and Overlay Opacity lay a colour over the images, behind the content. Raising the opacity is the usual way to keep text readable over a busy photograph. Composed presentations place the content beside the images, never on them, so no overlay is drawn there.
+
+The section's background and text colours are set in the Styles tab.
+
+### Scene Backdrop
+
+Atmosphere drawn around a composition, in the KineticHub accent colour set in the dashboard.
+
+- None
+- Soft Glow: a gentle halo.
+- Gradient Wash: a broad diagonal of light.
+
+
+
+Backdrop Intensity (Subtle, Medium or Strong) adjusts the strength of the backdrop without changing its shape.
+
+### Transparent Background
+
+To let a background behind the hero show through, such as a Hero Mesh, an Ambient Aura or a Group, set Background in the Styles tab to a colour at 0% opacity. A scene backdrop still draws over it.
+
+---
+
+## 10. Motion and Reveal
+
+Motion is optional and off by default. Motion Mode and Reveal Style move the images only: the text and buttons never move with them. Visitors whose device asks for reduced motion see the hero still.
+
+### Motion Mode
+
+- None, the default.
+- Hover: the images separate into layers while the pointer is over them. Mouse and trackpad only; on a touch screen the hero stays at rest.
+
+
+
+### Motion Intensity
+
+How far the images move: Subtle or Medium. Subtle suits a business page.
+
+
+
+### Reveal Style
+
+How the images appear the first time the hero comes into view: None, Fade & Rise or Scale. The reveal applies to the images only; the text follows its own Content Entrance. A hero already on screen when the page opens is never hidden.
+
+
+
+### In the Editor
+
+The editor shows the hero at rest, and hover can be tried on the canvas. The reveal and the content entrance play on the published page.
+
+---
+
+## 11. Smart Addons
+
+Optional refinements, switched on one at a time. Each appears only where the current presentation can use it. An addon that refines hover or scroll motion waits for that Motion Mode, and the panel names the ones that are waiting.
+
+- Card Focus (with Hover, two or more images): the image under the pointer comes forward a little while the others step back, so one photograph at a time takes the lead. Nothing changes order.
+- Smart Readability (Single, Split Duo, and wherever Content Overlap is on): quiets the image behind the text with a soft fall of shade, dark behind light text and light behind dark text. It is a fixed rule, not image analysis.
+
+
+
+Pointer effects respond to a mouse or trackpad only. On a touch screen the hero is shown at rest, and nothing a visitor needs depends on hover.
+
+---
+
+## 12. Responsive and Mobile
+
+Image Hero uses one breakpoint, 768px. At and below it:
+
+- Mobile Composition (two or more images): Auto, Stack or Primary Only. Stack places the images one under the other, straight; Primary Only shows just the first image.
+- Auto simplifies each presentation for a small screen: Split Duo stacks its two images top and bottom, and Offset Duo keeps a smaller, fixed overlap.
+- Mobile Order (composed presentations): Content First or Media First.
+- Hero Min Height uses its Mobile value.
+- The buttons follow their On Mobile setting.
+- Gap is capped at 16px, Rotation is halved or removed, and Overlap, Vertical Offset, Content / Media and Content Overlap apply on desktop only.
+
+
+
+Every image is served at a size suited to the screen, from the sizes WordPress creates for it in the Media Library.
+
+---
+
+## 13. Accessibility
+
+- Reduced motion: when a visitor's device asks for reduced motion, the images do not move, reveals and the content entrance are skipped, and button hover keeps only Glow.
+- Nothing depends on hover or a pointer. Every image, every line of text and every button is visible and usable with touch or a keyboard; hover effects are refinements on top.
+- Buttons are ordinary links, reachable by keyboard, with a visible focus outline. The hover response is also shown on keyboard focus.
+- Button icons are decorative and hidden from screen readers.
+- Alternative text comes from the Media Library by default, can be written for each image, and is empty for a decorative image.
+- The heading level is chosen separately from its size, so the page outline stays correct.
+- The block does not analyse your photographs. When text sits over an image, check its contrast, and use Overlay Opacity, Smart Readability or a Content Surface where needed.
+
+---
+
+## 14. Performance
+
+- The primary image loads first, at high priority. The other images load lazily.
+- Every image carries responsive sizes for each place it can appear, so a small screen can download a smaller file.
+- The hero's small frontend script loads only when a setting needs it: a reveal, a content entrance, scroll motion, Pointer Depth or Reactive Spotlight. A static hero, or one with hover motion only, loads no script at all. The script loads once however many heroes the page holds.
+- Hover motion and Card Focus are pure CSS.
+- No third-party animation library is used.
+
+Optimise large photographs before uploading them. The primary image is usually the largest thing on screen as the page opens.
+
+---
+
+## 15. FREE and PRO
+
+KineticHub Free includes a complete photographic hero block:
+
+- Single, Split Duo and Offset Duo presentations, with up to two images
+- Focal point, Image Fit and Frame background for every image, with alternative text and decorative images
+- The full content and button system: eyebrow, badge, heading, description, up to two buttons, and every layout, typography, surface and entrance setting
+- Composition controls, with Balanced and Large scale, 50 / 50 and 40 / 60 balance, and Subtle content overlap
+- None, Soft Glow and Gradient Wash scene backdrops
+- Hover motion at Subtle or Medium intensity, and Fade & Rise or Scale image reveals
+- Card Focus and Smart Readability
+- The Clean Split and Floating Duo presets
+- Every responsive, accessibility and performance behaviour described above
+
+KineticHub Pro adds advanced layouts, art direction, motion, atmosphere and interactions:
+
+- Stacked Cards and Editorial Collage presentations, and a third image
+- A separate mobile image for any image
+- Oversized scale, 35 / 65 balance and Strong content overlap
+- Dual Glow, Accent Panel and Vignette scene backdrops
+- Scroll and Scroll + Hover motion, Strong intensity, Clip and Blur → Sharp reveals, and staggered image reveals
+- Pointer Depth, Reactive Spotlight, Stack Fan, Focus Reveal, Depth on Scroll and Scroll Drift
+- The Layered Studio, Editorial Showcase and Cinematic Edge presets
+
+Accessibility, reduced-motion support, responsive images and performance behaviour are the same in both.
+
+### Opening a Hero in the Other Edition
+
+A hero keeps all of its saved settings and images in either edition. Where KineticHub Free does not offer a saved choice, the nearest one it does offer is shown in its place: Stacked Cards and Editorial Collage show as Offset Duo, Scroll + Hover shows as Hover, and a third image or a mobile image is kept but not shown. A saved setting is only replaced when you choose a new value, so a hero opened in KineticHub Pro again appears as it was built, apart from anything changed in the meantime.
+
+---
+
+## 16. Recommended Use
+
+- Start from a preset, then adjust.
+- Use photographs large enough for the widest screen you design for. A full-width Single hero benefits from an image around 2000px to 2560px wide.
+- Set a focal point for every cropped image, then check the mobile preview.
+- Keep the heading short. Display suits a few words; Large suits a longer headline.
+- Use one primary button and, if needed, one secondary.
+- For a business page, keep motion at Subtle or Medium, or leave it off.
+- Use H1 only once per page.

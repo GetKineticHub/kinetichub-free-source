@@ -1,5 +1,5 @@
 Block Name: Kinetic Audio Player
-Version: 1.0.0
+Version: 1.2.0
 
 ### Added
 - Initial release of Kinetic Audio Player.
@@ -29,3 +29,4 @@ Version: 1.0.0
 - Fixed focus and control labeling for better accessibility.
 - Fixed unused styling rules from the player stylesheet.
 - Fixed render output structure for better compatibility with WordPress coding standards.
+- Fixed the extended player's seek area extending past narrow screens and adding a horizontal scrollbar. The taller touch area for seeking is kept.

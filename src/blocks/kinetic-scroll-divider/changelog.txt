@@ -1,5 +1,5 @@
 Block Name: Kinetic Scroll Divider
-Version: 1.0.13
+Version: 1.2.0
 
 ### Added
 - Initial release of Kinetic Scroll Divider.
@@ -16,6 +16,11 @@ Version: 1.0.13
 - Added animation duration control.
 - Added reduced motion handling for visitors who prefer less animation.
 - Added decorative accessibility handling with aria-hidden output.
+- Added an optional Center Element: None, Icon or Text, in the middle of the line.
+- Added six center icons: Diamond, Sparkle, Star, Dot, Heart and Chevron Down, with an icon size control.
+- Added a center text label with text size and Uppercase Letters controls.
+- Added center element color and gap controls.
+
 
 ### Improved
 - Improved code cleanliness by removing an unused legacy CSS selector with no runtime effect (no script ever applies the class it targeted).

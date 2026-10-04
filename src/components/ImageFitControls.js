@@ -24,9 +24,13 @@ export const KineticImageFitControls = ({ attributes, setAttributes, title = __(
                 ]} 
                 onChange={(v) => setAttributes({ objectFit: v })} 
             />
-            {objectFit === 'cover' && (
+            {/* Contain positions the whole image inside the frame with the same value,
+              * so hiding the control there left a stored position applied but out of
+              * reach. Fill stretches the image to the frame, where it does nothing. */}
+            {objectFit !== 'fill' && (
                 <SelectControl 
                     label={__('Focal Point', 'kinetichub')} 
+                    help={objectFit === 'contain' ? __('With Contain, this is where the whole image sits inside the frame.', 'kinetichub') : undefined}
                     value={objectPosition} 
                     options={[
                         {label: __('Center', 'kinetichub'), value: 'center'}, 

@@ -1,5 +1,5 @@
 Block Name: Kinetic Magnetic Button
-Version: 1.0.0
+Version: 1.2.0
 
 ---
 
@@ -9,11 +9,27 @@ Kinetic Magnetic Button is a Gutenberg block for creating animated call-to-actio
 
 It combines standard button controls with a magnetic cursor interaction, icon support, status indicators, hover styling, and responsive sizing options.
 
+One block can hold a single button or a small group of buttons, such as a primary and a secondary call to action side by side.
+
 Use it for hero calls to action, product links, landing page buttons, feature highlights, downloads, external links, cart actions, and interactive navigation prompts.
 
 ---
 
 ## 2. Features
+
+### Button Groups
+- One button, or a group of up to two buttons in one block
+
+- Add, duplicate, reorder and remove buttons
+- Row or Column layout
+- Gap control
+- Mobile layout: Auto, Stack or Full Width
+- Separate link, style, icon and status indicator for each button
+
+### Button Styles
+- Solid
+- Soft
+- Outline
 
 ### Magnetic Interaction
 - Cursor attraction effect
@@ -55,7 +71,7 @@ Use it for hero calls to action, product links, landing page buttons, feature hi
 - Hover text color
 - Hover border color
 - Glass-style backdrop filtering
-- Outline mode
+- Solid, Soft and Outline button styles
 - Pulse animation
 - Base shadow controls
 - Hover shadow controls
@@ -82,6 +98,7 @@ Use it for hero calls to action, product links, landing page buttons, feature hi
 - Decorative SVG hiding for assistive technologies
 - Reduced motion support based on the visitor's system settings
 - Standard link semantics when a URL is provided
+- Screen-reader text for grouped links that open in a new tab
 
 ---
 
@@ -93,15 +110,16 @@ Use it for hero calls to action, product links, landing page buttons, feature hi
 4. Insert the block into the page.
 5. Edit the button text directly in the editor.
 6. Add the destination URL in the block settings.
-7. Adjust colors, spacing, icon settings, status indicator, and magnetic behavior from the sidebar controls.
+7. To add a second button, use Add button in the Buttons panel.
+8. Adjust colors, spacing, icon settings, status indicator, and magnetic behavior from the sidebar controls.
 
 ---
 
 ## 4. Text and Link Setup
 
-Click inside the button to edit the button label.
+Click inside a button to edit its label.
 
-Use the link settings to configure:
+Use the link settings to configure, for each button:
 
 - Destination URL
 - Open in new tab behavior
@@ -111,7 +129,47 @@ When linking to an external page, opening in a new tab can be useful. The rel at
 
 ---
 
-## 5. Magnetic Settings
+## 5. Buttons and Groups
+
+The Buttons panel lists every button in the block. Select a button in the list to edit it. The panel below the list then shows that button's own settings.
+
+- Add button adds a new button at the end of the group.
+- Duplicate copies a button with all of its settings.
+- The arrows move a button up or down, which also changes its place on the page.
+- Remove deletes a button. The last remaining button cannot be removed.
+
+KineticHub Free holds up to two buttons in one block.
+
+
+
+When the block is full, Add button and Duplicate are disabled and a note shows the limit.
+
+Settings for each button:
+
+- Style: Solid, Soft or Outline
+- Target URL, Open in New Tab and Rel
+- Icon and icon position
+- Status indicator
+- Pulse animation
+
+Colors, sizes, borders, shadow, icon size, status colors and magnetic settings are shared by every button in the block, so a group always looks consistent.
+
+Group layout, shown once the block holds two or more buttons:
+
+- Layout: Row places the buttons side by side and wraps them onto a new line when they run out of room. Column stacks them.
+- Alignment: lines the group up left, center or right. It is the same setting as the alignment button in the block toolbar.
+- Gap: the space between the buttons, from 0 to 48 pixels.
+- On Mobile: applies at 768px and under. Auto keeps the desktop layout, Stack puts the buttons in a column, and Full Width stacks them and stretches each one across the available width.
+
+A button other than the first is shown on the site only when it has text. An empty button stays in the list, marked as not shown, so it can be filled in later.
+
+Removing buttons until only one remains returns the block to a single button.
+
+
+
+---
+
+## 6. Magnetic Settings
 
 The magnetic interaction moves the button toward the cursor while the pointer is near the element.
 
@@ -128,7 +186,7 @@ On touch devices or when reduced motion is requested, the button can fall back t
 
 ---
 
-## 6. Icons
+## 7. Icons
 
 The block includes eight built-in icons:
 
@@ -145,7 +203,7 @@ You can place the icon on the left or right side of the text. You can also adjus
 
 ---
 
-## 7. Status Indicators
+## 8. Status Indicators
 
 Status indicators can add extra visual context to a button.
 
@@ -160,7 +218,15 @@ Use indicators sparingly so the button remains readable and focused.
 
 ---
 
-## 8. Styling
+## 9. Styling
+
+Each button has a Style:
+
+- Solid: the button is filled with the background color.
+- Soft: a quieter style for a secondary action. A light tint of the background color, with the label in that color, shaded to stay readable on light and dark sections.
+- Outline: no fill. The border and the label use the background color.
+
+A common pairing is a Solid primary button with a Soft or Outline secondary button beside it.
 
 The block includes separate controls for normal and hover styling.
 
@@ -174,15 +240,16 @@ Common styling options include:
 - Hover border color
 - Shadow settings
 - Border radius
-- Outline mode
 - Pulse animation
 - Glass-style backdrop filtering
 
-Outline mode is useful for lighter layouts where the button should feel less heavy. Shadow controls are useful for stronger call-to-action sections and hero areas.
+The text color and the shadow apply to Solid buttons. Glass-style filtering and the border settings apply to Solid and Soft buttons. Each of these settings is hidden while no button in the block uses it.
+
+Outline and Soft are useful for lighter layouts where the button should feel less heavy. Shadow controls are useful for stronger call-to-action sections and hero areas.
 
 ---
 
-## 9. Spacing and Sizing
+## 10. Spacing and Sizing
 
 The block includes controls for:
 
@@ -197,11 +264,13 @@ Use the mobile font size control when the desktop button size feels too large on
 
 ---
 
-## 10. Accessibility Notes
+## 11. Accessibility Notes
 
 Kinetic Magnetic Button is built with accessibility in mind.
 
-When a URL is provided, the button uses standard link behavior. Keyboard users can focus and activate it using normal browser navigation.
+When a URL is provided, the button uses standard link behavior. Keyboard users can focus and activate it using normal browser navigation. In a group, the buttons are reached in the order they appear.
+
+In a group, a button that opens in a new tab tells screen reader users so with hidden "(opens in a new tab)" text.
 
 Decorative SVG icons and visual indicators are hidden from assistive technologies where appropriate.
 
@@ -211,17 +280,19 @@ Always use clear button text that describes the action, such as "Download File",
 
 ---
 
-## 11. Performance Notes
+## 12. Performance Notes
 
 The button uses shared pointer tracking for efficient magnetic interaction across multiple instances on the same page.
 
-Animation work is paused when the button is outside the viewport, and event listeners are cleaned up when button instances are removed from the page dynamically.
+Animation work is paused when the button is outside the viewport, including the pulse, radar and sparkles indicators, and event listeners are cleaned up when button instances are removed from the page dynamically. An idle button runs no animation loop.
+
+In a group, each button keeps its magnetic movement within its share of the gap, so neighboring buttons never overlap or take each other's clicks.
 
 For best results, use magnetic buttons for important actions rather than every link on a page.
 
 ---
 
-## 12. Recommended Usage
+## 13. Recommended Usage
 
 Use Kinetic Magnetic Button for:
 
@@ -236,3 +307,6 @@ Use Kinetic Magnetic Button for:
 - Feature section buttons
 
 Keep button text concise and action-oriented. A short label usually performs better visually and remains easier to scan.
+
+In a group, make one button the clear primary action and give the others a quieter style, such as Soft or Outline.
+

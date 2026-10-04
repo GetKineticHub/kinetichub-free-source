@@ -1,5 +1,5 @@
 Block Name: Kinetic Scroll Divider
-Version: 1.0.0
+Version: 1.2.0
 
 ---
 
@@ -40,6 +40,14 @@ The divider is server-rendered and enhanced with lightweight frontend animation 
 - Basic glow effect
 - Glow uses the divider line color
 
+### Center Element
+- Optional icon or short text label in the middle of the line
+- Six built-in icons: Diamond, Sparkle, Star, Dot, Heart and Chevron Down
+- Icon size and text size controls
+- Uppercase letters option for labels
+- Center element color and gap controls
+
+
 ### Layout Controls
 - Left alignment
 - Center alignment
@@ -61,6 +69,7 @@ The divider is server-rendered and enhanced with lightweight frontend animation 
 ### Accessibility
 - Decorative divider output
 - aria-hidden handling
+- Center text labels are read once as plain text
 - Reduced motion support based on the visitor's system settings
 
 ---
@@ -136,7 +145,45 @@ The glow option adds a subtle halo around the divider using the selected line co
 
 ---
 
-## 9. Responsive Visibility
+## 9. Center Element
+
+The Center Element panel can break the line in the middle with a small icon or a short label. The line is drawn around it, so the break stays clean on any background.
+
+Center Element:
+
+- None: the plain divider. This is the default.
+- Icon: a small icon in the middle of the line.
+- Text: a short label in the middle of the line.
+
+Icon settings:
+
+- Icon: Diamond, Sparkle, Star, Dot, Heart or Chevron Down.
+- Icon Size: 12 to 64 pixels.
+
+Text settings:
+
+- Label: plain text. A word or two reads best. Choosing Text fills in "Section" as a starting label. If the label is left empty, the divider shows its plain line.
+- Text Size: 11 to 40 pixels.
+- Uppercase Letters: sets the label in capitals with slightly wider letter spacing.
+
+Shared settings:
+
+- Icon Color or Text Color: left unset, the icon uses the line color and the label uses the text color of the page.
+- Gap: the space between the center element and the line on each side, from 0 to 64 pixels.
+
+
+
+Layout and motion with a center element:
+
+- The two halves of the line keep the divider's Width and alignment. Each half always keeps a short length of line, and long labels wrap onto a second line.
+- Draw from Center grows each half outward from the center element. The other animation styles move both halves together.
+- The center element itself does not animate. It stays visible without JavaScript and when reduced motion is requested.
+
+
+
+---
+
+## 10. Responsive Visibility
 
 The block includes device visibility options.
 
@@ -144,17 +191,19 @@ You can show the divider on all devices, desktop only, or mobile only. This is u
 
 ---
 
-## 10. Accessibility Notes
+## 11. Accessibility Notes
 
 Kinetic Scroll Divider is decorative.
 
-The divider output is hidden from assistive technologies so screen readers do not announce unnecessary visual separators.
+The divider output is hidden from assistive technologies so screen readers do not announce unnecessary visual separators. A center icon is decorative and hidden in the same way.
+
+A center text label is read once by screen readers as plain text, so use it for a meaningful word such as a section name. Nothing in the block can receive keyboard focus.
 
 When a visitor has reduced motion enabled in their operating system, the divider displays without motion-heavy behavior.
 
 ---
 
-## 11. Performance Notes
+## 12. Performance Notes
 
 The animation uses transform-based rendering to avoid unnecessary layout recalculation.
 
@@ -164,7 +213,7 @@ For best results, use animated dividers to highlight important section breaks ra
 
 ---
 
-## 12. Recommended Usage
+## 13. Recommended Usage
 
 Use Kinetic Scroll Divider for:
 
@@ -176,5 +225,6 @@ Use Kinetic Scroll Divider for:
 - Editorial content rhythm
 - Decorative page transitions
 - Hero-to-content separation
+- Labeled section breaks, using a center text label
 
 Keep the divider subtle enough to support the content rather than compete with it.

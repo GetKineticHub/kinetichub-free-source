@@ -98,6 +98,13 @@ const BLOCKS = [
 		image: 'assets/images/Kinetic-mesh.jpg',
 	},
 	{
+		id: 'kinetic-image-hero',
+		name: __('Image Hero', 'kinetichub'),
+		description: __('Art-directed photographic hero section with layered image compositions, responsive images, polished content and motion.', 'kinetichub'),
+		icon: 'dashicons-format-image',
+		image: 'assets/images/Kinetic-image-hero.jpg',
+	},
+	{
 		id: 'kinetic-before-after',
 		name: __('Before/After Slider', 'kinetichub'),
 		description: __('Accessible comparison slider for images.', 'kinetichub'),

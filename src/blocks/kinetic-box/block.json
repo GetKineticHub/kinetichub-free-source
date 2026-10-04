@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/kinetic-box",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "title": "Kinetic Box",
   "category": "kinetic-suite",
   "description": "Structured container block with motion-ready layout and hover interaction controls.",

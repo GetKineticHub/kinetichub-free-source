@@ -124,6 +124,8 @@ Common settings include:
 
 Image position controls help align the most important part of the image inside the pinned frame.
 
+The Focal Point control is available with Cover and Contain. With Cover, it chooses which part of the image stays in view when the image is cropped. With Contain, it sets where the whole image sits inside the frame. It is hidden with Fill, where it has no effect.
+
 ---
 
 ## 8. Overlay and Background

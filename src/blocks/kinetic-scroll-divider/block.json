@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "kinetichub/scroll-divider",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "title": "Kinetic Scroll Divider",
   "category": "kinetic-suite",
   "description": "Server-rendered animated divider with strict validation and graceful degradation.",
@@ -60,6 +60,52 @@
     "visibility": {
       "type": "string",
       "default": "all"
+    },
+    "centerMode": {
+      "type": "string",
+      "default": "none"
+    },
+    "centerIcon": {
+      "type": "string",
+      "default": "diamond"
+    },
+    "centerIconSize": {
+      "type": "number",
+      "default": 20
+    },
+    "centerText": {
+      "type": "string",
+      "default": ""
+    },
+    "centerTextSize": {
+      "type": "number",
+      "default": 14
+    },
+    "centerTextUppercase": {
+      "type": "boolean",
+      "default": false
+    },
+    "centerColor": {
+      "type": "string",
+      "default": ""
+    },
+    "centerGap": {
+      "type": "number",
+      "default": 16
+    },
+    "centerBadge": {
+      "type": "string",
+      "default": "none"
+    },
+    "centerBadgeColor": {
+      "type": "string",
+      "default": ""
+    },
+    "centerBadgePadding": {
+      "type": "number"
+    },
+    "centerBadgeRadius": {
+      "type": "number"
     }
   },
   "supports": {

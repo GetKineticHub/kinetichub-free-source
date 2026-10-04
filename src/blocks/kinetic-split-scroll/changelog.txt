@@ -1,5 +1,5 @@
 Block Name: Kinetic Split Scroll
-Version: 1.0.13
+Version: 1.2.0
 
 ### Added
 - Initial release of Kinetic Split Scroll.
@@ -36,6 +36,7 @@ Version: 1.0.13
 - Improved editor duplication stability by removing unnecessary persistent instance identifiers.
 - Improved color validation for common CSS color formats.
 - Improved frontend output escaping and attribute handling.
+- Improved the Focal Point control so it is also available with Contain, where it sets where the whole image sits inside the frame. It is hidden with Fill, where it has no effect.
 
 ### Fixed
 - Fixed calculation edge cases that could produce invalid scroll values.

@@ -73,8 +73,7 @@
     font-style: inherit;
     
     --kh-effect-y: 0px;
-    transform: translate3d(var(--kh-js-x), calc(var(--kh-js-y) + var(--kh-effect-y)), 0) scale(var(--kh-js-scale)); 
-    will-change: transform, background-color, color, box-shadow;
+    transform: translate3d(var(--kh-js-x), calc(var(--kh-js-y) + var(--kh-effect-y)), 0) scale(var(--kh-js-scale));
     transition: background-color 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease, box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease;
 }
 
@@ -102,8 +101,11 @@ a.kh-mb-button {
     box-shadow: var(--kh-mb-shadow-hov);
 }
 
+/* The compositing hint is held only while view.js drives the button, not by
+   every idle button on the page. */
 .kh-mb-button.kh-mb-magnetic-active {
     transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    will-change: transform;
 }
 
 /* Glassmorphism */
@@ -161,6 +163,9 @@ a.kh-mb-button {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.kh-mb-button.kh-mb-magnetic-active .kh-mb-content-wrap {
     will-change: transform;
 }
 
@@ -171,6 +176,24 @@ a.kh-mb-button {
 .kh-mb-text-inner {
     display: block;
     transition: color 0.3s ease;
+}
+
+/*
+ * Soft paints its tint (--kh-mb-bg, see render.php) on the fill layer rather
+ * than on the button: the hover tint is drawn on that layer too, which grows
+ * with the hover scale, so a tint on the button left the hover tint hanging
+ * past it as a lighter ring. A hairline edge in the same colour
+ * (--kh-mb-pulse carries it for every style) defines the button where a tint
+ * alone is faint, as on a dark section. With glassmorphism the tint stays,
+ * frosted over the blur.
+ */
+.kh-mb-button.kh-mb-style-soft {
+    background-color: transparent;
+}
+
+.kh-mb-button.kh-mb-style-soft .kh-mb-button-fx {
+    background-color: var(--kh-mb-bg);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kh-mb-pulse) 24%, transparent);
 }
 
 /* Base fade hover — FREE needs this for bgHoverColor via FX layer */
@@ -283,7 +306,6 @@ a.kh-mb-button {
     overflow: visible;
     flex: 0 0 auto;
     transition: max-width 0.3s cubic-bezier(0.25, 1, 0.5, 1), margin 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: max-width, margin, transform, opacity;
 }
 .kh-mb-icon svg {
     display: block;
@@ -345,6 +367,27 @@ a.kh-mb-button {
     pointer-events: none;
 }
 
+/* Read out, never shown: the "opens in a new tab" note of a group button. */
+.kh-mb-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* view.js marks a button that is scrolled out of view; its looping effects
+   (pulse, radar ring, sparkles) wait until it is back. */
+.kh-mb-button.kh-mb-offscreen,
+.kh-mb-button.kh-mb-offscreen .kh-mb-status-radar::after,
+.kh-mb-button.kh-mb-offscreen .kh-mb-status-sparkles svg {
+    animation-play-state: paused;
+}
+
 /* ==========================================================================
    8. Responsive & Accessibility
    ========================================================================== */
@@ -392,4 +435,173 @@ a.kh-mb-button {
     }
 
     
+
+    /* The radar ring and the sparkles loop too; they hold still, at rest. */
+    .kh-mb-status-radar::after,
+    .kh-mb-status-sparkles svg {
+        animation: none;
+    }
+}
+
+/* ==========================================================================
+   9. Button Group
+   ==========================================================================
+   A block with more than one button (or a Soft Button 1, or any group
+   setting) renders its buttons in one .kh-mb-group wrapper. A single Solid or
+   Outline button never gets the class, so nothing below can reach it.
+
+   The wrapper carries --kh-mb-gap and --kh-mb-align (the flex alignment the
+   block's align setting maps to); the editor canvas puts the same classes and
+   variables on its own group element. */
+.kh-mb-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--kh-mb-gap, 12px);
+}
+
+/* Column: justify-content now runs down the column, so the buttons are
+   aligned across it by --kh-mb-align. */
+.kh-mb-group.kh-mb-layout-stack {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: var(--kh-mb-align, center);
+}
+
+/*
+ * Natural widths, never wider than the line. A row wraps a button that does
+ * not fit onto the next line; a label too long for a line of its own wraps
+ * inside its button (breaking a single long word only as a last resort)
+ * instead of pushing the page sideways.
+ */
+.kh-mb-group > .kh-mb-button {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+/*
+ * The raised button paints its hover shadow, glow and scale over its
+ * neighbours instead of under the next one, and a keyboard focus ring is
+ * never covered by a neighbour, whatever the gap.
+ */
+.kh-mb-group > .kh-mb-button:hover {
+    z-index: 1;
+}
+
+.kh-mb-group > .kh-mb-button:focus-visible {
+    z-index: 2;
+}
+
+/*
+ * Hit area. A standalone button's hitbox reaches 15px past every edge; side by
+ * side, the later button's hitbox would cover the edge of the earlier one and
+ * take its clicks. Here every button owns half of each gap:
+ *
+ * - At rest the hitbox reaches at most half the gap (never more than 15px).
+ *   view.js widens each side that has no neighbour back to 15px (within the
+ *   viewport) through --kh-mb-hit-t/-r/-b/-l, and without script (touch,
+ *   reduced motion) the halved value holds everywhere.
+ * - The hitbox stays put while the button moves: it undoes the button's own
+ *   translate and scale about the button's centre, so a pulled or scaled
+ *   button never carries its hit area into the neighbour's half. view.js
+ *   limits how far the visible button itself may travel towards a neighbour.
+ */
+.kh-mb-group > .kh-mb-button > .kh-mb-hitbox {
+    --kh-mb-hit: min(15px, var(--kh-mb-gap, 12px) / 2);
+    --kh-mb-hit-top: var(--kh-mb-hit-t, var(--kh-mb-hit));
+    --kh-mb-hit-right: var(--kh-mb-hit-r, var(--kh-mb-hit));
+    --kh-mb-hit-bottom: var(--kh-mb-hit-b, var(--kh-mb-hit));
+    --kh-mb-hit-left: var(--kh-mb-hit-l, var(--kh-mb-hit));
+
+    /* From the border box: an absolute box starts inside the border. */
+    top: calc(-1 * (var(--kh-mb-hit-top) + var(--kh-mb-bw, 0px)));
+    right: calc(-1 * (var(--kh-mb-hit-right) + var(--kh-mb-bw, 0px)));
+    bottom: calc(-1 * (var(--kh-mb-hit-bottom) + var(--kh-mb-bw, 0px)));
+    left: calc(-1 * (var(--kh-mb-hit-left) + var(--kh-mb-bw, 0px)));
+    transform-origin: calc(50% + (var(--kh-mb-hit-left) - var(--kh-mb-hit-right)) / 2) calc(50% + (var(--kh-mb-hit-top) - var(--kh-mb-hit-bottom)) / 2);
+    transform: scale(calc(1 / var(--kh-js-scale, 1))) translate(calc(-1 * var(--kh-js-x, 0px)), calc(-1 * (var(--kh-js-y, 0px) + var(--kh-effect-y, 0px))));
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* In step with the button, which drops its transform transition while the
+   physics drive it frame by frame. */
+.kh-mb-group > .kh-mb-button.kh-mb-magnetic-active > .kh-mb-hitbox {
+    transition: none;
+}
+
+/* view.js lowers the hover scale where a gap is too narrow for it. */
+.kh-mb-group > .kh-mb-button[data-scale="true"]:hover .kh-mb-button-fx {
+    --kh-hover-scale: var(--kh-mb-fx-scale, 1.05);
+}
+
+/*
+ * A hover-revealed icon (section 7) widens a standalone button. In a group
+ * that would push the neighbours sideways and could rewrap a row that only
+ * just fits, under the pointer. Here the icon takes its room (its size plus
+ * the 8px gap) from the side padding instead, on the same curve as the icon's
+ * own reveal, so the button keeps its width. The transition lists repeat the
+ * button's own (section 3) with padding added; keep them in step.
+ */
+.kh-mb-group > .kh-mb-button:not(.icon-always-visible):has(.kh-mb-icon) {
+    transition: background-color 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), color 0.3s ease, box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, padding 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.kh-mb-group > .kh-mb-button.kh-mb-magnetic-active:not(.icon-always-visible):has(.kh-mb-icon) {
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, padding 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.kh-mb-group > .kh-mb-button:not(.icon-always-visible):has(.kh-mb-icon):hover {
+    padding-right: max(0px, var(--kh-mb-pad-h) - (var(--kh-mb-icon-sz) + 8px) / 2);
+    padding-left: max(0px, var(--kh-mb-pad-h) - (var(--kh-mb-icon-sz) + 8px) / 2);
+}
+
+@media (max-width: 768px) {
+
+    /* Stack and Full Width: one column at the mobile breakpoint. */
+    .kh-mb-group.kh-mb-mobile-stack,
+    .kh-mb-group.kh-mb-mobile-full-width {
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+
+    .kh-mb-group.kh-mb-mobile-stack {
+        align-items: var(--kh-mb-align, center);
+    }
+
+    /* Stretch, not width: 100%, so padding and border stay inside the line
+       whatever the theme's box-sizing. */
+    .kh-mb-group.kh-mb-mobile-full-width {
+        align-items: stretch;
+    }
+
+    /* The available line, also inside a flex or grid parent that would
+       otherwise shrink the block to its content. */
+    .kh-mb-wrapper.kh-mb-group.kh-mb-mobile-full-width {
+        width: 100%;
+    }
+
+    /* A full-width button already spans the line: a sideways hitbox would only
+       reach past the page edge. Set on the hitbox, so view.js cannot widen it,
+       and as 0% because calc() needs a dimension, not a bare 0. */
+    .kh-mb-group.kh-mb-mobile-full-width > .kh-mb-button > .kh-mb-hitbox {
+        --kh-mb-hit-left: 0%;
+        --kh-mb-hit-right: 0%;
+    }
+
+    /* The mobile icon size, as section 8 uses at this breakpoint. */
+    .kh-mb-group > .kh-mb-button:not(.icon-always-visible):has(.kh-mb-icon):hover {
+        padding-right: max(0px, var(--kh-mb-pad-h) - (var(--kh-mb-icon-sz-mob) + 8px) / 2);
+        padding-left: max(0px, var(--kh-mb-pad-h) - (var(--kh-mb-icon-sz-mob) + 8px) / 2);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    /* The button no longer moves, so its hitbox has nothing to undo. */
+    .kh-mb-group > .kh-mb-button > .kh-mb-hitbox {
+        transform: none;
+        transition: none;
+    }
 }

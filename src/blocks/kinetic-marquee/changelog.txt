@@ -1,5 +1,5 @@
 Block Name: Kinetic Marquee
-Version: 1.0.0
+Version: 1.2.0
 
 ### Added
 - Initial release of Kinetic Marquee.
@@ -50,3 +50,4 @@ Version: 1.0.0
 - Fixed unnecessary cloning for galleries that already contain many items.
 - Fixed accessibility role usage for marquee containers.
 - Fixed duplicated animation tracks so decorative duplicates are hidden from assistive technologies.
+- Fixed full-width layouts that could extend past the screen edge and add a horizontal scrollbar when the page used a scroll lock or a reveal animation while loading.

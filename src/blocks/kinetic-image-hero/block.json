@@ -1,0 +1,107 @@
+{
+    "apiVersion": 3,
+    "name": "kinetichub/image-hero",
+    "version": "1.2.0",
+    "title": "Kinetic Image Hero",
+    "category": "kinetic-suite",
+    "icon": "format-image",
+    "description": "Image-led hero section with an eyebrow, heading, text and up to two buttons, arranged around focal-point-aware photographic compositions.",
+    "keywords": ["hero section", "image hero", "banner", "header image", "split", "cover"],
+    "attributes": {
+        "align": { "type": "string", "default": "full" },
+
+        "presentation": { "type": "string", "default": "single" },
+        "images": { "type": "array", "default": [], "items": { "type": "object" } },
+        "mobileImages": { "type": "array", "default": [], "items": { "type": "object" } },
+
+        "splitRatio": { "type": "string", "default": "50-50" },
+        "compositionGap": { "type": "number" },
+        "cardRadius": { "type": "number" },
+        "cardShadow": { "type": "string" },
+        "cardRotation": { "type": "number" },
+        "compositionOverlap": { "type": "number" },
+        "compositionDepth": { "type": "number" },
+
+        "compositionScale": { "type": "string", "default": "large" },
+        "mediaBalance": { "type": "string", "default": "40-60" },
+        "contentOverlap": { "type": "string", "default": "none" },
+        "sceneBackdrop": { "type": "string", "default": "none" },
+        "backdropIntensity": { "type": "string", "default": "medium" },
+
+        "motionMode": { "type": "string", "default": "none" },
+        "motionIntensity": { "type": "string", "default": "medium" },
+        "revealStyle": { "type": "string", "default": "none" },
+        "staggerImages": { "type": "boolean", "default": false },
+
+        "cardFocus": { "type": "boolean", "default": false },
+        "smartReadability": { "type": "boolean", "default": false },
+        "depthOnScroll": { "type": "boolean", "default": false },
+        "pointerDepth": { "type": "boolean", "default": false },
+        "stackFan": { "type": "boolean", "default": false },
+        "reactiveSpotlight": { "type": "boolean", "default": false },
+        "scrollDrift": { "type": "boolean", "default": false },
+        "focusReveal": { "type": "boolean", "default": false },
+
+        "mobileComposition": { "type": "string", "default": "auto" },
+        "mobileOrder": { "type": "string", "default": "content-first" },
+
+        "eyebrow": { "type": "string", "default": "" },
+        "heading": { "type": "string", "default": "" },
+        "headingLevel": { "type": "number", "default": 1 },
+        "description": { "type": "string", "default": "" },
+        "badge": { "type": "string", "default": "" },
+
+        "cta1Text": { "type": "string", "default": "" },
+        "cta1Url": { "type": "string", "default": "" },
+        "cta1NewTab": { "type": "boolean", "default": false },
+        "cta1Rel": { "type": "string", "default": "" },
+
+        "cta2Text": { "type": "string", "default": "" },
+        "cta2Url": { "type": "string", "default": "" },
+        "cta2NewTab": { "type": "boolean", "default": false },
+        "cta2Rel": { "type": "string", "default": "" },
+
+        "cta1Variant": { "type": "string" },
+        "cta1Icon": { "type": "string", "default": "none" },
+        "cta2Variant": { "type": "string" },
+        "cta2Icon": { "type": "string", "default": "none" },
+        "ctaSize": { "type": "string", "default": "medium" },
+        "ctaLayout": { "type": "string", "default": "row" },
+        "ctaMobileLayout": { "type": "string", "default": "auto" },
+        "ctaMotion": { "type": "string", "default": "none" },
+
+        "contentAlign": { "type": "string", "default": "center" },
+        "contentVerticalAlign": { "type": "string", "default": "center" },
+        "contentWidth": { "type": "string", "default": "standard" },
+        "contentMaxWidth": { "type": "number" },
+        "contentSpacing": { "type": "string", "default": "balanced" },
+        "headingSize": { "type": "string", "default": "xl" },
+        "descriptionSize": { "type": "string", "default": "normal" },
+        "eyebrowStyle": { "type": "string", "default": "plain" },
+        "badgeStyle": { "type": "string", "default": "minimal" },
+        "contentSurface": { "type": "string", "default": "none" },
+        "contentReveal": { "type": "string", "default": "none" },
+        "contentDelay": { "type": "string", "default": "none" },
+
+        "heroHeightDesktop": { "type": "number", "default": 90 },
+        "heroHeightMobile": { "type": "number", "default": 80 },
+
+        "overlayColor": { "type": "string", "default": "#000000" },
+        "overlayOpacity": { "type": "number", "default": 0.35 },
+
+        "hideOnMobile": { "type": "boolean", "default": false },
+        "hideOnDesktop": { "type": "boolean", "default": false }
+    },
+    "supports": {
+        "align": ["wide", "full"],
+        "anchor": true,
+        "html": false,
+        "spacing": { "margin": true, "padding": true },
+        "color": { "text": true, "background": true }
+    },
+    "textdomain": "kinetichub",
+    "editorScript": "file:./index.js",
+    "style": "file:./index.css",
+    "editorStyle": "file:./index.css",
+    "render": "file:./render.php"
+}

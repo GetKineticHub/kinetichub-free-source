@@ -21,25 +21,63 @@
      * properties on that instance - no global body/html mutation, no polling,
      * no permanent rAF.
      *
-     * The width is document.documentElement.clientWidth: the layout viewport
-     * excluding a classic scrollbar. Placing the inline-start edge at viewport 0
-     * and the end edge at clientWidth puts the block exactly on the edge of the
-     * scrollable area, so it cannot grow documentElement.scrollWidth. 100vw
-     * would include the scrollbar and is precisely what must not be used here.
+     * The width is the root element's own layout box, never wider than
+     * document.documentElement.clientWidth: both exclude a classic scrollbar,
+     * which 100vw includes and is precisely what must not be used here. The box
+     * is the one that counts. Under a scroll lock that reserves the gutter
+     * (overflow:hidden + scrollbar-gutter:stable, as page loaders and modals
+     * apply it) Chrome reports clientWidth as the whole window while layout is a
+     * gutter narrower, and when the lock lifts the scrollbar fills that gutter
+     * without resizing anything - so a clientWidth read during the lock left the
+     * block a gutter too wide for good, with nothing to re-measure it. The root
+     * box is exactly what the ResizeObserver below watches, so it cannot go stale
+     * behind it. Both edges are taken from that box rather than from viewport 0,
+     * which also keeps a horizontal scroll offset out of the result.
      *
      * The offset is derived from the PARENT's content-box edge, never from the
      * block's own rect: the parent's box is unaffected by the child's margins, so
-     * the measurement stays correct however many times it re-runs.
+     * the measurement stays correct however many times it re-runs. That rect is
+     * visual geometry, though: while anything above the block is transformed - a
+     * page-reveal scale, a slide-in - it is off by the transform, and the
+     * transform ending resizes nothing. So the offset is only taken with no
+     * transform above the block, the last good one is kept meanwhile, and a
+     * transition or animation ending on an ancestor re-measures.
      * -------------------------------------------------------------------- */
     const bleedInstances = new Set();
     let bleedObserver = null;
     let bleedTimer = null;
+    let bleedMotionListening = false;
+
+    const BLEED_MOTION_END_EVENTS = ['transitionend', 'transitioncancel', 'animationend', 'animationcancel'];
+
+    // Only a horizontal effect counts. A reveal that rises on Y leaves every x where
+    // layout put it, and an identity value - a finished reveal often leaves `scale(1)`
+    // behind - changes nothing. Computed `translate` and `scale` lead with x.
+    const shiftsX = (node) => {
+        const style = window.getComputedStyle(node);
+        if (style.transform !== 'none') {
+            const m = new DOMMatrixReadOnly(style.transform);
+            if (m.is2D ? (m.a !== 1 || m.c !== 0 || m.e !== 0) : !m.isIdentity) return true;
+        }
+        if (style.translate && style.translate !== 'none' && parseFloat(style.translate) !== 0) return true;
+        if (style.scale && style.scale !== 'none' && parseFloat(style.scale) !== 1) return true;
+        return !!style.rotate && style.rotate !== 'none' && parseFloat(style.rotate.split(' ').pop()) !== 0;
+    };
+
+    const hasTransformAbove = (marquee) => {
+        for (let node = marquee.parentElement; node; node = node.parentElement) {
+            if (shiftsX(node)) return true;
+        }
+        return false;
+    };
 
     const measureBleed = (marquee) => {
         const parent = marquee.parentElement;
         if (!parent) return;
 
-        const viewportWidth = document.documentElement.clientWidth;
+        const root = document.documentElement;
+        const rootRect = root.getBoundingClientRect();
+        const viewportWidth = Math.min(root.clientWidth, rootRect.width);
         if (!viewportWidth) return;
 
         // Flex/grid/table parents size their children themselves; a breakout margin
@@ -48,22 +86,29 @@
         const parentStyle = window.getComputedStyle(parent);
         if (/flex|grid|table/.test(parentStyle.display)) return;
 
-        const parentRect = parent.getBoundingClientRect();
-        const isRtl = window.getComputedStyle(marquee).direction === 'rtl';
+        // The width never depends on a transform, so it updates regardless: a
+        // scrollbar arriving mid-reveal must not leave the block too wide until the
+        // reveal ends. With no good offset yet, the block stays on layers 1-2.
+        let nextStart = marquee._kh_mq_bleedS;
+        if (!hasTransformAbove(marquee)) {
+            const parentRect = parent.getBoundingClientRect();
+            const isRtl = window.getComputedStyle(marquee).direction === 'rtl';
 
-        let startGap;
-        if (isRtl) {
-            const borderEnd = parseFloat(parentStyle.borderRightWidth) || 0;
-            const padEnd = parseFloat(parentStyle.paddingRight) || 0;
-            startGap = viewportWidth - (parentRect.right - borderEnd - padEnd);
-        } else {
-            const borderStart = parseFloat(parentStyle.borderLeftWidth) || 0;
-            const padStart = parseFloat(parentStyle.paddingLeft) || 0;
-            startGap = parentRect.left + borderStart + padStart;
+            let startGap;
+            if (isRtl) {
+                const borderEnd = parseFloat(parentStyle.borderRightWidth) || 0;
+                const padEnd = parseFloat(parentStyle.paddingRight) || 0;
+                startGap = rootRect.right - (parentRect.right - borderEnd - padEnd);
+            } else {
+                const borderStart = parseFloat(parentStyle.borderLeftWidth) || 0;
+                const padStart = parseFloat(parentStyle.paddingLeft) || 0;
+                startGap = parentRect.left + borderStart + padStart - rootRect.left;
+            }
+            nextStart = (-startGap) + 'px';
         }
+        if (!nextStart) return;
 
         const nextWidth = viewportWidth + 'px';
-        const nextStart = (-startGap) + 'px';
 
         // Write only on change, so re-measuring can never feed a ResizeObserver loop.
         if (marquee._kh_mq_bleedW === nextWidth && marquee._kh_mq_bleedS === nextStart) return;
@@ -82,16 +127,36 @@
         }, 120);
     };
 
+    // A transform settling on an ancestor moves the parent's rect without resizing
+    // the root, so the observer never hears of it. Only events on an element that
+    // contains a bleed parent count; the marquee's own and its items' transitions
+    // never reach this test.
+    const onBleedMotionEnd = (e) => {
+        const target = e.target;
+        if (!target || !target.contains) return;
+        for (const marquee of bleedInstances) {
+            if (marquee.parentElement && target.contains(marquee.parentElement)) {
+                remeasureAllBleed();
+                return;
+            }
+        }
+    };
+
     const initBleed = (marquee) => {
         if (!marquee.classList.contains('alignfull')) return;
         bleedInstances.add(marquee);
 
         // One shared observer on the root element for every instance. It covers window
         // resize and zoom, and - unlike the resize event - also fires when a vertical
-        // scrollbar appears or disappears and clientWidth genuinely changes.
+        // scrollbar appears or disappears and the root box genuinely changes.
         if (!bleedObserver && 'ResizeObserver' in window) {
             bleedObserver = new ResizeObserver(remeasureAllBleed);
             bleedObserver.observe(document.documentElement);
+        }
+
+        if (!bleedMotionListening) {
+            bleedMotionListening = true;
+            BLEED_MOTION_END_EVENTS.forEach((type) => document.addEventListener(type, onBleedMotionEnd, true));
         }
 
         measureBleed(marquee);
@@ -113,6 +178,10 @@
             if (bleedObserver) {
                 bleedObserver.disconnect();
                 bleedObserver = null;
+            }
+            if (bleedMotionListening) {
+                bleedMotionListening = false;
+                BLEED_MOTION_END_EVENTS.forEach((type) => document.removeEventListener(type, onBleedMotionEnd, true));
             }
         }
     };

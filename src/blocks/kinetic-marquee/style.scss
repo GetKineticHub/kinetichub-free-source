@@ -42,10 +42,12 @@
    only ever fill the parent column; browser QA proved that insufficient once
    the block sits anywhere deeper than a root-level constrained container.
    view.js measures the actual viewport geometry for alignfull instances only
-   and writes it here. The width comes from document.documentElement.clientWidth,
-   which excludes a classic scrollbar by definition - unlike 100vw, which
-   includes it and is exactly how this used to grow the document. If the JS
-   never runs, .kh-mq-bleed is never added and layers 1-2 stand unchanged.
+   and writes it here. The width comes from the root element's layout box,
+   capped at document.documentElement.clientWidth: both exclude a classic
+   scrollbar - unlike 100vw, which includes it and is exactly how this used to
+   grow the document - and the box also excludes a gutter reserved by a scroll
+   lock, which clientWidth does not. If the JS never runs, .kh-mq-bleed is
+   never added and layers 1-2 stand unchanged.
    ========================================================================== */
 .kh-mq-marquee-container.alignfull {
     max-width: none;
